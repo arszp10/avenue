@@ -103,6 +103,4 @@ StopLine.prototype.calc = function(inFlow, queueTail)
     return this.outFlow;
 };
 
-var utils = require('./utils.js')();
-
 module.exports = StopLine;

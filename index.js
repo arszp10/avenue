@@ -1,3 +1,4 @@
+var utils = require('./utils.js')();
 var StopLine = require('./stop-line.js');
 var CarriageWay = require('./carriageway.js');
 

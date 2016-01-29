@@ -32,7 +32,6 @@ CarriageWay.prototype.calc = function(inFlow)
     var k = 0;
     var sumInFlow = inFlow.sum();
     var sumOutFlow = 0;
-    var sumFunction = function(a, b) { return a + b;}
     do {
         k++;
         for (var i = 0; i < inFlow.length; i++) {
@@ -46,8 +45,6 @@ CarriageWay.prototype.calc = function(inFlow)
     this.outFlow = outFlow;
     return this.outFlow;
 };
-
-var utils = require('./utils.js')();
 
 module.exports = CarriageWay;
 
