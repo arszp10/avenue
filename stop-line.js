@@ -1,5 +1,5 @@
 
-function stopLine(options)
+function StopLine(options)
 {
     var defaults = {
         hash: 0000,
@@ -12,21 +12,31 @@ function stopLine(options)
             {s:0, f:9, length: 10},
             {s:60, f:67, length: 8},
             {s:90, f:99, length: 10}
-        ],
+            //{s:0, f:90, length: 91}
+        ]
     };
-
     this.options = defaults;
+    this.isCongestion = false;
+    this.inFlow = [];
+    this.outFlow = [].fill(this.options.cicleTime, 0);
+
+    this.maxQueueLength = 0;
+    this.delay = 0;
 }
 
 
-stopLine.prototype.calc = function(inFlow, queueTail)
+StopLine.prototype.calc = function(inFlow, queueTail)
 {
     var cicleTime = this.options.cicleTime;
     var capacityPerSecond = this.options.capacityPerSecond;
     if (inFlow == undefined) {
-        inFlow = [].fill(cicleTime, this.options.avgIntensityPerSecond);
+        if (this.inFlow.length == 0) {
+            this.inFlow = [].fill(cicleTime, this.options.avgIntensityPerSecond);
+        }
+        inFlow = this.inFlow;
     }
-    var outFlow = [].fill(cicleTime, 0);
+    this.maxQueueLength = 0;
+    var outFlow = this.outFlow;
     var delay = 0;
     var queue = queueTail == undefined ? 0 : queueTail;
 
@@ -40,7 +50,6 @@ stopLine.prototype.calc = function(inFlow, queueTail)
         }
     }
 
-    var start = last.s;
     var currIntervalInx = intervals.length - 1;
     var currInterval = intervals[currIntervalInx];
     var rTime = currInterval.length;
@@ -49,15 +58,18 @@ stopLine.prototype.calc = function(inFlow, queueTail)
     var sumOutFlow = 0;
 
     for (var i = 0; i < inFlow.length; i++){
-        var j = (i + start) % cicleTime;
+        var j = (i + last.s) % cicleTime;
         var value = inFlow[j];
         sumInFlow += value;
         queue += value;
+
+        if (queue > this.maxQueueLength) {
+            this.maxQueueLength = queue;
+        }
         if (j >= currInterval.s && j<= currInterval.f) {
             delay += (rTime - t + Math.floor(queue/capacityPerSecond))*value;
             t++;
             outFlow[j] = 0;
-            //console.log('OUT: ', j, outFlow[j], queue ,rTime - t);
             if (j != currInterval.f) {
                 continue;
             }
@@ -79,44 +91,18 @@ stopLine.prototype.calc = function(inFlow, queueTail)
 
         t = 0;
         outFlow[j] = value;
-        //console.log('OUT: ', j, outFlow[j], queue, 0);
         sumOutFlow += value;
-        continue;
     }
 
-    //console.log('QUEUE REST: ',queue);
-    //console.log('DELAY: ',delay);
-    //console.log(outFlow);
-    //console.log('SUM: ', sumInFlow, sumOutFlow);
-    if (sumInFlow != sumOutFlow) {
+    if (sumInFlow != sumOutFlow && queueTail == undefined) {
         return this.calc(inFlow, queue);
     }
-    return outFlow;
+    this.delay = delay;
+    this.outFlow = outFlow;
+    this.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
+    return this.outFlow;
 };
 
+var utils = require('./utils.js')();
 
-Array.prototype.fill = function(len, value){
-    return Array.apply(null, Array(len)).map(Number.prototype.valueOf,value);
-};
-
-Array.prototype.last = function(){
-    if (this.length > 0){
-        return this[this.length - 1];
-    }
-    return false;
-};
-
-Array.prototype.first = function(){
-    if (this.length > 0){
-        return this[0];
-    }
-    return false;
-};
-
-var sl = new stopLine();
-console.log(new Date());
-for (var i = 0; i < 100000; i++) {
-    sl.calc();
-}
-console.log(new Date());
-
+module.exports = StopLine;
