@@ -8,7 +8,8 @@ function CarriageWay(options)
         capacity: 3600,
         capacityPerSecond: 3600/3600,
         cicleTime: 100,
-        routeTime: 60,
+        routeTime: 20,
+        length: 300,
         dispersion: 0.5
     };
     this.options = defaults;
