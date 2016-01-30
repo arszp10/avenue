@@ -35,6 +35,7 @@ StopLine.prototype.calc = function(inFlow, queueTail)
         }
         inFlow = this.inFlow;
     }
+    this.inFlow = inFlow;
     this.maxQueueLength = 0;
     var outFlow = this.outFlow;
     var delay = 0;
