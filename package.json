@@ -11,7 +11,7 @@
         "url": "https://github.com/kuzinmv/avenue.git"
     },
     "dependencies": {
-
+        "lodash": "4.1.0"
     },
     "devDependencies": {
 
