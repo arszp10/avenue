@@ -3,15 +3,21 @@ var model = require('./model');
 
 function StopLine(options, mainFlow){
     this.flow = new Flow(options);
+    this.flow1 = new Flow(options);
     this.main = mainFlow;
 }
 
 StopLine.prototype.calc = function(){
-    var flow = model.stopLine(this.flow)
+    model.stopLine(this.flow);
+    var delay = this.delay;
     if (this.main != undefined) {
-        return model.competitor(this.main, this.flow);
+        this.flow1.inFlow = this.flow.outFlow;
+        this.flow1.intervals = [];
+        model.competitor(this.main, this.flow1);
+        this.flow.outFlow = this.flow1.outFlow;
+        this.flow.delay += this.delay;
     }
-    return flow;
+    return this.flow;
 }
 
 module.exports = StopLine;

@@ -155,10 +155,8 @@ module.exports = {
         return outFlows;
     },
 
-
     competitor: function(flow1, flow2, queueTail){
         flow2.maxQueueLength = 0;
-        var cicleTime = flow1.cicleTime;
         var capacityPerSecond1 = flow1.capacityPerSecond;
         var capacityPerSecond2 = flow2.capacityPerSecond;
         var inFlow2 = flow2.inFlow;
@@ -169,19 +167,21 @@ module.exports = {
         var queue = queueTail == undefined ? 0 : queueTail;
         var sumInFlow = 0;
         var sumOutFlow = 0;
+        var virtRedTime = 0;
+        var avgInVirtRed = 0;
 
-        var dynCapacity = 0;
+        var dynCapacity = [];
         var value = 0;
+
         for (var i = 0; i < inFlow2.length; i++){
-            dynCapacity = capacityPerSecond2 * Math.pow(
-                    Math.abs(outFlow1[i]/capacityPerSecond1 - 1),
-                    10
-                );
             value = inFlow2[i];
             queue += value;
-
-            if (queue > dynCapacity) {
-                outFlow2[i] = dynCapacity;
+            dynCapacity[i] = capacityPerSecond2 * Math.pow(
+                Math.abs(outFlow1[i] / capacityPerSecond1 - 1),
+                10
+            );
+            if (queue > dynCapacity[i]) {
+                outFlow2[i] = dynCapacity[i];
             } else {
                 if (queue <= capacityPerSecond2){
                     value = queue;
@@ -197,12 +197,16 @@ module.exports = {
             if (queue > flow2.maxQueueLength) {
                 flow2.maxQueueLength = queue;
             }
+
+            if (outFlow2[i] <= 0.01){
+                virtRedTime++;
+                avgInVirtRed+=inFlow2[i];
+            }
         }
         if (sumInFlow != sumOutFlow && queueTail == undefined) {
             return this.competitor(flow1, flow2, queue);
         }
-
-        flow2.delay = delay;
+        flow2.delay = 0.5 * 0.5 * virtRedTime * avgInVirtRed;
         flow2.outFlow = outFlow2;
         flow2.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
 

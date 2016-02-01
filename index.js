@@ -19,8 +19,8 @@ var printFork = function(obj){
 };
 
 var printCompetitor = function(obj){
-    for (var i = 0; i < obj.flow1.cicleTime; i++) {
-        console.log(obj.main.outFlow[i], obj.flow.outFlow[i]);
+    for (var i = 0; i < obj.flow.cicleTime; i++) {
+        console.log(obj.main.outFlow[i], obj.flow.outFlow[i],obj.flow.inFlow[i]);
     };
 };
 
@@ -39,7 +39,7 @@ sl.flow.intervals = [
 ];
 
 sl1.flow.intervals = [
-    {s:0, f:29, length: 30}
+    {s:30, f:59, length: 30}
 ];
 
 
@@ -61,7 +61,9 @@ sl1.calc();
 //mg.calc();
 
 cr.calc();
+console.log(cr.flow.delay);
 printCompetitor(cr);
+
 
 //console.log(cr.flow2.inFlow.sum(), cr.flow2.outFlow.sum());
 
