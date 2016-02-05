@@ -1,10 +1,10 @@
-var utils       = require('./utils')();
-var StopLine    = require('./stop-line');
-var CarriageWay = require('./carriageway');
-var BottleNeck  = require('./bottleneck');
-var Fork        = require('./fork');
-var Merge       = require('./merge');
-var Competitor  = require('./competitor');
+var utils       = require('./app/utils/utils')();
+var StopLine    = require('./app/math-model/stop-line');
+var CarriageWay = require('./app/math-model/carriageway');
+var BottleNeck  = require('./app/math-model/bottleneck');
+var Fork        = require('./app/math-model/fork');
+var Merge       = require('./app/math-model/merge');
+var Competitor  = require('./app/math-model/competitor');
 
 var print = function(obj){
     for (var i = 0; i < obj.flow.cicleTime; i++) {
