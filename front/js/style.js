@@ -4,14 +4,25 @@ var vizmap = [{
         {
             selector: 'node',
             css: {
-                'content': 'data(name)'
+                'content': 'data(icon)',
+                'text-valign': 'center',
+                'text-halign': 'center',
+                'background-color': '#ffffff',
+                'border-color': '#999999',
+                'color': '#2e6da4',
+                'border-width': 0.5,
+                'font-size': '12px'
+
             }
         },
         {
             selector: 'node:selected',
             css: {
-                'content': 'data(name)',
-                'background-color': '#005599'
+                'content': 'data(icon)',
+                'background-color': '#2e6da4',
+                'border-color': '#ffffff',
+                'color': '#ffffff',
+                'border-width': 2
             }
         },
         {
@@ -24,10 +35,9 @@ var vizmap = [{
             selector: 'edge:selected',
             css: {
                 'width': 2,
-                'line-color': '#005599',
-                'target-arrow-color': '#005599',
-                'source-arrow-color': '#005599',
-                'color': '#005599'
+                'line-color': '#2e6da4',
+                'target-arrow-color': '#2e6da4',
+                'color': '#2e6da4'
             }
         },
 

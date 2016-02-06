@@ -1,15 +1,85 @@
 /* cytoscape graph */
-.cy {
+.cy, .source {
     position:absolute;
     top: 80px;
-    bottom: 0px;
+    bottom: 50px;
     left: 0px;
     right: 0px;
     background-color: #f9f9f9;
+    z-index: 1;
+}
+
+.source{
+    display:none;
+    background-color: #ffffff;
+}
+
+#editor {
+    margin: 0;
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+}
+
+.bottom-panel{
+    position:absolute;
+    height:50px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 20;
+    padding-left:10px;
 }
 
 .top-panel{
     height:80px;
     border-bottom:1px solid #e1e1e1;
     padding:10px;
+    z-index: 20;
+}
+
+.left-panel{
+    /*width:60px;*/
+    border-radius: 0px 5px 5px 0px;
+    border-top:1px solid #e1e1e1;
+    border-right:1px solid #e1e1e1;
+    border-bottom:1px solid #e1e1e1;
+    padding: 10px 10px 0px 10px;
+    top: 90px;
+    left: 0px;
+    z-index: 10;
+    position:absolute;
+    background: white;
+    opacity: 0.5;
+}
+
+.left-panel:hover{
+    opacity: 0.8;
+}
+
+
+.btn-group, .btn-group-vertical {
+    display:block;
+    margin-bottom: 10px;
+}
+
+.nav-tabs.bottom-tabs {
+    border-top: 1px solid #ddd;
+    border-bottom: 0px solid #ddd;
+}
+
+.nav-tabs.bottom-tabs > li {
+    margin-top: -1px;
+    margin-bottom: 0px;
+}
+
+
+.nav-tabs.bottom-tabs > li.active > a {
+    border-bottom-color: #ddd;
+    border-top-color: transparent;
+}
+.nav-tabs.bottom-tabs > li > a {
+    border-radius: 0 0 4px 4px;
 }
