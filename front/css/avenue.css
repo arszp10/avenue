@@ -1,0 +1,15 @@
+/* cytoscape graph */
+.cy {
+    position:absolute;
+    top: 80px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: #f9f9f9;
+}
+
+.top-panel{
+    height:80px;
+    border-bottom:1px solid #e1e1e1;
+    padding:10px;
+}
