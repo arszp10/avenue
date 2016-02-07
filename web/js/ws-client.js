@@ -8,27 +8,7 @@ $('#btn-connect').click(function(){
 
     socket.on('calc-response', function (data) {
         console.log('response:', data);
-
-        var foo = [];
-
-        for (var i = 1; i <= 100; i++) {
-            foo.push(i);
-        }
-        new Chartist.Line('.ct-chart', {
-            labels: foo,
-            series: [
-                data.ID2.flow.inFlow,
-                data.ID2.flow.outFlow
-            ]
-        }, {
-            low: 0,
-            showArea: true,
-            width: '500px',
-            height: '300px'
-        });
-
-        $('.chart-panel').drag();
-
+        app.state.lastCalc = data;
     });
 
     socket.on('error', function (data) {

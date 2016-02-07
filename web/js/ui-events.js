@@ -94,6 +94,45 @@ var uievents = {
             }
         });
 
+
+        app.buttons.btnGraphNode.click(function(){
+            if (app.cy.$('node:selected').length == 0){
+                return;
+            }
+            var selected = app.cy.$('node:selected')[0];
+            var id = selected.data('id');
+            var chartId = 'ct-chart-' + id;
+            var chartPanel = '<div class="chart-panel"><div class="chart-panel-head"><i class="fa fa-reorder fa-2x"></i><a class="btn-chart-close" href="#"><i class="fa fa-close fa-2x"></i></a></div>' +
+                              '<div id="' + chartId +'" class="ct-chart"></div></div>';
+            $('body > div').append(chartPanel);
+            var labels = [];
+            for (var i = 0; i < selected.data('cicleTime'); i++) {
+                labels.push(i);
+            }
+            new Chartist.Line('#'+chartId, {
+                labels: labels,
+                series: [
+                    app.state.lastCalc[id].flow.inFlow,
+                    app.state.lastCalc[id].flow.outFlow
+                ]
+            }, {
+                low: 0,
+                showArea: true,
+                width: '596px',
+                height: '369px',
+                showPoint: false,
+                lineSmooth: false,
+                axisX: {
+                    low:0,
+                    high: 100,
+                    showGrid: false,
+                    showLabel: true
+                },
+            });
+            $('.chart-panel').drag();
+        });
+
+
     },
     paletteClick: function(){
         var $this = $(this);
@@ -111,5 +150,11 @@ var uievents = {
         app.state.nodeType = $this.data('type');
     }
 };
+
+
+
+/*
+
+*/
 
 

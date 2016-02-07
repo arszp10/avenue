@@ -1,4 +1,7 @@
-/* cytoscape graph */
+body{
+    overflow: hidden;
+}
+
 .cy, .source {
     position:absolute;
     top: 80px;
@@ -41,7 +44,6 @@
 }
 
 .left-panel{
-    /*width:60px;*/
     border-radius: 0px 5px 5px 0px;
     border-top:1px solid #e1e1e1;
     border-right:1px solid #e1e1e1;
@@ -61,16 +63,45 @@
 
 
 .chart-panel{
-    /*width:60px;*/
     border:1px solid #e1e1e1;
-    padding: 10px;
-    top: 90px;
-    right: 0px;
-    z-index: 10;
-    position:absolute;
     background: white;
-    height:320px;
-    width:520px;
+    padding: 10px;
+    top: 425px;
+    left: 80px;
+    z-index: 30;
+    position:absolute;
+    height:420px;
+    width:620px;
+    border-radius: 5px;
+}
+
+.chart-panel-head {
+    color: #cccccc;
+    cursor: move;
+}
+.chart-panel-head a.btn-chart-close {
+    display: block;
+    float:right;
+}
+
+.ct-chart{
+    width: 596px;
+    height: 369px;
+}
+
+
+.ct-series-a .ct-line {
+    stroke: red;
+    stroke-width: 2px;
+}
+
+.ct-series-b .ct-line {
+    stroke: blue;
+    stroke-width: 2px;
+}
+
+.ct-series-b .ct-area, .ct-series-b .ct-slice-pie {
+    fill: #49B8ED;
 }
 
 .btn-group, .btn-group-vertical {

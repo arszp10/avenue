@@ -8,7 +8,8 @@ var app = {
     cy: null,
     state: {
         clickMode: 'select-mode', // select, add-stopline, ... add-concurrent
-        nodeType: 'stopline'
+        nodeType: 'stopline',
+        lastCalc: null
     },
     clipboard: null,
     panels: {
@@ -23,6 +24,7 @@ var app = {
         btnAddMerge:        '#btn-add-merge',
         btnAddBottleneck:   '#btn-add-bottleneck',
         btnAddConcurrent:   '#btn-add-concurrent',
+        btnGraphNode:       '#btn-graph-node',
         btnDeleteNode:      '#btn-delete-node',
         btnHorizontalAlign: '#btn-horizontal-align',
         btnVerticalAlign:   '#btn-vertical-align',
@@ -115,5 +117,8 @@ $(document).ready(function() {
             app.cy.on('tap', app.actions.tapToBackground);
         }
     });
+
+
+    $('.chart-panel').drag();
 
 });
