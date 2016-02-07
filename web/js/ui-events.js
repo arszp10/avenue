@@ -81,8 +81,6 @@ var uiEvents = {
             app.panels.navigator.hide();
         });
 
-
-        //$('div.cytoscape-navigator').hide();
         app.buttons.btnToggleMap.click(function(){
             var th = app.buttons.btnToggleMap;
                 th.toggleClass('active');

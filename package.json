@@ -11,7 +11,8 @@
         "url": "https://github.com/kuzinmv/avenue.git"
     },
     "dependencies": {
-        "lodash": "4.1.0"
+        "lodash": "4.1.0",
+        "socket.io": "1.4.4"
     },
     "devDependencies": {
 
