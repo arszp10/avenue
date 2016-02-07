@@ -7,6 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="./css/avenue.css" rel="stylesheet">
     <link href="./css/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
+    <link href="./css/cytoscape.js-navigator.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div>
@@ -66,9 +67,12 @@
     </div>
     <div class="bottom-panel">
         <ul class="nav nav-tabs bottom-tabs">
-            <li role="presentation" class="active"><a href="#" id="btn-show-network">Network</a></li>
-            <li role="presentation"><a href="#" id="btn-show-source">Source</a></li>
+            <li role="presentation" class="active"><a href="#" id="btn-show-network"><i class="fa fa-code-fork"></i></a></li>
+            <li role="presentation"><a href="#" id="btn-show-source"><i class="fa fa-code"></i></a></li>
         </ul>
+        <div class="status-bar">
+            <button type="button" class="btn btn-default" id="btn-toggle-map"><i class="fa fa-map-o"></i></button>
+        </div>
     </div>
 </div>
 </body>
@@ -77,13 +81,10 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/2.3.7/cytoscape.js"></script>
 <script src="./js/cytoscape/cytoscape-edgehandles.js"></script>
 <script src="./js/cytoscape/cytoscape-panzoom.js"></script>
+<script src="./js/cytoscape/cytoscape-navigator.js"></script>
 <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="./js/style.js"></script>
 <script src="./js/app.js"></script>
-<script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/chrome");
-    editor.session.setMode("ace/mode/json");
-</script>
+<script src="./js/ui-events.js"></script>
 
 </html>

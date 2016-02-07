@@ -83,3 +83,13 @@
 .nav-tabs.bottom-tabs > li > a {
     border-radius: 0 0 4px 4px;
 }
+
+.status-bar{
+    float: right;
+    margin-top: -34px;
+    width: 75%;
+    color: #cccccc;
+    height: 30px;
+    text-align: right;
+    padding-right: 10px;
+}

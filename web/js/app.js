@@ -1,4 +1,6 @@
-
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/chrome");
+editor.session.setMode("ace/mode/json");
 
 var app = {
     $cy: null,
@@ -9,150 +11,32 @@ var app = {
         nodeIcon: ''
     },
     clipboard: null,
+    panels: {
+        leftPanel: 'div.left-panel'
+    },
     buttons: {
-        palette: {
-            btnPanMode:      null,
-            btnSelectMode:      null,
-            btnAddStopline:     null,
-            btnAddCarriageway:  null,
-            btnAddFork:         null,
-            btnAddMerge:        null,
-            btnAddBottleneck:   null,
-            btnAddConcurrent:   null
-        },
-        actions: {
-            btnDeleteNode: null
-        },
-        align: {
-            btnHorizontalAlign: null,
-            btnVeerticalAlign: null
-        },
-        operate:{
-            btnCopy: null,
-            btnPaste: null
-        },
-        tabs:{
-            btnShowNetwork: null,
-            btnShowSource: null
-        }
-
+        btnPanMode:         '#btn-now-pan-mode',
+        btnSelectMode:      '#btn-now-select-mode',
+        btnAddStopline:     '#btn-add-stopline',
+        btnAddCarriageway:  '#btn-add-carriageway',
+        btnAddFork:         '#btn-add-fork',
+        btnAddMerge:        '#btn-add-merge',
+        btnAddBottleneck:   '#btn-add-bottleneck',
+        btnAddConcurrent:   '#btn-add-concurrent',
+        btnDeleteNode:      '#btn-delete-node',
+        btnHorizontalAlign: '#btn-horizontal-align',
+        btnVerticalAlign:   '#btn-vertical-align',
+        btnCopy:            '#btn-copy',
+        btnPaste:           '#btn-paste',
+        btnShowNetwork:     '#btn-show-network',
+        btnShowSource:      '#btn-show-source',
+        btnToggleMap:       '#btn-toggle-map'
     },
     actions: {
         init: function(){
-            var palette = app.buttons.palette;
-            var actions = app.buttons.actions;
-            var align = app.buttons.align;
-            var operate = app.buttons.operate;
-            var tabs = app.buttons.tabs;
-
-            palette.btnSelectMode =      $('#btn-now-select-mode');
-            palette.btnPanMode =         $('#btn-now-pan-mode');
-            palette.btnAddStopline =     $('#btn-add-stopline');
-            palette.btnAddCarriageway =  $('#btn-add-carriageway');
-            palette.btnAddFork =         $('#btn-add-fork');
-            palette.btnAddMerge =        $('#btn-add-merge');
-            palette.btnAddBottleneck =   $('#btn-add-bottleneck');
-            palette.btnAddConcurrent =   $('#btn-add-concurrent');
-
-            actions.btnDeleteNode =      $('#btn-delete-node');
-
-            align.btnHorizontalAlign =   $('#btn-horizontal-align');
-            align.btnVerticalAlign =   $('#btn-vertical-align');
-
-            operate.btnCopy = $('#btn-copy');
-            operate.btnPaste = $('#btn-paste');
-
-            tabs.btnShowNetwork = $('#btn-show-network');
-            tabs.btbtnShowSource = $('#btn-show-source');
-
-            $('div.palette').on('click', 'button', function(){
-                var $this = $(this);
-                $this.closest('.btn-group').find('.active').removeClass("active");
-                $this.addClass("active");
-                if ($this.attr('id') == palette.btnSelectMode.attr('id')) {
-                    app.cy.boxSelectionEnabled(true);
-                    app.cy.userPanningEnabled(false);
-                }
-                if ($this.attr('id') == palette.btnPanMode.attr('id')) {
-                    app.cy.boxSelectionEnabled(false);
-                    app.cy.userPanningEnabled(true);
-                }
-                app.state.clickMode = String($this.attr('id')).substring(8);
-                app.state.nodeIcon = $this.text();
-            });
-
-            actions.btnDeleteNode.click(function(){
-                app.cy.$(':selected').remove();
-            });
-
-            $(document).on('keyup', function(event){
-                if (event.which == 46 || event.which == 8){
-                    actions.btnDeleteNode.click();
-                };
-            })
-
-
-            align.btnHorizontalAlign.click(function(){
-                var nodes = app.cy.$('node:selected');
-                if (nodes.length == 0) {
-                    return;
-                }
-                app.cy.$('node:selected').position('y', nodes[0].position('y'));
-            });
-
-            align.btnVerticalAlign.click(function(){
-                var nodes = app.cy.$('node:selected');
-                if (nodes.length == 0) {
-                    return;
-                }
-                app.cy.$('node:selected').position('x', nodes[0].position('x'));
-            });
-
-
-            operate.btnCopy.click(function(){
-                app.clipboard = app.cy.$(':selected').clone();
-            });
-
-            operate.btnPaste.click(function(){
-                if (app.clipboard == null) {
-                    return;
-                }
-
-                $.each($.extend({},app.clipboard), function(inx, elem){
-                    if(elem.isNode()) {
-                        var pos = {
-                            x: elem.position('x') + 10,
-                            y: elem.position('y') + 10
-                        };
-                        app.actions._addNode(elem.data(), pos);
-                    } else {
-
-                        app.cy.add(elem.data('id', app.cy.edges().size().toString()));
-                    }
-                });
-            });
-
-            tabs.btnShowNetwork.click(function(){
-                tabs.btnShowNetwork.parent().siblings().removeClass('active');
-                tabs.btnShowNetwork.parent().addClass('active');
-                app.cy.elements().remove();
-                app.cy.add(JSON.parse(editor.getValue()))
-                app.$source.hide();
-                app.$cy.show();
-                $('div.left-panel').show();
-            });
-
-            tabs.btbtnShowSource.click(function(){
-                tabs.btbtnShowSource.parent().siblings().removeClass('active');
-                tabs.btbtnShowSource.parent().addClass('active');
-
-                editor.setValue(JSON.stringify(app.cy.elements().jsons(), 4,' '));
-                app.$source.show();
-                app.$cy.hide();
-                $('div.left-panel').hide();
-            });
-
-
+            $.each(app.panels, function(i,v){app.panels[i] = $(v);});
+            $.each(app.buttons, function(i,v){app.buttons[i] = $(v);});
+            uiEvents.init();
         },
 
         nextId: function(){
@@ -161,12 +45,7 @@ var app = {
         },
 
         _addNode:function(data, pos){
-            var d = $.extend({}, data, {
-                "resources": [],
-                "properties": []
-            }, {id: app.actions.nextId()});
-
-            console.log(d);
+            var d = $.extend({}, data, {id: app.actions.nextId()});
             app.cy.add([{group: "nodes",
                 data: d,
                 renderedPosition: pos
@@ -214,6 +93,7 @@ $(document).ready(function() {
             app.cy = this;
             app.cy.edgehandles({});
             app.cy.panzoom({});
+           // app.cy.navigator({  });
             app.cy.on('tap', app.actions.addNode);
         }
     });
