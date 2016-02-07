@@ -60,6 +60,19 @@
 }
 
 
+.chart-panel{
+    /*width:60px;*/
+    border:1px solid #e1e1e1;
+    padding: 10px;
+    top: 90px;
+    right: 0px;
+    z-index: 10;
+    position:absolute;
+    background: white;
+    height:320px;
+    width:520px;
+}
+
 .btn-group, .btn-group-vertical {
     display:block;
     margin-bottom: 10px;

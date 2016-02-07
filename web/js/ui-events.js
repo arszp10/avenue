@@ -1,4 +1,4 @@
-var uiEvents = {
+var uievents = {
     init: function(){
 
         $(document).on('keyup', function(event){
@@ -67,7 +67,8 @@ var uiEvents = {
             app.$source.hide();
             app.$cy.show();
             app.panels.leftPanel.show();
-            app.panels.navigator.show();
+            //app.panels.navigator.show();
+            return false;
         });
 
         app.buttons.btnShowSource.click(function(){
@@ -78,7 +79,8 @@ var uiEvents = {
             app.$source.show();
             app.$cy.hide();
             app.panels.leftPanel.hide();
-            app.panels.navigator.hide();
+            //app.panels.navigator.hide();
+            return false;
         });
 
         app.buttons.btnToggleMap.click(function(){
@@ -106,7 +108,7 @@ var uiEvents = {
             app.cy.userPanningEnabled(true);
         }
         app.state.clickMode = String($this.attr('id')).substring(8);
-        app.state.nodeIcon = $this.text();
+        app.state.nodeType = $this.data('type');
     }
 };
 

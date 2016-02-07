@@ -8,7 +8,7 @@ var app = {
     cy: null,
     state: {
         clickMode: 'select-mode', // select, add-stopline, ... add-concurrent
-        nodeIcon: ''
+        nodeType: 'stopline'
     },
     clipboard: null,
     panels: {
@@ -36,7 +36,7 @@ var app = {
         init: function(){
             $.each(app.panels, function(i,v){app.panels[i] = $(v);});
             $.each(app.buttons, function(i,v){app.buttons[i] = $(v);});
-            uiEvents.init();
+            uievents.init();
         },
 
         nextId: function(){
@@ -44,7 +44,7 @@ var app = {
             return "ID" + idNum.toString();
         },
 
-        _addNode:function(data, pos){
+        addNode:function(data, pos){
             var d = $.extend({}, data, {id: app.actions.nextId()});
             app.cy.add([{group: "nodes",
                 data: d,
@@ -52,7 +52,7 @@ var app = {
             }]);
         },
 
-        addNode: function(e){
+        tapToBackground: function(e){
             if (app.state.clickMode == 'select-mode' || app.state.clickMode == 'pan-mode') {
                 return true;
             }
@@ -66,9 +66,27 @@ var app = {
                 x: e.originalEvent.pageX - offset.left,
                 y: e.originalEvent.pageY - offset.top
             };
-            app.actions._addNode({name:'', icon:app.state.nodeIcon}, position);
+            app.actions.addNode(settings[app.state.nodeType], position);
+        },
 
+        prepareCalcRequest: function (){
+            var data = {
+                nodes: {},
+                edges: []
+            };
+            var elems = app.cy.elements();
+            elems.forEach(function(v, i, a){
+                if(v.isNode()){
+                    data.nodes[v.data('id')] = v.data();
+                };
+
+                if(v.isEdge()){
+                    data.edges.push(v.data());
+                };
+            });
+            return data;
         }
+
     }
 };
 
@@ -94,7 +112,7 @@ $(document).ready(function() {
             app.cy.edgehandles({});
             app.cy.panzoom({});
            // app.cy.navigator({  });
-            app.cy.on('tap', app.actions.addNode);
+            app.cy.on('tap', app.actions.tapToBackground);
         }
     });
 

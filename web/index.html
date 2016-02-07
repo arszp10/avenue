@@ -7,7 +7,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="./css/avenue.css" rel="stylesheet">
     <link href="./css/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
-    <link href="./css/cytoscape.js-navigator.css" rel="stylesheet" type="text/css" />
+    <link href="./css/chartist.min.css" rel="stylesheet" type="text/css">
+    <!--<link href="./css/cytoscape.js-navigator.css" rel="stylesheet" type="text/css" />-->
 </head>
 <body>
 <div>
@@ -16,6 +17,13 @@
         <button type="button" class="btn btn-default" id="btn-disconnect"><i class="fa fa-ban"></i> Disconnect</button>
         <button type="button" class="btn btn-success" id="btn-calc"><i class="fa fa-play-circle"></i></button>
     </div>
+
+    <div class="chart-panel">
+        <div class="ct-chart">
+
+        </div>
+    </div>
+
     <div class="left-panel">
         <div class="btn-group palette">
             <div class="btn-group-vertical" role="group" >
@@ -24,12 +32,12 @@
             </div>
 
             <div class="btn-group-vertical" role="group" >
-                <button type="button" class="btn btn-default" id="btn-add-stopline">Sl</button>
-                <button type="button" class="btn btn-default" id="btn-add-carriageway">Cw</button>
-                <button type="button" class="btn btn-default" id="btn-add-fork">Fr</button>
-                <button type="button" class="btn btn-default" id="btn-add-merge">Mr</button>
-                <button type="button" class="btn btn-default" id="btn-add-bottleneck">Bn</button>
-                <button type="button" class="btn btn-default" id="btn-add-concurrent">Cn</button>
+                <button type="button" class="btn btn-default" id="btn-add-stopline" data-type="stopline">Sl</button>
+                <button type="button" class="btn btn-default" id="btn-add-carriageway" data-type="carriageway">Cw</button>
+                <button type="button" class="btn btn-default" id="btn-add-fork" data-type="fork">Fr</button>
+                <button type="button" class="btn btn-default" id="btn-add-merge" data-type="merge">Mr</button>
+                <button type="button" class="btn btn-default" id="btn-add-bottleneck" data-type="bottleneck">Bn</button>
+                <button type="button" class="btn btn-default" id="btn-add-concurrent" data-type="concurrent">Cn</button>
             </div>
         </div>
 
@@ -82,11 +90,15 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/2.3.7/cytoscape.js"></script>
+
+<script src="./js/charts/chartist.min.js"></script>
+<script src="./js/utils/drag.js"></script>
 <script src="./js/cytoscape/cytoscape-edgehandles.js"></script>
 <script src="./js/cytoscape/cytoscape-panzoom.js"></script>
 <script src="./js/cytoscape/cytoscape-navigator.js"></script>
 <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="./js/style.js"></script>
+<script src="./js/settings.js"></script>
 <script src="./js/app.js"></script>
 <script src="./js/ui-events.js"></script>
 <script src="./js/ws-client.js"></script>

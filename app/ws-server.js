@@ -1,4 +1,6 @@
 var io = require('socket.io')(process.argv[2]);
+var CalcListener = require('./calc-listener');
+
 var sessions = {};
 var options = {
     sessionsPerLogin: 2
@@ -27,16 +29,15 @@ io.use(function(socket, next) {
 
 io.sockets.on('connection', function (socket) {
     var login = socket.handshake.query.login;
-    //socket.emit('this', 'Hello [' + login + ']!');
 
-    socket.on('request', function (login, data) {
-        console.log('I received request by ', login, ' saying ', data);
+    socket.on('calc-request', function (login, data) {
+        //console.log('I received request by ', login, ' saying ', data);
 
         if (! sessions.hasOwnProperty(login)) {
             return;
         }
         sessions[login].forEach(function(v,i){
-            v.emit('response', data);
+            v.emit('calc-response', CalcListener.calc(data));
         })
 
     });
