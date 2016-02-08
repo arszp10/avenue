@@ -39,7 +39,7 @@ body{
 .top-panel{
     height:80px;
     border-bottom:1px solid #e1e1e1;
-    padding:10px;
+    padding:15px;
     z-index: 20;
 }
 
@@ -82,6 +82,7 @@ body{
 .chart-panel-head a.btn-chart-close {
     display: block;
     float:right;
+    color: #cccccc;
 }
 
 .ct-chart{
@@ -96,12 +97,12 @@ body{
 }
 
 .ct-series-b .ct-line {
-    stroke: blue;
+    stroke: #00B000;
     stroke-width: 2px;
 }
 
 .ct-series-b .ct-area, .ct-series-b .ct-slice-pie {
-    fill: #49B8ED;
+    fill: #A7EDA6;
 }
 
 .btn-group, .btn-group-vertical {

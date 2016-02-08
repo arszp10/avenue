@@ -104,31 +104,18 @@ var uievents = {
             var chartId = 'ct-chart-' + id;
             var chartPanel = '<div class="chart-panel"><div class="chart-panel-head"><i class="fa fa-reorder fa-2x"></i><a class="btn-chart-close" href="#"><i class="fa fa-close fa-2x"></i></a></div>' +
                               '<div id="' + chartId +'" class="ct-chart"></div></div>';
+
+            $('body > div #' + chartId).parent().remove();
             $('body > div').append(chartPanel);
-            var labels = [];
-            for (var i = 0; i < selected.data('cicleTime'); i++) {
-                labels.push(i);
-            }
+
             new Chartist.Line('#'+chartId, {
-                labels: labels,
+                labels: settings.chart.labels(app.state.lastCalc[id].flow.cicleTime),
                 series: [
                     app.state.lastCalc[id].flow.inFlow,
                     app.state.lastCalc[id].flow.outFlow
                 ]
-            }, {
-                low: 0,
-                showArea: true,
-                width: '596px',
-                height: '369px',
-                showPoint: false,
-                lineSmooth: false,
-                axisX: {
-                    low:0,
-                    high: 100,
-                    showGrid: false,
-                    showLabel: true
-                },
-            });
+            }, settings.chart.defaults );
+
             $('.chart-panel').drag();
         });
 
