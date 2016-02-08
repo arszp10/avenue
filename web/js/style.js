@@ -44,6 +44,22 @@ var vizmap = [{
         // some style for the ext
 
         {
+            selector: 'edge.edge-in-flow',
+            css: {
+                'line-color': 'red',
+                'target-arrow-color': 'red'
+            }
+        },
+
+        {
+            selector: 'edge.edge-out-flow',
+            css: {
+                'line-color': '#00B000',
+                'target-arrow-color': '#00B000'
+            }
+        },
+
+        {
             selector: '.edgehandles-hover',
             css: {
                 'background-color': 'red'

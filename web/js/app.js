@@ -115,6 +115,28 @@ $(document).ready(function() {
             app.cy.panzoom({});
            // app.cy.navigator({  });
             app.cy.on('tap', app.actions.tapToBackground);
+
+            app.cy.on('select', 'node', null, function(d,a){
+                var s = app.cy.$('node:selected');
+                if(s.length > 1) return;
+                s = s[0];
+                $.each(s.connectedEdges(), function(i,v){
+                    if(v.source() == s){
+                        v.addClass('edge-out-flow');
+                    }
+                    if(v.target() == s){
+                        v.addClass('edge-in-flow');
+                    }
+                });
+            });
+
+            app.cy.on('unselect', 'node', null, function(d,a){
+                var s = app.cy.$('edge');
+                $.each(s, function(i,v){
+                    v.removeClass('edge-in-flow');
+                    v.removeClass('edge-out-flow');
+                });
+            });
         }
     });
 
