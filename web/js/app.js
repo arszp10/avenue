@@ -28,6 +28,7 @@ var app = {
         btnDeleteNode:      '#btn-delete-node',
         btnHorizontalAlign: '#btn-horizontal-align',
         btnVerticalAlign:   '#btn-vertical-align',
+        btnCut:             '#btn-cut',
         btnCopy:            '#btn-copy',
         btnPaste:           '#btn-paste',
         btnShowNetwork:     '#btn-show-network',
@@ -42,8 +43,7 @@ var app = {
         },
 
         nextId: function(){
-            var idNum = app.cy.nodes().size();
-            return "ID" + idNum.toString();
+            return Math.random().toString(36).substr(2, 16);
         },
 
         addNode:function(data, pos){
@@ -111,7 +111,7 @@ $(document).ready(function() {
         },
         ready: function() {
             app.cy = this;
-            app.cy.edgehandles({});
+            app.cy.edgehandles({ });
             app.cy.panzoom({});
            // app.cy.navigator({  });
             app.cy.on('tap', app.actions.tapToBackground);
@@ -137,10 +137,15 @@ $(document).ready(function() {
                     v.removeClass('edge-out-flow');
                 });
             });
+
+
+
         }
     });
 
 
     $('.chart-panel').drag();
+
+
 
 });

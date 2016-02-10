@@ -36,26 +36,45 @@ var uievents = {
             app.cy.$('node:selected').position('x', nodes[0].position('x'));
         });
 
+        app.buttons.btnCut.click(function() {
+            app.buttons.btnCopy.click();
+            app.cy.$(':selected').remove();
+        });
+
         app.buttons.btnCopy.click(function(){
-            app.clipboard = app.cy.$(':selected').clone();
+            var jsons = app.cy.$(':selected').jsons();
+            var ids = [];
+            $.each(jsons, function(inx, elem){
+                if(elem.group == 'nodes') {
+                    ids.push(elem.data.id);
+                } else {
+                  //  delete elem.data.id;
+                }
+            });
+            var stringify = JSON.stringify(jsons);
+            var ids = JSON.stringify(ids);
+
+            localStorage.clear();
+            localStorage.setItem('copied-graph', stringify);
+            localStorage.setItem('copied-ids', ids);
         });
 
         app.buttons.btnPaste.click(function(){
-            if (app.clipboard == null) {
+            var ids = JSON.parse(localStorage.getItem('copied-ids'));
+            var stringify = localStorage.getItem('copied-graph');
+            app.cy.$(':selected').unselect();
+            $.each(ids, function(inx, elem){
+                stringify = stringify.split(elem).join(app.actions.nextId())
+            });
+            var jsons = JSON.parse(stringify);
+            if (!jsons) {
                 return;
             }
-
-            $.each($.extend({},app.clipboard), function(inx, elem){
-                if(elem.isNode()) {
-                    var pos = {
-                        x: elem.position('x') + 10,
-                        y: elem.position('y') + 10
-                    };
-                    app.actions._addNode(elem.data(), pos);
-                } else {
-
-                    app.cy.add(elem.data('id', app.cy.edges().size().toString()));
-                }
+            $.each(jsons, function(inx, elem){
+               if(elem.group == 'edges') {
+                   delete elem.data.id;
+               }
+               app.cy.add(elem);
             });
         });
 
