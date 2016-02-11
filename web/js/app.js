@@ -15,6 +15,9 @@ var app = {
     panels: {
         leftPanel: 'div.left-panel'
     },
+    inputs: {
+        inputEdgeLabel: '#input-edge-label'
+    },
     buttons: {
         btnPanMode:         '#btn-now-pan-mode',
         btnSelectMode:      '#btn-now-select-mode',
@@ -33,12 +36,14 @@ var app = {
         btnPaste:           '#btn-paste',
         btnShowNetwork:     '#btn-show-network',
         btnShowSource:      '#btn-show-source',
-        btnToggleMap:       '#btn-toggle-map'
+        btnToggleMap:       '#btn-toggle-map',
+        btnGroupNodes:      '#btn-group-nodes'
     },
     actions: {
         init: function(){
             $.each(app.panels, function(i,v){app.panels[i] = $(v);});
             $.each(app.buttons, function(i,v){app.buttons[i] = $(v);});
+            $.each(app.inputs, function(i,v){app.inputs[i] = $(v);});
             uievents.init();
         },
 
@@ -52,14 +57,17 @@ var app = {
                 data: d,
                 renderedPosition: pos
             }]);
+            return d.id;
         },
 
         tapToBackground: function(e){
-            if (app.state.clickMode == 'select-mode' || app.state.clickMode == 'pan-mode') {
-                return true;
-            }
             if(e.cyTarget !== app.cy) {
                 return
+            }
+            app.inputs.inputEdgeLabel.blur();
+
+            if (app.state.clickMode == 'select-mode' || app.state.clickMode == 'pan-mode') {
+                return true;
             }
             var idNum = app.cy.nodes().size();
             setID = idNum.toString();
@@ -138,6 +146,15 @@ $(document).ready(function() {
                 });
             });
 
+
+            app.cy.on('click', 'edge:selected', null, function(e){
+                $('body').toggleClass('show-edge-input');
+                app.inputs.inputEdgeLabel.css(
+                    {
+                        top: e.cyPosition.y + app.$cy.offset().top - 10,
+                        left: e.cyPosition.x + app.$cy.offset().left - 15
+                    }).data("edge", e.cyTarget.data('id')).val(e.cyTarget.data('portion')).focus();
+            });
 
 
         }

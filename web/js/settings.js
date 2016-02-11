@@ -22,6 +22,13 @@ var settings = {
            }
        }
     } ,
+
+    crossRoad: {
+        icon:'Cross Road',
+        type:'crossRoad',
+        cicleTime: 100
+    },
+
     stopline: {
         icon:'Sl',
         type:'stopline',

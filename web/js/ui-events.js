@@ -20,6 +20,22 @@ var uievents = {
             app.cy.$(':selected').remove();
         });
 
+        app.buttons.btnGroupNodes.click(function(){
+            var parentId = app.actions.addNode(settings.crossRoad);
+            var data = app.cy.elements().jsons();
+
+            $.each(data, function(inx, e){
+               if (!(e.group =='nodes' && e.selected)) {
+                   return;
+               }
+                e.data['parent'] = parentId;
+                console.log(e);
+            });
+            app.cy.elements().remove();
+            console.log(data);
+            app.cy.add(data);
+        });
+
         app.buttons.btnHorizontalAlign.click(function(){
             var nodes = app.cy.$('node:selected');
             if (nodes.length == 0) {
@@ -77,6 +93,11 @@ var uievents = {
                app.cy.add(elem);
             });
         });
+
+        $(document).bind('copy', function(){app.buttons.btnCopy.click();});
+        $(document).bind('paste', function(){app.buttons.btnPaste.click();});
+        $(document).bind('cut', function(){app.buttons.btnCut.click();});
+
 
         app.buttons.btnShowNetwork.click(function(){
             app.buttons.btnShowNetwork.parent().siblings().removeClass('active');
@@ -138,6 +159,22 @@ var uievents = {
             $('.chart-panel').drag();
         });
 
+
+        app.inputs.inputEdgeLabel.blur(function(){
+            $('body').removeClass('show-edge-input');
+        });
+
+        app.inputs.inputEdgeLabel.change(function(){
+            var id = $(this).data('edge');
+            app.cy.$('#'+id).data('portion',parseInt($(this).val()))
+        });
+
+        app.inputs.inputEdgeLabel.on('keyup', function(event){
+            if (event.which == 13){
+                app.inputs.inputEdgeLabel.blur();
+            }
+            event.stopPropagation();
+        });
 
     },
     paletteClick: function(){

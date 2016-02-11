@@ -16,6 +16,19 @@ var vizmap = [{
             }
         },
         {
+            selector: '$node > node',
+            css: {
+                'padding-top': '10px',
+                'padding-left': '10px',
+                'padding-bottom': '10px',
+                'padding-right': '10px',
+                'text-valign': 'top',
+                'text-halign': 'center',
+                'background-color': '#f5fff5'
+            }
+        },
+
+        {
             selector: 'node:selected',
             css: {
                 'content': 'data(icon)',
@@ -28,7 +41,13 @@ var vizmap = [{
         {
             selector: 'edge',
             css: {
-                'target-arrow-shape': 'triangle'
+                'target-arrow-shape': 'triangle',
+                'text-outline-color': '#999999',
+                'font-size': '10px',
+                'color': '#ffffff',
+                'text-outline-width': 2,
+                'edge-text-rotation': 'autorotate',
+                'content': 'data(portion)'
             }
         },
         {
