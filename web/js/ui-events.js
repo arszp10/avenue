@@ -5,14 +5,18 @@ var uievents = {
             if (event.which == 46 || event.which == 8){
                 app.buttons.btnDeleteNode.click();
             };
+
+            if (event.which == 142 || event.which == 116){
+                $('#btn-calc').click();
+            };
+
         });
 
         app.buttons.btnPanMode.click(this.paletteClick);
         app.buttons.btnSelectMode.click(this.paletteClick);
         app.buttons.btnAddStopline.click(this.paletteClick);
         app.buttons.btnAddCarriageway.click(this.paletteClick);
-        app.buttons.btnAddFork.click(this.paletteClick);
-        app.buttons.btnAddMerge.click(this.paletteClick);
+        app.buttons.btnAddPoint.click(this.paletteClick);
         app.buttons.btnAddBottleneck.click(this.paletteClick);
         app.buttons.btnAddConcurrent.click(this.paletteClick);
 
@@ -29,10 +33,8 @@ var uievents = {
                    return;
                }
                 e.data['parent'] = parentId;
-                console.log(e);
             });
             app.cy.elements().remove();
-            console.log(data);
             app.cy.add(data);
         });
 
@@ -149,10 +151,10 @@ var uievents = {
             $('body > div').append(chartPanel);
 
             new Chartist.Line('#'+chartId, {
-                labels: settings.chart.labels(app.state.lastCalc[id].flow.cicleTime),
+                labels: settings.chart.labels(app.state.lastCalc[id].cicleTime),
                 series: [
-                    app.state.lastCalc[id].flow.inFlow,
-                    app.state.lastCalc[id].flow.outFlow
+                    app.state.lastCalc[id].inFlow,
+                    app.state.lastCalc[id].outFlow
                 ]
             }, settings.chart.defaults );
 
@@ -180,7 +182,20 @@ var uievents = {
     paletteClick: function(){
         var $this = $(this);
         $this.closest('.btn-group').find('.active').removeClass("active");
-        $this.addClass("active");
+        if($this.prop('tagName') == 'A') {
+            $this.closest('ul').find('li.active').removeClass("active");
+            $this.parent().addClass("active");
+            var btn = $this.closest('ul').prev();
+                btn.addClass("active");
+                btn.find('i')
+                    .removeClass('fa fa-circle-thin fa-exchange fa-filter fa-random fa-ellipsis-v')
+                    .addClass($this.find('i').attr('class'));
+                ;
+        } else {
+            $this.addClass("active");
+        }
+
+        console.log();
         if ($this.attr('id') == app.buttons.btnSelectMode.attr('id')) {
             app.cy.boxSelectionEnabled(true);
             app.cy.userPanningEnabled(false);

@@ -1,12 +1,14 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function BottleNeck(options){
-    this.flow = new Flow(options);
-}
+function BottleNeck(options, edges, network){
+    Flow.apply(this, arguments);
 
-BottleNeck.prototype.calc = function(){
-    return model.bottleNeck(this.flow);
-};
+    this.calc = function (){
+        var hasOverflow = this.initInFlow();
+        model.bottleNeck(this);
+    };
+
+}
 
 module.exports = BottleNeck;

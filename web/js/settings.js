@@ -30,20 +30,19 @@ var settings = {
     },
 
     stopline: {
-        icon:'Sl',
+        icon:'\uf178\uf142',
         type:'stopline',
         cicleTime: 100,
         inFlow: [],
         outFlow: [],
         avgIntensity: 1800,
         capacity: 3600,
-        divisionRates: [1],
         intervals: [
             {s:0, f:29, length: 30}
         ]
     },
     carriageway:{
-        icon:'Cw',
+        icon:'\uf0ec',
         type:'carriageway',
         cicleTime: 100,
         inFlow: [],
@@ -54,27 +53,15 @@ var settings = {
         length: 300,
         dispersion: 0.5
     },
-    fork: {
-        icon:'Fr',
-        type:'fork',
+    point: {
+        icon:'\uf1db',
+        type:'point',
         cicleTime: 100,
         inFlow: [],
-        outFlow: [],
-        avgIntensity: 1800,
-        capacity: 3600,
-        divisionRates: [0.3, 0.7]
-    },
-    merge: {
-        icon:'Mr',
-        type:'Merge',
-        cicleTime: 100,
-        inFlow: [],
-        outFlow: [],
-        avgIntensity: 1800,
-        capacity: 3600,
+        outFlow: []
     },
     bottleneck: {
-        icon:'Bn',
+        icon:'\uf0b0',
         type:'bottleneck',
         cicleTime: 100,
         inFlow: [],
@@ -83,7 +70,7 @@ var settings = {
         capacity: 2000
     },
     concurrent: {
-        icon:'Cn',
+        icon:'\uf074',
         type:'concurrent',
         cicleTime: 100,
         inFlow: [],

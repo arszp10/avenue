@@ -21,10 +21,10 @@ var app = {
     buttons: {
         btnPanMode:         '#btn-now-pan-mode',
         btnSelectMode:      '#btn-now-select-mode',
+        btnPointsSelect:     '#btn-points-select',
         btnAddStopline:     '#btn-add-stopline',
         btnAddCarriageway:  '#btn-add-carriageway',
-        btnAddFork:         '#btn-add-fork',
-        btnAddMerge:        '#btn-add-merge',
+        btnAddPoint:        '#btn-add-point',
         btnAddBottleneck:   '#btn-add-bottleneck',
         btnAddConcurrent:   '#btn-add-concurrent',
         btnGraphNode:       '#btn-graph-node',
@@ -151,8 +151,8 @@ $(document).ready(function() {
                 $('body').toggleClass('show-edge-input');
                 app.inputs.inputEdgeLabel.css(
                     {
-                        top: e.cyPosition.y + app.$cy.offset().top - 10,
-                        left: e.cyPosition.x + app.$cy.offset().left - 15
+                        top: e.originalEvent.clientY - 10,
+                        left: e.originalEvent.clientX - 15
                     }).data("edge", e.cyTarget.data('id')).val(e.cyTarget.data('portion')).focus();
             });
 

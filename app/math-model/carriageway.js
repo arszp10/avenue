@@ -1,14 +1,21 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function CarriageWay(options){
-    this.flow = new Flow(options);
-}
+function CarriageWay(options, edges, network){
+    Flow.apply(this, arguments);
 
-CarriageWay.prototype.calc = function(){
-    return model.carriageWay(this.flow);
+    this.calc = function (){
+        var hasOverflow = this.initInFlow();
+        var delay = 0;
+        if (hasOverflow) {
+            model.bottleNeck(this);
+            delay = this.delay;
+            this.flipBack();
+        }
+        model.carriageWay(this);
+        this.delay += delay;
+    };
+
 }
 
 module.exports = CarriageWay;
-
-

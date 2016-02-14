@@ -133,28 +133,6 @@ module.exports = {
         return flow;
     },
 
-
-    merger: function(flow, inFlows) {
-        flow.outFlow = [].fill(flow.cicleTime, 0);
-        flow.inFlow = [].fill(flow.cicleTime, 0);
-        for (var i = 0; i < flow.inFlow.length; i++){
-            for (var k = 0; k < inFlows.length; k++){
-                flow.inFlow[i] += inFlows[k].outFlow[i];
-            }
-        }
-        return this.bottleNeck(flow);
-    },
-
-
-    fork: function(flow, outFlows){
-        for (var k = 0; k < flow.divisionRates.length; k++){
-            for (var i = 0; i < flow.inFlow.length; i++){
-                outFlows[k].outFlow[i] = flow.inFlow[i] * flow.divisionRates[k];
-            }
-        }
-        return outFlows;
-    },
-
     competitor: function(flow1, flow2, queueTail){
         flow2.maxQueueLength = 0;
         var capacityPerSecond1 = flow1.capacityPerSecond;

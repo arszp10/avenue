@@ -11,20 +11,26 @@ var vizmap = [{
                 'border-color': '#999999',
                 'color': '#2e6da4',
                 'border-width': 0.5,
-                'font-size': '12px'
+                'font-family': 'FontAwesome',
+                'font-size': '14px',
+                'font-weight':'normal'
 
             }
         },
         {
             selector: '$node > node',
             css: {
-                'padding-top': '10px',
-                'padding-left': '10px',
-                'padding-bottom': '10px',
-                'padding-right': '10px',
-                'text-valign': 'top',
+                'shape':'roundrectangle',
+                'padding-top': '15px',
+                'padding-left': '15px',
+                'padding-bottom': '15px',
+                'padding-right': '15px',
+                'border-radius': '5px',
+                'text-valign': 'center',
                 'text-halign': 'center',
-                'background-color': '#f5fff5'
+                'border-color': '#777777',
+                'background-color': '#ffffff',
+                'font-family': 'Arial'
             }
         },
 
@@ -38,6 +44,22 @@ var vizmap = [{
                 'border-width': 2
             }
         },
+
+        {
+            selector: 'node[type="crossRoad"]',
+            css: {
+                'font-family': 'Arial',
+                'font-size': '14px'
+            }
+        },
+
+        {
+            selector: 'node[type="bottleneck"]',
+            css: {
+                'transform': 'rotate(270deg)'
+            }
+        },
+
         {
             selector: 'edge',
             css: {
@@ -66,7 +88,8 @@ var vizmap = [{
             selector: 'edge.edge-in-flow',
             css: {
                 'line-color': 'red',
-                'target-arrow-color': 'red'
+                'target-arrow-color': 'red',
+                'text-outline-color': 'red'
             }
         },
 
@@ -74,7 +97,8 @@ var vizmap = [{
             selector: 'edge.edge-out-flow',
             css: {
                 'line-color': '#00B000',
-                'target-arrow-color': '#00B000'
+                'target-arrow-color': '#00B000',
+                'text-outline-color': '#00B000'
             }
         },
 

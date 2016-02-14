@@ -10,10 +10,10 @@ $('#btn-calc').click(function(){
         return;
     }
 
-    socket = io.connect('http://localhost:3000',   {query: "login="+login+"&token=token00001"});
+    socket = io.connect('http://localhost:3001',   {query: "login="+login+"&token=token00001"});
 
     socket.on('calc-response', function (data) {
-        console.log('response:', data);
+        //console.log('response:', data);
         app.state.lastCalc = data;
         socket.disconnect();
         socket = null;

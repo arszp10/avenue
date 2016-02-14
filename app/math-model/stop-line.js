@@ -1,23 +1,21 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function StopLine(options, mainFlow){
-    this.flow = new Flow(options);
-    this.flow1 = new Flow(options);
-    this.main = mainFlow;
-}
+function StopLine(options, edges, network){
+    Flow.apply(this, arguments);
 
-StopLine.prototype.calc = function(){
-    model.stopLine(this.flow);
-    var delay = this.delay;
-    if (this.main != undefined) {
-        this.flow1.inFlow = this.flow.outFlow;
-        this.flow1.intervals = [];
-        model.competitor(this.main, this.flow1);
-        this.flow.outFlow = this.flow1.outFlow;
-        this.flow.delay += this.delay;
-    }
-    return this.flow;
+    this.calc = function (){
+        var hasOverflow = this.initInFlow();
+        var delay = 0;
+        if (hasOverflow) {
+            model.bottleNeck(this);
+            delay = this.delay;
+            this.flipBack();
+        }
+        model.stopLine(this);
+        this.delay += delay;
+    };
+
 }
 
 module.exports = StopLine;
