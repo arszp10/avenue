@@ -39,18 +39,11 @@ module.exports = {
         });
 
 
-        _.forEach(network, function(v,i){
-            v.calc();
-        });
-
-        _.forEach(network, function(v,i){
-            v.calc();
-        });
-
-        _.forEach(network, function(v,i){
-            v.calc();
-        });
-
+        for (var i = 0; i < 1000; i++) {
+            _.forEach(network, function (v) {
+                v.calc();
+            });
+        }
         var result = {};
         _.forEach(network, function(v, i){
            result[i] = v.json();

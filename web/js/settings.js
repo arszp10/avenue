@@ -30,7 +30,7 @@ var settings = {
     },
 
     stopline: {
-        icon:'\uf178\uf142',
+        icon:'\uf142',
         type:'stopline',
         cicleTime: 100,
         inFlow: [],
@@ -54,11 +54,13 @@ var settings = {
         dispersion: 0.5
     },
     point: {
-        icon:'\uf1db',
-        type:'point',
+        icon:'\uf276',
+        type:'bottleneck',
         cicleTime: 100,
         inFlow: [],
-        outFlow: []
+        outFlow: [],
+        avgIntensity: 1800,
+        capacity: 3600
     },
     bottleneck: {
         icon:'\uf0b0',
@@ -72,6 +74,15 @@ var settings = {
     concurrent: {
         icon:'\uf074',
         type:'concurrent',
+        cicleTime: 100,
+        inFlow: [],
+        outFlow: [],
+        avgIntensity: 1800,
+        capacity: 3600
+    },
+    concurrentMerge: {
+        icon:'\uf126',
+        type:'concurrentMerge',
         cicleTime: 100,
         inFlow: [],
         outFlow: [],

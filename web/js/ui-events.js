@@ -19,6 +19,7 @@ var uievents = {
         app.buttons.btnAddPoint.click(this.paletteClick);
         app.buttons.btnAddBottleneck.click(this.paletteClick);
         app.buttons.btnAddConcurrent.click(this.paletteClick);
+        app.buttons.btnAddConcurrentMerge.click(this.paletteClick);
 
         app.buttons.btnDeleteNode.click(function(){
             app.cy.$(':selected').remove();
@@ -188,7 +189,7 @@ var uievents = {
             var btn = $this.closest('ul').prev();
                 btn.addClass("active");
                 btn.find('i')
-                    .removeClass('fa fa-circle-thin fa-exchange fa-filter fa-random fa-ellipsis-v')
+                    .removeClass('fa fa-map-pin fa-circle-thin fa-exchange fa-filter fa-random fa-ellipsis-v fa-code-fork')
                     .addClass($this.find('i').attr('class'));
                 ;
         } else {

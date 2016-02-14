@@ -14,7 +14,6 @@ function Flow(options, edges, network)
         routeTime: 20,
         length: 300,
         dispersion: 0.5,
-        divisionRates: [1],
         intervals: []
     };
     var flow = _.assign({}, defaults, options);
@@ -30,7 +29,6 @@ function Flow(options, edges, network)
     this.length = flow.length;
     this.routeTime = flow.routeTime;
     this.dispersion = flow.dispersion;
-    this.divisionRates = flow.divisionRates;
     this.intervals = flow.intervals;
     this.isCongestion = false;
     this.maxQueueLength = 0;
@@ -49,7 +47,11 @@ function Flow(options, edges, network)
         return {
             cicleTime: this.cicleTime,
             inFlow: this.inFlow,
-            outFlow: this.outFlow
+            outFlow: this.outFlow,
+            isCongestion: this.isCongestion,
+            maxQueue: this.maxQueueLength,
+            delay: this.delay
+
         }
     };
 
@@ -71,11 +73,9 @@ function Flow(options, edges, network)
             this.inFlow[i] = sumI;
             sumInTotal += sumI;
         }
-        //console.log(sumInTotal);
         if (sumInTotal == 0) {
             this.inFlow = [].fill(this.cicleTime, this.avgIntensityPerSecond);
         }
-        //console.log( this.inFlow);
         return hasOverflow;
     }
 }

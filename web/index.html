@@ -20,13 +20,14 @@
                             data-target="#bs-example-navbar-collapse-1" aria-expanded="false"><span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#"><i class="fa fa-long-arrow-right"></i><i class="fa fa-ellipsis-v"></i></a></div>
+                    <a class="navbar-brand" href="#"><img src="./img/logo2.png" height="30"></a></div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                                                     role="button" aria-haspopup="true" aria-expanded="true">Dropdown
-                            <span class="caret"></span></a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Dropdown
+                                <span class="caret"></span>
+                            </a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Action</a></li>
                                 <li><a href="#">Another action</a></li>
@@ -44,15 +45,16 @@
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">Link</a></li>
-                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                                aria-haspopup="true" aria-expanded="false">Dropdown <span
-                                class="caret"></span></a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user"></i> Account
+                                <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Settings</a></li>
                                 <li><a href="#">Another action</a></li>
                                 <li><a href="#">Something else here</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">Log out</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -65,15 +67,16 @@
             <div class="btn-group-vertical" role="group" >
                 <button type="button" class="btn btn-default active" id="btn-now-select-mode"><i class="fa fa-mouse-pointer"></i></button>
                 <button type="button" class="btn btn-default" id="btn-now-pan-mode"><i class="fa fa-arrows"></i></button>
-                <button type="button" class="btn btn-default dropdown-toggle" id="btn-points-select" data-type="point" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-circle-thin fa-fw"></i><span class="caret"></span>
+                <button type="button" class="btn btn-default dropdown-toggle" id="btn-points-select" data-type="stopline" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-map-pin fa-fw"></i><span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="#" id="btn-add-point" data-type="point"><i class="fa fa-circle-thin fa-fw"></i> Point</a></li>
+                    <li><a href="#" id="btn-add-point" data-type="point"><i class="fa fa-map-pin fa-fw"></i> Point</a></li>
                     <li><a href="#" id="btn-add-stopline" data-type="stopline"><i class="fa fa-ellipsis-v fa-fw"></i> Stopline</a></li>
                     <li><a href="#" id="btn-add-carriageway" data-type="carriageway"><i class="fa fa-exchange fa-fw"></i> Carriageway</a> </li>
                     <li><a href="#" id="btn-add-bottleneck" data-type="bottleneck"><i class="fa fa-filter fa-fw"></i> Bottleneck</a></li>
                     <li><a href="#" id="btn-add-concurrent" data-type="concurrent"><i class="fa fa-random fa-fw"></i> Concurrent</a></li>
+                    <li><a href="#" id="btn-add-concurrent-merge" data-type="concurrentMerge"><i class="fa fa-code-fork fa-fw"></i> Concurrent + Merge</a></li>
                 </ul>
             </div>
         </div>
@@ -125,6 +128,25 @@
 </div>
 <!-- hidden elemetns section-->
 <input type="text" id="input-edge-label" maxlength="5"/>
+<div class="panel panel-default panel-point-property" id="panel-point-property">
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-3 control-label">Intensity:</label>
+                <div class="col-sm-9">
+                    <input type="email" class="form-control input-sm" id="inputEmail3" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-3 control-label">Capacity:</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control input-sm" id="inputPassword3" placeholder="Password">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
 <!-- hidden elemetns section-->
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.min.js"></script>

@@ -8,7 +8,7 @@ var vizmap = [{
                 'text-valign': 'center',
                 'text-halign': 'center',
                 'background-color': '#ffffff',
-                'border-color': '#999999',
+                'border-color': '#777777',
                 'color': '#2e6da4',
                 'border-width': 0.5,
                 'font-family': 'FontAwesome',
@@ -53,18 +53,14 @@ var vizmap = [{
             }
         },
 
-        {
-            selector: 'node[type="bottleneck"]',
-            css: {
-                'transform': 'rotate(270deg)'
-            }
-        },
 
         {
             selector: 'edge',
             css: {
                 'target-arrow-shape': 'triangle',
                 'text-outline-color': '#999999',
+                'line-color': '#999999',
+                'target-arrow-color': '#999999',
                 'font-size': '10px',
                 'color': '#ffffff',
                 'text-outline-width': 2,
@@ -72,17 +68,27 @@ var vizmap = [{
                 'content': 'data(portion)'
             }
         },
+
+        {
+            selector: 'edge[secondary="true"]',
+            css: {
+                'line-style': 'dashed',
+                'text-outline-color': '#cccccc',
+                'line-color': '#cccccc',
+                'target-arrow-color': '#cccccc'
+            }
+        },
+
         {
             selector: 'edge:selected',
             css: {
                 'width': 2,
                 'line-color': '#2e6da4',
                 'target-arrow-color': '#2e6da4',
-                'color': '#2e6da4'
+                'color': '#ffffff',
+                'text-outline-color': '#2e6da4'
             }
         },
-
-        // some style for the ext
 
         {
             selector: 'edge.edge-in-flow',

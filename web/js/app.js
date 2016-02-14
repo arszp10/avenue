@@ -27,6 +27,7 @@ var app = {
         btnAddPoint:        '#btn-add-point',
         btnAddBottleneck:   '#btn-add-bottleneck',
         btnAddConcurrent:   '#btn-add-concurrent',
+        btnAddConcurrentMerge:   '#btn-add-concurrent-merge',
         btnGraphNode:       '#btn-graph-node',
         btnDeleteNode:      '#btn-delete-node',
         btnHorizontalAlign: '#btn-horizontal-align',
@@ -155,6 +156,54 @@ $(document).ready(function() {
                         left: e.originalEvent.clientX - 15
                     }).data("edge", e.cyTarget.data('id')).val(e.cyTarget.data('portion')).focus();
             });
+
+
+            app.cy.on('add', 'edge', null, function(e){
+                var edge = e.cyTarget.data();
+                if(e.cyTarget.parallelEdges().length > 1) {
+                    app.cy.$('#'+edge.id).remove();
+                    return;
+                };
+
+                var target = app.cy.$('#'+edge.target);
+                var source = app.cy.$('#'+edge.source);
+                var targetEdges = app.cy.$('edge[target="'+edge.target+'"]');
+
+                var isTargetConcurrent = (target.data('type') == 'concurrent' || target.data('type') == 'concurrentMerge');
+                var isSourceConcurrent = (source.data('type') == 'concurrent' || source.data('type') == 'concurrentMerge');
+
+                if(isTargetConcurrent &&  targetEdges.length > 2) {
+                    app.cy.$('#'+edge.id).remove();
+                    return;
+                }
+
+                var sourceEdges = app.cy.$('edge[source="'+edge.source+'"]');
+                if( source.data('type') == 'concurrentMerge' &&  sourceEdges.length > 2) {
+                    app.cy.$('#'+edge.id).remove();
+                    return;
+                }
+
+                if(isSourceConcurrent &&  sourceEdges.length > 3) {
+                    app.cy.$('#'+edge.id).remove();
+                    return;
+                }
+
+                if(isTargetConcurrent){
+                    var sec = app.cy.$('edge[target="'+edge.target+'"][^secondary]');
+                    if (sec.length == 2) {
+                        app.cy.$('#'+edge.id).data('secondary','true');
+                    }
+                }
+
+                if(isSourceConcurrent){
+                    var sec = app.cy.$('edge[source="'+edge.source+'"][^secondary]');
+                    if (sec.length > 2) {
+                        app.cy.$('#'+edge.id).data('secondary','true');
+                    }
+                }
+
+            });
+
 
 
         }
