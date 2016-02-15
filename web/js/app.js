@@ -13,10 +13,14 @@ var app = {
     },
     clipboard: null,
     panels: {
-        leftPanel: 'div.left-panel'
+        leftPanel: 'div.left-panel',
+        pointProperty: '#panel-point-property'
     },
     inputs: {
-        inputEdgeLabel: '#input-edge-label'
+        inputEdgeLabel: '#input-edge-label',
+        inputNodeIntensity :'#input-node-intensity',
+        inputNodeCapacity :'#input-node-capacity',
+        inputNodeType :'#input-node-type'
     },
     buttons: {
         btnPanMode:         '#btn-now-pan-mode',
@@ -157,6 +161,22 @@ $(document).ready(function() {
                     }).data("edge", e.cyTarget.data('id')).val(e.cyTarget.data('portion')).focus();
             });
 
+
+            app.cy.on('click', 'node:selected', null, function(e){
+                if (app.state.clickMode != 'select-mode') {
+                    return;
+                }
+                $('body').toggleClass('show-panel-point-property');
+                app.panels.pointProperty.css(
+                    {
+                        top: e.originalEvent.clientY +10,
+                        left: e.originalEvent.clientX - 135
+                    }).data("node", e.cyTarget.data('id'));
+                app.inputs.inputNodeType.text(e.cyTarget.data('type'));
+                app.inputs.inputNodeIntensity.val(e.cyTarget.data('avgIntensity')).focus();
+                app.inputs.inputNodeCapacity.val(e.cyTarget.data('capacity'));
+                e.originalEvent.stopPropagation();
+            });
 
             app.cy.on('add', 'edge', null, function(e){
                 var edge = e.cyTarget.data();

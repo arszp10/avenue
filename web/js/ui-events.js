@@ -179,6 +179,19 @@ var uievents = {
             event.stopPropagation();
         });
 
+
+        $('body').on('mouseup', function(){
+            $('body').removeClass('show-panel-point-property');
+        });
+
+        app.panels.pointProperty.keyup(function(e){
+            e.stopPropagation();
+        });
+
+        app.panels.pointProperty.mouseup(function(e){
+            e.stopPropagation();
+        });
+
     },
     paletteClick: function(){
         var $this = $(this);
@@ -196,7 +209,6 @@ var uievents = {
             $this.addClass("active");
         }
 
-        console.log();
         if ($this.attr('id') == app.buttons.btnSelectMode.attr('id')) {
             app.cy.boxSelectionEnabled(true);
             app.cy.userPanningEnabled(false);
