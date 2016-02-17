@@ -1,8 +1,10 @@
 var utils       = require('./utils/utils')();
+var Point    = require('./math-model/point');
 var StopLine    = require('./math-model/stop-line');
 var CarriageWay = require('./math-model/carriageway');
 var BottleNeck  = require('./math-model/bottleneck');
 var Competitor  = require('./math-model/competitor');
+var CompetitorMerge  = require('./math-model/competitor-merge');
 var _ = require('lodash');
 
 module.exports = {
@@ -30,16 +32,22 @@ module.exports = {
                 case "bottleneck":
                     network[i] = new BottleNeck(v, edges[i], network);
                     break;
-                //case "concurrent":
-                //    request.nodes[i] = new Competitor(v);
-                //    break;
+                case "concurrent":
+                    request.nodes[i] = new Competitor(v, edges[i], network);
+                    break;
+                case "concurrentMerge":
+                    request.nodes[i] = new CompetitorMerge(v, edges[i], network);
+                    break;
+                case "point":
+                    network[i] = new Point(v, edges[i], network);
+                    break;
                 //default:
                 //    request.nodes[i] = new StopLine(v);
             }
         });
 
 
-        for (var i = 0; i < 1000; i++) {
+        for (var i = 0; i < 100; i++) {
             _.forEach(network, function (v) {
                 v.calc();
             });

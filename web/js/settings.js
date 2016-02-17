@@ -55,7 +55,7 @@ var settings = {
     },
     point: {
         icon:'\uf276',
-        type:'bottleneck',
+        type:'point',
         cicleTime: 100,
         inFlow: [],
         outFlow: [],

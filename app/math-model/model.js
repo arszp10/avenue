@@ -135,8 +135,8 @@ module.exports = {
 
     competitor: function(flow1, flow2, queueTail){
         flow2.maxQueueLength = 0;
-        var capacityPerSecond1 = flow1.capacityPerSecond;
-        var capacityPerSecond2 = flow2.capacityPerSecond;
+        var capacityPerSecond1 = flow1.capacity/3600;
+        var capacityPerSecond2 = flow2.capacity/3600;
         var inFlow2 = flow2.inFlow;
 
         var outFlow1 = flow1.outFlow;

@@ -192,6 +192,16 @@ var uievents = {
             e.stopPropagation();
         });
 
+        app.inputs.inputNodeCapacity.on('change',function(){
+            var id = app.panels.pointProperty.data('node');
+            app.cy.$('#'+id).data('capacity', $(this).val());
+        });
+
+        app.inputs.inputNodeIntensity.on('change',function(){
+            var id = app.panels.pointProperty.data('node');
+            app.cy.$('#'+id).data('avgIntensity', $(this).val());
+        });
+
     },
     paletteClick: function(){
         var $this = $(this);

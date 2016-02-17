@@ -33,13 +33,25 @@ function Flow(options, edges, network)
     this.isCongestion = false;
     this.maxQueueLength = 0;
     this.delay = 0;
-
+    this.type = flow.type;
     this.edges = edges;
     this.network = network;
 
     this.flipBack = function flipBack() {
         for (var i = 0; i < this.inFlow.length; i++){
             this.inFlow[i] = this.outFlow[i];
+        }
+    };
+
+    this.merge = function merge(outFlow) {
+        for (var i = 0; i < this.outFlow.length; i++){
+            this.outFlow[i] = this.outFlow[i] + outFlow[i];
+        }
+    };
+
+    this.copyFlow = function copyFlow() {
+        for (var i = 0; i < this.inFlow.length; i++){
+            this.outFlow[i] = this.inFlow[i];
         }
     };
 
@@ -65,7 +77,13 @@ function Flow(options, edges, network)
                 if (!el.hasOwnProperty('portion')) {
                     el['portion'] = 0;
                 }
-                sumI += network[el.source].outFlow[i] * el.portion / network[el.source].avgIntensity;
+
+                var sourceNode = network[el.source];
+                if (sourceNode.type == 'concurrent' && !el.hasOwnProperty('secondary')) {
+                    sourceNode = sourceNode.primary;
+                }
+
+                sumI += sourceNode.outFlow[i] * el.portion / sourceNode.avgIntensity;
             });
             if (sumI > this.capacityPerSecond) {
                 hasOverflow = true;
