@@ -89,9 +89,19 @@ var uievents = {
             if (!jsons) {
                 return;
             }
+
+            $.each(jsons, function(inx, elem){
+                if(elem.data.hasOwnProperty('parent') || elem.group == 'edges') {
+                    return;
+                }
+                app.cy.add(elem);
+            });
+
             $.each(jsons, function(inx, elem){
                if(elem.group == 'edges') {
                    delete elem.data.id;
+               } else if( !elem.data.hasOwnProperty('parent')) {
+                 return;
                }
                app.cy.add(elem);
             });

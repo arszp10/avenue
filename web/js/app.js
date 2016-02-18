@@ -192,8 +192,13 @@ $(document).ready(function() {
 
                 var target = app.cy.$('#'+edge.target);
                 var source = app.cy.$('#'+edge.source);
-                var targetEdges = app.cy.$('edge[target="'+edge.target+'"]');
 
+                if (target.data('type') == 'crossRoad' || source.data('type') == 'crossRoad') {
+                    app.cy.$('#'+edge.id).remove();
+                    return;
+                }
+
+                var targetEdges = app.cy.$('edge[target="'+edge.target+'"]');
                 var isTargetConcurrent = (target.data('type') == 'concurrent' || target.data('type') == 'concurrentMerge');
                 var isSourceConcurrent = (source.data('type') == 'concurrent' || source.data('type') == 'concurrentMerge');
 

@@ -1,5 +1,6 @@
 var utils       = require('./utils/utils')();
-var Point    = require('./math-model/point');
+var CrossRoad   = require('./math-model/crossroad');
+var Point       = require('./math-model/point');
 var StopLine    = require('./math-model/stop-line');
 var CarriageWay = require('./math-model/carriageway');
 var BottleNeck  = require('./math-model/bottleneck');
@@ -41,22 +42,28 @@ module.exports = {
                 case "point":
                     network[i] = new Point(v, edges[i], network);
                     break;
+                case "crossRoad":
+                    network[i] = new CrossRoad(v, network);
+                    break;
                 //default:
                 //    request.nodes[i] = new StopLine(v);
             }
         });
 
-
+        console.log('calc start');
         for (var i = 0; i < 100; i++) {
             _.forEach(network, function (v) {
                 v.calc();
             });
         }
+        console.log('calc end');
+
         var result = {};
         _.forEach(network, function(v, i){
            result[i] = v.json();
         });
 
+        console.log('calc result');
         return result;
     }
 };
