@@ -156,7 +156,7 @@ module.exports = {
             queue += value;
             dynCapacity[i] = capacityPerSecond2 * Math.pow(
                 Math.abs(outFlow1[i] / capacityPerSecond1 - 1),
-                10
+                5
             );
             if (queue > dynCapacity[i]) {
                 outFlow2[i] = dynCapacity[i];
