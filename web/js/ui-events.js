@@ -86,25 +86,17 @@ var uievents = {
                 stringify = stringify.split(elem).join(app.actions.nextId())
             });
             var jsons = JSON.parse(stringify);
-            if (!jsons) {
+               if (!jsons) {
                 return;
             }
-
-            $.each(jsons, function(inx, elem){
-                if(elem.data.hasOwnProperty('parent') || elem.group == 'edges') {
-                    return;
-                }
-                app.cy.add(elem);
-            });
-
-            $.each(jsons, function(inx, elem){
-               if(elem.group == 'edges') {
-                   delete elem.data.id;
-               } else if( !elem.data.hasOwnProperty('parent')) {
-                 return;
+            var i = jsons.length;
+            while(i--){
+               if(jsons[i].group != 'edges') {
+                 continue;
                }
-               app.cy.add(elem);
-            });
+               delete jsons[i].data.id;
+            }
+            app.cy.add(jsons);
         });
 
         $(document).bind('copy', function(){app.buttons.btnCopy.click();});
