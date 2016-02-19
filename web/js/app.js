@@ -111,6 +111,12 @@ $(document).ready(function() {
     app.$source = $("#source");
     app.actions.init();
     app.$cy.cytoscape({
+
+        hideEdgesOnViewport: true,
+        hideLabelsOnViewport: true,
+        textureOnViewport: true,
+        pixelRatio: 1,
+        motionBlur: true,
         boxSelectionEnabled:true,
         userPanningEnabled:false,
         elements: [],
