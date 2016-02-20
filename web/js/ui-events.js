@@ -1,6 +1,8 @@
 var uievents = {
     init: function(){
 
+        $('.chart-panel').drag();
+
         $(document).on('keyup', function(event){
             if (event.which == 46 || event.which == 8){
                 app.buttons.btnDeleteNode.click();
@@ -26,17 +28,41 @@ var uievents = {
         });
 
         app.buttons.btnGroupNodes.click(function(){
+            var selected = app.cy.$('node:selected');
+            if (selected.length == 0) {
+                return;
+            }
             var parentId = app.actions.addNode(settings.crossRoad);
-            var data = app.cy.elements().jsons();
+            var nodes = selected.jsons();
+            var edges = selected.neighborhood('edge').jsons();
 
-            $.each(data, function(inx, e){
-               if (!(e.group =='nodes' && e.selected)) {
-                   return;
-               }
+            var nodes = app.cy.$(':selected').jsons();
+            $.each(nodes, function(inx, e){
                 e.data['parent'] = parentId;
             });
-            app.cy.elements().remove();
-            app.cy.add(data);
+            selected.remove();
+            app.cy.add(nodes);
+            app.cy.add(edges);
+            app.cy.$("node:selected[parent][type='crossRoad']").remove();
+        });
+
+        app.buttons.btnUngroupNodes.click(function(){
+            var selected = app.cy.$('node:selected[^parent] node');
+            if (selected.length == 0) {
+                return;
+            }
+            var nodes = selected.jsons();
+            var edges = selected.neighborhood('edge').jsons();
+            var parent;
+
+            $.each(nodes, function(inx, e){
+                parent = nodes[inx].data['parent'];
+                delete nodes[inx].data['parent'];
+            });
+
+            app.cy.$('#'+parent).remove();
+            app.cy.add(nodes);
+            app.cy.add(edges);
         });
 
         app.buttons.btnHorizontalAlign.click(function(){
@@ -66,8 +92,6 @@ var uievents = {
             $.each(jsons, function(inx, elem){
                 if(elem.group == 'nodes') {
                     ids.push(elem.data.id);
-                } else {
-                  //  delete elem.data.id;
                 }
             });
             var stringify = JSON.stringify(jsons);

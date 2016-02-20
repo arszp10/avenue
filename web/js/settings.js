@@ -1,5 +1,23 @@
 var settings = {
-    chart:{
+    cytoscape: {
+        hideEdgesOnViewport: true,
+        hideLabelsOnViewport: true,
+        textureOnViewport: true,
+        pixelRatio: 1,
+        motionBlur: true,
+        boxSelectionEnabled:true,
+        userPanningEnabled:false,
+        elements: [],
+        showOverlay: false,
+        minZoom: 0.1,
+        maxZoom: 4.0,
+        layout: {
+            name: 'preset',
+            fit: true
+        }
+    },
+
+    chart: {
        labels: function(cT){
            var labels = [];
            for (var i = 0; i < cT; i++) {
@@ -21,10 +39,10 @@ var settings = {
                showLabel: true
            }
        }
-    } ,
+    },
 
     crossRoad: {
-        icon:'Cross Road',
+        icon:'',
         type:'crossRoad',
         cicleTime: 100
     },
