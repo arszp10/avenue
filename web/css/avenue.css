@@ -1,8 +1,9 @@
 body{
     overflow: hidden;
+    background-color: #ffffff;
 }
 
-.cy, .source {
+.screen {
     position:absolute;
     top: 50px;
     bottom: 50px;
@@ -12,9 +13,42 @@ body{
     z-index: 1;
 }
 
-.source{
+.screen-source, .screen-results, .screen-routes{
     display:none;
     background-color: #ffffff;
+}
+
+.visible-network, .visible-routes, .visible-results, .visible-source {
+    display:none;
+}
+
+.hidden-network, .hidden-routes, .hidden-results, .hidden-source {
+    display:block;
+}
+
+.show-network .hidden-network,
+.show-routes .hidden-routes,
+.show-results .hidden-results,
+.show-source .hidden-source
+{
+    display:none;
+}
+
+
+.show-network .visible-network,
+.show-routes .visible-routes,
+.show-results .visible-results,
+.show-source .visible-source
+{
+    display:block;
+}
+
+.show-network .hidden-network,
+.show-routes .hidden-routes,
+.show-results .hidden-results,
+.show-source. hidden-source
+{
+    display:none;
 }
 
 #editor {

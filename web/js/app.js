@@ -41,6 +41,8 @@ var app = {
         btnPaste:           '#btn-paste',
         btnShowNetwork:     '#btn-show-network',
         btnShowSource:      '#btn-show-source',
+        btnShowResults:     '#btn-show-results',
+        btnShowRoutes:      '#btn-show-routes',
         btnToggleMap:       '#btn-toggle-map',
         btnGroupNodes:      '#btn-group-nodes',
         btnUngroupNodes:      '#btn-ungroup-nodes',

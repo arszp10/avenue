@@ -140,27 +140,24 @@ var uievents = {
 
 
         app.buttons.btnShowNetwork.click(function(){
-            app.buttons.btnShowNetwork.parent().siblings().removeClass('active');
-            app.buttons.btnShowNetwork.parent().addClass('active');
             app.cy.elements().remove();
             app.cy.add(JSON.parse(editor.getValue()))
-            app.$source.hide();
-            app.$cy.show();
-            app.panels.leftPanel.show();
-            //app.panels.navigator.show();
+            uievents.bottomTabClick($(this));
             return false;
         });
 
         app.buttons.btnShowSource.click(function(){
-            app.buttons.btnShowSource.parent().siblings().removeClass('active');
-            app.buttons.btnShowSource.parent().addClass('active');
-
             editor.setValue(JSON.stringify(app.cy.elements().jsons(), 4,' '));
-            app.$source.show();
-            app.$cy.hide();
-            app.panels.leftPanel.hide();
-            //app.panels.navigator.hide();
+            uievents.bottomTabClick($(this));
             return false;
+        });
+
+
+        app.buttons.btnShowResults.click(function(){
+            uievents.bottomTabClick($(this));
+        });
+        app.buttons.btnShowRoutes.click(function(){
+            uievents.bottomTabClick($(this));
         });
 
         app.buttons.btnToggleMap.click(function(){
@@ -182,7 +179,7 @@ var uievents = {
             var selected = app.cy.$('node:selected')[0];
             var id = selected.data('id');
             var chartId = 'ct-chart-' + id;
-            var chartPanel = '<div class="chart-panel"><div class="chart-panel-head"><i class="fa fa-reorder fa-2x"></i><a class="btn-chart-close" href="#"><i class="fa fa-close fa-2x"></i></a></div>' +
+            var chartPanel = '<div class="chart-panel visible-network"><div class="chart-panel-head"><i class="fa fa-reorder fa-2x"></i><a class="btn-chart-close" href="#"><i class="fa fa-close fa-2x"></i></a></div>' +
                               '<div id="' + chartId +'" class="ct-chart"></div></div>';
 
             $('body > div #' + chartId).parent().remove();
@@ -269,6 +266,14 @@ var uievents = {
         }
         app.state.clickMode = String($this.attr('id')).substring(8);
         app.state.nodeType = $this.data('type');
+    },
+
+    bottomTabClick: function(tab){
+       tab.parent().siblings().removeClass('active');
+       tab.parent().addClass('active');
+       $("body")
+           .removeClass('show-network show-routes show-results show-source')
+           .addClass(tab.data('rel'))
     }
 };
 

@@ -10,7 +10,7 @@
     <link href="./css/avenue.css" rel="stylesheet">
     <!--<link href="./css/cytoscape.js-navigator.css" rel="stylesheet" type="text/css" />-->
 </head>
-<body>
+<body class="show-network">
 <div>
     <div class="top-panel">
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -51,7 +51,9 @@
                     <form class="navbar-form navbar-left" role="search">
                         <!--<div class="form-group"><input type="text" class="form-control" placeholder="Search"></div>-->
                         <!--<button type="button" class="btn btn-default" id="btn-save"><i class="fa fa-save"></i> Save</button>-->
+                        <button type="button" class="btn btn-inverse" id="btn-validate"><i class="fa fa-check-square-o"></i> Validate</button>
                         <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-refresh"></i> Refresh</button>
+
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <!--<li><a href="#">Link</a></li>-->
@@ -72,7 +74,7 @@
             </div>
         </nav>
     </div>
-    <div class="left-panel">
+    <div class="left-panel visible-network">
         <div class="btn-group palette">
             <div class="btn-group-vertical" role="group" >
                 <button type="button" class="btn btn-default active" id="btn-now-select-mode"><i class="fa fa-mouse-pointer"></i></button>
@@ -122,20 +124,26 @@
             </div>
         </div>
     </div>
-    <div class="right-panel">
+    <div class="right-panel visible-network visible-routes">
         <a id="btn-slide-right-panel" class="right-panel-slide-button btn btn-default"><i class="fa fa-chevron-left"></i></a>
         ...
     </div>
-    <div id="cy" class="cy"></div>
-    <div id="source" class="source">
-    <pre id="editor"></pre>
+    <div id="cy"      class="screen visible-network" data-tab="btn-show-network"></div>
+    <div id="source"  class="screen visible-source" data-tab="btn-show-source">
+         <pre id="editor"></pre>
+    </div>
+    <div id="results" class="screen visible-results" data-tab="btn-show-results">
+        <div class="bs-example" data-example-id="labels-in-headings"> <h1>Example heading <span class="label label-default">New</span></h1> <h2>Example heading <span class="label label-default">New</span></h2> <h3>Example heading <span class="label label-default">New</span></h3> <h4>Example heading <span class="label label-default">New</span></h4> <h5>Example heading <span class="label label-default">New</span></h5> <h6>Example heading <span class="label label-default">New</span></h6> </div>
+    </div>
+    <div id="routes"  class="screen visible-routes" data-tab="btn-show-routes">
+        <div class="jumbotron"> <h1>Hello, world!</h1> <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p> <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p> </div>
     </div>
     <div class="bottom-panel">
         <ul class="nav nav-tabs bottom-tabs">
-            <li role="presentation" class="active"><a href="#" id="btn-show-network"><i class="fa fa-share-alt"></i></a></li>
-            <li role="presentation"><a href="#" id="btn-show-source"><i class="fa fa-code"></i></a></li>
-            <li role="presentation"><a href="#" id="btn-show-results"><i class="fa fa-area-chart"></i></a></li>
-            <li role="presentation"><a href="#" id="btn-show-routes"><i class="fa fa-map-marker"></i></a></li>
+            <li role="presentation" class="active"><a href="#" id="btn-show-network" data-rel="show-network"><i class="fa fa-share-alt"></i></a></li>
+            <li role="presentation"><a href="#" id="btn-show-source"  data-rel="show-source"><i class="fa fa-code"></i></a></li>
+            <li role="presentation"><a href="#" id="btn-show-results"  data-rel="show-results"><i class="fa fa-area-chart"></i></a></li>
+            <li role="presentation"><a href="#" id="btn-show-routes"  data-rel="show-routes"><i class="fa fa-map-marker"></i></a></li>
         </ul>
         <div class="status-bar">
             <!--<button type="button" class="btn btn-default" id="btn-toggle-map"><i class="fa fa-map-o"></i></button>-->
