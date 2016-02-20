@@ -52,7 +52,9 @@ var uievents = {
                 return;
             }
             var nodes = selected.jsons();
-            var edges = selected.neighborhood('edge').jsons();
+            var edges = selected.neighborhood('edge')
+                .removeClass('edge-in-crossroad')
+                .jsons();
             var parent;
 
             $.each(nodes, function(inx, e){

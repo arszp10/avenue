@@ -64,7 +64,18 @@ var cystyles = [
             'color': '#ffffff',
             'text-outline-width': 2,
             'edge-text-rotation': 'autorotate',
-            'content': 'data(portion)'
+            'content': 'data(portion)',
+            'min-zoomed-font-size':'8px'
+        }
+    },
+
+    {
+        selector: 'edge.edge-in-crossroad',
+        css: {
+            'line-style': 'dotted',
+            'text-outline-color': '#cccccc',
+            'line-color': '#cccccc',
+            'target-arrow-color': '#cccccc'
         }
     },
 

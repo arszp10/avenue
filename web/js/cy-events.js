@@ -1,4 +1,14 @@
 var cyevents = {
+    innerCrossEdges: function(edge){
+        var target = app.cy.$('#' + edge.data().target);
+        var source = app.cy.$('#' + edge.data().source);
+        if (
+            target.data().hasOwnProperty('parent')
+            && target.data('parent') == source.data('parent')) {
+            edge.addClass('edge-in-crossroad');
+        }
+
+    },
     init: function() {
         app.cy.on('tap', app.actions.tapToBackground);
 
@@ -36,7 +46,7 @@ var cyevents = {
 
 
         app.cy.on('click', 'node:selected', null, function (e) {
-            if (app.state.clickMode != 'select-mode') {
+            if (['select-mode','pan-mode'].indexOf(app.state.clickMode) == -1) {
                 return;
             }
             var type = e.cyTarget.data('type');
@@ -62,7 +72,7 @@ var cyevents = {
                 app.cy.$('#' + edge.id).remove();
                 return;
             }
-            ;
+            cyevents.innerCrossEdges(e.cyTarget);
 
             var target = app.cy.$('#' + edge.target);
             var source = app.cy.$('#' + edge.source);
