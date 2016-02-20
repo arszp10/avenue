@@ -23,28 +23,38 @@
                     <a class="navbar-brand" href="#"><img src="./img/logo2.png" height="30"></a></div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#"><i class="fa fa-asterisk"></i> New</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Dropdown
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                Open
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">...</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
+                                <li><a href="#">All files...</a></li>
                             </ul>
                         </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Samples
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" data-key="xCrossRoad" class="add-sample-item">X Crossroad</a></li>
+                                <li><a href="#" data-key="stopLineFlow" class="add-sample-item">Stopline & Carriageway</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">All samples...</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><i class="fa fa-save"></i> Save</a></li>
                     </ul>
                     <form class="navbar-form navbar-left" role="search">
                         <!--<div class="form-group"><input type="text" class="form-control" placeholder="Search"></div>-->
-                        <button type="button" class="btn btn-default" id="btn-calc"><i class="fa fa-bolt"></i> F5</button>
+                        <!--<button type="button" class="btn btn-default" id="btn-save"><i class="fa fa-save"></i> Save</button>-->
+                        <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-refresh"></i> Refresh</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Link</a></li>
+                        <!--<li><a href="#">Link</a></li>-->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-user"></i> Account
@@ -111,7 +121,10 @@
                 <button type="button" class="btn btn-danger" id="btn-delete-node"><i class="fa fa-trash"></i></button>
             </div>
         </div>
-
+    </div>
+    <div class="right-panel">
+        <a id="btn-slide-right-panel" class="right-panel-slide-button btn btn-default"><i class="fa fa-chevron-left"></i></a>
+        ...
     </div>
     <div id="cy" class="cy"></div>
     <div id="source" class="source">
@@ -119,11 +132,13 @@
     </div>
     <div class="bottom-panel">
         <ul class="nav nav-tabs bottom-tabs">
-            <li role="presentation" class="active"><a href="#" id="btn-show-network"><i class="fa fa-code-fork"></i></a></li>
+            <li role="presentation" class="active"><a href="#" id="btn-show-network"><i class="fa fa-share-alt"></i></a></li>
             <li role="presentation"><a href="#" id="btn-show-source"><i class="fa fa-code"></i></a></li>
+            <li role="presentation"><a href="#" id="btn-show-results"><i class="fa fa-area-chart"></i></a></li>
+            <li role="presentation"><a href="#" id="btn-show-routes"><i class="fa fa-map-marker"></i></a></li>
         </ul>
         <div class="status-bar">
-            <button type="button" class="btn btn-default" id="btn-toggle-map"><i class="fa fa-map-o"></i></button>
+            <!--<button type="button" class="btn btn-default" id="btn-toggle-map"><i class="fa fa-map-o"></i></button>-->
         </div>
     </div>
 </div>
@@ -150,9 +165,42 @@
                     <input type="text" class="form-control input-sm" name="input-node-capacity" id="input-node-capacity" value="" placeholder="Capacity (3600)">
                 </div>
             </div>
+            <div class="form-group">
+                <label for="input-node-icon" class="col-sm-6 control-label"><b>Direction icon</b> :</label>
+                <div class="col-sm-6">
+                    <div class="dropdown">
+                        <a classs="dropdown-toggle" name="input-node-capacity" id="input-node-icon"  type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-arrows-alt"></i>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="input-node-icon">
+                            <li><i class="fa fa-long-arrow-up fa-sw"></i></li>
+                            <li><i class="fa fa-long-arrow-right"></i></li>
+                            <li><i class="fa fa-long-arrow-down"></i></li>
+                            <li><i class="fa fa-long-arrow-left"></i></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>
+<div id="crossroad-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Crossroad properties</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- hidden elemetns section-->
 </body>
@@ -169,6 +217,7 @@
 <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="./js/app.js"></script>
 <script src="./js/settings.js"></script>
+<script src="./js/templates.js"></script>
 <script src="./js/cy-styles.js"></script>
 <script src="./js/ui-events.js"></script>
 <script src="./js/cy-events.js"></script>

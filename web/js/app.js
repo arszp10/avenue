@@ -13,7 +13,8 @@ var app = {
     },
     panels: {
         leftPanel: 'div.left-panel',
-        pointProperty: '#panel-point-property'
+        pointProperty: '#panel-point-property',
+        crossRoadModal: '#crossroad-modal'
     },
     inputs: {
         inputEdgeLabel: '#input-edge-label',
@@ -42,7 +43,9 @@ var app = {
         btnShowSource:      '#btn-show-source',
         btnToggleMap:       '#btn-toggle-map',
         btnGroupNodes:      '#btn-group-nodes',
-        btnUngroupNodes:      '#btn-ungroup-nodes'
+        btnUngroupNodes:      '#btn-ungroup-nodes',
+        listItemAddSample:    '.add-sample-item',
+        btnSlideRightPanel:   '#btn-slide-right-panel'
     },
     actions: {
         init: function(){
@@ -100,8 +103,24 @@ var app = {
                 };
             });
             return data;
-        }
+        },
 
+        showCrossroadModal: function(){
+            app.panels.crossRoadModal.modal('show');
+
+        },
+
+        showNodePopup: function(target, x, y){
+            $('body').toggleClass('show-panel-point-property');
+            app.panels.pointProperty.css(
+                {
+                    top: y + 10,
+                    left: x - 135
+                }).data("node", target.data('id'));
+            app.inputs.inputNodeType.text(target.data('type'));
+            app.inputs.inputNodeIntensity.val(target.data('avgIntensity')).focus();
+            app.inputs.inputNodeCapacity.val(target.data('capacity'));
+        }
     }
 };
 

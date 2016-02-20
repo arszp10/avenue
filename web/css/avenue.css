@@ -58,9 +58,49 @@ body{
 }
 
 .left-panel:hover{
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
+
+
+.right-panel-slide-button{
+    display: block;
+    position: absolute;
+    left: -35px;
+    top: 10px;
+    border-right: 0px;
+    border-radius: 4px 0px 0px 4px;
+}
+
+.show-right-panel .right-panel-slide-button i.fa {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.right-panel{
+    border-radius: 5px 0px 0px 5px;
+    border-top:1px solid #e1e1e1;
+    border-left:1px solid #e1e1e1;
+    border-bottom:1px solid #e1e1e1;
+    padding: 10px 10px 0px 10px;
+    top: 70px;
+    bottom: 70px;
+    right: -39.5%;
+    z-index: 10;
+    position:absolute;
+    background: white;
+    width:40%;
+
+    -webkit-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+.show-right-panel .right-panel{
+    right: 0px;
+}
 
 .chart-panel{
     border:1px solid #e1e1e1;
@@ -161,8 +201,29 @@ body.show-edge-input #input-edge-label {
 .navbar-brand {
     padding:10px 10px;
 }
+.navbar-inverse {
+    background-color: #333;
+}
 
+@media (min-width: 768px){
+    .navbar-nav {
+        float: left;
+        margin: 0px;
+        margin-left: 30px;
+    }
+}
 
+.btn-inverse {
+    color:#eeeeee;
+    border-color:#eeeeee;
+    background-color: transparent ;
+}
+
+.btn-inverse:hover, .btn-inverse:active, .btn-inverse:focus{
+    color:#ffffff;
+    border-color:#ffffff;
+    background-color: rgba(255,255,255,0.1) ;
+}
 
 .panel-point-property {
     display:none;
@@ -221,4 +282,15 @@ body.show-edge-input #input-edge-label {
     display: block;
     margin-top: 5px;
     font-size: 13px;
+}
+
+@media (min-width: 768px){
+    .modal-dialog {
+        width: 700px;
+        margin: 30px auto;
+    }
+}
+
+#crossroad-modal .modal-body {
+    height:400px;
 }

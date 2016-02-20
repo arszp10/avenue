@@ -46,23 +46,19 @@ var cyevents = {
 
 
         app.cy.on('click', 'node:selected', null, function (e) {
-            if (['select-mode','pan-mode'].indexOf(app.state.clickMode) == -1) {
-                return;
-            }
             var type = e.cyTarget.data('type');
-            if (['point', 'crossRoad'].indexOf(type) > -1) {
+
+            if (['select-mode','pan-mode'].indexOf(app.state.clickMode) == -1
+                || type == 'point' ) {
                 return;
             }
 
-            $('body').toggleClass('show-panel-point-property');
-            app.panels.pointProperty.css(
-                {
-                    top: e.originalEvent.clientY + 10,
-                    left: e.originalEvent.clientX - 135
-                }).data("node", e.cyTarget.data('id'));
-            app.inputs.inputNodeType.text(type);
-            app.inputs.inputNodeIntensity.val(e.cyTarget.data('avgIntensity')).focus();
-            app.inputs.inputNodeCapacity.val(e.cyTarget.data('capacity'));
+            if (type == 'crossRoad') {
+                app.actions.showCrossroadModal();
+                return;
+            }
+
+            app.actions.showNodePopup(e.cyTarget, e.originalEvent.clientX, e.originalEvent.clientY );
             e.originalEvent.stopPropagation();
         });
 

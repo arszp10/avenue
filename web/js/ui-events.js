@@ -23,6 +23,15 @@ var uievents = {
         app.buttons.btnAddConcurrent.click(this.paletteClick);
         app.buttons.btnAddConcurrentMerge.click(this.paletteClick);
 
+        app.buttons.listItemAddSample.click(function(){
+            console.log($(this).data('key'));
+            var key = $(this).data('key');
+            if(!mytemplates.hasOwnProperty(key)) {
+                return;
+            }
+            app.cy.add(mytemplates[key]);
+        });
+
         app.buttons.btnDeleteNode.click(function(){
             app.cy.$(':selected').remove();
         });
@@ -207,6 +216,9 @@ var uievents = {
             event.stopPropagation();
         });
 
+        app.buttons.btnSlideRightPanel.click(function(){
+            $('body').toggleClass('show-right-panel');
+        });
 
         $('body').on('mouseup', function(){
             $('body').removeClass('show-panel-point-property');

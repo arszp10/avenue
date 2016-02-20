@@ -6,7 +6,7 @@ $('#btn-calc').click(function(){
 
     if (socket != null) {
         socket.emit('calc-request', login, app.actions.prepareCalcRequest());
-        th.find('i').removeClass('fa-magic').addClass('fa-spinner fa-spin');
+        th.find('i').addClass('fa-spin');
         return;
     }
 
@@ -17,16 +17,16 @@ $('#btn-calc').click(function(){
         app.state.lastCalc = data;
         socket.disconnect();
         socket = null;
-        th.find('i').removeClass('fa-spinner fa-spin').addClass('fa-magic');
+        th.find('i').removeClass('fa-spin')
     });
 
     socket.on('error', function (data) {
         console.log('error:', data);
         socket.disconnect();
         socket = null;
-        th.find('i').removeClass('fa-spinner fa-spin').addClass('fa-magic');
+        th.find('i').removeClass('fa-spin');
     });
 
     socket.emit('calc-request', login, app.actions.prepareCalcRequest());
-    th.find('i').removeClass('fa-magic').addClass('fa-spinner fa-spin');
+    th.find('i').addClass('fa-spin');
 });
