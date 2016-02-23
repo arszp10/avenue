@@ -239,6 +239,19 @@ var uievents = {
             app.cy.$('#'+id).data('avgIntensity', $(this).val());
         });
 
+
+
+        app.inputs.inputCrossroadOffset = $('#inputCrossroadOffset').slider({
+            max:100,
+            value: 0
+        });
+
+        app.inputs.inputCrossroadNumberPhases = $('#inputCrossroadNumberPhases').slider({
+            min:2,
+            max:10,
+            value: 2
+        });
+
     },
     paletteClick: function(){
         var $this = $(this);

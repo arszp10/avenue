@@ -7,8 +7,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="./css/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
     <link href="./css/chartist.min.css" rel="stylesheet" type="text/css">
+    <link href="./css/bootstrap-slider.css" rel="stylesheet" type="text/css">
     <link href="./css/avenue.css" rel="stylesheet">
-    <!--<link href="./css/cytoscape.js-navigator.css" rel="stylesheet" type="text/css" />-->
 </head>
 <body class="show-network">
 <div>
@@ -201,7 +201,155 @@
                 <h4 class="modal-title">Crossroad properties</h4>
             </div>
             <div class="modal-body">
-                <p>One fine body&hellip;</p>
+
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputCrossroadName" class="col-sm-2 control-label">Crossroad name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputCrossroadName" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCrossroadOffset" class="col-sm-2 control-label">Offset:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputCrossroadOffset">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCrossroadNumberPhases" class="col-sm-2 control-label">Signal Phases:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputCrossroadNumberPhases">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table">
+                                <thead>
+                                <tr>
+
+                                    <th class="col-sm-2"></th><th>Ph 1</th><th>Ph 2</th>
+                                    <th>Ph 3</th>
+                                    <th>Ph 4</th><th>Ph 5</th><th>Ph 6</th>
+                                    <th>Ph 7</th><th>Ph 8</th><th>Ph 9</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td class="col-sm-2 text-right"><label>Value</label></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-2 text-right"><label>Min</label></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-2 text-right"><span class="label label-primary">1</span></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-2 text-right"><span class="label label-primary">2</span></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-2 text-right"><span class="label label-default">3</span></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-2 text-right"><span class="label label-default">4</span></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                    <td><input type="checkbox"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group hidden-network">
+                        <label for="inputPhases" class="col-sm-2 control-label">Signal diagrams:</label>
+                        <div class="col-sm-10">
+                            <div class="signal-bar">
+                                <div class="signal signal-red"   style="width:150px;"></div>
+                                <div class="signal signal-amber" style="width:15px;"></div>
+                                <div class="signal signal-green" style="width:150px;"></div>
+                                <div class="signal signal-green-flash" style="width:15px;"></div>
+                                <div class="signal signal-yellow" style="width:20px;"></div>
+                                <div class="signal signal-red" style="width:120px;"></div>
+                            </div>
+                            <div class="signal-bar">
+                                <div class="signal signal-red"   style="width:100px;"></div>
+                                <div class="signal signal-amber" style="width:15px;"></div>
+                                <div class="signal signal-green" style="width:200px;"></div>
+                                <div class="signal signal-green-flash" style="width:15px;"></div>
+                                <div class="signal signal-yellow" style="width:20px;"></div>
+                                <div class="signal signal-red" style="width:120px;"></div>
+                            </div>
+                            <div class="signal-bar">
+                                <div class="signal signal-red"   style="width:100px;"></div>
+                                <div class="signal signal-amber" style="width:15px;"></div>
+                                <div class="signal signal-green" style="width:200px;"></div>
+                                <div class="signal signal-green-flash" style="width:15px;"></div>
+                                <div class="signal signal-yellow" style="width:20px;"></div>
+                                <div class="signal signal-red" style="width:120px;"></div>
+                            </div>
+                            <div class="signal-bar">
+                                <div class="signal signal-red"   style="width:200px;"></div>
+                                <div class="signal signal-amber" style="width:15px;"></div>
+                                <div class="signal signal-green" style="width:100px;"></div>
+                                <div class="signal signal-green-flash" style="width:15px;"></div>
+                                <div class="signal signal-yellow" style="width:20px;"></div>
+                                <div class="signal signal-red" style="width:120px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
@@ -219,6 +367,7 @@
 
 <script src="./js/charts/chartist.min.js"></script>
 <script src="./js/utils/drag.js"></script>
+<script src="./js/utils/bootstrap-slider.min.js"></script>
 <script src="./js/cytoscape/cytoscape-edgehandles.js"></script>
 <script src="./js/cytoscape/cytoscape-panzoom.js"></script>
 <script src="./js/cytoscape/cytoscape-navigator.js"></script>

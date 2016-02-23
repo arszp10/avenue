@@ -20,7 +20,9 @@ var app = {
         inputEdgeLabel: '#input-edge-label',
         inputNodeIntensity :'#input-node-intensity',
         inputNodeCapacity :'#input-node-capacity',
-        inputNodeType :'#input-node-type'
+        inputNodeType :'#input-node-type',
+        inputCrossroadOffset: "#inputCrossroadOffset",
+        inputCrossroadNumberPhases: "#inputCrossroadNumberPhases"
     },
     buttons: {
         btnPanMode:         '#btn-now-pan-mode',

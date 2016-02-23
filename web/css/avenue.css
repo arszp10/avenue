@@ -326,5 +326,84 @@ body.show-edge-input #input-edge-label {
 }
 
 #crossroad-modal .modal-body {
-    height:400px;
+    /*height:400px;*/
+}
+
+
+
+.signal-bar {
+    width:100%;
+    padding:7px 0px;
+    margin:0px;
+    display:block;
+    clear:both;
+    opacity: 0.6;
+}
+.signal-bar:hover{
+    opacity: 1;
+    box-shadow: 4px;
+}
+
+.signal {
+    height: 15px;
+    padding:0px;
+    margin:0px;
+    float:left;
+    display:block;
+    border:1px solid #555;
+    border-right:0px;
+}
+
+.signal-red {
+    background-color: red;
+}
+.signal-green {
+    background-color: green;
+}
+.signal-yellow {
+    background-color: yellow;
+}
+
+.signal-amber {
+    background: linear-gradient( red 50%, transparent 50%);
+    background-size: 2px 15px;
+    background-color: yellow;
+}
+
+.signal-green-flash {
+    background: linear-gradient(90deg, darkgreen 50%, transparent 50%);
+    background-size: 4px 4px;
+    background-color: yellowgreen;
+}
+
+
+/******************************************************/
+
+.grip{
+    width:20px;
+    height:30px;
+    margin-top:-3px;
+    background-image:url('../img/grip.png');
+    margin-left:-5px;
+    position:relative;
+    z-index:88;
+    cursor:e-resize;
+}
+
+.grip:hover{
+    background-position-x:-20px;
+}
+
+.dragging .grip{
+    background-position-x:-40px;
+}
+
+.sampleText{
+    position:relative;
+    width:100%;
+}
+
+.dotted{
+    background-image:url('../img/dotted.png');
+    background-repeat:repeat-y;
 }
