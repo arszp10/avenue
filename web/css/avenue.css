@@ -337,10 +337,10 @@ body.show-edge-input #input-edge-label {
     margin:0px;
     display:block;
     clear:both;
-    opacity: 0.6;
+    opacity: 0.8;
 }
 .signal-bar:hover{
-    opacity: 1;
+    opacity: 0.9;
     box-shadow: 4px;
 }
 
@@ -377,33 +377,45 @@ body.show-edge-input #input-edge-label {
 }
 
 
-/******************************************************/
-
-.grip{
-    width:20px;
-    height:30px;
-    margin-top:-3px;
-    background-image:url('../img/grip.png');
-    margin-left:-5px;
-    position:relative;
-    z-index:88;
-    cursor:e-resize;
+.disabled {
+    background-color: #000;
+    opacity: 0.1;
 }
 
-.grip:hover{
-    background-position-x:-20px;
+.ph-selected {
+    background-color: #337AB7;
+    color: #fff;
+    border-radius: 5px;
 }
 
-.dragging .grip{
-    background-position-x:-40px;
+.table-phases{
+     margin-bottom: 5px;
 }
 
-.sampleText{
-    position:relative;
-    width:100%;
+.table-phases>tbody>tr>td,
+.table-phases>tbody>tr>th,
+.table-phases>tfoot>tr>td,
+.table-phases>tfoot>tr>th,
+.table-phases>thead>tr>td,
+.table-phases>thead>tr>th {
+    padding: 4px;
+    line-height: 1.42857143;
+    vertical-align: middle;
+    border-top: 0px solid #ddd;
+    text-align: center;
 }
 
-.dotted{
-    background-image:url('../img/dotted.png');
-    background-repeat:repeat-y;
+.table-phases>thead>tr>th {
+    vertical-align: bottom;
+    border-bottom: 0px solid #ddd;
+}
+
+.table-phases th {
+    cursor:pointer;
+}
+
+.table-phases th:hover {
+    background-color: #eeeeee;
+    color:#000;
+    border-radius: 5px;
 }

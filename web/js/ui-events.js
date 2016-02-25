@@ -3,6 +3,10 @@ var uievents = {
 
         $('.chart-panel').drag();
 
+        $('input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_square-green'
+        });
+
         $(document).on('keyup', function(event){
             if (event.which == 46 || event.which == 8){
                 app.buttons.btnDeleteNode.click();
@@ -239,17 +243,10 @@ var uievents = {
             app.cy.$('#'+id).data('avgIntensity', $(this).val());
         });
 
-
-
         app.inputs.inputCrossroadOffset = $('#inputCrossroadOffset').slider({
             max:100,
-            value: 0
-        });
-
-        app.inputs.inputCrossroadNumberPhases = $('#inputCrossroadNumberPhases').slider({
-            min:2,
-            max:10,
-            value: 2
+            value: 0,
+            tooltip: 'always'
         });
 
     },

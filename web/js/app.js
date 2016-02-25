@@ -21,8 +21,7 @@ var app = {
         inputNodeIntensity :'#input-node-intensity',
         inputNodeCapacity :'#input-node-capacity',
         inputNodeType :'#input-node-type',
-        inputCrossroadOffset: "#inputCrossroadOffset",
-        inputCrossroadNumberPhases: "#inputCrossroadNumberPhases"
+        inputCrossroadOffset: "#inputCrossroadOffset"
     },
     buttons: {
         btnPanMode:         '#btn-now-pan-mode',
