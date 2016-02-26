@@ -17,6 +17,23 @@ var cystyles = [
         }
     },
     {
+        selector: 'node[type="stopline"]',
+        css: {
+            'content': 'data(icon)',
+            'text-valign': 'center',
+            'text-halign': 'center',
+            'background-color': '#ffffff',
+            'border-color': '#777777',
+            'color': '#2e6da4',
+            'border-width': 0.5,
+            'font-family': 'Avenue',
+            'font-size': '22px',
+            'font-weight':'normal',
+            'min-zoomed-font-size':'8px'
+
+        }
+    },
+    {
         selector: '$node > node',
         css: {
             'shape':'roundrectangle',

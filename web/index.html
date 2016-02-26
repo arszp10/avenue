@@ -10,6 +10,7 @@
     <link href="./css/bootstrap-slider.css" rel="stylesheet" type="text/css">
     <link href="./js/i-check/skins/square/green.css" rel="stylesheet" type="text/css">
     <link href="./css/avenue.css" rel="stylesheet">
+    <link href="./css/avenue-font.css" rel="stylesheet">
 </head>
 <body class="show-network">
 <div>
@@ -23,8 +24,10 @@
                     </button>
                     <a class="navbar-brand" href="#"><img src="./img/logo2.png" height="30"></a></div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <form class="navbar-form navbar-left">
+                        <button class="btn btn-inverse" id="btn-new-pro"><i class="fa fa-file-o"></i> New</button>
+                    </form>
                     <ul class="nav navbar-nav">
-                        <li><a href="#"><i class="fa fa-asterisk"></i> New</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
                                 Open
@@ -64,7 +67,7 @@
                                 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Settings</a></li>
-                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Defaults</a></li>
                                 <li><a href="#">Something else here</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="#">Log out</a></li>
@@ -76,6 +79,12 @@
         </nav>
     </div>
     <div class="left-panel visible-network">
+        <div class="btn-group settings">
+            <div class="btn-group-vertical" role="group" >
+                <button type="button" class="btn btn-default" id="btn-doc-properties"><i class="fa fa-cog"></i></button>
+            </div>
+        </div>
+
         <div class="btn-group palette">
             <div class="btn-group-vertical" role="group" >
                 <button type="button" class="btn btn-default active" id="btn-now-select-mode"><i class="fa fa-mouse-pointer"></i></button>
@@ -111,8 +120,8 @@
 
         <div class="btn-group actions">
             <div class="btn-group-vertical" role="group" >
-                <button type="button" class="btn btn-default" id="btn-edit-node"><i class="fa fa-edit"></i></button>
-                <button type="button" class="btn btn-default" id="btn-graph-node"><i class="fa fa-area-chart"></i></button>
+                <!--<button type="button" class="btn btn-default" id="btn-edit-node"><i class="fa fa-edit"></i></button>-->
+                <button type="button" class="btn btn-default" id="btn-graph-node"><i class="fa fa-area-chart text-info"></i></button>
             </div>
         </div>
 
@@ -121,7 +130,7 @@
                 <button type="button" class="btn btn-default" id="btn-cut"><i class="fa fa-cut"></i></button>
                 <button type="button" class="btn btn-default" id="btn-copy"><i class="fa fa-copy"></i></button>
                 <button type="button" class="btn btn-default" id="btn-paste"><i class="fa fa-clipboard"></i></button>
-                <button type="button" class="btn btn-danger" id="btn-delete-node"><i class="fa fa-trash"></i></button>
+                <button type="button" class="btn btn-default" id="btn-delete-node"><i class="fa fa-trash text-danger"></i></button>
             </div>
         </div>
     </div>
@@ -163,6 +172,18 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="input-node-intensity" class="col-sm-6 control-label"><b>Cycle Time</b> (sec):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm" id="input-node-cycle-time" placeholder="Tc (60)">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-node-intensity" class="col-sm-6 control-label"><b>Red intervals</b> (sec):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm" id="input-node-red-intervals" placeholder="[0, 10], [30, 54]">
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="input-node-intensity" class="col-sm-6 control-label"><b>Intensity</b> (ven/hour):</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control input-sm" id="input-node-intensity" placeholder="Intensity (1800)">
@@ -175,19 +196,80 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="input-green-offset-1" class="col-sm-6 control-label"><b>Green offset 1</b> (sec):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm" name="input-node-capacity" id="input-green-offset-1" value="" placeholder="Offset (3)">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-green-offset-2" class="col-sm-6 control-label"><b>Green offset 2</b> (sec):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm" name="input-node-capacity" id="input-green-offset-2" value="" placeholder="Offset (6)">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-node-tag" class="col-sm-6 control-label"><b>Node tag</b>:</label>
+                <div class="col-sm-6">
+
+                    <div class="input-group">
+                        <input type="text" class="form-control input-sm" name="input-node-tag" id="input-node-tag" value="" placeholder="Line-1.1">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-paint-brush"></i>
+                                <span class="caret"></span></button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="label label-default">GREY</div>
+                                <div class="label label-primary">BLUE</div>
+                                <div class="label label-success">GREEN</div>
+                                <div class="label label-info">SKY</div>
+                                <div class="label label-warning">ORANGE</div>
+                                <div class="label label-danger">RED</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="input-node-icon" class="col-sm-6 control-label"><b>Direction icon</b> :</label>
                 <div class="col-sm-6">
-                    <div class="dropdown">
-                        <a classs="dropdown-toggle" name="input-node-capacity" id="input-node-icon"  type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-arrows-alt"></i>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="input-node-icon">
-                            <li><i class="fa fa-long-arrow-up fa-sw"></i></li>
-                            <li><i class="fa fa-long-arrow-right"></i></li>
-                            <li><i class="fa fa-long-arrow-down"></i></li>
-                            <li><i class="fa fa-long-arrow-left"></i></li>
-                        </ul>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm  btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"><i class="av-east-forward-left-right"></i> <span class="caret"></span></button>
+                        <div class="dropdown-menu menu-directions">
+                            <button class="btn btn-default btn-sm"><i class="av-north-forward"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-north-forward-left"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-north-forward-left-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-north-forward-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-north-left"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-north-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-north-left-right"></i></button>
+
+                            <button class="btn btn-default btn-sm"><i class="av-south-forward"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-south-forward-left"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-south-forward-left-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-south-forward-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-south-left"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-south-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-south-left-right"></i></button>
+
+                            <button class="btn btn-default btn-sm"><i class="av-east-forward"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-east-forward-left"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-east-forward-left-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-east-forward-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-east-left"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-east-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-east-left-right"></i></button>
+
+                            <button class="btn btn-default btn-sm"><i class="av-west-forward"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-west-forward-left"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-west-forward-left-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-west-forward-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-west-left"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-west-right"></i></button>
+                            <button class="btn btn-default btn-sm"><i class="av-west-left-right"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>

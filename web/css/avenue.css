@@ -243,7 +243,7 @@ body.show-edge-input #input-edge-label {
     .navbar-nav {
         float: left;
         margin: 0px;
-        margin-left: 30px;
+        /*margin-left: 30px;*/
     }
 }
 
@@ -418,4 +418,17 @@ body.show-edge-input #input-edge-label {
     background-color: #eeeeee;
     color:#000;
     border-radius: 5px;
+}
+
+
+.menu-directions {
+    width: 285px;
+    top: 35px;
+    padding: 5px;
+}
+
+.menu-directions .btn {
+    font-size: 16px;
+    margin: 0px;
+    border:0px solid #fff;
 }

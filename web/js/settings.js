@@ -48,7 +48,8 @@ var settings = {
     },
 
     stopline: {
-        icon:'\uf142',
+        //icon:'\uf142',
+        icon:'\u0051',
         type:'stopline',
         cicleTime: 100,
         inFlow: [],
