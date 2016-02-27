@@ -6,6 +6,9 @@ var app = {
     $cy: null,
     $source: null,
     cy: null,
+    coordinationPlan:{
+
+    },
     state: {
         clickMode: 'select-mode', // select, add-stopline, ... add-concurrent
         nodeType: 'stopline',
@@ -14,14 +17,18 @@ var app = {
     panels: {
         leftPanel: 'div.left-panel',
         pointProperty: '#panel-point-property',
-        crossRoadModal: '#crossroad-modal'
+        crossRoadModal: '#crossroad-modal',
+        coPlanPropertyModal: '#co-plan-property-modal'
     },
     inputs: {
         inputEdgeLabel: '#input-edge-label',
         inputNodeIntensity :'#input-node-intensity',
         inputNodeCapacity :'#input-node-capacity',
         inputNodeType :'#input-node-type',
-        inputCrossroadOffset: "#inputCrossroadOffset"
+        inputCrossroadOffset: "#inputCrossroadOffset",
+        inputCoPlanCycleTime: '#inputCoPlanCycleTime',
+        inputCoPlanName: '#inputCoPlanName',
+        inputCoPlanNotes: '#inputCoPlanNotes'
     },
     buttons: {
         btnPanMode:         '#btn-now-pan-mode',
@@ -48,7 +55,10 @@ var app = {
         btnGroupNodes:      '#btn-group-nodes',
         btnUngroupNodes:      '#btn-ungroup-nodes',
         listItemAddSample:    '.add-sample-item',
-        btnSlideRightPanel:   '#btn-slide-right-panel'
+        btnSlideRightPanel:   '#btn-slide-right-panel',
+        btnCoPlanProperties : '#btn-co-plan-properties',
+        btnCoPlanSave:        '#btn-co-plan-save'
+
     },
     actions: {
         init: function(){
@@ -56,6 +66,11 @@ var app = {
             $.each(app.buttons, function(i,v){app.buttons[i] = $(v);});
             $.each(app.inputs, function(i,v){app.inputs[i] = $(v);});
             uievents.init();
+            app.coordinationPlan = settings.coordinationPlan;
+        },
+
+        setCycleTime: function(Tc){
+
         },
 
         nextId: function(){

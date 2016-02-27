@@ -4,7 +4,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "crossRoad",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "id": "vaerenlisyycik9"
             },
             "position": {
@@ -24,7 +24,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "carriageway",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -52,7 +52,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "carriageway",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -80,7 +80,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "concurrent",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -105,7 +105,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "stopline",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -137,7 +137,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "stopline",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -169,7 +169,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "carriageway",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -197,7 +197,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "carriageway",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -225,7 +225,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "stopline",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -257,7 +257,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "stopline",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -478,7 +478,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "stopline",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -509,7 +509,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "carriageway",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,
@@ -536,7 +536,7 @@ var mytemplates = {
             "data": {
                 "icon": "",
                 "type": "stopline",
-                "cicleTime": 100,
+                "cycleTime": 100,
                 "inFlow": [],
                 "outFlow": [],
                 "avgIntensity": 1800,

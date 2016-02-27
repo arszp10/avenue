@@ -81,7 +81,7 @@
     <div class="left-panel visible-network">
         <div class="btn-group settings">
             <div class="btn-group-vertical" role="group" >
-                <button type="button" class="btn btn-default" id="btn-doc-properties"><i class="fa fa-cog"></i></button>
+                <button type="button" class="btn btn-default" id="btn-co-plan-properties"><i class="fa fa-cog"></i></button>
             </div>
         </div>
 
@@ -218,13 +218,13 @@
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-paint-brush"></i>
                                 <span class="caret"></span></button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <div class="label label-default">GREY</div>
-                                <div class="label label-primary">BLUE</div>
-                                <div class="label label-success">GREEN</div>
-                                <div class="label label-info">SKY</div>
-                                <div class="label label-warning">ORANGE</div>
-                                <div class="label label-danger">RED</div>
+                            <div class="dropdown-menu dropdown-menu-right drop-down-color">
+                                <a class="label label-default">GREY</a>
+                                <a class="label label-primary">BLUE</a>
+                                <a class="label label-success">GREEN</a>
+                                <a class="label label-info">SKY</a>
+                                <a class="label label-warning">ORANGE</a>
+                                <a class="label label-danger">RED</a>
                             </div>
                         </div>
                     </div>
@@ -290,15 +290,15 @@
                             <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table table-phases">
                                 <thead>
                                 <tr>
-                                    <th class="col-sm-2"></th>
-                                    <th class="ph-col-1">Ph 1</th>
-                                    <th class="ph-col-2 ph-selected">Ph 2</th>
-                                    <th class="ph-col-3">Ph 3</th>
-                                    <th class="ph-col-4">Ph 4</th>
-                                    <th class="ph-col-5">Ph 5</th>
-                                    <th class="ph-col-6">Ph 6</th>
-                                    <th class="ph-col-7">Ph 7</th>
-                                    <th class="ph-col-8">Ph 8</th>
+                                    <th class="col-sm-2">Phases</th>
+                                    <th class="ph-col-1">1</th>
+                                    <th class="ph-col-2 ph-selected">2</th>
+                                    <th class="ph-col-3">3</th>
+                                    <th class="ph-col-4">4</th>
+                                    <th class="ph-col-5">5</th>
+                                    <th class="ph-col-6">6</th>
+                                    <th class="ph-col-7">7</th>
+                                    <th class="ph-col-8">8</th>
                                 </tr>
                                 </thead>
 
@@ -363,6 +363,42 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="co-plan-property-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-cog"></i> Coordination plan properties</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputCoPlanCycleTime" class="col-sm-3 control-label">Cycle time (sec):</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="inputCoPlanCycleTime">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCoPlanName" class="col-sm-3 control-label">Name:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputCoPlanName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCoPlanNotes" class="col-sm-3 control-label">Notes:</label>
+                        <div class="col-sm-9">
+                            <textarea rows="6" class="form-control" id="inputCoPlanNotes"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-co-plan-save"><i class="fa fa-check"></i> Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>

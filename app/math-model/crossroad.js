@@ -6,7 +6,7 @@ function CrossRoad(options, network){
 
     this.json = function json() {
         return {
-            cicleTime: this.options.cicleTime,
+            cycleTime: this.options.cycleTime,
         }
     };
 

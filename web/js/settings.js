@@ -41,17 +41,23 @@ var settings = {
        }
     },
 
+    coordinationPlan: {
+        cycleTime: 100,
+        name: 'The Coordination plan',
+        notes: '...'
+    },
+
     crossRoad: {
         icon:'',
         type:'crossRoad',
-        cicleTime: 100
+        cycleTime: 100
     },
 
     stopline: {
         //icon:'\uf142',
         icon:'\u0051',
         type:'stopline',
-        cicleTime: 100,
+        cycleTime: 100,
         inFlow: [],
         outFlow: [],
         avgIntensity: 1800,
@@ -63,7 +69,7 @@ var settings = {
     carriageway:{
         icon:'\uf0ec',
         type:'carriageway',
-        cicleTime: 100,
+        cycleTime: 100,
         inFlow: [],
         outFlow: [],
         avgIntensity: 1800,
@@ -75,7 +81,7 @@ var settings = {
     point: {
         icon:'\uf276',
         type:'point',
-        cicleTime: 100,
+        cycleTime: 100,
         inFlow: [],
         outFlow: [],
         avgIntensity: 1800,
@@ -84,7 +90,7 @@ var settings = {
     bottleneck: {
         icon:'\uf0b0',
         type:'bottleneck',
-        cicleTime: 100,
+        cycleTime: 100,
         inFlow: [],
         outFlow: [],
         avgIntensity: 1800,
@@ -93,7 +99,7 @@ var settings = {
     concurrent: {
         icon:'\uf074',
         type:'concurrent',
-        cicleTime: 100,
+        cycleTime: 100,
         inFlow: [],
         outFlow: [],
         avgIntensity: 1800,
@@ -102,7 +108,7 @@ var settings = {
     concurrentMerge: {
         icon:'\uf126',
         type:'concurrentMerge',
-        cicleTime: 100,
+        cycleTime: 100,
         inFlow: [],
         outFlow: [],
         avgIntensity: 1800,

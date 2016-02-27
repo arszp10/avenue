@@ -6,7 +6,7 @@ function Flow(options, edges, network)
     var defCapacity = 3600;
     var defaults = {
         id: _.uniqueId(),
-        cicleTime: 100,
+        cycleTime: 100,
         inFlow: [],
         outFlow: [],
         avgIntensity: defAvgIntensity,
@@ -19,13 +19,13 @@ function Flow(options, edges, network)
     var flow = _.assign({}, defaults, options);
 
     this.id = flow.id;
-    this.cicleTime = flow.cicleTime;
+    this.cycleTime = flow.cycleTime;
     this.avgIntensity = flow.avgIntensity;
     this.capacity = flow.capacity;
     this.avgIntensityPerSecond =  this.avgIntensity/3600;
     this.capacityPerSecond = this.capacity/3600;
-    this.inFlow = [].fill(this.cicleTime, 0);
-    this.outFlow = [].fill(this.cicleTime, 0);
+    this.inFlow = [].fill(this.cycleTime, 0);
+    this.outFlow = [].fill(this.cycleTime, 0);
     this.length = flow.length;
     this.routeTime = flow.routeTime;
     this.dispersion = flow.dispersion;
@@ -57,7 +57,7 @@ function Flow(options, edges, network)
 
     this.json = function json() {
         return {
-            cicleTime: this.cicleTime,
+            cycleTime: this.cycleTime,
             inFlow: this.inFlow,
             outFlow: this.outFlow,
             isCongestion: this.isCongestion,
@@ -92,7 +92,7 @@ function Flow(options, edges, network)
             sumInTotal += sumI;
         }
         if (sumInTotal == 0) {
-            this.inFlow = [].fill(this.cicleTime, this.avgIntensityPerSecond);
+            this.inFlow = [].fill(this.cycleTime, this.avgIntensityPerSecond);
         }
         return hasOverflow;
     }

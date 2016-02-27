@@ -2,7 +2,7 @@ module.exports = {
 
     stopLine:function(flow, queueTail){
         flow.maxQueueLength = 0;
-        var cicleTime = flow.cicleTime;
+        var cycleTime = flow.cycleTime;
         var capacityPerSecond = flow.capacityPerSecond;
         var inFlow = flow.inFlow;
         var outFlow = flow.outFlow;
@@ -13,7 +13,7 @@ module.exports = {
         var first = intervals.first();
 
         if (last && first) {
-            if((last.f + 1) % cicleTime == first.s) {
+            if((last.f + 1) % cycleTime == first.s) {
                 last.length += first.length;
             }
         }
@@ -26,7 +26,7 @@ module.exports = {
         var sumOutFlow = 0;
 
         for (var i = 0; i < inFlow.length; i++){
-            var j = (i + last.s) % cicleTime;
+            var j = (i + last.s) % cycleTime;
             var value = inFlow[j];
             sumInFlow += value;
             queue += value;
@@ -82,8 +82,8 @@ module.exports = {
         do {
             k++;
             for (var i = 0; i < inFlow.length; i++) {
-                var ttprm1 = (i + flow.routeTime) % flow.cicleTime;
-                var ttpr = (i + flow.routeTime + 1) % flow.cicleTime;
+                var ttprm1 = (i + flow.routeTime) % flow.cycleTime;
+                var ttpr = (i + flow.routeTime + 1) % flow.cycleTime;
                 outFlow[ttpr] = (1 - f) * outFlow[ttprm1] + inFlow[i] * f;
             }
             sumOutFlow = outFlow.sum();
@@ -96,7 +96,7 @@ module.exports = {
 
     bottleNeck: function(flow, queueTail) {
         flow.maxQueueLength = 0;
-        var cicleTime = flow.cicleTime;
+        var cycleTime = flow.cycleTime;
         var capacityPerSecond = flow.capacityPerSecond;
         var inFlow = flow.inFlow;
         var outFlow = flow.outFlow;

@@ -190,7 +190,7 @@ var uievents = {
             $('body > div').append(chartPanel);
 
             new Chartist.Line('#'+chartId, {
-                labels: settings.chart.labels(app.state.lastCalc[id].cicleTime),
+                labels: settings.chart.labels(app.state.lastCalc[id].cycleTime),
                 series: [
                     app.state.lastCalc[id].inFlow,
                     app.state.lastCalc[id].outFlow
@@ -248,6 +248,23 @@ var uievents = {
             value: 0,
             tooltip: 'always'
         });
+
+        app.buttons.btnCoPlanProperties.click(function(){
+            var cp = app.coordinationPlan;
+            app.inputs.inputCoPlanCycleTime.val(cp.cycleTime);
+            app.inputs.inputCoPlanName.val(cp.name);
+            app.inputs.inputCoPlanNotes.val(cp.notes);
+            app.panels.coPlanPropertyModal.modal('show');
+        });
+
+        app.buttons.btnCoPlanSave.click(function(){
+            app.coordinationPlan.cycleTime = app.inputs.inputCoPlanCycleTime.val();
+            app.coordinationPlan.name = app.inputs.inputCoPlanName.val();
+            app.coordinationPlan.notes = app.inputs.inputCoPlanNotes.val();
+            app.panels.coPlanPropertyModal.modal('hide');
+            app.actions.setCycleTime(app.coordinationPlan.cycleTime);
+        });
+
 
     },
     paletteClick: function(){

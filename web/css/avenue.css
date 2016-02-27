@@ -432,3 +432,13 @@ body.show-edge-input #input-edge-label {
     margin: 0px;
     border:0px solid #fff;
 }
+
+.drop-down-color {
+    min-width: 113px;
+    padding:0px
+}
+
+.drop-down-color a.label {
+    display:block;
+    margin:5px;
+}
