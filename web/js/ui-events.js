@@ -28,7 +28,6 @@ var uievents = {
         app.buttons.btnAddConcurrentMerge.click(this.paletteClick);
 
         app.buttons.listItemAddSample.click(function(){
-            console.log($(this).data('key'));
             var key = $(this).data('key');
             if(!mytemplates.hasOwnProperty(key)) {
                 return;

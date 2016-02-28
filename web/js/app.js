@@ -70,7 +70,9 @@ var app = {
         },
 
         setCycleTime: function(Tc){
-
+            app.cy.$('node')
+                .data('cycleTime', Tc)
+            ;
         },
 
         nextId: function(){
@@ -138,6 +140,19 @@ var app = {
             app.inputs.inputNodeType.text(target.data('type'));
             app.inputs.inputNodeIntensity.val(target.data('avgIntensity')).focus();
             app.inputs.inputNodeCapacity.val(target.data('capacity'));
+            console.log();
+            if (target.data('type') == 'stopline'){
+                app.panels.pointProperty.find('.is-stopLine').show();
+                if (target.data('parent') == undefined) {
+                    app.panels.pointProperty.find('.out-crossroad').show();
+                    app.panels.pointProperty.find('.in-crossroad').hide();
+                } else {
+                    app.panels.pointProperty.find('.out-crossroad').hide();
+                    app.panels.pointProperty.find('.in-crossroad').show();
+                }
+            } else {
+                app.panels.pointProperty.find('.is-stopLine').hide();
+            }
         }
     }
 };

@@ -62,6 +62,11 @@ var cyevents = {
             e.originalEvent.stopPropagation();
         });
 
+
+        app.cy.on('add', 'node', null, function (e) {
+            e.cyTarget.data('cycleTime', app.coordinationPlan.cycleTime);
+        });
+
         app.cy.on('add', 'edge', null, function (e) {
             var edge = e.cyTarget.data();
             if (e.cyTarget.parallelEdges().length > 1) {
