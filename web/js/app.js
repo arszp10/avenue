@@ -18,46 +18,48 @@ var app = {
         leftPanel: 'div.left-panel',
         pointProperty: '#panel-point-property',
         crossRoadModal: '#crossroad-modal',
-        coPlanPropertyModal: '#co-plan-property-modal'
+        coPlanModal: '#co-plan-modal'
     },
     inputs: {
         inputEdgeLabel: '#input-edge-label',
-        inputNodeIntensity :'#input-node-intensity',
-        inputNodeCapacity :'#input-node-capacity',
         inputNodeType :'#input-node-type',
         inputCrossroadOffset: "#inputCrossroadOffset",
         inputCoPlanCycleTime: '#inputCoPlanCycleTime',
         inputCoPlanName: '#inputCoPlanName',
-        inputCoPlanNotes: '#inputCoPlanNotes'
+        inputCoPlanNotes: '#inputCoPlanNotes',
+        inputsNodeProperty: 'input.node-property'
     },
     buttons: {
-        btnPanMode:         '#btn-now-pan-mode',
-        btnSelectMode:      '#btn-now-select-mode',
-        btnPointsSelect:     '#btn-points-select',
-        btnAddStopline:     '#btn-add-stopline',
-        btnAddCarriageway:  '#btn-add-carriageway',
-        btnAddPoint:        '#btn-add-point',
-        btnAddBottleneck:   '#btn-add-bottleneck',
-        btnAddConcurrent:   '#btn-add-concurrent',
-        btnAddConcurrentMerge:   '#btn-add-concurrent-merge',
-        btnGraphNode:       '#btn-graph-node',
-        btnDeleteNode:      '#btn-delete-node',
-        btnHorizontalAlign: '#btn-horizontal-align',
-        btnVerticalAlign:   '#btn-vertical-align',
-        btnCut:             '#btn-cut',
-        btnCopy:            '#btn-copy',
-        btnPaste:           '#btn-paste',
-        btnShowNetwork:     '#btn-show-network',
-        btnShowSource:      '#btn-show-source',
-        btnShowResults:     '#btn-show-results',
-        btnShowRoutes:      '#btn-show-routes',
-        btnToggleMap:       '#btn-toggle-map',
-        btnGroupNodes:      '#btn-group-nodes',
+        btnPanMode:           '#btn-now-pan-mode',
+        btnSelectMode:        '#btn-now-select-mode',
+        btnPointsSelect:      '#btn-points-select',
+        btnAddStopline:       '#btn-add-stopline',
+        btnAddCarriageway:    '#btn-add-carriageway',
+        btnAddPoint:          '#btn-add-point',
+        btnAddBottleneck:     '#btn-add-bottleneck',
+        btnAddConcurrent:     '#btn-add-concurrent',
+        btnAddConcurrentMerge:'#btn-add-concurrent-merge',
+        btnGraphNode:         '#btn-graph-node',
+        btnDeleteNode:        '#btn-delete-node',
+        btnHorizontalAlign:   '#btn-horizontal-align',
+        btnVerticalAlign:     '#btn-vertical-align',
+        btnCut:               '#btn-cut',
+        btnCopy:              '#btn-copy',
+        btnPaste:             '#btn-paste',
+        btnShowNetwork:       '#btn-show-network',
+        btnShowSource:        '#btn-show-source',
+        btnShowResults:       '#btn-show-results',
+        btnShowRoutes:        '#btn-show-routes',
+        btnToggleMap:         '#btn-toggle-map',
+        btnGroupNodes:        '#btn-group-nodes',
         btnUngroupNodes:      '#btn-ungroup-nodes',
         listItemAddSample:    '.add-sample-item',
         btnSlideRightPanel:   '#btn-slide-right-panel',
-        btnCoPlanProperties : '#btn-co-plan-properties',
-        btnCoPlanSave:        '#btn-co-plan-save'
+        btnCoPlanProperties:  '#btn-co-plan-properties',
+        btnCoPlanSave:        '#btn-co-plan-save',
+        btnsDirection:        'div.menu-directions button',
+        btnsColorSelection:   '.drop-down-color a.label',
+        btnNodeColorSelection:'#btn-node-color-selection'
 
     },
     actions: {
@@ -138,9 +140,14 @@ var app = {
                     left: x - 135
                 }).data("node", target.data('id'));
             app.inputs.inputNodeType.text(target.data('type'));
-            app.inputs.inputNodeIntensity.val(target.data('avgIntensity')).focus();
-            app.inputs.inputNodeCapacity.val(target.data('capacity'));
-            console.log();
+            app.inputs.inputsNodeProperty.each(function(i, v){
+                var $v = $(v);
+                $v.val(target.data($v.data('key')));
+            });
+
+            var color = target.data('color') == undefined ? 'label-primary' : 'label-' + target.data('color');
+            app.buttons.btnNodeColorSelection.trigger('changeColor', [color]);
+
             if (target.data('type') == 'stopline'){
                 app.panels.pointProperty.find('.is-stopLine').show();
                 if (target.data('parent') == undefined) {

@@ -27,10 +27,46 @@ var cystyles = [
             'color': '#2e6da4',
             'border-width': 0.5,
             'font-family': 'Avenue',
-            'font-size': '22px',
+            'font-size': '20px',
             'font-weight':'normal',
             'min-zoomed-font-size':'8px'
 
+        }
+    },
+    {
+        selector: 'node[color="danger"]',
+        css: {
+            'color': '#d9534f'
+        }
+    },
+    {
+        selector: 'node[color="success"]',
+        css: {
+            'color': '#5cb85c'
+        }
+    },
+    {
+        selector: 'node[color="info"]',
+        css: {
+            'color': '#5bc0de'
+        }
+    },
+    {
+        selector: 'node[color="default"]',
+        css: {
+            'color': '#777'
+        }
+    },
+    {
+        selector: 'node[color="warning"]',
+        css: {
+            'color': '#f0ad4e'
+        }
+    },
+    {
+        selector: 'node[color="primary"]',
+        css: {
+            'color': '#337ab7'
         }
     },
     {

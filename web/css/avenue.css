@@ -442,3 +442,11 @@ body.show-edge-input #input-edge-label {
     display:block;
     margin:5px;
 }
+
+.btn-node-color-selection {
+    padding:5px;
+}
+
+#btn-node-icon {
+    padding:5px 13px;
+}

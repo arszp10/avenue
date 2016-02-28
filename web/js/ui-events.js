@@ -232,14 +232,33 @@ var uievents = {
             e.stopPropagation();
         });
 
-        app.inputs.inputNodeCapacity.on('change',function(){
+        app.inputs.inputsNodeProperty.on('change',function(){
+            var th = $(this);
             var id = app.panels.pointProperty.data('node');
-            app.cy.$('#'+id).data('capacity', $(this).val());
+            app.cy.$('#'+id).data(th.data('key'), th.val());
         });
 
-        app.inputs.inputNodeIntensity.on('change',function(){
+
+        app.buttons.btnsDirection.on('click',function(){
             var id = app.panels.pointProperty.data('node');
-            app.cy.$('#'+id).data('avgIntensity', $(this).val());
+            var icon = window.getComputedStyle($('i', this)[0], ':before').getPropertyValue('content');
+            icon = icon.substring(1,2);
+            app.cy.$('#'+id).data('icon', icon);
+        });
+
+
+        app.buttons.btnNodeColorSelection.on('changeColor',function(e, color){
+            $(this).find('span.label')
+                .removeClass('label-default label-primary label-info label-success label-danger label-warning')
+                .addClass(color);
+        });
+
+        app.buttons.btnsColorSelection.on('click',function(){
+            var id = app.panels.pointProperty.data('node');
+            var color = $(this).data('color');
+            app.cy.$('#'+id).data('color', color);
+            app.buttons.btnNodeColorSelection.trigger('changeColor', ['label-'+color]);
+
         });
 
         app.inputs.inputCrossroadOffset = $('#inputCrossroadOffset').slider({
@@ -253,14 +272,14 @@ var uievents = {
             app.inputs.inputCoPlanCycleTime.val(cp.cycleTime);
             app.inputs.inputCoPlanName.val(cp.name);
             app.inputs.inputCoPlanNotes.val(cp.notes);
-            app.panels.coPlanPropertyModal.modal('show');
+            app.panels.coPlanModal.modal('show');
         });
 
         app.buttons.btnCoPlanSave.click(function(){
             app.coordinationPlan.cycleTime = app.inputs.inputCoPlanCycleTime.val();
             app.coordinationPlan.name = app.inputs.inputCoPlanName.val();
             app.coordinationPlan.notes = app.inputs.inputCoPlanNotes.val();
-            app.panels.coPlanPropertyModal.modal('hide');
+            app.panels.coPlanModal.modal('hide');
             app.actions.setCycleTime(app.coordinationPlan.cycleTime);
         });
 

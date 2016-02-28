@@ -48,27 +48,29 @@ var settings = {
     },
 
     crossRoad: {
-        icon:'',
-        type:'crossRoad',
+        icon: '',
+        type: 'crossRoad',
+        tag: '',
         cycleTime: 100
     },
 
     stopline: {
-        //icon:'\uf142',
-        icon:'\u0051',
-        type:'stopline',
+        icon: '\u0051',
+        type: 'stopline',
+        tag: '',
         cycleTime: 100,
         inFlow: [],
         outFlow: [],
         avgIntensity: 1800,
         capacity: 3600,
-        intervals: [
-            {s:0, f:29, length: 30}
-        ]
+        greenOffset1:6,
+        greenOffset2:0,
+        intervals: '[[0,20], [40,55]]'
     },
     carriageway:{
         icon:'\uf0ec',
-        type:'carriageway',
+        type: 'carriageway',
+        tag: '',
         cycleTime: 100,
         inFlow: [],
         outFlow: [],
@@ -79,8 +81,9 @@ var settings = {
         dispersion: 0.5
     },
     point: {
-        icon:'\uf276',
-        type:'point',
+        icon: '\uf276',
+        type: 'point',
+        tag: '',
         cycleTime: 100,
         inFlow: [],
         outFlow: [],
@@ -88,8 +91,9 @@ var settings = {
         capacity: 3600
     },
     bottleneck: {
-        icon:'\uf0b0',
-        type:'bottleneck',
+        icon: '\uf0b0',
+        type: 'bottleneck',
+        tag: '',
         cycleTime: 100,
         inFlow: [],
         outFlow: [],
@@ -97,8 +101,9 @@ var settings = {
         capacity: 2000
     },
     concurrent: {
-        icon:'\uf074',
-        type:'concurrent',
+        icon: '\uf074',
+        type: 'concurrent',
+        tag: '',
         cycleTime: 100,
         inFlow: [],
         outFlow: [],
@@ -106,8 +111,9 @@ var settings = {
         capacity: 3600
     },
     concurrentMerge: {
-        icon:'\uf126',
-        type:'concurrentMerge',
+        icon: '\uf126',
+        type: 'concurrentMerge',
+        tag: '',
         cycleTime: 100,
         inFlow: [],
         outFlow: [],
