@@ -121,11 +121,11 @@ body{
     padding: 10px 10px 0px 10px;
     top: 70px;
     bottom: 70px;
-    right: -39.5%;
+    right: -390px;
     z-index: 10;
     position:absolute;
     background: white;
-    width:40%;
+    width:400px;
 
     -webkit-transition: all .3s ease-in-out;
     -o-transition: all .3s ease-in-out;
@@ -264,8 +264,8 @@ body.show-edge-input #input-edge-label {
     position:absolute;
     top: 0px;
     left:0px;
-    z-index:200;
-    opacity: 0.95;
+    z-index:2000;
+    /*opacity: 0.95;*/
     width: 275px;
 }
 
@@ -449,4 +449,20 @@ body.show-edge-input #input-edge-label {
 
 #btn-node-icon {
     padding:5px 13px;
+}
+
+#input-crossroad-name {
+    border: 0px solid white;
+    font-size: 18px;
+    width: 500px;
+}
+
+.stop-line-icon {
+    font-family: Avenue;
+    font-size: 13px;
+}
+
+.btn-stop-line {
+    padding: 0px 6px;
+    font-size: 13px;
 }

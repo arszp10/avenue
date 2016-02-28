@@ -54,7 +54,7 @@ var cyevents = {
             }
 
             if (type == 'crossRoad') {
-                app.actions.showCrossroadModal();
+                app.actions.showCrossroadModal(e.cyTarget);
                 return;
             }
 

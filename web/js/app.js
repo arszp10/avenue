@@ -18,7 +18,8 @@ var app = {
         leftPanel: 'div.left-panel',
         pointProperty: '#panel-point-property',
         crossRoadModal: '#crossroad-modal',
-        coPlanModal: '#co-plan-modal'
+        coPlanModal: '#co-plan-modal',
+        tblPhasesBody: '#crossroad-modal table.table-phases tbody'
     },
     inputs: {
         inputEdgeLabel: '#input-edge-label',
@@ -27,7 +28,8 @@ var app = {
         inputCoPlanCycleTime: '#inputCoPlanCycleTime',
         inputCoPlanName: '#inputCoPlanName',
         inputCoPlanNotes: '#inputCoPlanNotes',
-        inputsNodeProperty: 'input.node-property'
+        inputsNodeProperty: 'input.node-property',
+        inputCrossroadName: '#input-crossroad-name'
     },
     buttons: {
         btnPanMode:           '#btn-now-pan-mode',
@@ -127,9 +129,31 @@ var app = {
             return data;
         },
 
-        showCrossroadModal: function(){
-            app.panels.crossRoadModal.modal('show');
+        showCrossroadModal: function(node){
+            var stopLines = app.cy.$('node[parent="'+node.data('id')+'"][type="stopline"]');
+            var template = function(data){
+                return '<tr class="stop-line-row" data-id="' + data.id + '">' +
+                '<td class="col-sm-2 text-right">' +
+                    '<button class="btn btn-sm btn-stop-line btn-' + data.color + '"><span class="stop-line-icon">' + data.icon + '</span>&nbsp;' + data.tag + '</button></td>' +
+                '<td class="ph-td ph-col-1"><input type="checkbox"></td>' +
+                '<td class="ph-td ph-col-2"><input type="checkbox"></td>' +
+                '<td class="ph-td ph-col-3"><input type="checkbox" disabled></td>' +
+                '<td class="ph-td ph-col-4"><input type="checkbox" disabled></td>' +
+                '<td class="ph-td ph-col-5"><input type="checkbox" disabled></td>' +
+                '<td class="ph-td ph-col-6"><input type="checkbox" disabled></td>' +
+                '<td class="ph-td ph-col-7"><input type="checkbox" disabled></td>' +
+                '<td class="ph-td ph-col-8"><input type="checkbox" disabled></td></tr>';
+            };
+            app.panels.tblPhasesBody.find('tr.stop-line-row').remove();
+            $.each(stopLines, function(i,v){
+                app.panels.tblPhasesBody.append(template(v.data()));
+                app.panels.tblPhasesBody.find('input[type="checkbox"]').iCheck({
+                    checkboxClass: 'icheckbox_square-green'
+                });
 
+            });
+
+            app.panels.crossRoadModal.modal('show');
         },
 
         showNodePopup: function(target, x, y){
@@ -145,7 +169,7 @@ var app = {
                 $v.val(target.data($v.data('key')));
             });
 
-            var color = target.data('color') == undefined ? 'label-primary' : 'label-' + target.data('color');
+            var color = target.data('color') == undefined ? 'btn-primary' : 'btn-' + target.data('color');
             app.buttons.btnNodeColorSelection.trigger('changeColor', [color]);
 
             if (target.data('type') == 'stopline'){

@@ -18,6 +18,13 @@ var uievents = {
 
         });
 
+        $(document).on('click', 'button.btn-stop-line', function(e){
+            var nodeId = $(this).closest('tr').data('id');
+            var target = app.cy.$('#'+nodeId);
+            console.log(target, e.clientX, e.clientY);
+            app.actions.showNodePopup(target, e.clientX, e.clientY);
+        });
+
         app.buttons.btnPanMode.click(this.paletteClick);
         app.buttons.btnSelectMode.click(this.paletteClick);
         app.buttons.btnAddStopline.click(this.paletteClick);
@@ -248,8 +255,8 @@ var uievents = {
 
 
         app.buttons.btnNodeColorSelection.on('changeColor',function(e, color){
-            $(this).find('span.label')
-                .removeClass('label-default label-primary label-info label-success label-danger label-warning')
+            $(this)
+                .removeClass('btn-default btn-primary btn-info btn-success btn-danger btn-warning')
                 .addClass(color);
         });
 
@@ -257,7 +264,7 @@ var uievents = {
             var id = app.panels.pointProperty.data('node');
             var color = $(this).data('color');
             app.cy.$('#'+id).data('color', color);
-            app.buttons.btnNodeColorSelection.trigger('changeColor', ['label-'+color]);
+            app.buttons.btnNodeColorSelection.trigger('changeColor', ['btn-'+color]);
 
         });
 

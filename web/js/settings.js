@@ -50,8 +50,19 @@ var settings = {
     crossRoad: {
         icon: '',
         type: 'crossRoad',
-        tag: '',
-        cycleTime: 100
+        name: '',
+        cycleTime: 100,
+        offset: 10,
+        phases: [
+            {
+                length: 50,
+                minLength: 15
+            },
+            {
+                length: 50,
+                minLength: 15
+            }
+        ]
     },
 
     stopline: {
@@ -59,21 +70,19 @@ var settings = {
         type: 'stopline',
         tag: '',
         cycleTime: 100,
-        inFlow: [],
-        outFlow: [],
         avgIntensity: 1800,
         capacity: 3600,
         greenOffset1:6,
         greenOffset2:0,
-        intervals: '[[0,20], [40,55]]'
+        intervals: '[[0,20], [40,55]]',
+        greenPhases: [true, false]
     },
+
     carriageway:{
         icon:'\uf0ec',
         type: 'carriageway',
         tag: '',
         cycleTime: 100,
-        inFlow: [],
-        outFlow: [],
         avgIntensity: 1800,
         capacity: 3600,
         routeTime: 20,
@@ -85,8 +94,6 @@ var settings = {
         type: 'point',
         tag: '',
         cycleTime: 100,
-        inFlow: [],
-        outFlow: [],
         avgIntensity: 1800,
         capacity: 3600
     },
@@ -95,8 +102,6 @@ var settings = {
         type: 'bottleneck',
         tag: '',
         cycleTime: 100,
-        inFlow: [],
-        outFlow: [],
         avgIntensity: 1800,
         capacity: 2000
     },
@@ -105,8 +110,6 @@ var settings = {
         type: 'concurrent',
         tag: '',
         cycleTime: 100,
-        inFlow: [],
-        outFlow: [],
         avgIntensity: 1800,
         capacity: 3600
     },
@@ -115,8 +118,6 @@ var settings = {
         type: 'concurrentMerge',
         tag: '',
         cycleTime: 100,
-        inFlow: [],
-        outFlow: [],
         avgIntensity: 1800,
         capacity: 3600
     }
