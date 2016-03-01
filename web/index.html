@@ -8,7 +8,7 @@
     <link href="./css/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
     <link href="./css/chartist.min.css" rel="stylesheet" type="text/css">
     <link href="./css/bootstrap-slider.css" rel="stylesheet" type="text/css">
-    <link href="./js/i-check/skins/square/green.css" rel="stylesheet" type="text/css">
+    <link href="./js/i-check/skins/minimal/blue.css" rel="stylesheet" type="text/css">
     <link href="./css/avenue.css" rel="stylesheet">
     <link href="./css/avenue-font.css" rel="stylesheet">
 </head>
@@ -167,7 +167,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <input type="text"  id="input-crossroad-name" value="Crossroad properties"/>
+                <input type="text"  id="input-crossroad-name" placeholder="Crossroad properties"/>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
@@ -177,40 +177,19 @@
                                 <thead>
                                 <tr>
                                     <th class="col-sm-2">Phases</th>
-                                    <th class="ph-th ph-col-1">1</th>
-                                    <th class="ph-th ph-col-2 ph-selected">2</th>
-                                    <th class="ph-th ph-col-3">3</th>
-                                    <th class="ph-th ph-col-4">4</th>
-                                    <th class="ph-th ph-col-5">5</th>
-                                    <th class="ph-th ph-col-6">6</th>
-                                    <th class="ph-th ph-col-7">7</th>
-                                    <th class="ph-th ph-col-8">8</th>
+                                    <th>1</th>
+                                    <th class="ph-th ph-selected" data-cols='[1,2]'>2</th>
+                                    <th class="ph-th" data-cols='[1,2,3]'>3</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4]'>4</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4,5]'>5</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4,5,6]'>6</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4,5,6,7]'>7</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4,5,6,7,8]'>8</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr>
-                                    <td class="col-sm-2 text-right"><label>Value</label></td>
-                                    <td class="ph-col-1"><input type="text" class="form-control input-sm"></td>
-                                    <td class="ph-col-2"><input type="text" class="form-control input-sm"></td>
-                                    <td class="ph-col-3"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-4"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-5"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-6"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-7"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-8"><input type="text" class="form-control input-sm" disabled></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-sm-2 text-right"><label>Min</label></td>
-                                    <td class="ph-col-1"><input type="text" class="form-control input-sm"></td>
-                                    <td class="ph-col-2"><input type="text" class="form-control input-sm"></td>
-                                    <td class="ph-col-3"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-4"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-5"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-6"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-7"><input type="text" class="form-control input-sm" disabled></td>
-                                    <td class="ph-col-8"><input type="text" class="form-control input-sm" disabled></td>
-                                </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -406,9 +385,11 @@
 <script src="./js/cytoscape/cytoscape-panzoom.js"></script>
 <script src="./js/cytoscape/cytoscape-navigator.js"></script>
 <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+
 <script src="./js/app.js"></script>
+<script src="./js/html-templates.js"></script>
 <script src="./js/settings.js"></script>
-<script src="./js/templates.js"></script>
+<script src="./js/network-samples.js"></script>
 <script src="./js/cy-styles.js"></script>
 <script src="./js/ui-events.js"></script>
 <script src="./js/cy-events.js"></script>

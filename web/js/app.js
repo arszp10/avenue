@@ -61,8 +61,8 @@ var app = {
         btnCoPlanSave:        '#btn-co-plan-save',
         btnsDirection:        'div.menu-directions button',
         btnsColorSelection:   '.drop-down-color a.label',
-        btnNodeColorSelection:'#btn-node-color-selection'
-
+        btnNodeColorSelection:'#btn-node-color-selection',
+        btnsCrossFormPhasesCount: '.table-phases th.ph-th'
     },
     actions: {
         init: function(){
@@ -131,29 +131,19 @@ var app = {
 
         showCrossroadModal: function(node){
             var stopLines = app.cy.$('node[parent="'+node.data('id')+'"][type="stopline"]');
-            var template = function(data){
-                return '<tr class="stop-line-row" data-id="' + data.id + '">' +
-                '<td class="col-sm-2 text-right">' +
-                    '<button class="btn btn-sm btn-stop-line btn-' + data.color + '"><span class="stop-line-icon">' + data.icon + '</span>&nbsp;' + data.tag + '</button></td>' +
-                '<td class="ph-td ph-col-1"><input type="checkbox"></td>' +
-                '<td class="ph-td ph-col-2"><input type="checkbox"></td>' +
-                '<td class="ph-td ph-col-3"><input type="checkbox" disabled></td>' +
-                '<td class="ph-td ph-col-4"><input type="checkbox" disabled></td>' +
-                '<td class="ph-td ph-col-5"><input type="checkbox" disabled></td>' +
-                '<td class="ph-td ph-col-6"><input type="checkbox" disabled></td>' +
-                '<td class="ph-td ph-col-7"><input type="checkbox" disabled></td>' +
-                '<td class="ph-td ph-col-8"><input type="checkbox" disabled></td></tr>';
-            };
-            app.panels.tblPhasesBody.find('tr.stop-line-row').remove();
+            app.panels.tblPhasesBody.find('tr').remove();
+            app.panels.tblPhasesBody.append(htmlTemplates.crossRoadTablePhaseRow(node.data('phases')));
             $.each(stopLines, function(i,v){
-                app.panels.tblPhasesBody.append(template(v.data()));
+                app.panels.tblPhasesBody.append(htmlTemplates.crossRoadTableCheckRow(v.data()));
                 app.panels.tblPhasesBody.find('input[type="checkbox"]').iCheck({
-                    checkboxClass: 'icheckbox_square-green'
+                    checkboxClass: 'icheckbox_minimal-blue'
                 });
-
             });
 
+            app.inputs.inputCrossroadName.val(node.data('name'));
+            app.inputs.inputCrossroadOffset.slider('setValue', node.data('offset'));
             app.panels.crossRoadModal.modal('show');
+            $('div.slider-handle').click();
         },
 
         showNodePopup: function(target, x, y){

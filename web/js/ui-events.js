@@ -4,7 +4,7 @@ var uievents = {
         $('.chart-panel').drag();
 
         $('input[type="checkbox"]').iCheck({
-            checkboxClass: 'icheckbox_square-green'
+            checkboxClass: 'icheckbox_minimal-blue'
         });
 
         $(document).on('keyup', function(event){
@@ -36,10 +36,10 @@ var uievents = {
 
         app.buttons.listItemAddSample.click(function(){
             var key = $(this).data('key');
-            if(!mytemplates.hasOwnProperty(key)) {
+            if(!networkSamples.hasOwnProperty(key)) {
                 return;
             }
-            app.cy.add(mytemplates[key]);
+            app.cy.add(networkSamples[key]);
         });
 
         app.buttons.btnDeleteNode.click(function(){
@@ -189,10 +189,9 @@ var uievents = {
             var selected = app.cy.$('node:selected')[0];
             var id = selected.data('id');
             var chartId = 'ct-chart-' + id;
-            var chartPanel = '<div class="chart-panel visible-network"><div class="chart-panel-head"><i class="fa fa-reorder fa-2x"></i><a class="btn-chart-close" href="#"><i class="fa fa-close fa-2x"></i></a></div>' +
-                              '<div id="' + chartId +'" class="ct-chart"></div></div>';
+            var chartPanel = htmlTemplates.chartPanel(chartId);
 
-            $('body > div #' + chartId).parent().remove();
+            $('body > div #' + chartId).parent().remove(chartId);
             $('body > div').append(chartPanel);
 
             new Chartist.Line('#'+chartId, {
@@ -288,6 +287,19 @@ var uievents = {
             app.coordinationPlan.notes = app.inputs.inputCoPlanNotes.val();
             app.panels.coPlanModal.modal('hide');
             app.actions.setCycleTime(app.coordinationPlan.cycleTime);
+        });
+
+        app.buttons.btnsCrossFormPhasesCount.click(function(){
+           var cols = $(this).data('cols');
+            console.log(cols)
+           app.buttons.btnsCrossFormPhasesCount.removeClass('ph-selected');
+           $(this).addClass('ph-selected');
+           app.panels.tblPhasesBody.find('input[type="text"]').prop('disabled', true);
+           app.panels.tblPhasesBody.find('input[type="checkbox"]').iCheck('disable');
+           cols.map(function(v){
+               app.panels.tblPhasesBody.find('.ph-col-'+v+' input[type="text"]').prop('disabled', false);
+               app.panels.tblPhasesBody.find('.ph-col-'+v+' input[type="checkbox"]').iCheck('enable');
+           }) ;
         });
 
 

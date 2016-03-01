@@ -466,3 +466,7 @@ body.show-edge-input #input-edge-label {
     padding: 0px 6px;
     font-size: 13px;
 }
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    color: #ccc;
+}
