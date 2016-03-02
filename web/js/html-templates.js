@@ -13,8 +13,8 @@ var htmlTemplates = {
                 l1 = data[i-1].length;
                 l2 = data[i-1].minLength;
             }
-            row1 = row1 + '<td class="ph-td ph-col-' + i + '"><input type="text" class="form-control input-sm" '+disAttr+' value="'+l1+'"></td>';
-            row2 = row2 + '<td class="ph-td ph-col-' + i + '"><input type="text" class="form-control input-sm" '+disAttr+' value="'+l2+'"></td>';
+            row1 = row1 + '<td class="ph-td ph-col-' + i + '"><input type="text" id="ph-length-' + i + '" class="form-control input-sm" '+disAttr+' value="'+l1+'"></td>';
+            row2 = row2 + '<td class="ph-td ph-col-' + i + '"><input type="text" id="ph-max-length-' + i + '" class="form-control input-sm" '+disAttr+' value="'+l2+'"></td>';
         }
         var s =
             '<tr><td class="col-sm-2 text-right"><label>Value</label></td>' +

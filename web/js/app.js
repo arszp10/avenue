@@ -62,7 +62,8 @@ var app = {
         btnsDirection:        'div.menu-directions button',
         btnsColorSelection:   '.drop-down-color a.label',
         btnNodeColorSelection:'#btn-node-color-selection',
-        btnsCrossFormPhasesCount: '.table-phases th.ph-th'
+        btnsCrossFormPhasesCount: '.table-phases th.ph-th',
+        btnSaveCrossroadData : '#btn-save-crossroad-data',
     },
     actions: {
         init: function(){
@@ -131,6 +132,7 @@ var app = {
 
         showCrossroadModal: function(node){
             var stopLines = app.cy.$('node[parent="'+node.data('id')+'"][type="stopline"]');
+            app.panels.crossRoadModal.data('id',node.data('id'));
             app.panels.tblPhasesBody.find('tr').remove();
             app.panels.tblPhasesBody.append(htmlTemplates.crossRoadTablePhaseRow(node.data('phases')));
             $.each(stopLines, function(i,v){
@@ -143,7 +145,6 @@ var app = {
             app.inputs.inputCrossroadName.val(node.data('name'));
             app.inputs.inputCrossroadOffset.slider('setValue', node.data('offset'));
             app.panels.crossRoadModal.modal('show');
-            $('div.slider-handle').click();
         },
 
         showNodePopup: function(target, x, y){

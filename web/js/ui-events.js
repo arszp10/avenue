@@ -291,7 +291,6 @@ var uievents = {
 
         app.buttons.btnsCrossFormPhasesCount.click(function(){
            var cols = $(this).data('cols');
-            console.log(cols)
            app.buttons.btnsCrossFormPhasesCount.removeClass('ph-selected');
            $(this).addClass('ph-selected');
            app.panels.tblPhasesBody.find('input[type="text"]').prop('disabled', true);
@@ -302,6 +301,39 @@ var uievents = {
            }) ;
         });
 
+        app.buttons.btnSaveCrossroadData.click(function(){
+            var nodeId = app.panels.crossRoadModal.data('id');
+            app.cy.$('#'+nodeId).data('name', app.inputs.inputCrossroadName.val());
+            app.cy.$('#'+nodeId).data('offset', app.inputs.inputCrossroadOffset.slider('getValue'));
+
+            var phasesCount = app.panels.crossRoadModal.find('.ph-selected').data('count');
+            var phases = [];
+            var pLength = 0;
+            var maxLength = 0;
+            for(var i = 1; i<=phasesCount; i++){
+                pLength = app.panels.tblPhasesBody.find('input#ph-length-'+i).val();
+                maxLength = app.panels.tblPhasesBody.find('input#ph-max-length-'+i).val();
+                phases.push({
+                    length: pLength ? parseInt(pLength) : 0,
+                    minLength: maxLength ? parseInt(maxLength): 0
+                });
+            }
+            app.cy.$('#'+nodeId).data('phases', phases);
+            app.panels.tblPhasesBody.find('tr.stop-line-row').each(function(){
+                var $tr = $(this);
+                var green = [];
+                var inputs = $tr.find('td.ph-td:lt('+phases.length+') input[type="checkbox"]');
+                for(var i=0; i<phases.length; i++){
+                    green.push(inputs[i].checked);
+                }
+                app.cy.$('#'+$tr.data('id')).data('greenPhases', green);
+            });
+            app.panels.crossRoadModal.modal('hide');
+        });
+
+        app.panels.crossRoadModal.keyup(function(e){
+            e.stopPropagation();
+        });
 
     },
     paletteClick: function(){

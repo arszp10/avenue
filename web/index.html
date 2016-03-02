@@ -167,7 +167,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <input type="text"  id="input-crossroad-name" placeholder="Crossroad properties"/>
+                <input type="text"  id="input-crossroad-name" placeholder="Crossroad name"/>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
@@ -178,13 +178,13 @@
                                 <tr>
                                     <th class="col-sm-2">Phases</th>
                                     <th>1</th>
-                                    <th class="ph-th ph-selected" data-cols='[1,2]'>2</th>
-                                    <th class="ph-th" data-cols='[1,2,3]'>3</th>
-                                    <th class="ph-th" data-cols='[1,2,3,4]'>4</th>
-                                    <th class="ph-th" data-cols='[1,2,3,4,5]'>5</th>
-                                    <th class="ph-th" data-cols='[1,2,3,4,5,6]'>6</th>
-                                    <th class="ph-th" data-cols='[1,2,3,4,5,6,7]'>7</th>
-                                    <th class="ph-th" data-cols='[1,2,3,4,5,6,7,8]'>8</th>
+                                    <th class="ph-th ph-selected" data-cols='[1,2]' data-count="2">2</th>
+                                    <th class="ph-th" data-cols='[1,2,3]' data-count="3">3</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4]' data-count="4">4</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4,5]' data-count="5">5</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4,5,6]' data-count="6">6</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4,5,6,7]' data-count="7">7</th>
+                                    <th class="ph-th" data-cols='[1,2,3,4,5,6,7,8]' data-count="8">8</th>
                                 </tr>
                                 </thead>
 
@@ -203,7 +203,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+                <button type="button" class="btn btn-primary" id="btn-save-crossroad-data"><i class="fa fa-check"></i> Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
