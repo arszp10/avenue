@@ -158,7 +158,11 @@ var app = {
             app.inputs.inputNodeType.text(target.data('type'));
             app.inputs.inputsNodeProperty.each(function(i, v){
                 var $v = $(v);
-                $v.val(target.data($v.data('key')));
+                var data = target.data($v.data('key'));
+                if ($v.data('key') == 'intervals') {
+                    data = JSON.stringify(data);
+                }
+                $v.val(data);
             });
 
             var color = target.data('color') == undefined ? 'btn-primary' : 'btn-' + target.data('color');

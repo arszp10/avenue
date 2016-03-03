@@ -241,7 +241,11 @@ var uievents = {
         app.inputs.inputsNodeProperty.on('change',function(){
             var th = $(this);
             var id = app.panels.pointProperty.data('node');
-            app.cy.$('#'+id).data(th.data('key'), th.val());
+            var val = th.val();
+            if(th.data('key') == 'intervals') {
+                val = JSON.parse(val);
+            }
+            app.cy.$('#'+id).data(th.data('key'), val);
         });
 
 

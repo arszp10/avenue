@@ -77,7 +77,7 @@ var settings = {
         capacity: 1800,
         greenOffset1:6,
         greenOffset2:0,
-        intervals: '[[0,20], [40,55]]',
+        intervals: [[0,20], [40,55]],
         greenPhases: [true, false]
     },
 
