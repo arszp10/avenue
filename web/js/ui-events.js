@@ -308,12 +308,15 @@ var uievents = {
 
             var phasesCount = app.panels.crossRoadModal.find('.ph-selected').data('count');
             var phases = [];
+            var tag = 0;
             var pLength = 0;
             var maxLength = 0;
             for(var i = 1; i<=phasesCount; i++){
+                tag = app.panels.tblPhasesBody.find('input#ph-tag-'+i).val();
                 pLength = app.panels.tblPhasesBody.find('input#ph-length-'+i).val();
                 maxLength = app.panels.tblPhasesBody.find('input#ph-max-length-'+i).val();
                 phases.push({
+                    tag: tag,
                     length: pLength ? parseInt(pLength) : 0,
                     minLength: maxLength ? parseInt(maxLength): 0
                 });

@@ -141,10 +141,11 @@ var app = {
                     checkboxClass: 'icheckbox_minimal-blue'
                 });
             });
-
             app.inputs.inputCrossroadName.val(node.data('name'));
+            app.inputs.inputCrossroadOffset.slider('setAttribute', 'max', app.coordinationPlan.cycleTime - 1);
             app.inputs.inputCrossroadOffset.slider('setValue', node.data('offset'));
             app.panels.crossRoadModal.modal('show');
+            app.inputs.inputCrossroadOffset.slider('relayout');
         },
 
         showNodePopup: function(target, x, y){
@@ -174,6 +175,12 @@ var app = {
                 }
             } else {
                 app.panels.pointProperty.find('.is-stopLine').hide();
+            }
+
+            if (target.data('type') == 'carriageway'){
+                app.panels.pointProperty.find('.is-carriageway').show();
+            } else {
+                app.panels.pointProperty.find('.is-carriageway').hide();
             }
         }
     }
