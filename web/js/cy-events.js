@@ -7,8 +7,24 @@ var cyevents = {
             && target.data('parent') == source.data('parent')) {
             edge.addClass('edge-in-crossroad');
         }
-
     },
+
+    edgeCalcPortion: function(edge, source){
+        if (edge.data('portion')!== undefined && edge.data('portion') > 0) {
+            return;
+        }
+        var sourceEdges = app.cy.$('edge[source="' + edge.data('source') + '"]');
+        var sum = 0, p = 0;
+        sourceEdges.map(function(e){
+           if (e.hasClass('edgehandles-ghost-edge')) {return;}
+           p = e.data('portion');
+           sum += p== undefined ? 0 : p;
+        });
+        var avgIntensity = source.data('avgIntensity');
+        sum = sum >= avgIntensity ? 0 : avgIntensity - sum;
+        edge.data('portion', sum);
+    },
+
     init: function() {
         app.cy.on('tap', app.actions.tapToBackground);
 
@@ -116,6 +132,8 @@ var cyevents = {
                     app.cy.$('#' + edge.id).data('secondary', 'true');
                 }
             }
+
+            cyevents.edgeCalcPortion(e.cyTarget, source);
 
         });
     }

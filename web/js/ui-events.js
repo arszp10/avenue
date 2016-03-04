@@ -117,7 +117,6 @@ var uievents = {
             });
             var stringify = JSON.stringify(jsons);
             var ids = JSON.stringify(ids);
-
             localStorage.clear();
             localStorage.setItem('copied-graph', stringify);
             localStorage.setItem('copied-ids', ids);
@@ -131,7 +130,7 @@ var uievents = {
                 stringify = stringify.split(elem).join(app.actions.nextId())
             });
             var jsons = JSON.parse(stringify);
-               if (!jsons) {
+            if (!jsons) {
                 return;
             }
             var i = jsons.length;
