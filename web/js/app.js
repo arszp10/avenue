@@ -145,7 +145,6 @@ var app = {
             app.inputs.inputCrossroadOffset.slider('setAttribute', 'max', app.coordinationPlan.cycleTime - 1);
             app.inputs.inputCrossroadOffset.slider('setValue', node.data('offset'));
             app.panels.crossRoadModal.modal('show');
-            app.inputs.inputCrossroadOffset.slider('relayout');
         },
 
         showNodePopup: function(target, x, y){

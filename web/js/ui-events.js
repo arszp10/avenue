@@ -276,6 +276,10 @@ var uievents = {
             tooltip: 'always'
         });
 
+        app.panels.crossRoadModal.on('shown.bs.modal', function () {
+            app.inputs.inputCrossroadOffset.slider('relayout');
+        });
+
         app.buttons.btnCoPlanProperties.click(function(){
             var cp = app.coordinationPlan;
             app.inputs.inputCoPlanCycleTime.val(cp.cycleTime);
