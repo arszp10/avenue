@@ -75,7 +75,7 @@ var settings = {
         cycleTime: 100,
         avgIntensity: 900,
         capacity: 1800,
-        greenOffset1:6,
+        greenOffset1:0,
         greenOffset2:0,
         intervals: [[0,20], [40,55]],
         greenPhases: [true, false]
@@ -123,5 +123,35 @@ var settings = {
         cycleTime: 100,
         avgIntensity: 900,
         capacity: 1800
+    },
+    interTact: {
+        red: {
+            length : 6,
+            signals : [
+                {
+                    color: 'red',
+                    length: 3
+                },
+                {
+                    color: 'amber',
+                    length: 3
+                }
+            ]
+        },
+        green: {
+            length : 6,
+            signals : [
+                {
+                    color: 'blink',
+                    length: 3
+                },
+                {
+                    color: 'yellow',
+                    length: 3
+                }
+            ]
+        }
     }
+
+
 };

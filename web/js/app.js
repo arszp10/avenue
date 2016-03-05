@@ -19,7 +19,8 @@ var app = {
         pointProperty: '#panel-point-property',
         crossRoadModal: '#crossroad-modal',
         coPlanModal: '#co-plan-modal',
-        tblPhasesBody: '#crossroad-modal table.table-phases tbody'
+        tblPhasesBody: '#crossroad-modal table.table-phases tbody',
+        statusBar: '#status-bar'
     },
     inputs: {
         inputEdgeLabel: '#input-edge-label',

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="./css/cytoscape.js-panzoom.css" rel="stylesheet" type="text/css" />
     <link href="./css/chartist.min.css" rel="stylesheet" type="text/css">
@@ -155,8 +155,8 @@
             <li role="presentation"><a href="#" id="btn-show-results"  data-rel="show-results"><i class="fa fa-area-chart"></i></a></li>
             <li role="presentation"><a href="#" id="btn-show-routes"  data-rel="show-routes"><i class="fa fa-map-marker"></i></a></li>
         </ul>
-        <div class="status-bar">
-            <button type="button" class="btn btn-default" id="btn-toggle-map"><i class="fa fa-map-o"></i></button>
+        <div class="status-bar" id="status-bar">
+            <!--<button type="button" class="btn btn-default" id="btn-toggle-map"><i class="fa fa-map-o"></i></button>-->
         </div>
     </div>
 </div>
@@ -374,21 +374,7 @@
     </div>
 </div>
 <!-- hidden elemetns section-->
-
 <!-- draft elemetns section-->
-<div class="form-group hidden">
-    <label class="col-sm-2 control-label">Signals:</label>
-    <div class="col-sm-10">
-        <div class="signal-bar">
-            <div class="signal signal-red"   style="width:150px;"></div>
-            <div class="signal signal-amber" style="width:15px;"></div>
-            <div class="signal signal-green" style="width:150px;"></div>
-            <div class="signal signal-green-flash" style="width:15px;"></div>
-            <div class="signal signal-yellow" style="width:20px;"></div>
-            <div class="signal signal-red" style="width:200px;"></div>
-        </div>
-    </div>
-</div>
 <!-- draft elemetns section-->
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.min.js"></script>

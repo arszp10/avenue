@@ -370,7 +370,7 @@ body.show-edge-input #input-edge-label {
     background-color: yellow;
 }
 
-.signal-green-flash {
+.signal-blink {
     background: linear-gradient(90deg, darkgreen 50%, transparent 50%);
     background-size: 4px 4px;
     background-color: yellowgreen;

@@ -41,6 +41,17 @@ var htmlTemplates = {
             s = s + '</tr>';
         return s;
     },
+    signalBar : function(data){
+        var w = 0.5;
+        var s = '<div class="signal-bar">';
+            data.signals.forEach(function(v){
+                w = 100* v.length/data.cycleTime;
+                s +='<div class="signal signal-' + v.color + '" style="width:'+ w +'%"></div>';
+            })
+            s += '</div>';
+        return s;
+    },
+
     chartPanel: function(data){
         return '<div class="chart-panel visible-network">' +
             '<div class="chart-panel-head">' +
