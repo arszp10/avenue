@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     rigger = require('gulp-rigger'),
     sass = require('gulp-sass'),
+    gzip = require('gulp-gzip'),
     cssmin = require('gulp-minify-css'),
     rimraf = require('rimraf'),
     browserSync = require("browser-sync"),
@@ -57,7 +58,8 @@ gulp.task('js:build', function () {
     gulp.src(path.src.js)
         .pipe(rigger())
         .pipe(sourcemaps.init())
-        .pipe(uglify())
+      // .pipe(uglify())
+      // .pipe(gzip())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(path.build.js))
         .pipe(reload({stream: true}));
@@ -69,7 +71,6 @@ gulp.task('js:build', function () {
 gulp.task('css:build', function () {
     gulp.src(path.src.style)
         .pipe(sourcemaps.init())
-        //.pipe(sass())
         .pipe(cssmin())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(path.build.css))

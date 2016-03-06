@@ -20,6 +20,7 @@
         "gulp-minify-css": "*",
         "gulp-rigger": "*",
         "gulp-sass": "*",
+        "gulp-gzip": "*",
         "gulp-sourcemaps": "*",
         "gulp-uglify": "*",
         "gulp-watch": "*",
