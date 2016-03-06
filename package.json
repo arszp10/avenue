@@ -15,12 +15,17 @@
         "socket.io": "1.4.4"
     },
     "devDependencies": {
-
+        "browser-sync": "*",
+        "gulp": "*",
+        "gulp-minify-css": "*",
+        "gulp-rigger": "*",
+        "gulp-sourcemaps": "*",
+        "gulp-uglify": "*",
+        "gulp-watch": "*",
+        "rimraf": "*"
     },
     "scripts": {
-        "start": "watchify -o js/bundle.js -v -d js/app.js",
-        "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js",
-        "test": "jest"
+
     },
     "author": "Mikhail Kuzin",
     "license": "MIT"
