@@ -1,0 +1,127 @@
+<div id="panel-point-property" class="panel panel-default panel-point-property">
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-6 control-label"><b>Node type</b>:</label>
+                <div class="col-sm-6">
+                    <strong id="input-node-type"></strong>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-node-intensity" class="col-sm-6 control-label"><b>Intensity</b> (ven/hour):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-intensity" data-key="avgIntensity" placeholder="Intensity (1800)">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-node-capacity" class="col-sm-6 control-label"><b>Capacity</b> (ven/hour):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-capacity"  data-key="capacity" value="" placeholder="Capacity (3600)">
+                </div>
+            </div>
+            <div class="form-group is-carriageway">
+                <label for="input-node-length" class="col-sm-6 control-label"><b>Length</b> (m):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-length"  data-key="length" value="" placeholder="Length (200)">
+                </div>
+            </div>
+            <div class="form-group is-carriageway">
+                <label for="input-node-length" class="col-sm-6 control-label"><b>Route time</b> (sec):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-route-time"  data-key="routeTime" value="" placeholder="Route time (50)">
+                </div>
+            </div>
+            <div class="form-group is-carriageway">
+                <label for="input-node-length" class="col-sm-6 control-label"><b>Dispersion</b> (m):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-dispersion"  data-key="dispersion" value="" placeholder="Dispersion (0.5)">
+                </div>
+            </div>
+
+            <div class="form-group is-stopLine in-crossroad">
+                <label for="input-green-offset-1" class="col-sm-6 control-label"><b>Green offset 1</b> (sec):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm node-property" id="input-green-offset-1"  data-key="greenOffset1"  value="" placeholder="Offset (6)">
+                </div>
+            </div>
+            <div class="form-group is-stopLine in-crossroad">
+                <label for="input-green-offset-2" class="col-sm-6 control-label"><b>Green offset 2</b> (sec):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm node-property" id="input-green-offset-2"  data-key="greenOffset2" value="" placeholder="Offset (0)">
+                </div>
+            </div>
+            <div class="form-group is-stopLine out-crossroad">
+                <label for="input-node-intensity" class="col-sm-6 control-label"><b>Red intervals</b> (sec):</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-red-intervals" data-key="intervals" placeholder="[0, 10], [30, 54]">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-node-tag" class="col-sm-6 control-label"><b>Node tag</b>:</label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control input-sm node-property" id="input-node-tag" data-key="tag"  value="" placeholder="node-1.1">
+                        <div class="input-group-btn is-stopLine">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle btn-node-color-selection"
+                                    data-toggle="dropdown" aria-haspopup="true" id="btn-node-color-selection"
+                                    data-key="labelColor" data-value="default" aria-expanded="false">
+                                <i class="fa fa-paint-brush"></i>
+                                <span class="caret"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right drop-down-color">
+                                <a class="label label-default" data-color="default">GREY</a>
+                                <a class="label label-primary" data-color="primary">BLUE</a>
+                                <a class="label label-info"    data-color="info">SKY</a>
+                                <a class="label label-success" data-color="success">GREEN</a>
+                                <a class="label label-warning" data-color="warning">ORANGE</a>
+                                <a class="label label-danger"  data-color="danger">RED</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group is-stopLine">
+                <label class="col-sm-6 control-label"><b>Direction icon</b> :</label>
+                <div class="col-sm-6">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm  btn-default dropdown-toggle" id="btn-node-icon"  data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">choose icon <span class="caret"></span></button>
+                        <div class="dropdown-menu menu-directions">
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-north-forward"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-north-forward-left"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-north-forward-left-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-north-forward-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-north-left"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-north-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-north-left-right"></i></button>
+
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-south-forward"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-south-forward-left"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-south-forward-left-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-south-forward-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-south-left"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-south-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-south-left-right"></i></button>
+
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-east-forward"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-east-forward-left"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-east-forward-left-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-east-forward-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-east-left"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-east-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-east-left-right"></i></button>
+
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-west-forward"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-west-forward-left"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-west-forward-left-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-west-forward-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-west-left"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-west-right"></i></button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="av-west-left-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
