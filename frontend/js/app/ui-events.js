@@ -21,7 +21,6 @@ var uievents = {
         $(document).on('click', 'button.btn-stop-line', function(e){
             var nodeId = $(this).closest('tr').data('id');
             var target = app.cy.$('#'+nodeId);
-            console.log(target, e.clientX, e.clientY);
             app.actions.showNodePopup(target, e.clientX, e.clientY);
         });
 

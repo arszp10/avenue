@@ -203,7 +203,7 @@ $(document).ready(function() {
         app.cy.edgehandles({ });
         app.cy.panzoom({});
         cyevents.init();
-    }
+    };
     app.$cy.cytoscape(options);
 
 
