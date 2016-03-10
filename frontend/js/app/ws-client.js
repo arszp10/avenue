@@ -4,6 +4,9 @@ var login = 'ws-user-00001';
 $('#btn-calc').click(function(){
     var th = $(this);
 
+    console.log(JSON.stringify(app.actions.prepareCalcRequest()));
+    return;
+
     if (socket != null) {
         socket.emit('calc-request', login, app.actions.prepareCalcRequest());
         th.find('i').addClass('fa-spin');

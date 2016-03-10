@@ -114,21 +114,22 @@ var app = {
         },
 
         prepareCalcRequest: function (){
-            var data = {
-                nodes: {},
-                edges: []
-            };
-            var elems = app.cy.elements();
+            var map = {};
+            var elems = app.cy.nodes();
             elems.forEach(function(v, i, a){
                 if(v.isNode()){
-                    data.nodes[v.data('id')] = v.data();
-                };
-
-                if(v.isEdge()){
-                    data.edges.push(v.data());
+                    map[v.data('id')] = v.data();
+                    map[v.data('id')].edges = [];
                 };
             });
-            return data;
+
+            var elems = app.cy.edges();
+            elems.forEach(function(v, i, a){
+                if(v.isEdge()){
+                    map[v.data('target')].edges.push(v.data());
+                };
+            });
+            return map;
         },
 
         showCrossroadModal: function(node){
@@ -208,3 +209,4 @@ $(document).ready(function() {
 
 
 });
+
