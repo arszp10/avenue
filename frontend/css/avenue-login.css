@@ -55,3 +55,25 @@ form[role=login] label {
 .form-links a {
     color: #fff;
 }
+
+.login-form .has-error .form-control {
+    border-color: #DA706E;;
+    background: #F1D3D3;
+    color: #a94442;
+}
+
+.login-form .help-block {
+    display: block;
+    margin-top: -15px;
+    margin-bottom: 10px;
+    color: #737373;
+    border-radius: 6px;
+    font-size: 14px;
+    padding: 3px 9px;
+    text-align: left;
+}
+
+.login-form .has-error .help-block {
+    color: #F7F1F1;
+    background: #DA706E;
+}
