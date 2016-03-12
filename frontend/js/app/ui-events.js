@@ -344,6 +344,19 @@ var uievents = {
             e.stopPropagation();
         });
 
+        app.buttons.btnCalc.click(function(){
+            var data = app.actions.prepareCalcRequest();
+            var jqxhr = $.post("/api/model/validate", data, null, 'json')
+                .done(function(d) {
+                    console.log("success" );
+                    console.log( d );
+                })
+                .fail(function() {
+                    console.log( "error" );
+                });
+
+        });
+
     },
     paletteClick: function(){
         var $this = $(this);

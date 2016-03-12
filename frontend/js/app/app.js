@@ -1,6 +1,6 @@
-var editor = ace.edit("editor");
-editor.setTheme("ace/theme/chrome");
-editor.session.setMode("ace/mode/json");
+//var editor = ace.edit("editor");
+//editor.setTheme("ace/theme/chrome");
+//editor.session.setMode("ace/mode/json");
 
 var app = {
     $cy: null,
@@ -65,6 +65,7 @@ var app = {
         btnNodeColorSelection:'#btn-node-color-selection',
         btnsCrossFormPhasesCount: '.table-phases th.ph-th',
         btnSaveCrossroadData : '#btn-save-crossroad-data',
+        btnCalc:             '#btn-calc'
     },
     actions: {
         init: function(){

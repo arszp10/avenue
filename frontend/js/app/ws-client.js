@@ -1,10 +1,21 @@
 var socket = null;
 var login = 'ws-user-00001';
 
-$('#btn-calc').click(function(){
+$('#btn-calc123123').click(function(){
     var th = $(this);
+    var data = app.actions.prepareCalcRequest();
+    console.log(data);
 
-    console.log(JSON.stringify(app.actions.prepareCalcRequest()));
+    var jqxhr = $.post("/app/validate", data, null, 'json')
+        .done(function(d) {
+            console.log("success" );
+            console.log( d );
+        })
+        .fail(function() {
+            console.log( "error" );
+        });
+
+
     return;
 
     if (socket != null) {

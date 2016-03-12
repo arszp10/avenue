@@ -34,4 +34,5 @@ node_modules
 
 .idea
 
-build/*
+backend/public/*
+brics/*

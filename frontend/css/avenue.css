@@ -473,3 +473,8 @@ body.show-edge-input #input-edge-label {
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
     color: #ccc;
 }
+
+
+
+#loginModal .modal-dialog {   width: 400px;}
+#loginModal .modal-footer {   border-top: 0px; }

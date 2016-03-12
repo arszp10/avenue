@@ -14,14 +14,14 @@ var gulp = require('gulp'),
 
 var path = {
     build: {
-        html: 'build/',
-        js: 'build/js/',
-        css: 'build/css/',
-        img: 'build/img/',
-        fonts: 'build/fonts/'
+        html: 'backend/public/',
+        js: 'backend/public/js/',
+        css: 'backend/public/css/',
+        img: 'backend/public/img/',
+        fonts: 'backend/public/fonts/'
     },
     src: {
-        html:   'frontend/*.html',
+        html:   'frontend/**/*.html',
         js:     'frontend/js/_bundle.js',
         style:  'frontend/css/_bundle.css',
         img:    'frontend/img/**/*.*',
@@ -34,12 +34,12 @@ var path = {
         img:    'frontend/img/**/*.*',
         fonts:  'frontend/fonts/**/*.*'
     },
-    clean: './build'
+    clean: './backend/public'
 };
 
 var config = {
     server: {
-        baseDir: "./build"
+        baseDir: "./backend/public"
     },
     tunnel: true,
     host: 'localhost',
