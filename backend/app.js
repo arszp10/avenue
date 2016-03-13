@@ -16,7 +16,6 @@ var store = new MongoDBStore({
     collection: 'sessions'
 });
 
-
 var db   = mongoose.connect(config.database);
 var app = express();
 
@@ -26,15 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-app.use(require('express-session')({
-    secret: 'This is a secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 60000 * 60 * 24 * 7 // 1 week
-    },
-    store: store
-}));
+app.use(require('express-session')(config.session(store)));
 
 require('./routes/web.js')(app);
 require('./routes/api.js')(app);
