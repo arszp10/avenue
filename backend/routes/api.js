@@ -97,6 +97,14 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/api/ping', authenticateApi, function (req, res) {
+        res.json({
+            result: true,
+            message: 'Pong',
+            data: []
+        });
+    });
+    
     app.post('/api/model/validate', function (req, res) {
         res.json({
             result: true,
@@ -105,13 +113,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/api/ping', authenticateApi, function (req, res) {
-        res.json({
-            result: true,
-            message: 'Pong',
-            data: []
-        });
-    });
+
 
 
 }
