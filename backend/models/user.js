@@ -12,6 +12,7 @@ var userSchema = new Schema({
     fullName:  { type: String, required: required, maxlength: maxlength, minlength: minlength },
     email:     { type: String, required: required, unique: true, maxlength: maxlength, minlength: minlength },
     password:  { type: String, required: required, minlength: minlength },
+    passwordHash:  { type: String, required: required, minlength: minlength },
     salt:      { type: String, required: true },
     apiKey:    { type: String, required: true, unique: true },
     apiSecret: { type: String, required: true },
@@ -31,12 +32,20 @@ userSchema.pre('validate', function(next) {
         var apisec = this.genSalt();
         this.salt = this.genSalt();
         this.createdAt = currentDate;
-        this.password  = this.encryptPassword(this.password);
+        this.passwordHash  = this.encryptPassword(this.password);
         this.apiKey    = this.encryptPassword(apikey).substr(0, 10);
         this.apiSecret = this.encryptPassword(apisec).substr(0, 10);
     }
     next();
 });
+
+userSchema.pre('save', function(next) {
+    if (this.password !== '********') {
+        this.password = '********';
+    }
+    next();
+});
+
 
 userSchema.methods.genSalt = function() {
     return Math.round((new Date().valueOf() * Math.random())) + '';
@@ -47,10 +56,9 @@ userSchema.methods.encryptPassword = function(password) {
 };
 
 userSchema.methods.authenticate = function(plainText) {
-    return this.encryptPassword(plainText) === this.password;
+    return this.encryptPassword(plainText) === this.passwordHash;
 };
 
 
 var User = mongoose.model('User', userSchema);
-
 module.exports = User;

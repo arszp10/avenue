@@ -1,5 +1,29 @@
 $(document).ready(function(event){
 
+    var singUpApiWrapper = {
+        calls: {
+            signIn: ['POST', '/api/user/sign-in'],
+            signUp: ['POST', '/api/user/sign-up'],
+            resetPassword: ['POST', '/api/user/reset-password']
+        },
+        call: function(action, data, success, fail, options){
+            if (! this.calls.hasOwnProperty(action)) {
+                fail('Error: Unknown action called!');
+            }
+
+            var method = this.calls[action][0];
+            var url = this.calls[action][1];
+
+            return $.ajax({
+                method: method,
+                url: url,
+                data: data,
+                dataType: 'json'
+            }).done(function(r){success(r, options);})
+                .fail(function(r){fail(r, options);});
+        }
+    };
+
     var notifyErrors = function(data){
         data.forEach(function(v){
             $.notify(v.message, {
@@ -21,18 +45,25 @@ $(document).ready(function(event){
     };
 
 
-    var $post = function(url, data, form, redirect){
-        var jqxhr = $.post(url, data, null, 'json')
-            .done(function(res) {
-                if (res.result) {
-                    window.location = redirect
-                } else {
-                    helpBlockErrors(form, res.data);
-                }
-            })
-            .fail(function() {
-                notifyErrors([{message: 'Unexpected error, please mail to support!'}]);
-            });
+    var ajaxFormSubmit = function(res, options) {
+        if (res.result) {
+            window.location = options.redirect
+        } else {
+            helpBlockErrors(options.form, res.data);
+        }
+    };
+
+
+    var unexpectedResponse = function() {
+        notifyErrors([{message: 'Unexpected error, please mail to support!'}]);
+    };
+
+
+    var formSubmit = function(th, m, r){
+        var data = {};
+        th.serializeArray().map(function(v){ data[v.name] = v.value; });
+        singUpApiWrapper.call(m, data, ajaxFormSubmit, unexpectedResponse, {redirect: r, form: th});
+        return false;
     };
 
     $('input[type="checkbox"]').iCheck({
@@ -40,24 +71,14 @@ $(document).ready(function(event){
     });
 
     $('#sign-up-form').submit(function(){
-        var data = {};
-        var th = $(this);
-        $(this).serializeArray().map(function(v){ data[v.name] = v.value; });
-        $post("/api/user/sign-up", data, th, "welcome");
-        return false;
+        return formSubmit($(this),'signUp', 'welcome');
     });
 
     $('#reset-password-form').submit(function(){
-
-        return false;
+        return formSubmit($(this), 'resetPassword', 'done');
     });
 
     $('#sign-in-form').submit(function(){
-        var data = {remember: 'off'};
-        var th = $(this);
-        $(this).serializeArray().map(function(v){ data[v.name] = v.value; });
-        console.log(data);
-        $post("/api/user/sign-in", data, th, "/app");
-        return false;
+        return formSubmit($(this), 'signIn', '/app');
     });
 });

@@ -97,9 +97,9 @@ app.post('/api/user/sign-in', function(req, res) {
     User.findOne({ email: req.body.email }, function(err, user) {
         if (user && user.authenticate(req.body.password)) {
             req.session.user_id = user.id;
-            if (req.body.remember == 'on') {
-               res.cookie('_avenue', {a:1}, { expires: new Date(Date.now() + 2 * 604800000), path: '/' });
-            }
+            //if (req.body.remember == 'on') {
+            //   res.cookie('_avenue', {a:1}, { expires: new Date(Date.now() + 2 * 604800000), path: '/' });
+            //}
             res.send({
                 result: true,
                 message : 'User login successfully!',
@@ -118,6 +118,24 @@ app.post('/api/user/sign-in', function(req, res) {
     });
 });
 
+
+app.post('/api/user/reset-password', function(req, res) {
+    User.findOne({ email: req.body.email }, function(err, user) {
+        if (user) {
+            res.send({
+                result: true,
+                message : 'Password recovery instructions sent successfully!',
+                data: []
+            });
+        } else {
+            res.send({
+                result: false,
+                message : 'User invalid credentials!',
+                data: [ {path: 'email', message: 'Sorry, but we doesn\'t have such email'}]
+            });
+        }
+    });
+});
 
 app.post('/api/model/validate', function(req, res) {
     //console.log(req.body);
