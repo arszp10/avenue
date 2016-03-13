@@ -11,10 +11,10 @@ function authenticateWeb(req, res, next) {
 
 module.exports = function(app) {
 
-    app.use('/', express.static(__dirname + '/public'));
+    app.use('/', express.static(__dirname + '/../public'));
 
     app.use('/app', authenticateWeb, function (req, res) {
-        res.sendFile('app.html', {root: __dirname + '/public'});
+        res.sendFile('app.html', {root: __dirname + '/../public'});
     });
 
     app.use('/sign-in', function (req, res) {
@@ -22,7 +22,7 @@ module.exports = function(app) {
             res.redirect('/app');
             return;
         }
-        res.sendFile('sign-in.html', {root: __dirname + '/public'});
+        res.sendFile('sign-in.html', {root: __dirname + '/../public'});
     });
 
     app.use('/sign-out', function (req, res) {

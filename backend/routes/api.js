@@ -1,4 +1,34 @@
-var User = require('./models/user');
+var _ = require('lodash');
+var User = require('../models/user');
+
+function wrongCredentials(res){
+    res.status(401);
+    res.json({
+        "code": 401,
+        "message": "Wrong api_key and api_secret combination"
+    })
+};
+
+function authenticateApi(req, res, next) {
+    if (req.session.user_id) {
+        next(); return;
+    };
+    var query = _.assign({api_key:false, api_secret:false}, req.query);
+    if (query.api_key && query.api_secret) {
+        var cond = {
+            apiKey: query.api_key,
+            apiSecret: query.api_secret
+        };
+        User.findOne(cond, function (err, user) {
+            if (user) {
+                next(); return;
+            }
+            wrongCredentials(res);
+        });
+        return;
+    }
+    wrongCredentials(res);
+}
 
 module.exports = function(app) {
 
@@ -49,7 +79,6 @@ module.exports = function(app) {
         });
     });
 
-
     app.post('/api/user/reset-password', function (req, res) {
         User.findOne({email: req.body.email}, function (err, user) {
             if (user) {
@@ -75,5 +104,14 @@ module.exports = function(app) {
             data: []
         });
     });
+
+    app.get('/api/ping', authenticateApi, function (req, res) {
+        res.json({
+            result: true,
+            message: 'Pong',
+            data: []
+        });
+    });
+
 
 }

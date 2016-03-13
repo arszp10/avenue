@@ -2,7 +2,7 @@ module.exports = function(app){
     app.use(function(req, res, next){
         res.status(404);
         if (req.accepts('html')) {
-            res.sendFile('errors/404.html', {root: __dirname + '/public'});
+            res.sendFile('errors/404.html', {root: __dirname + '/../public'});
             return;
         }
         if (req.accepts('json')) {
@@ -15,7 +15,7 @@ module.exports = function(app){
 
     app.use(function(err, req, res, next){
         res.status(err.status || 500);
-        res.sendFile('errors/500.html', {root: __dirname + '/public'});
+        res.sendFile('errors/500.html', {root: __dirname + '/../public'});
     });
 
 
