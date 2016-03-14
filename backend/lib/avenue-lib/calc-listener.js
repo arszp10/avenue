@@ -1,11 +1,11 @@
 var utils       = require('./utils/utils')();
-var CrossRoad   = require('./math-model/crossroad');
-var Point       = require('./math-model/point');
-var StopLine    = require('./math-model/stop-line');
-var CarriageWay = require('./math-model/carriageway');
-var BottleNeck  = require('./math-model/bottleneck');
-var Competitor  = require('./math-model/competitor');
-var CompetitorMerge  = require('./math-model/competitor-merge');
+var CrossRoad   = require('./i-model/crossroad');
+var Point       = require('./i-model/point');
+var StopLine    = require('./i-model/stop-line');
+var CarriageWay = require('./i-model/carriageway');
+var BottleNeck  = require('./i-model/bottleneck');
+var Competitor  = require('./i-model/competitor');
+var CompetitorMerge  = require('./i-model/competitor-merge');
 var _ = require('lodash');
 
 module.exports = {

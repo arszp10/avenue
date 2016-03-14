@@ -1,6 +1,6 @@
 var s =
-{
-    "yy9juae1njxg8pvi": {
+[
+    {
         "icon":"",
         "type":"carriageway",
         "tag":"",
@@ -20,7 +20,7 @@ var s =
             }
         ]
     },
-    "wnfpbyhb599q9f6r": {
+    {
         "icon":"",
         "type":"crossRoad",
         "name":"",
@@ -42,7 +42,7 @@ var s =
         "id":"wnfpbyhb599q9f6r",
         "edges":[]
     },
-    "go6sdm9j17tlnmi":{
+    {
         "icon":"Q",
         "type":"stopline",
         "tag":"",
@@ -58,7 +58,7 @@ var s =
         "parent":"wnfpbyhb599q9f6r",
         "edges":[]
     },
-    "pzxfd24chljl9pb9":{
+    {
         "icon":"",
         "type":"crossRoad",
         "name":"",
@@ -84,7 +84,7 @@ var s =
         "id":"pzxfd24chljl9pb9",
         "edges":[]
     },
-    "1x40nxubh91nstt9":{
+    {
         "icon":"Q",
         "type":"stopline",
         "tag":"",
@@ -107,7 +107,7 @@ var s =
             }
         ]
     },
-    "hks3ia83cg9o1or":{
+    {
         "icon":"Q",
         "type":"stopline",
         "tag":"",
@@ -129,4 +129,4 @@ var s =
             }
         ]
     }
-};
+];
