@@ -22,6 +22,9 @@ var app = {
         tblPhasesBody: '#crossroad-modal table.table-phases tbody',
         statusBar: '#status-bar'
     },
+    labels: {
+        labelMyAccountUsername: '#label-my-account-username'
+    },
     inputs: {
         inputEdgeLabel: '#input-edge-label',
         inputNodeType :'#input-node-type',
@@ -72,6 +75,7 @@ var app = {
             $.each(app.panels, function(i,v){app.panels[i] = $(v);});
             $.each(app.buttons, function(i,v){app.buttons[i] = $(v);});
             $.each(app.inputs, function(i,v){app.inputs[i] = $(v);});
+            $.each(app.labels, function(i,v){app.labels[i] = $(v);});
             uievents.init();
             app.coordinationPlan = settings.coordinationPlan;
         },

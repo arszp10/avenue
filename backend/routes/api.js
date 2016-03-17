@@ -61,6 +61,12 @@ module.exports = function(app) {
                 req.session.user_id = user.id;
                 req.session.user_name = user.fullName;
                 req.session.user_email = user.email;
+                var c = {
+                    userId: user.id,
+                    fullName: user.fullName,
+                    email: user.email
+                };
+                res.cookie('_avenue', c);
                 res.json({
                     result: true,
                     message: 'User login successfully!',

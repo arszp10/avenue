@@ -1,6 +1,6 @@
 var uievents = {
     init: function(){
-
+        var cookie = JSON.parse($.cookie('_avenue').substr(2));
         $('.chart-panel').drag();
 
         $('input[type="checkbox"]').iCheck({
@@ -15,8 +15,10 @@ var uievents = {
             if (event.which == 142 || event.which == 116){
                 $('#btn-calc').click();
             };
-
         });
+
+
+        app.labels.labelMyAccountUsername.text(cookie.fullName);
 
         $(document).on('click', 'button.btn-stop-line', function(e){
             var nodeId = $(this).closest('tr').data('id');
@@ -346,13 +348,16 @@ var uievents = {
 
         app.buttons.btnCalc.click(function(){
             var data = app.actions.prepareCalcRequest();
+            var $icon = $(this).find('i.fa');
+                $icon.addClass('fa-spin');
             var jqxhr = $.post("/api/model/validate", data, null, 'json')
                 .done(function(d) {
-                    console.log("success" );
                     console.log( d );
                 })
                 .fail(function() {
-                    console.log( "error" );
+                    console.log("API request error!");
+                }).always(function() {
+                    $icon.removeClass('fa-spin');
                 });
 
         });

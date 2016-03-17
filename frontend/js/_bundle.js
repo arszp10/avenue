@@ -10,6 +10,7 @@
 //= vendor/i-check/icheck.min.js
 //= vendor/utils/drag.js
 //= vendor/bootstrap/bootstrap-slider.min.js
+//= vendor/jquery/jquery.cookie.js
 
 //= app/app.js
 //= app/html-templates.js
