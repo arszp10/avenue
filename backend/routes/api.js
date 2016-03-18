@@ -1,5 +1,7 @@
 var _ = require('lodash');
+
 var User = require('../models/user');
+var avenueLib = require('../lib/avenue-lib');
 
 function wrongCredentials(res){
     res.status(401);
@@ -111,10 +113,19 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/api/model/validate', function (req, res) {
+    app.post('/api/model/recalculate', function (req, res) {
+        var errors = avenueLib.validate(req.body.data);
+        if (errors.length) {
+            res.json({
+                result: false,
+                message: 'The requested data has some errors!',
+                data: errors
+            });
+            return;
+        }
         res.json({
             result: true,
-            message: 'Success !!',
+            message: 'Everything alright !',
             data: []
         });
     });

@@ -150,8 +150,8 @@ var uievents = {
 
 
         app.buttons.btnShowNetwork.click(function(){
-            app.cy.elements().remove();
-            app.cy.add(JSON.parse(editor.getValue()))
+            //app.cy.elements().remove();
+            //app.cy.add(JSON.parse(editor.getValue()))
             uievents.bottomTabClick($(this));
             return false;
         });
@@ -350,9 +350,13 @@ var uievents = {
             var data = app.actions.prepareCalcRequest();
             var $icon = $(this).find('i.fa');
                 $icon.addClass('fa-spin');
-            var jqxhr = $.post("/api/model/validate", data, null, 'json')
+            app.cy.nodes().removeClass('has-error');
+            var jqxhr = $.post("/api/model/recalculate", {data: data}, null, 'json')
                 .done(function(d) {
-                    console.log( d );
+                    console.log(d.data);
+                    d.data.map(function(v){
+                        app.cy.$('#'+v.node).addClass('has-error');
+                    });
                 })
                 .fail(function() {
                     console.log("API request error!");

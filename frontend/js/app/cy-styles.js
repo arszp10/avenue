@@ -70,6 +70,13 @@ var cystyles = [
         }
     },
     {
+        selector: '.has-error',
+        css: {
+            'border-color': '#d9534f',
+            'border-width': 2.5
+        }
+    },
+    {
         selector: '$node > node',
         css: {
             'shape':'roundrectangle',
@@ -91,6 +98,16 @@ var cystyles = [
         css: {
             'content': 'data(icon)',
             'background-color': '#2e6da4',
+            'border-color': '#ffffff',
+            'color': '#ffffff',
+            'border-width': 2
+        }
+    },
+    {
+        selector: 'node.has-error:selected',
+        css: {
+            'content': 'data(icon)',
+            'background-color': '#d9534f',
             'border-color': '#ffffff',
             'color': '#ffffff',
             'border-width': 2

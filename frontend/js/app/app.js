@@ -119,20 +119,28 @@ var app = {
         },
 
         prepareCalcRequest: function (){
-            var map = {};
-            var elems = app.cy.nodes();
-            elems.forEach(function(v, i, a){
-                if(v.isNode()){
-                    map[v.data('id')] = v.data();
-                    map[v.data('id')].edges = [];
-                };
-            });
-
+            var map = [];
+            var edges = {};
             var elems = app.cy.edges();
             elems.forEach(function(v, i, a){
-                if(v.isEdge()){
-                    map[v.data('target')].edges.push(v.data());
+                if(! v.isEdge()){
+                    return
                 };
+                if (! edges.hasOwnProperty(v.data('target'))) {
+                    edges[v.data('target')] = [];
+                };
+                edges[v.data('target')].push(v.data());
+            });
+
+            elems = app.cy.nodes();
+            elems.forEach(function(v, i, a){
+                var item = {};
+                if(! v.isNode()){
+                    return
+                }
+                item = v.data();
+                item.edges = edges[v.data('id')];
+                map.push(item);
             });
             return map;
         },

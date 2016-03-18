@@ -1,3 +1,5 @@
+var _ = require('lodash');
+var validate = require('validate.js');
 var utils       = require('./utils/utils')();
 var CrossRoad   = require('./i-model/crossroad');
 var Point       = require('./i-model/point');
@@ -6,7 +8,11 @@ var CarriageWay = require('./i-model/carriageway');
 var BottleNeck  = require('./i-model/bottleneck');
 var Competitor  = require('./i-model/competitor');
 var CompetitorMerge  = require('./i-model/competitor-merge');
-var _ = require('lodash');
+
+var nodeConstraints   = require('./constraints/node');
+var edgeConstraints   = require('./constraints/edge');
+var carriagewayConstraints   = require('./constraints/carriageway');
+
 
 module.exports = {
     calc: function(request){
@@ -65,5 +71,20 @@ module.exports = {
 
         console.log('calc result');
         return result;
+    },
+
+    validate : function(data) {
+        var errors = [];
+        _.forEach(data, function(v){
+            var err = validate(v, nodeConstraints, {format: 'flat'});
+            if (err !== undefined) {
+                errors.push({
+                    node: v.id,
+                    errors: err
+                });
+            }
+        });
+        return errors;
     }
+
 };
