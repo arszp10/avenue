@@ -11,6 +11,7 @@
 //= vendor/utils/drag.js
 //= vendor/bootstrap/bootstrap-slider.min.js
 //= vendor/jquery/jquery.cookie.js
+//= vendor/notify.min.js
 
 //= app/app.js
 //= app/html-templates.js

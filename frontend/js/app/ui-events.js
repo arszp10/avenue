@@ -349,12 +349,17 @@ var uievents = {
             app.cy.nodes().removeClass('has-error');
             var jqxhr = $.post("/api/model/recalculate", {data: data}, null, 'json')
                 .done(function(d) {
-                    console.log(d.data);
+                    //console.log(d.data);
                     d.data.map(function(v){
                         app.cy.$('#'+v.node).addClass('has-error');
                     });
+                    $.notify(d.message, {
+                        position: 'bottom right',
+                        className : d.result ? "success" : "error"
+                    });
                 })
                 .fail(function() {
+
                     console.log("API request error!");
                 }).always(function() {
                     $icon.removeClass('fa-spin');

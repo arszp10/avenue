@@ -14,6 +14,9 @@ var nodeConstraints   = require('./constraints/node');
 var edgeConstraints   = require('./constraints/edge');
 var carriagewayConstraints   = require('./constraints/carriageway');
 var crossRoadConstraints = require('./constraints/cross-road');
+var phasesConstraints = require('./constraints/phase-data');
+
+_.assign(validate.validators, require('./validators/custom'));
 
 module.exports = {
     calc: function(request){
@@ -75,13 +78,24 @@ module.exports = {
     },
 
     _errors : [],
-    _nodeValidate: function(node, constraints, edge){
+    _nodeValidate: function(node, constraints, type, parentId){
         var err = validate(node, constraints, {format: 'flat'});
         if (err === undefined) {
             return true;
         }
+        var nodeId = '';
+        switch (type) {
+            case "edge" :
+                nodeId = node.target;
+                break;
+            case "phase" :
+                nodeId = parentId;
+                break;
+            default:
+                nodeId = node.id;
+        }
         this._errors.push({
-            node: edge ? node.target : node.id,
+            node: nodeId,
             errors: err
         });
         return false;
@@ -93,18 +107,30 @@ module.exports = {
             if (! this._nodeValidate(v, headerConstraints)) {
                 return;
             };
+            var res = false;
             switch (v.type) {
                 case "crossRoad":
-                    this._nodeValidate(v, crossRoadConstraints);
-                    break;
+                   res = this._nodeValidate(v, crossRoadConstraints);
+                   if (res) {
+                        v.phases.map(function(a){
+                            this._nodeValidate(a, phasesConstraints, 'phase', v.id);
+                        }, this);
+                   }
+                   break;
                 case "carriageway":
                     this._nodeValidate(v, carriagewayConstraints);
+                    this._nodeValidate(v, nodeConstraints);
+                    break;
+                case "stopline":
+                    //this._nodeValidate(v, carriagewayConstraints);
+                    //this._nodeValidate(v, nodeConstraints);
+                    //break;
                 default:
                     this._nodeValidate(v, nodeConstraints);
             }
             if (v.hasOwnProperty('edges') && v.edges.length > 0) {
                 v.edges.map(function(v) {
-                    this._nodeValidate(v, edgeConstraints, true);
+                    this._nodeValidate(v, edgeConstraints, 'edge');
                 }, this);
             }
         }, this);
