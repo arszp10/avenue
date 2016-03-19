@@ -53,7 +53,7 @@ var app = {
         btnCopy:              '#btn-copy',
         btnPaste:             '#btn-paste',
         btnShowNetwork:       '#btn-show-network',
-        btnShowSource:        '#btn-show-source',
+        //btnShowSource:        '#btn-show-source',
         btnShowResults:       '#btn-show-results',
         btnShowRoutes:        '#btn-show-routes',
         btnToggleMap:         '#btn-toggle-map',

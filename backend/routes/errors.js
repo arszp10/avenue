@@ -13,7 +13,16 @@ module.exports = function(app){
 
     app.use(function(err, req, res, next){
         res.status(err.status || 500);
-        res.sendFile('errors/500.html', {root: __dirname + '/../public'});
+        if(/application\/json/.test(req.get('accept'))) {
+            res.json({
+                "code": 500,
+                "message": "Internal server error"
+            });
+        } else {
+            res.sendFile('errors/500.html', {root: __dirname + '/../public'});
+        }
+
+
     });
 
 };

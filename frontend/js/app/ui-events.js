@@ -148,20 +148,16 @@ var uievents = {
         $(document).bind('paste', function(){app.buttons.btnPaste.click();});
         $(document).bind('cut', function(){app.buttons.btnCut.click();});
 
-
         app.buttons.btnShowNetwork.click(function(){
             //app.cy.elements().remove();
             //app.cy.add(JSON.parse(editor.getValue()))
             uievents.bottomTabClick($(this));
-            return false;
         });
 
-        app.buttons.btnShowSource.click(function(){
-            editor.setValue(JSON.stringify(app.cy.elements().jsons(), 4,' '));
-            uievents.bottomTabClick($(this));
-            return false;
-        });
-
+        //app.buttons.btnShowSource.click(function(){
+        //    //editor.setValue(JSON.stringify(app.cy.elements().jsons(), 4,' '));
+        //    uievents.bottomTabClick($(this));
+        //});
 
         app.buttons.btnShowResults.click(function(){
             uievents.bottomTabClick($(this));

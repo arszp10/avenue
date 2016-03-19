@@ -9,10 +9,11 @@ var BottleNeck  = require('./i-model/bottleneck');
 var Competitor  = require('./i-model/competitor');
 var CompetitorMerge  = require('./i-model/competitor-merge');
 
+var headerConstraints   = require('./constraints/header');
 var nodeConstraints   = require('./constraints/node');
 var edgeConstraints   = require('./constraints/edge');
 var carriagewayConstraints   = require('./constraints/carriageway');
-
+var crossRoadConstraints = require('./constraints/cross-road');
 
 module.exports = {
     calc: function(request){
@@ -73,18 +74,42 @@ module.exports = {
         return result;
     },
 
-    validate : function(data) {
-        var errors = [];
-        _.forEach(data, function(v){
-            var err = validate(v, nodeConstraints, {format: 'flat'});
-            if (err !== undefined) {
-                errors.push({
-                    node: v.id,
-                    errors: err
-                });
-            }
+    _errors : [],
+    _nodeValidate: function(node, constraints, edge){
+        var err = validate(node, constraints, {format: 'flat'});
+        if (err === undefined) {
+            return true;
+        }
+        this._errors.push({
+            node: edge ? node.target : node.id,
+            errors: err
         });
-        return errors;
-    }
+        return false;
+    },
 
+    validate : function(data) {
+        this._errors = [];
+        data.map(function(v){
+            if (! this._nodeValidate(v, headerConstraints)) {
+                return;
+            };
+            switch (v.type) {
+                case "crossRoad":
+                    this._nodeValidate(v, crossRoadConstraints);
+                    break;
+                case "carriageway":
+                    this._nodeValidate(v, carriagewayConstraints);
+                default:
+                    this._nodeValidate(v, nodeConstraints);
+            }
+            if (v.hasOwnProperty('edges') && v.edges.length > 0) {
+                v.edges.map(function(v) {
+                    this._nodeValidate(v, edgeConstraints, true);
+                }, this);
+            }
+        }, this);
+        return  this._errors;
+    }
 };
+
+
