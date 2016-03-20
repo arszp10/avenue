@@ -16,6 +16,7 @@ var carriagewayConstraints   = require('./constraints/carriageway');
 var crossroadConstraints     = require('./constraints/cross-road');
 var phasesConstraints        = require('./constraints/phase-data');
 var stoplineConstraints      = require('./constraints/stopline');
+var extraConstraints         = require('./constraints/parametrized');
 
 _.assign(validate.validators, require('./validators/custom'));
 
@@ -103,8 +104,12 @@ module.exports = {
     },
 
     validate : function(data) {
+        var parents = {};
+        var parentsIds = [];
+        var targetIds = [];
         this._errors = [];
-        data.map(function(v){
+        /* First iteration  */
+        data.map(function(v, inx){
             if (! this._validate(v, headerConstraints)) {
                 return;
             };
@@ -116,6 +121,8 @@ module.exports = {
                         v.phases.map(function(a){
                             this._validate(a, phasesConstraints, 'phase', v.id);
                         }, this);
+                        parents[v.id] = inx;
+                        parentsIds.push(v.id);
                    }
                    break;
                 case "carriageway":
@@ -134,7 +141,29 @@ module.exports = {
                     this._validate(v, edgeConstraints, 'edge');
                 }, this);
             }
+            if (this._errors.length === 0) {
+                targetIds.push(v.id);
+            }
         }, this);
+
+        /* Extra iteration  */
+        if (this._errors.length === 0) {
+            data.map(function(v, inx){
+                if (v.type == 'stopline' && v.hasOwnProperty('parent')) {
+                    var constr = extraConstraints.stoplineExtra(parentsIds, data[parents[v.parent]].phases.lenght);
+                    this._validate(v, constr);
+                    return;
+                }
+                if (v.hasOwnProperty('edges') && v.edges.length > 0) {
+                    v.edges.map(function(v) {
+                        var constr = extraConstraints.edgeExtra(targetIds);
+                        this._validate(v, constr, 'edge');
+                    }, this);
+                    return;
+                }
+            }, this);
+        }
+
         return  this._errors;
     }
 };

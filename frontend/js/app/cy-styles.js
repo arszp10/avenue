@@ -73,6 +73,7 @@ var cystyles = [
         selector: '.has-error',
         css: {
             'border-color': '#d9534f',
+            'color': '#d9534f',
             'border-width': 2.5
         }
     },
