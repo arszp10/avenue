@@ -16,7 +16,7 @@ module.exports = {
             onlyInteger: true,
             greaterThanOrEqualTo: 0
         },
-        lessThanCycleTime: true
+        lessThanField: 'cycleTime'
     },
     phases: {
         presence: true,

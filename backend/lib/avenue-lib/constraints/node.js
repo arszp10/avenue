@@ -1,4 +1,7 @@
 module.exports = {
+    tag: {
+        length: {maximum: 32}
+    },
     cycleTime:{
         presence: true,
         numericality: {
@@ -9,6 +12,7 @@ module.exports = {
     },
     avgIntensity:{
         presence: true,
+        lessThanField: 'capacity',
         numericality: {
             onlyInteger: true,
             greaterThanOrEqualTo: 0,

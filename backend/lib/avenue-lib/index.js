@@ -9,12 +9,13 @@ var BottleNeck  = require('./i-model/bottleneck');
 var Competitor  = require('./i-model/competitor');
 var CompetitorMerge  = require('./i-model/competitor-merge');
 
-var headerConstraints   = require('./constraints/header');
-var nodeConstraints   = require('./constraints/node');
-var edgeConstraints   = require('./constraints/edge');
+var headerConstraints        = require('./constraints/header');
+var nodeConstraints          = require('./constraints/node');
+var edgeConstraints          = require('./constraints/edge');
 var carriagewayConstraints   = require('./constraints/carriageway');
-var crossRoadConstraints = require('./constraints/cross-road');
-var phasesConstraints = require('./constraints/phase-data');
+var crossroadConstraints     = require('./constraints/cross-road');
+var phasesConstraints        = require('./constraints/phase-data');
+var stoplineConstraints      = require('./constraints/stopline');
 
 _.assign(validate.validators, require('./validators/custom'));
 
@@ -78,7 +79,7 @@ module.exports = {
     },
 
     _errors : [],
-    _nodeValidate: function(node, constraints, type, parentId){
+    _validate: function(node, constraints, type, parentId){
         var err = validate(node, constraints, {format: 'flat'});
         if (err === undefined) {
             return true;
@@ -104,33 +105,33 @@ module.exports = {
     validate : function(data) {
         this._errors = [];
         data.map(function(v){
-            if (! this._nodeValidate(v, headerConstraints)) {
+            if (! this._validate(v, headerConstraints)) {
                 return;
             };
             var res = false;
             switch (v.type) {
                 case "crossRoad":
-                   res = this._nodeValidate(v, crossRoadConstraints);
+                   res = this._validate(v, crossroadConstraints);
                    if (res) {
                         v.phases.map(function(a){
-                            this._nodeValidate(a, phasesConstraints, 'phase', v.id);
+                            this._validate(a, phasesConstraints, 'phase', v.id);
                         }, this);
                    }
                    break;
                 case "carriageway":
-                    this._nodeValidate(v, carriagewayConstraints);
-                    this._nodeValidate(v, nodeConstraints);
+                    this._validate(v, carriagewayConstraints);
+                    this._validate(v, nodeConstraints);
                     break;
                 case "stopline":
-                    //this._nodeValidate(v, carriagewayConstraints);
-                    //this._nodeValidate(v, nodeConstraints);
-                    //break;
+                    this._validate(v, stoplineConstraints);
+                    this._validate(v, nodeConstraints);
+                    break;
                 default:
-                    this._nodeValidate(v, nodeConstraints);
+                    this._validate(v, nodeConstraints);
             }
             if (v.hasOwnProperty('edges') && v.edges.length > 0) {
                 v.edges.map(function(v) {
-                    this._nodeValidate(v, edgeConstraints, 'edge');
+                    this._validate(v, edgeConstraints, 'edge');
                 }, this);
             }
         }, this);
