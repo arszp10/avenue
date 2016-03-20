@@ -129,7 +129,6 @@ body{
     position:absolute;
     background: white;
     width:400px;
-
     -webkit-transition: all .3s ease-in-out;
     -o-transition: all .3s ease-in-out;
     transition: all .3s ease-in-out;
@@ -482,4 +481,114 @@ body.show-edge-input #input-edge-label {
 
 .visible-results {
     background-color: #ffffff;
+}
+
+.input-node-search {
+    padding-left:30px;
+}
+
+.input-node-search-form:before {
+    display:block;
+    position: absolute;
+    content: '\f002';
+    color: #e3e3e3;
+    font-family: FontAwesome;
+    font-size: 16px;
+    top: 15px;
+    left: 19px;
+    z-index: 2;
+}
+
+.node-list {
+    margin-top:10px;
+}
+.node-list.single {
+    margin-bottom:5px;
+}
+
+
+.node-list-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e3e3e3;
+    cursor: pointer;
+    margin: 0px -10px;
+}
+.node-list-item:hover{
+    background-color: #f3f3f3;
+}
+
+.node-list.single .node-list-item {
+    border-bottom: 0px solid #e3e3e3;
+}
+
+
+.node-avatar {
+    font-family: Avenue;
+    font-size: 20px;
+    display: block;
+    border: 1px solid #777777;
+    width: 34px;
+    height: 34px;
+    line-height: 32px;
+    float: left;
+    border-radius: 32px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.node-avatar.cross-road {
+    border-radius: 4px;
+    line-height: 28px;
+}
+.node-parent-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    color:#999999;
+}
+.node-type{
+    font-size: 11px;
+    font-weight: bold;
+    float: right;
+    color:#777;
+}
+
+.node-tag {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.node-search-not-found {
+    heigth: 100px;
+    text-align: center;
+    padding-top:44px;
+    color: #b8b8b8;
+}
+
+.node-search-not-found .no-search-results {
+    color: #727272;
+    font-weight: 400;
+    line-height: 21px;
+    font-size: 18px;
+    padding-top: 23px;
+}
+
+.node-search-not-found .no-search-results p {
+    font-size: 14px;
+}
+.node-error-list {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.node-error-list li {
+    padding: 0px 0px;
+    margin: 0px 0px 5px;
+    font-size: 12px;
+    color:#fa6b6e;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
