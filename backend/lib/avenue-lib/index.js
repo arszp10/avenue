@@ -108,6 +108,9 @@ module.exports = {
         var parentsIds = [];
         var targetIds = [];
         this._errors = [];
+
+        if (validate.isEmpty(data)) {return this._errors;}
+
         /* First iteration  */
         data.map(function(v, inx){
             if (! this._validate(v, headerConstraints)) {

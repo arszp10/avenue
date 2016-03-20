@@ -354,7 +354,7 @@ var uievents = {
                         app.cy.$('#'+v.node).addClass('has-error');
                     });
                     $.notify(d.message, {
-                        position: 'bottom right',
+                        position: 'top center',
                         className : d.result ? "success" : "error"
                     });
                 })
