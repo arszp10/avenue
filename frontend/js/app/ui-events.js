@@ -17,14 +17,25 @@ var uievents = {
             };
         });
 
+        $(document).on('keyup', 'input', function(e){
+            e.stopPropagation();
+        });
 
         app.labels.labelMyAccountUsername.text(cookie.fullName);
 
-        $(document).on('click', 'button.btn-stop-line', function(e){
+        $(document).on('click', 'button.btn-stop-line, button.btn-edit-node', function(e){
             var nodeId = $(this).closest('tr').data('id');
             var target = app.cy.$('#'+nodeId);
             app.actions.showNodePopup(target, e.clientX, e.clientY);
         });
+
+
+        $(document).on('click', 'button.btn-pan-tonode', function(e){
+            var nodeId = $(this).closest('tr').data('id');
+            app.cy.fit(app.cy.$('#'+nodeId), 250);
+            app.cy.$('#'+nodeId).select();
+        });
+
 
         app.buttons.btnPanMode.click(this.paletteClick);
         app.buttons.btnSelectMode.click(this.paletteClick);
@@ -215,19 +226,16 @@ var uievents = {
             if (event.which == 13){
                 app.inputs.inputEdgeLabel.blur();
             }
-            event.stopPropagation();
         });
 
-        app.buttons.btnSlideRightPanel.click(function(){
+        app.buttons.btnCloseRightPanel.click(function(){
             $('body').toggleClass('show-right-panel');
+            app.inputs.inputNodeSearch.val('');
+
         });
 
         $('body').on('mouseup', function(){
             $('body').removeClass('show-panel-point-property');
-        });
-
-        app.panels.pointProperty.keyup(function(e){
-            e.stopPropagation();
         });
 
         app.panels.pointProperty.mouseup(function(e){
@@ -338,9 +346,6 @@ var uievents = {
             app.panels.crossRoadModal.modal('hide');
         });
 
-        app.panels.crossRoadModal.keyup(function(e){
-            e.stopPropagation();
-        });
 
         app.buttons.btnCalc.click(function(){
             var data = app.actions.prepareCalcRequest();
@@ -349,10 +354,17 @@ var uievents = {
             app.cy.nodes().removeClass('has-error');
             var jqxhr = $.post("/api/model/recalculate", {data: data}, null, 'json')
                 .done(function(d) {
-                    //console.log(d.data);
-                    d.data.map(function(v){
-                        app.cy.$('#'+v.node).addClass('has-error');
-                    });
+
+                    if (d.result) {
+                        app.state.lastModelingResult = [];
+                        app.state.lastErrors = [];
+                    } else {
+                        app.state.lastModelingResult = [];
+                        app.state.lastErrors = d.data;
+                        d.data.map(function(v){
+                            app.cy.$('#'+v.node).addClass('has-error');
+                        });
+                    }
                     $.notify(d.message, {
                         position: 'top center',
                         className : d.result ? "success" : "error"
@@ -364,10 +376,91 @@ var uievents = {
                 }).always(function() {
                     $icon.removeClass('fa-spin');
                 });
-
         });
 
+        app.inputs.inputNodeSearchForm.submit(function(e){
+            var text = app.inputs.inputNodeSearch.val();
+            var limit = 20;
+            var foundNodes = text.length == 0
+                ? app.cy.elements('node').jsons().slice(0, limit)
+                : app.cy.$("node[tag *= '" + text + "'], node[name *= '" + text + "']").jsons().slice(0, limit);
+            app.panels.nodeSearchResultlist.empty();
+            app.panels.nodeSearchInfo.empty();
+            $('body').addClass('show-right-panel');
+            if (foundNodes.length > 0){
+                $.each(foundNodes, function(inx, node){
+                    if (node.data.hasOwnProperty('parent') && node.data.type !== 'crossRoad') {
+                        node.data.name =  app.cy.$('#' + node.data.parent).data('name');
+                    }
+                    app.panels.nodeSearchResultlist.append(
+                        htmlTemplates.nodeSearchListItem(node.data)
+                    );
+                });
+            } else {
+                app.panels.nodeSearchResultlist.append(
+                    htmlTemplates.nodeSearchListNotFound(text)
+                );
+            }
+            return false;
+        });
+
+
+        $(document).on('click', '.node-list-item', function(event){
+            uievents.showNodeInformation(app.cy.$('#'+$(this).data('id')).data());
+        });
+
+
     },
+
+    flatternErrors: function(errors){
+        var err = errors.map(function(val){
+           return val. errors;
+        });
+        var flattern = [].concat.apply([], err);
+        return flattern;
+    },
+
+    showNodeInformation(node) {
+        app.panels.nodeSearchResultlist.empty();
+        app.panels.nodeSearchInfo.empty();
+        $('body').addClass('show-right-panel');
+        if (node.hasOwnProperty('parent') && node.type !== 'crossRoad') {
+            node.name =  app.cy.$('#' + node.parent).data('name');
+        }
+
+        app.panels.nodeSearchResultlist.append(
+            htmlTemplates.nodeSearchListItem(node, 'single')
+        );
+        app.panels.nodeSearchInfo.append(
+            htmlTemplates.nodeCommonProps(node)
+        );
+        app.panels.nodeSearchInfo.append(
+            htmlTemplates.locateEditButtons(node)
+        );
+
+        var errors = app.state.lastErrors.filter(function(val){
+           return val.node ==  node.id;
+        });
+        if (errors.length > 0) {
+            app.panels.nodeSearchInfo.append(
+                htmlTemplates.validationErrors(this.flatternErrors(errors))
+            );
+        }
+        //app.panels.nodeSearchResultlist.append(
+        //    htmlTemplates.nodeModelingResults(node)
+        //);
+
+        //if (node.type == 'stopline' && node.hasOwnProperty('parent')){
+        //    app.panels.nodeSearchResultlist.append(
+        //        htmlTemplates.signalBar({
+        //            cycleTime: app.coordinationPlan.cycleTime,
+        //            signals: cyevents.signalDiagramData(node)
+        //        })
+        //    );
+        //}
+
+    },
+
     paletteClick: function(){
         var $this = $(this);
         $this.closest('.btn-group').find('.active').removeClass("active");

@@ -26,7 +26,7 @@ var cyevents = {
     },
 
     signalDiagramData: function(node){
-        var stopLine = node.data();
+        var stopLine = node;
         var crossRoad = app.cy.$('#'+stopLine.parent).data();
 
         var i = 0, icolor = '', inext = 0, goff = 0;
@@ -95,15 +95,10 @@ var cyevents = {
                 }
             });
 
-            if (s.data('type') == 'stopline' && s.data('parent') !== undefined){
-                var data =  cyevents.signalDiagramData(s);
-                app.panels.statusBar.html(
-                    htmlTemplates.signalBar({
-                        cycleTime: app.coordinationPlan.cycleTime,
-                        signals: data
-                    })
-                );
-            }
+
+            uievents.showNodeInformation(s.data());
+
+
         });
 
         app.cy.on('unselect', 'node', null, function (d, a) {

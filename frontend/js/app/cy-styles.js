@@ -89,8 +89,12 @@ var cystyles = [
             'text-valign': 'center',
             'text-halign': 'center',
             'border-color': '#777777',
+            'border-width': 0,
             'background-color': '#ffffff',
             'font-family': 'Arial'
+            //'background-image':'http://road.perm.ru/images/2945.jpg',
+            //'background-fit':'none',
+            //'background-image-opacity': 0.6
         }
     },
 

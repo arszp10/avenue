@@ -1,93 +1,16 @@
-<div class="right-panel visible-network visible-routes">
-    <a id="btn-slide-right-panel" class="right-panel-slide-button btn btn-default"><i class="fa fa-chevron-left"></i></a>
-        <form class="input-node-search-form clearfix">
-            <input type="text" class="form-control col-sm-12 input-node-search" id="input-node-search" placeholder="Search by node id or tag">
-        </form>
-        <div class="node-list hidden">
-            <div class="node-list-item clearfix">
-                <div class="node-avatar text-primary">Q</div>
-                <div class="node-type">stopline</div>
-                <div class="node-tag text-primary">node-1.1</div>
-                <div class="node-parent-name">пер. ул. Коммунаров - ул. 1 Интернациональная (ост. м-н Мечта)</div>
-            </div>
-            <div class="node-list-item clearfix">
-                <div class="node-avatar text-success">R</div>
-                <div class="node-type">stopline</div>
-                <div class="node-tag text-success">node-1.2</div>
-                <div class="node-parent-name">...</div>
-            </div>
-            <div class="node-list-item clearfix">
-                <div class="node-avatar text-danger">Q</div>
-                <div class="node-type">stopline</div>
-                <div class="node-tag text-danger">node-1.1</div>
-                <div class="node-parent-name">пер. ул. Коммунаров - ул. 1 Интернациональная (ост. м-н Мечта)</div>
-            </div>
-            <div class="node-list-item clearfix">
-                <div class="node-avatar cross-road text-danger"><i class="fa fa-th"></i></div>
-                <div class="node-type">crossroad</div>
-                <div class="node-tag text-danger">Crossroad</div>
-                <div class="node-parent-name">пер. ул. Коммунаров - ул. 1 Интернациональная (ост. м-н Мечта)</div>
-            </div>
-        </div>
-
-        <div class="node-search-not-found hidden">
-            <i class="fa fa-search fa-3x"></i>
-            <div class="no-search-results">
-                No search results found
-                <p>«odfvjnvrkjgbv»</p>
-            </div>
-        </div>
-
-        <div class="node-list single">
-            <div class="node-list-item clearfix">
-                <div class="node-avatar text-primary">Q</div>
-                <div class="node-type">stopline</div>
-                <div class="node-tag text-primary">node-1.1</div>
-                <div class="node-parent-name">пер. ул. Коммунаров - ул. 1 Интернациональная (ост. м-н Мечта)</div>
-            </div>
-        </div>
-
-        <table class="table table-condensed table-striped">
-            <tbody>
-            <tr>
-                <td>Capacity</td>
-                <td>1800 (v/h)</td>
-            </tr>
-            <tr>
-                <td>Avg. Intensity</td>
-                <td>900 (v/h)</td>
-            </tr>
-            <tr>
-                <td>Const. flow</td>
-                <td>100 (v/h)</td>
-            </tr>
-            </tbody>
-        </table>
-        <button class="btn btn-primary"><i class="fa fa-crosshairs"></i> Locate</button>
-        <button class="btn btn-default"><i class="fa fa-edit"></i> Edit <span class="caret"></span></button>
-
-        <hr>
-        <h4>Validation errors</h4>
-        <ul class="node-error-list">
-            <li> <i class="fa fa-warning"></i> Intervals can not be blank if parent node doesn't specified.</li>
-            <li> <i class="fa fa-warning"></i> Intervals item[3], second value must be less than Cycle Time (100). Ex: ..., 40]].</li>
-        </ul>
-        <hr>
-        <h4>Modeling results</h4>
-        <table class="table table-condensed table-striped">
-            <tbody>
-            <tr>
-                <td>Max queue</td>
-                <td>18 (vench)</td>
-            </tr>
-            <tr>
-                <td>Delay</td>
-                <td>90 (v*h/h)</td>
-            </tr>
-            <tr>
-                <td class="text-danger">Congestion</td>
-                <td><i class="fa fa-exclamation-circle text-danger"></i></td>
-            </tr>
-            </tbody>
-        </table>
+<div class="input-node-search-form">
+    <form id="input-node-search-form" class="clearfix">
+        <input type="text" tabindex="-1" class="form-control col-sm-12 input-node-search" id="input-node-search" placeholder="Search by node id or tag">
+        <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+    </form>
 </div>
+
+
+<div class="right-panel visible-network visible-routes">
+    <a id="btn-close-right-panel" class="right-panel-close-button btn btn-default"><i class="fa fa-times"></i></a>
+        <div class="node-list" id="node-search-result-list">
+        </div>
+        <div class="node-search-info" id="node-search-info">
+        </div>
+</div>
+

@@ -12,7 +12,8 @@ var app = {
     state: {
         clickMode: 'select-mode', // select, add-stopline, ... add-concurrent
         nodeType: 'stopline',
-        lastCalc: null
+        lastModelingResult: [],
+        lastErrors: []
     },
     panels: {
         leftPanel: 'div.left-panel',
@@ -20,7 +21,9 @@ var app = {
         crossRoadModal: '#crossroad-modal',
         coPlanModal: '#co-plan-modal',
         tblPhasesBody: '#crossroad-modal table.table-phases tbody',
-        statusBar: '#status-bar'
+        statusBar: '#status-bar',
+        nodeSearchResultlist: '#node-search-result-list',
+        nodeSearchInfo: '#node-search-info'
     },
     labels: {
         labelMyAccountUsername: '#label-my-account-username'
@@ -33,7 +36,9 @@ var app = {
         inputCoPlanName: '#inputCoPlanName',
         inputCoPlanNotes: '#inputCoPlanNotes',
         inputsNodeProperty: 'input.node-property',
-        inputCrossroadName: '#input-crossroad-name'
+        inputCrossroadName: '#input-crossroad-name',
+        inputNodeSearch: '#input-node-search',
+        inputNodeSearchForm: '#input-node-search-form'
     },
     buttons: {
         btnPanMode:           '#btn-now-pan-mode',
@@ -60,7 +65,7 @@ var app = {
         btnGroupNodes:        '#btn-group-nodes',
         btnUngroupNodes:      '#btn-ungroup-nodes',
         listItemAddSample:    '.add-sample-item',
-        btnSlideRightPanel:   '#btn-slide-right-panel',
+        btnCloseRightPanel:   '#btn-close-right-panel',
         btnCoPlanProperties:  '#btn-co-plan-properties',
         btnCoPlanSave:        '#btn-co-plan-save',
         btnsDirection:        'div.menu-directions button',
