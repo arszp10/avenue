@@ -1,13 +1,17 @@
 var _ = require('lodash');
 var validate = require('validate.js');
 var utils       = require('./utils/utils')();
-var CrossRoad   = require('./i-model/crossroad');
-var Point       = require('./i-model/point');
-var StopLine    = require('./i-model/stop-line');
-var CarriageWay = require('./i-model/carriageway');
-var BottleNeck  = require('./i-model/bottleneck');
-var Competitor  = require('./i-model/competitor');
-var CompetitorMerge  = require('./i-model/competitor-merge');
+
+var objects = {
+    stopline:       require('./i-model/stop-line'),
+    carriageway:    require('./i-model/carriageway'),
+    bottleneck:     require('./i-model/bottleneck'),
+    concurrent:     require('./i-model/competitor'),
+    concurrentMerge:require('./i-model/competitor-merge'),
+    point:          require('./i-model/point'),
+    crossRoad:      require('./i-model/crossroad')
+};
+
 
 var headerConstraints        = require('./constraints/header');
 var nodeConstraints          = require('./constraints/node');
@@ -21,50 +25,99 @@ var extraConstraints         = require('./constraints/parametrized');
 _.assign(validate.validators, require('./validators/custom'));
 
 module.exports = {
+
     recalculate: function(request){
+        if (request.length == 0) {
+            return [];
+        }
 
         var network = request;
         var indexMap = {};
+
+        var getNode = function (id) {
+            return network[indexMap[id]];
+        };
+
+        var setNodeProperty = function (id, prop, value) {
+            network[indexMap[id]][prop] = value;
+        };
+
+        var pushToNodeProperty = function (id, prop, value) {
+            if (!network[indexMap[id]].hasOwnProperty(prop)){
+                network[indexMap[id]][prop] = [value];
+            } else {
+                network[indexMap[id]][prop].push(value);
+            };
+        };
+
+        var traceRoute = function(nodes, w, trace){
+            _.forEach(nodes, function(id){
+                var node = getNode(id);
+                var nextWeight =  w + 1;
+
+                // if a loop
+                if (trace.indexOf(id) > -1) {
+                    return;
+                }
+
+                if (node.weight < nextWeight) {
+                    setNodeProperty(id, 'weight', nextWeight);
+                    if (node.hasOwnProperty('to')) {
+                        var clone = trace.slice(0);
+                        clone.push(id);
+                        traceRoute(node.to, nextWeight, clone);
+                    }
+                }
+            });
+        };
+
         _.forEach(network, function(v, i){
             indexMap[v.id] = i;
-            switch (v.type) {
-                case "stopline":
-                    network[i] = new StopLine(v, network, indexMap);
-                    break;
-                case "carriageway":
-                    network[i] = new CarriageWay(v, network, indexMap);
-                    break;
-                case "bottleneck":
-                    network[i] = new BottleNeck(v, network, indexMap);
-                    break;
-                case "concurrent":
-                    request.nodes[i] = new Competitor(v, network, indexMap);
-                    break;
-                case "concurrentMerge":
-                    request.nodes[i] = new CompetitorMerge(v, network, indexMap);
-                    break;
-                case "point":
-                    network[i] = new Point(v, v.edges, network, indexMap);
-                    break;
-                case "crossRoad":
-                    network[i] = new CrossRoad(v);
-                    break;
+            v['weight'] = 0;
+        });
+
+        _.forEach(network, function(v){
+            if (v.hasOwnProperty('edges')) {
+                v.edges.map(function(e){
+                    pushToNodeProperty(e.target, 'from', e.source);
+                    pushToNodeProperty(e.source, 'to', e.target);
+                }, this);
             }
         });
 
-        console.log('calc start');
-        for (var i = 0; i < 1; i++) {
-            network.map(function (v) {
+        var outterNodes = [];
+        _.forEach(network, function(v){
+            if (!v.hasOwnProperty('edges') && v.type != 'crossRoad') {
+                outterNodes.push(v.id);
+            }
+        });
+
+        if (outterNodes.length == 0) {
+            outterNodes.push(network[0].id);
+        }
+
+        traceRoute(outterNodes, 0, []);
+        network.sort(function (a, b) { return a.weight - b.weight;});
+
+        _.forEach(network, function(v) {
+            console.log(v.id, v.type, v.weight);
+        });
+
+         _.forEach(network, function(v, i){
+            indexMap[v.id] = i;
+            network[i] = new objects[v.type](v, network, indexMap);
+        });
+
+        for (var i = 0; i < 5; i++) {
+            _.forEach(network, function(v, i){
                 v.calc();
             });
         }
-        console.log('calc end');
 
         var result = network.map(function(v){
            return v.json();
         });
 
-        console.log('calc result');
         return result;
     },
 

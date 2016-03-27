@@ -43,7 +43,6 @@ module.exports = {
                 if (j != currInterval.f) {
                     continue;
                 }
-
                 currIntervalInx = (currIntervalInx + 1) % intervals.length;
                 currInterval = intervals[currIntervalInx];
                 rTime = currInterval.length;
@@ -75,14 +74,12 @@ module.exports = {
 
 
     carriageWay: function(flow){
-
         var inFlow = flow.inFlow;
         var f = 1/(1 + flow.dispersion * flow.routeTime);
         var outFlow = flow.outFlow;
         var k = 0;
         var sumInFlow = inFlow.sum();
         var sumOutFlow = 0;
-        console.log(sumInFlow, inFlow.length);
         do {
             k++;
             for (var i = 0; i < inFlow.length; i++) {
