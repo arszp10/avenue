@@ -52,13 +52,10 @@ var htmlTemplates = {
         return s;
     },
 
-    chartPanel: function(data){
-        return '<div class="chart-panel visible-network">' +
-            '<div class="chart-panel-head">' +
-                '<i class="fa fa-reorder fa-2x"></i>' +
-                '<a class="btn-chart-close" href="#"><i class="fa fa-close fa-2x"></i></a>' +
-            '</div>' +
-            '<div id="' + data + '" class="ct-chart"></div></div>';
+    chartPanel: function(id){
+        //return '<div class="chart-panel"><div id="' + id + '" class="ct-chart"></div></div>';
+        return '<canvas id="chart-panel" width="320" height="200"></canvas>';
+
     },
 
     nodeSearchListNotFound: function(data){
@@ -132,15 +129,21 @@ var htmlTemplates = {
         return '<hr><h4>Validation errors</h4>' +
             '<ul class="node-error-list">' + str + '</ul>';
     },
-    nodeModelingResults: function(){
+
+    nodeModelingResults: function(data){
+        var con = data.isCongestion
+            ? '<i class="fa fa-exclamation-circle text-danger"></i>'
+            : '<i class="fa fa-check-circle text-success"></i>';
+
+        var no = data.isCongestion ? '': 'No ';
         return '<hr><h4>Modeling results</h4>' +
             '<table class="table table-condensed table-striped">' +
             '    <tbody><tr>' +
-            '        <td>Max queue</td><td>18 (vench)</td>' +
+            '        <td>Max queue</td><td>'+data.maxQueue+' (vench)</td>' +
             '    </tr><tr>' +
-            '        <td>Delay</td><td>90 (v*h/h)</td>' +
+            '        <td>Delay</td><td>'+data.delay+' (v*h/h)</td>' +
             '    </tr><tr>' +
-            '        <td class="text-danger">Congestion</td><td><i class="fa fa-exclamation-circle text-danger"></i></td>' +
+            '        <td>' + no + 'Congestion</td><td>'+con+'</td>' +
             '    </tr></tbody>' +
             '</table>';
     }

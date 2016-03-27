@@ -132,48 +132,40 @@ body{
     right: 15px;
 }
 
-.chart-panel{
-    border:1px solid #e1e1e1;
-    background: white;
-    padding: 10px;
-    top: 425px;
-    left: 80px;
-    z-index: 30;
-    position:absolute;
-    height:420px;
-    width:620px;
-    border-radius: 5px;
-}
+/*.chart-panel{*/
+    /*height: 200px;*/
+    /*width: 320px;*/
+/*}*/
 
-.chart-panel-head {
-    color: #cccccc;
-    cursor: move;
-}
-.chart-panel-head a.btn-chart-close {
-    display: block;
-    float:right;
-    color: #cccccc;
-}
+/*.chart-panel-head {*/
+    /*color: #cccccc;*/
+    /*cursor: move;*/
+/*}*/
+/*.chart-panel-head a.btn-chart-close {*/
+    /*display: block;*/
+    /*float:right;*/
+    /*color: #cccccc;*/
+/*}*/
 
-.ct-chart{
-    width: 596px;
-    height: 369px;
-}
+/*.ct-chart{*/
+    /*width: 320px;*/
+    /*height: 200px;*/
+/*}*/
 
 
-.ct-series-a .ct-line {
-    stroke: red;
-    stroke-width: 2px;
-}
+/*.ct-series-a .ct-line {*/
+    /*stroke: red;*/
+    /*stroke-width: 2px;*/
+/*}*/
 
-.ct-series-b .ct-line {
-    stroke: #00B000;
-    stroke-width: 2px;
-}
+/*.ct-series-b .ct-line {*/
+    /*stroke: #00B000;*/
+    /*stroke-width: 2px;*/
+/*}*/
 
-.ct-series-b .ct-area, .ct-series-b .ct-slice-pie {
-    fill: #A7EDA6;
-}
+/*.ct-series-b .ct-area, .ct-series-b .ct-slice-pie {*/
+    /*fill: #A7EDA6;*/
+/*}*/
 
 .btn-group, .btn-group-vertical {
     display:block;
@@ -328,12 +320,13 @@ body.show-edge-input #input-edge-label {
 
 
 .signal-bar {
-    width:100%;
-    padding:7px 0px;
-    margin:0px;
-    display:block;
-    clear:both;
-    opacity: 0.8;
+    width: 290px;
+    padding: 7px 0;
+    clear: both;
+    opacity: .6;
+    margin-left: 26px;
+    margin-top: -50px;
+    margin-bottom: 40px;
 }
 .signal-bar:hover{
     opacity: 0.9;
@@ -341,7 +334,7 @@ body.show-edge-input #input-edge-label {
 }
 
 .signal {
-    height: 15px;
+    height: 10px;
     padding:0px;
     margin:0px;
     float:left;
@@ -362,7 +355,7 @@ body.show-edge-input #input-edge-label {
 
 .signal-amber {
     background: linear-gradient( red 50%, transparent 50%);
-    background-size: 2px 15px;
+    background-size: 2px 8px;
     background-color: yellow;
 }
 

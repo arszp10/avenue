@@ -21,58 +21,47 @@ var extraConstraints         = require('./constraints/parametrized');
 _.assign(validate.validators, require('./validators/custom'));
 
 module.exports = {
-    calc: function(request){
+    recalculate: function(request){
 
-        var edges = {};
-        var network = request.nodes;
-
-        _.forEach(request.edges, function(v,i){
-            if (!edges.hasOwnProperty(v.target)) {
-                edges[v.target] = [];
-            }
-            edges[v.target].push(v);
-        });
-
-
+        var network = request;
+        var indexMap = {};
         _.forEach(network, function(v, i){
+            indexMap[v.id] = i;
             switch (v.type) {
                 case "stopline":
-                    network[i] = new StopLine(v, edges[i], network);
+                    network[i] = new StopLine(v, network, indexMap);
                     break;
                 case "carriageway":
-                    network[i] = new CarriageWay(v, edges[i], network);
+                    network[i] = new CarriageWay(v, network, indexMap);
                     break;
                 case "bottleneck":
-                    network[i] = new BottleNeck(v, edges[i], network);
+                    network[i] = new BottleNeck(v, network, indexMap);
                     break;
                 case "concurrent":
-                    request.nodes[i] = new Competitor(v, edges[i], network);
+                    request.nodes[i] = new Competitor(v, network, indexMap);
                     break;
                 case "concurrentMerge":
-                    request.nodes[i] = new CompetitorMerge(v, edges[i], network);
+                    request.nodes[i] = new CompetitorMerge(v, network, indexMap);
                     break;
                 case "point":
-                    network[i] = new Point(v, edges[i], network);
+                    network[i] = new Point(v, v.edges, network, indexMap);
                     break;
                 case "crossRoad":
-                    network[i] = new CrossRoad(v, network);
+                    network[i] = new CrossRoad(v);
                     break;
-                //default:
-                //    request.nodes[i] = new StopLine(v);
             }
         });
 
         console.log('calc start');
-        for (var i = 0; i < 5; i++) {
-            _.forEach(network, function (v) {
+        for (var i = 0; i < 1; i++) {
+            network.map(function (v) {
                 v.calc();
             });
         }
         console.log('calc end');
 
-        var result = {};
-        _.forEach(network, function(v, i){
-           result[i] = v.json();
+        var result = network.map(function(v){
+           return v.json();
         });
 
         console.log('calc result');

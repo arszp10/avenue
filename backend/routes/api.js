@@ -126,7 +126,7 @@ module.exports = function(app) {
         res.json({
             result: true,
             message: 'Everything alright !',
-            data: []
+            data: avenueLib.recalculate(req.body.data)
         });
     });
 

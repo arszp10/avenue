@@ -1,7 +1,7 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function BottleNeck(options, edges, network){
+function BottleNeck(options, edges, network, indexMap){
     Flow.apply(this, arguments);
 
     this.calc = function (){

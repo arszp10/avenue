@@ -1,6 +1,6 @@
 module.exports = function() {
 
-    Array.prototype.fill = function (len, value) {
+    Array.prototype.fillArray = function (len, value) {
         return Array.apply(null, Array(len)).map(Number.prototype.valueOf, value);
     };
 
@@ -26,4 +26,4 @@ module.exports = function() {
         }
         return total;
     }
-}
+};

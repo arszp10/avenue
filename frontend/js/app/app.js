@@ -1,7 +1,3 @@
-//var editor = ace.edit("editor");
-//editor.setTheme("ace/theme/chrome");
-//editor.session.setMode("ace/mode/json");
-
 var app = {
     $cy: null,
     $source: null,
@@ -50,7 +46,6 @@ var app = {
         btnAddBottleneck:     '#btn-add-bottleneck',
         btnAddConcurrent:     '#btn-add-concurrent',
         btnAddConcurrentMerge:'#btn-add-concurrent-merge',
-        btnGraphNode:         '#btn-graph-node',
         btnDeleteNode:        '#btn-delete-node',
         btnHorizontalAlign:   '#btn-horizontal-align',
         btnVerticalAlign:     '#btn-vertical-align',
@@ -58,7 +53,6 @@ var app = {
         btnCopy:              '#btn-copy',
         btnPaste:             '#btn-paste',
         btnShowNetwork:       '#btn-show-network',
-        //btnShowSource:        '#btn-show-source',
         btnShowResults:       '#btn-show-results',
         btnShowRoutes:        '#btn-show-routes',
         btnToggleMap:         '#btn-toggle-map',

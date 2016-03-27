@@ -21,15 +21,15 @@ var settings = {
        labels: function(cT){
            var labels = [];
            for (var i = 0; i < cT; i++) {
-               labels.push(i%5 == 0?i:null);
+               labels.push(i%5 == 0?i:'');
            }
            return labels;
        },
        defaults: {
            low: 0,
            showArea: true,
-           width: '596px',
-           height: '369px',
+           width: '320px',
+           height: '200px',
            showPoint: false,
            lineSmooth: false,
            axisX: {

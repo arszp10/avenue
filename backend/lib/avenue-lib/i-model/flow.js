@@ -1,6 +1,7 @@
-var _ = require('lodash');
+var _      = require('lodash');
+var utils  = require('../utils/utils')();
 
-function Flow(options, edges, network)
+function Flow(options, network, indexMap)
 {
     var defAvgIntensity = 1800;
     var defCapacity = 3600;
@@ -14,28 +15,36 @@ function Flow(options, edges, network)
         routeTime: 20,
         length: 300,
         dispersion: 0.5,
-        intervals: []
+        intervals: [],
+        edges: []
     };
     var flow = _.assign({}, defaults, options);
 
     this.id = flow.id;
-    this.cycleTime = flow.cycleTime;
-    this.avgIntensity = flow.avgIntensity;
-    this.capacity = flow.capacity;
+    this.cycleTime = parseInt(flow.cycleTime);
+    this.avgIntensity = parseInt(flow.avgIntensity);
+    this.capacity = parseInt(flow.capacity);
     this.avgIntensityPerSecond =  this.avgIntensity/3600;
     this.capacityPerSecond = this.capacity/3600;
-    this.inFlow = [].fill(this.cycleTime, 0);
-    this.outFlow = [].fill(this.cycleTime, 0);
-    this.length = flow.length;
-    this.routeTime = flow.routeTime;
-    this.dispersion = flow.dispersion;
-    this.intervals = flow.intervals;
+    this.inFlow = [].fillArray(this.cycleTime, 0);
+    this.outFlow = [].fillArray(this.cycleTime, 0);
+    this.length = parseInt(flow.length);
+    this.routeTime = parseInt(flow.routeTime);
+    this.dispersion = parseFloat(flow.dispersion);
+    this.intervals = flow.intervals.map(function(v){
+        return {
+            s: parseInt(v[0]),
+            f: parseInt(v[1]),
+            length: v[1] - v[0]
+        }
+    });
     this.isCongestion = false;
     this.maxQueueLength = 0;
     this.delay = 0;
     this.type = flow.type;
-    this.edges = edges;
+    this.edges = flow.edges;
     this.network = network;
+    this.indexMap = indexMap;
 
     this.flipBack = function flipBack() {
         for (var i = 0; i < this.inFlow.length; i++){
@@ -57,6 +66,7 @@ function Flow(options, edges, network)
 
     this.json = function json() {
         return {
+            id: this.id,
             cycleTime: this.cycleTime,
             inFlow: this.inFlow,
             outFlow: this.outFlow,
@@ -73,18 +83,20 @@ function Flow(options, edges, network)
         var hasOverflow = false;
         for (var i = 0; i < this.inFlow.length; i++){
             var sumI = 0;
-            _.forEach(this.edges, function(el){
-                if (!el.hasOwnProperty('portion')) {
-                    el['portion'] = 0;
-                }
+            if (this.hasOwnProperty('edges')) {
+                this.edges.map(function(el){
+                    if (!el.hasOwnProperty('portion')) {
+                        el['portion'] = 0;
+                    }
 
-                var sourceNode = network[el.source];
-                if (sourceNode.type == 'concurrent' && !el.hasOwnProperty('secondary')) {
-                    sourceNode = sourceNode.primary;
-                }
+                    var sourceNode = network[this.indexMap[el.source]];
+                    if (sourceNode.type == 'concurrent' && !el.hasOwnProperty('secondary')) {
+                        sourceNode = sourceNode.primary;
+                    }
 
-                sumI += sourceNode.outFlow[i] * el.portion / sourceNode.avgIntensity;
-            });
+                    sumI += sourceNode.outFlow[i] * el.portion / sourceNode.avgIntensity;
+                }, this);
+            }
             if (sumI > this.capacityPerSecond) {
                 hasOverflow = true;
             }
@@ -92,7 +104,7 @@ function Flow(options, edges, network)
             sumInTotal += sumI;
         }
         if (sumInTotal == 0) {
-            this.inFlow = [].fill(this.cycleTime, this.avgIntensityPerSecond);
+            this.inFlow = [].fillArray(this.cycleTime, this.avgIntensityPerSecond);
         }
         return hasOverflow;
     }

@@ -1,7 +1,7 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function StopLine(options, edges, network){
+function StopLine(options, network, indexMap){
     Flow.apply(this, arguments);
 
     this.calc = function (){

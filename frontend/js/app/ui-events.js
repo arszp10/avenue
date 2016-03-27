@@ -1,7 +1,6 @@
 var uievents = {
     init: function(){
         var cookie = JSON.parse($.cookie('_avenue').substr(2));
-        $('.chart-panel').drag();
 
         $('input[type="checkbox"]').iCheck({
             checkboxClass: 'icheckbox_minimal-blue'
@@ -189,30 +188,6 @@ var uievents = {
         });
 
 
-        app.buttons.btnGraphNode.click(function(){
-            if (app.cy.$('node:selected').length == 0){
-                return;
-            }
-            var selected = app.cy.$('node:selected')[0];
-            var id = selected.data('id');
-            var chartId = 'ct-chart-' + id;
-            var chartPanel = htmlTemplates.chartPanel(chartId);
-
-            $('body > div #' + chartId).parent().remove(chartId);
-            $('body > div').append(chartPanel);
-
-            new Chartist.Line('#'+chartId, {
-                labels: settings.chart.labels(app.state.lastCalc[id].cycleTime),
-                series: [
-                    app.state.lastCalc[id].inFlow,
-                    app.state.lastCalc[id].outFlow
-                ]
-            }, settings.chart.defaults );
-
-            $('.chart-panel').drag();
-        });
-
-
         app.inputs.inputEdgeLabel.blur(function(){
             $('body').removeClass('show-edge-input');
         });
@@ -352,11 +327,16 @@ var uievents = {
             var $icon = $(this).find('i.fa');
                 $icon.addClass('fa-spin');
             app.cy.nodes().removeClass('has-error');
-            var jqxhr = $.post("/api/model/recalculate", {data: data}, null, 'json')
+            var jqxhr = $.ajax({
+                    url: "/api/model/recalculate",
+                    data: { data: data },
+                    type: 'POST',
+                    dataType : 'json'
+                })
                 .done(function(d) {
-
+                    console.log(d);
                     if (d.result) {
-                        app.state.lastModelingResult = [];
+                        app.state.lastModelingResult = d.data;
                         app.state.lastErrors = [];
                     } else {
                         app.state.lastModelingResult = [];
@@ -446,18 +426,83 @@ var uievents = {
                 htmlTemplates.validationErrors(this.flatternErrors(errors))
             );
         }
-        //app.panels.nodeSearchResultlist.append(
-        //    htmlTemplates.nodeModelingResults(node)
-        //);
 
-        //if (node.type == 'stopline' && node.hasOwnProperty('parent')){
-        //    app.panels.nodeSearchResultlist.append(
-        //        htmlTemplates.signalBar({
-        //            cycleTime: app.coordinationPlan.cycleTime,
-        //            signals: cyevents.signalDiagramData(node)
-        //        })
-        //    );
-        //}
+        var results = app.state.lastModelingResult.filter(function(val){
+            return val.id == node.id;
+        });
+        //console.log(results);
+        if (results.length > 0) {
+            app.panels.nodeSearchInfo.append(
+                htmlTemplates.nodeModelingResults(results[0])
+            );
+
+            app.panels.nodeSearchInfo.append(
+                htmlTemplates.chartPanel()
+            );
+            var ctx = document.getElementById("chart-panel").getContext("2d");
+
+            var options = {
+                animation: false,
+                showScale: true,
+                bezierCurve : false,
+                pointDot : false,
+                scaleShowHorizontalLines: true,
+                scaleShowVerticalLines: false,
+                scaleSteps: null,
+                scaleStepWidth: null,
+                scaleStartValue: null,
+                scaleLineColor: "rgba(0,0,0,.1)",
+                scaleLineWidth: 1,
+                scaleShowLabels: true,
+                scaleLabel: "<%=value%>",
+                scaleIntegersOnly: true,
+                scaleBeginAtZero: false,
+                scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                scaleFontSize: 8,
+                scaleFontStyle: "normal",
+                scaleFontColor: "#999",
+                responsive: false,
+                maintainAspectRatio: true,
+                showTooltips: false
+            };
+
+            var data = {
+                labels: settings.chart.labels(100),
+                datasets: [
+                    {
+                        label: "flow in",
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: results[0].inFlow
+                    },
+                    {
+                        label: "flow out",
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: results[0].outFlow
+                    }
+                ]
+            };
+            var myLineChart = new Chart(ctx).Line(data,options);
+
+        }
+
+        if (node.type == 'stopline' && node.hasOwnProperty('parent')){
+            app.panels.nodeSearchInfo.append(
+                htmlTemplates.signalBar({
+                    cycleTime: app.coordinationPlan.cycleTime,
+                    signals: cyevents.signalDiagramData(node)
+                })
+            );
+        }
 
     },
 

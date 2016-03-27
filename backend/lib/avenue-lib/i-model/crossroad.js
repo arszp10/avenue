@@ -1,4 +1,4 @@
-function CrossRoad(options, network){
+function CrossRoad(options){
     this.options = options;
     this.calc = function (){
 
@@ -6,7 +6,8 @@ function CrossRoad(options, network){
 
     this.json = function json() {
         return {
-            cycleTime: this.options.cycleTime,
+            id: this.id,
+            cycleTime: this.options.cycleTime
         }
     };
 

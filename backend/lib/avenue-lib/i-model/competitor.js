@@ -2,7 +2,7 @@ var _ = require('lodash');
 var Flow = require('./flow');
 var model = require('./model');
 
-function Competitor(options, edges, network){
+function Competitor(options, edges, network, indexMap){
     this.primary = {};
     var primaryEdges = [];
     var secondaryEdges =[];
@@ -14,13 +14,13 @@ function Competitor(options, edges, network){
             primaryEdges.push(v);
     }});
 
-    Flow.apply(this.primary, [options, primaryEdges, network]);
-    Flow.apply(this, [options, secondaryEdges, network]);
+    Flow.apply(this.primary, [options, primaryEdges, network, indexMap]);
+    Flow.apply(this, [options, secondaryEdges, network, indexMap]);
 
     var sId  = primaryEdges[0].source;
 
-    this.primary.avgIntensity = network[sId].avgIntensity;
-    this.primary.capacity = network[sId].capacity;
+    this.primary.avgIntensity = network[indexMap[sId]].avgIntensity;
+    this.primary.capacity = network[indexMap[sId]].capacity;
     this.calc = function (){
         this.initInFlow();
         this.primary.initInFlow();

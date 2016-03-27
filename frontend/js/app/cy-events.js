@@ -107,6 +107,7 @@ var cyevents = {
                 v.removeClass('edge-in-flow');
                 v.removeClass('edge-out-flow');
             });
+            $('body').removeClass('show-right-panel');
         });
 
 

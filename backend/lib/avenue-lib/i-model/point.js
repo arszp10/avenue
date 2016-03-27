@@ -1,7 +1,7 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function Point(options, edges, network){
+function Point(options, edges, network, indexMap){
     Flow.apply(this, arguments);
 
     this.calc = function (){
