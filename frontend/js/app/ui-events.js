@@ -456,7 +456,7 @@ var uievents = {
                 scaleShowLabels: true,
                 scaleLabel: "<%=value%>",
                 scaleIntegersOnly: true,
-                scaleBeginAtZero: false,
+                scaleBeginAtZero: true,
                 scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
                 scaleFontSize: 8,
                 scaleFontStyle: "normal",

@@ -99,16 +99,12 @@ module.exports = {
         traceRoute(outterNodes, 0, []);
         network.sort(function (a, b) { return a.weight - b.weight;});
 
-        _.forEach(network, function(v) {
-            console.log(v.id, v.type, v.weight);
-        });
-
          _.forEach(network, function(v, i){
             indexMap[v.id] = i;
             network[i] = new objects[v.type](v, network, indexMap);
         });
 
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 1; i++) {
             _.forEach(network, function(v, i){
                 v.calc();
             });

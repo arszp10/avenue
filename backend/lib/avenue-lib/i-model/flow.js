@@ -78,16 +78,34 @@ function Flow(options, network, indexMap)
         return this.network[this.indexMap[id]];
     };
 
+    this.constantFlowCoeff = function(){
+        var sum = 0;
+        _.forEach(this.edges, function(v,i){
+            sum += parseInt(v.portion);
+        });
+        return this.avgIntensity / sum;
+    };
+
     this.initInFlow = function initInFlow() {
         var sumInTotal = 0;
         var hasOverflow = false;
         if (this.edges.length > 0) {
             var sourceNodes = this._flowSourceNodes();
+            var cfc = this.constantFlowCoeff();
+            var avFlow = this.avgIntensity / cfc / 3600;
             for (var i = 0; i < this.inFlow.length; i++){
                 var sumI = 0;
                 this.edges.map(function(el){
                     sumI +=  this._calcEdgePortionI(i, el, sourceNodes[el.source]);
                 }, this);
+
+                if (cfc <= 1) {
+                    sumI = sumI * cfc;
+                } else {
+                    sumI += avFlow;
+                }
+
+
                 if (sumI > this.capacityPerSecond) {
                     hasOverflow = true;
                 }
@@ -101,7 +119,7 @@ function Flow(options, network, indexMap)
         return hasOverflow;
     };
 
-    this._calcEdgePortionI = function (i, edge, sourceNode){
+    this._calcEdgePortionI = function (i, edge, sourceNode, constFlowPerSecond){
         return sourceNode.outFlow[i] * parseInt(edge.portion) / sourceNode.avgIntensity;
     };
 
