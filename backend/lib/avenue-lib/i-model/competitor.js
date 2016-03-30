@@ -2,30 +2,36 @@ var _ = require('lodash');
 var Flow = require('./flow');
 var model = require('./model');
 
-function Competitor(options, edges, network, indexMap){
+function Competitor(options, network, indexMap){
     this.primary = {};
+
     var primaryEdges = [];
     var secondaryEdges =[];
 
-    _.each(edges, function(v){
+    _.each(options.edges, function(v){
         if (v.hasOwnProperty('secondary')){
             secondaryEdges.push(v);
         } else {
             primaryEdges.push(v);
     }});
 
-    Flow.apply(this.primary, [options, primaryEdges, network, indexMap]);
-    Flow.apply(this, [options, secondaryEdges, network, indexMap]);
+    this.sourceId  = primaryEdges[0].source;
 
-    var sId  = primaryEdges[0].source;
+    var pOptions = _.assign({}, options);
+    var sOptions = _.assign({}, options);
 
-    this.primary.avgIntensity = network[indexMap[sId]].avgIntensity;
-    this.primary.capacity = network[indexMap[sId]].capacity;
-    this.calc = function (){
+    pOptions.edges = primaryEdges;
+    sOptions.edges = secondaryEdges;
+
+    Flow.apply(this.primary, [pOptions, network, indexMap]);
+    Flow.apply(this, [sOptions, network, indexMap]);
+
+    this.calc = function(){
+        this.primary.avgIntensity = this.network[this.indexMap[ this.sourceId ]].avgIntensity;
+        this.primary.capacity = this.network[this.indexMap[ this.sourceId ]].capacity;
         this.initInFlow();
         this.primary.initInFlow();
         this.primary.copyFlow();
-        //console.log(this.primary.outFlow);
         model.competitor(this.primary, this);
     };
 

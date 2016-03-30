@@ -41,6 +41,7 @@ function Flow(options, network, indexMap)
     this.isCongestion   = false;
     this.maxQueueLength = 0;
     this.delay          = 0;
+    this.greenSaturation = 0;
     this.network  = network;
     this.indexMap = indexMap;
 
@@ -70,7 +71,8 @@ function Flow(options, network, indexMap)
             outFlow: this.outFlow,
             isCongestion: this.isCongestion,
             maxQueue: this.maxQueueLength,
-            delay: this.delay
+            delay: this.delay,
+            greenSaturation: this.greenSaturation
         }
     };
 

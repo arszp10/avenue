@@ -30,7 +30,6 @@ module.exports = {
         if (request.length == 0) {
             return [];
         }
-
         var network = request;
         var indexMap = {};
 
@@ -145,6 +144,7 @@ module.exports = {
         var parents = {};
         var parentsIds = [];
         var targetIds = [];
+        var sourcesPortionSum = {};
         this._errors = [];
 
         if (validate.isEmpty(data)) {return this._errors;}
@@ -179,7 +179,21 @@ module.exports = {
             }
             if (v.hasOwnProperty('edges') && v.edges.length > 0) {
                 v.edges.map(function(v) {
-                    this._validate(v, edgeConstraints, 'edge');
+
+                    if (!this._validate(v, edgeConstraints, 'edge')) {
+                        return
+                    };
+
+                    if (v.hasOwnProperty('secondary')) {
+                        return;
+                    }
+
+                    if (!sourcesPortionSum.hasOwnProperty(v.source)) {
+                        sourcesPortionSum[v.source] = parseInt(v.portion);
+                    } else {
+                        sourcesPortionSum[v.source] += parseInt(v.portion);
+                    }
+
                 }, this);
             }
             if (this._errors.length === 0) {
@@ -190,6 +204,9 @@ module.exports = {
         /* Extra iteration  */
         if (this._errors.length === 0) {
             data.map(function(v, inx){
+                if (sourcesPortionSum.hasOwnProperty(v.id) && v.type != 'concurrent') {
+                    this._validate(v, extraConstraints.sumOfOutterEdges(sourcesPortionSum[v.id]));
+                }
                 if (v.type == 'stopline' && v.hasOwnProperty('parent')) {
                     var constr = extraConstraints.stoplineExtra(parentsIds, data[parents[v.parent]].phases.lenght);
                     this._validate(v, constr);

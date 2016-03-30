@@ -12,6 +12,17 @@ module.exports = {
             }
         };
     },
+    sumOfOutterEdges : function (sum){
+        return  {
+            avgIntensity:{
+                numericality: {
+                    onlyInteger: true,
+                    greaterThanOrEqualTo: sum,
+                    notGreaterThanOrEqualTo: 'should be great or equal than the sum of intensities of outgoing edges.'
+                }
+            }
+        };
+    },
 
     edgeExtra : function (ids){
         return {

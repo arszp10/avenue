@@ -26,6 +26,8 @@ module.exports = {
         var t = 0;
         var sumInFlow = 0;
         var sumOutFlow = 0;
+        var sumGreenFlow = 0;
+        var sumGreenCpacity = 0;
 
         for (var i = 0; i < inFlow.length; i++){
             var j = (i + last.s) % cycleTime;
@@ -52,6 +54,7 @@ module.exports = {
             } else if (queue <= capacityPerSecond){
                 value = queue;
                 queue -= value;
+                sumGreenCpacity += capacityPerSecond;
             } else {
                 value = capacityPerSecond;
                 queue -= value;
@@ -61,6 +64,7 @@ module.exports = {
             t = 0;
             outFlow[j] = value;
             sumOutFlow += value;
+            sumGreenFlow += value;
         }
 
         if (sumInFlow != sumOutFlow && queueTail == undefined) {
@@ -68,6 +72,7 @@ module.exports = {
         }
         flow.delay = delay;
         flow.outFlow = outFlow;
+        flow.greenSaturation = Math.round(100*sumGreenFlow/sumGreenCpacity);
         flow.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
         return flow;
     },
@@ -91,6 +96,7 @@ module.exports = {
         } while (Math.abs(sumInFlow - sumOutFlow) > 0.0001 && k < 10)
 
         flow.outFlow = outFlow;
+        flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleTime));
         return flow;
     },
 
@@ -130,6 +136,7 @@ module.exports = {
         }
         flow.delay = delay;
         flow.outFlow = outFlow;
+        flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleTime));
         flow.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
         return flow;
     },
@@ -187,6 +194,7 @@ module.exports = {
         }
         flow2.delay = 0.5 * 0.5 * virtRedTime * avgInVirtRed;
         flow2.outFlow = outFlow2;
+        flow2.greenSaturation = Math.round(100*sumOutFlow/(flow2.capacityPerSecond*flow2.cycleTime));
         flow2.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
 
         return flow2;
