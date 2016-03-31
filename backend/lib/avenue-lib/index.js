@@ -17,6 +17,7 @@ var headerConstraints        = require('./constraints/header');
 var nodeConstraints          = require('./constraints/node');
 var edgeConstraints          = require('./constraints/edge');
 var carriagewayConstraints   = require('./constraints/carriageway');
+var concurrentConstraints   = require('./constraints/concurrent');
 var crossroadConstraints     = require('./constraints/cross-road');
 var phasesConstraints        = require('./constraints/phase-data');
 var stoplineConstraints      = require('./constraints/stopline');
@@ -30,6 +31,7 @@ module.exports = {
         if (request.length == 0) {
             return [];
         }
+
         var network = request;
         var indexMap = {};
 
@@ -174,6 +176,9 @@ module.exports = {
                     this._validate(v, stoplineConstraints);
                     this._validate(v, nodeConstraints);
                     break;
+                case "concurrent":
+                case "concurrentMerge":
+                    this._validate(v, concurrentConstraints);
                 default:
                     this._validate(v, nodeConstraints);
             }

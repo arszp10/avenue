@@ -21,9 +21,11 @@ function Flow(options, network, indexMap)
     this.id = flow.id;
     this.type = flow.type;
     this.edges = flow.edges;
+    this.tag = flow.tag;
     this.cycleTime      = parseInt(flow.cycleTime);
     this.avgIntensity   = parseInt(flow.avgIntensity);
     this.capacity       = parseInt(flow.capacity);
+    this.secondaryFlowCapacity  = parseInt(flow.secondaryFlowCapacity);
     this.avgIntensityPerSecond  = this.avgIntensity/3600;
     this.capacityPerSecond      = this.capacity/3600;
     this.inFlow         = [].fillArray(this.cycleTime, 0);
@@ -44,6 +46,8 @@ function Flow(options, network, indexMap)
     this.greenSaturation = 0;
     this.network  = network;
     this.indexMap = indexMap;
+    this.sumInFlow = 0;
+    this.sumOutFlow = 0;
 
     this.flipBack = function flipBack() {
         for (var i = 0; i < this.inFlow.length; i++){
@@ -72,7 +76,9 @@ function Flow(options, network, indexMap)
             isCongestion: this.isCongestion,
             maxQueue: this.maxQueueLength,
             delay: this.delay,
-            greenSaturation: this.greenSaturation
+            greenSaturation: this.greenSaturation,
+            sumInFlow: this.sumInFlow,
+            sumOutFlow: this.sumOutFlow
         }
     };
 
@@ -94,9 +100,10 @@ function Flow(options, network, indexMap)
         if (this.edges.length > 0) {
             var sourceNodes = this._flowSourceNodes();
             var cfc = this.constantFlowCoeff();
-            var avFlow = this.avgIntensity / cfc / 3600;
+            var avFlow = (this.avgIntensity - this.avgIntensity/cfc) / 3600;
             for (var i = 0; i < this.inFlow.length; i++){
                 var sumI = 0;
+
                 this.edges.map(function(el){
                     sumI +=  this._calcEdgePortionI(i, el, sourceNodes[el.source]);
                 }, this);
@@ -106,7 +113,6 @@ function Flow(options, network, indexMap)
                 } else {
                     sumI += avFlow;
                 }
-
 
                 if (sumI > this.capacityPerSecond) {
                     hasOverflow = true;

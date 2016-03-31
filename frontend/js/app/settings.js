@@ -114,7 +114,8 @@ var settings = {
         tag: '',
         cycleTime: 100,
         avgIntensity: 900,
-        capacity: 1800
+        capacity: 1800,
+        secondaryFlowCapacity: 1800
     },
     concurrentMerge: {
         icon: '\uf126',
@@ -122,7 +123,8 @@ var settings = {
         tag: '',
         cycleTime: 100,
         avgIntensity: 900,
-        capacity: 1800
+        capacity: 1800,
+        secondaryFlowCapacity: 1800
     },
     interTact: {
         red: {

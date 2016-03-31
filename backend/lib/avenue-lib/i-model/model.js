@@ -70,6 +70,9 @@ module.exports = {
         if (sumInFlow != sumOutFlow && queueTail == undefined) {
             return this.stopLine(flow, queue);
         }
+
+        flow.sumInFlow = sumInFlow;
+        flow.sumOutFlow = sumOutFlow;
         flow.delay = delay;
         flow.outFlow = outFlow;
         flow.greenSaturation = Math.round(100*sumGreenFlow/sumGreenCpacity);
@@ -95,6 +98,8 @@ module.exports = {
             sumOutFlow = outFlow.sum();
         } while (Math.abs(sumInFlow - sumOutFlow) > 0.0001 && k < 10)
 
+        flow.sumInFlow = sumInFlow;
+        flow.sumOutFlow = sumOutFlow;
         flow.outFlow = outFlow;
         flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleTime));
         return flow;
@@ -136,6 +141,8 @@ module.exports = {
         }
         flow.delay = delay;
         flow.outFlow = outFlow;
+        flow.sumInFlow = sumInFlow;
+        flow.sumOutFlow = sumOutFlow;
         flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleTime));
         flow.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
         return flow;
@@ -192,6 +199,8 @@ module.exports = {
         if (sumInFlow != sumOutFlow && queueTail == undefined) {
             return this.competitor(flow1, flow2, queue);
         }
+        flow2.sumInFlow = sumInFlow;
+        flow2.sumOutFlow = sumOutFlow;
         flow2.delay = 0.5 * 0.5 * virtRedTime * avgInVirtRed;
         flow2.outFlow = outFlow2;
         flow2.greenSaturation = Math.round(100*sumOutFlow/(flow2.capacityPerSecond*flow2.cycleTime));

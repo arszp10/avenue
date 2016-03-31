@@ -17,7 +17,7 @@ module.exports = {
         if (validate.isEmpty(value)) {return;}
 
         if (options.equal !== undefined && value.length != options.equal) {
-            return "length must be equal "+ options.equal
+            return "array length must be equal "+ options.equal
         }
 
         if (options.min !== undefined && value.length < options.min) {

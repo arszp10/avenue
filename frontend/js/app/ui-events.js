@@ -334,9 +334,9 @@ var uievents = {
                     dataType : 'json'
                 })
                 .done(function(d) {
-                    console.log(d);
                     if (d.result) {
                         app.state.lastModelingResult = d.data;
+                        console.log(d.data)
                         app.state.lastErrors = [];
                     } else {
                         app.state.lastModelingResult = [];
@@ -351,7 +351,6 @@ var uievents = {
                     });
                 })
                 .fail(function() {
-
                     console.log("API request error!");
                 }).always(function() {
                     $icon.removeClass('fa-spin');

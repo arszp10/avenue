@@ -199,6 +199,13 @@ var app = {
             } else {
                 app.panels.pointProperty.find('.is-carriageway').hide();
             }
+
+            if (target.data('type') == 'concurrent' ||target.data('type') == 'concurrentMerge'){
+                app.panels.pointProperty.find('.is-concurrent').show();
+            } else {
+                app.panels.pointProperty.find('.is-concurrent').hide();
+            }
+
         }
     }
 };

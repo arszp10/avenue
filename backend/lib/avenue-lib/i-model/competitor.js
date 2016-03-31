@@ -15,20 +15,24 @@ function Competitor(options, network, indexMap){
             primaryEdges.push(v);
     }});
 
-    this.sourceId  = primaryEdges[0].source;
+    this.primaryIntensity  =  parseInt(primaryEdges[0].portion);
+    this.secondaryIntensity  = parseInt(secondaryEdges[0].portion);
 
     var pOptions = _.assign({}, options);
     var sOptions = _.assign({}, options);
 
     pOptions.edges = primaryEdges;
+    pOptions.avgIntensity = this.primaryIntensity;
+
     sOptions.edges = secondaryEdges;
+    sOptions.capacity = options.secondaryFlowCapacity;
+    sOptions.avgIntensity = this.secondaryIntensity;
+
 
     Flow.apply(this.primary, [pOptions, network, indexMap]);
     Flow.apply(this, [sOptions, network, indexMap]);
 
     this.calc = function(){
-        this.primary.avgIntensity = this.network[this.indexMap[ this.sourceId ]].avgIntensity;
-        this.primary.capacity = this.network[this.indexMap[ this.sourceId ]].capacity;
         this.initInFlow();
         this.primary.initInFlow();
         this.primary.copyFlow();

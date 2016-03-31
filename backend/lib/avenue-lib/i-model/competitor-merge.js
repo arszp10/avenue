@@ -14,21 +14,23 @@ function CompetitorMerge(options, network, indexMap){
             primaryEdges.push(v);
         }});
 
-    this.sourceId  = primaryEdges[0].source;
+    this.primaryIntensity  =  parseInt(primaryEdges[0].portion);
+    this.secondaryIntensity  = parseInt(secondaryEdges[0].portion);
 
     var pOptions = _.assign({}, options);
     var sOptions = _.assign({}, options);
 
     pOptions.edges = primaryEdges;
+    pOptions.avgIntensity = this.primaryIntensity;
+
     sOptions.edges = secondaryEdges;
+    sOptions.capacity = options.secondaryFlowCapacity;
+    sOptions.avgIntensity = this.secondaryIntensity;
 
     Flow.apply(this, [pOptions, network, indexMap]);
     Flow.apply(this.secondary, [sOptions, network, indexMap]);
-    //this.avgIntensity = network[indexMap[sId]].avgIntensity;
-    //this.capacity = network[indexMap[sId]].capacity;
+
     this.calc = function (){
-        this.avgIntensity = this.network[this.indexMap[ this.sourceId ]].avgIntensity;
-        this.capacity = this.network[this.indexMap[ this.sourceId ]].capacity;
         this.secondary.initInFlow();
         this.initInFlow();
         this.copyFlow();
@@ -36,6 +38,8 @@ function CompetitorMerge(options, network, indexMap){
         this.merge(this.secondary.outFlow);
         this.delay = this.secondary.delay;
         this.maxQueueLength = this.secondary.maxQueueLength;
+
+        this.avgIntensity =  this.primaryIntensity + this.secondaryIntensity;
     };
 
 }
