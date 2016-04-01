@@ -348,6 +348,7 @@ body.show-edge-input #input-edge-label {
     display:block;
     border:1px solid #555;
     border-right:0px;
+    border-left:0px;
 }
 
 .signal-red {

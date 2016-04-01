@@ -70,6 +70,7 @@ function Flow(options, network, indexMap)
     this.json = function json() {
         return {
             id: this.id,
+            type: this.type,
             cycleTime: this.cycleTime,
             inFlow: this.inFlow,
             outFlow: this.outFlow,

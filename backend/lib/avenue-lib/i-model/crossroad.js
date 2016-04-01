@@ -1,5 +1,7 @@
 function CrossRoad(options){
     this.options = options;
+    this.offset = parseInt(options.offset);
+
     this.calc = function (){
 
     };
@@ -7,6 +9,8 @@ function CrossRoad(options){
     this.json = function json() {
         return {
             id: this.id,
+            type: this.options.type,
+            offset: this.offset,
             cycleTime: this.options.cycleTime
         }
     };

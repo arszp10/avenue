@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var validate = require('validate.js');
 var utils       = require('./utils/utils')();
+var settings    = require('./settings');
 
 var objects = {
     stopline:       require('./i-model/stop-line'),
@@ -26,6 +27,7 @@ var extraConstraints         = require('./constraints/parametrized');
 _.assign(validate.validators, require('./validators/custom'));
 
 module.exports = {
+    _errors : [],
 
     recalculate: function(request){
         if (request.length == 0) {
@@ -34,6 +36,7 @@ module.exports = {
 
         var network = request;
         var indexMap = {};
+        var that = this;
 
         var getNode = function (id) {
             return network[indexMap[id]];
@@ -78,6 +81,10 @@ module.exports = {
         });
 
         _.forEach(network, function(v){
+            if (v.type == 'stopline') {
+                v.intervals = that._redIntervals(v, getNode(v.parent));
+            }
+
             if (v.hasOwnProperty('edges')) {
                 v.edges.map(function(e){
                     pushToNodeProperty(e.target, 'from', e.source);
@@ -101,8 +108,8 @@ module.exports = {
         network.sort(function (a, b) { return a.weight - b.weight;});
 
          _.forEach(network, function(v, i){
-            indexMap[v.id] = i;
-            network[i] = new objects[v.type](v, network, indexMap);
+             indexMap[v.id] = i;
+             network[i] = new objects[v.type](v, network, indexMap);
         });
 
         for (var i = 0; i < 1; i++) {
@@ -116,30 +123,6 @@ module.exports = {
         });
 
         return result;
-    },
-
-    _errors : [],
-    _validate: function(node, constraints, type, parentId){
-        var err = validate(node, constraints, {format: 'flat'});
-        if (err === undefined) {
-            return true;
-        }
-        var nodeId = '';
-        switch (type) {
-            case "edge" :
-                nodeId = node.target;
-                break;
-            case "phase" :
-                nodeId = parentId;
-                break;
-            default:
-                nodeId = node.id;
-        }
-        this._errors.push({
-            node: nodeId,
-            errors: err
-        });
-        return false;
     },
 
     validate : function(data) {
@@ -228,6 +211,80 @@ module.exports = {
         }
 
         return  this._errors;
+    },
+
+    _validate: function(node, constraints, type, parentId){
+        var err = validate(node, constraints, {format: 'flat'});
+        if (err === undefined) {
+            return true;
+        }
+        var nodeId = '';
+        switch (type) {
+            case "edge" :
+                nodeId = node.target;
+                break;
+            case "phase" :
+                nodeId = parentId;
+                break;
+            default:
+                nodeId = node.id;
+        }
+        this._errors.push({
+            node: nodeId,
+            errors: err
+        });
+        return false;
+    },
+
+    _signalDiagramData: function(stopLine, crossRoad){
+        var i = 0, icolor = '', inext = 0, goff = 0;
+        var diagram = [];
+        var phCount =  crossRoad.phases.length;
+        var interTact = settings.interTact;
+        var prevGoff = 0;
+        for (i = 0; i < phCount; i++){
+            icolor = stopLine.greenPhases[i] === 'true' ? 'green' : 'red';
+            goff = stopLine.greenPhases[i] === 'true' ? parseInt(stopLine.greenOffset2) : parseInt(stopLine.greenOffset1);
+            inext = (i + 1) % phCount;
+            if (stopLine.greenPhases[i] === stopLine.greenPhases[inext]) {
+                diagram.push({
+                    color : icolor,
+                    length : crossRoad.phases[i].length
+                });
+                continue;
+            }
+            diagram.push({
+                color : icolor,
+                length : crossRoad.phases[i].length - interTact[icolor].length + prevGoff + goff
+            });
+            diagram = diagram.concat(interTact[icolor].signals);
+            prevGoff = -goff;
+        }
+        diagram[0].length += prevGoff;
+        return diagram;
+    },
+
+    _redIntervals: function(stopLine, crossRoad){
+        var diagram = this._signalDiagramData (stopLine, crossRoad);
+        var intervals = [];
+        var s = 0, i = 0;
+        _.forEach(diagram, function(v){
+            if (v.color == 'amber') {
+                intervals.push([s, i + v.length-1]);
+            }
+            if (v.color == 'yellow') {
+                s = i-1;
+            }
+            i += v.length;
+        });
+
+        var lastInterval = ( diagram[0].color == diagram[diagram.length-1].color && diagram[0].color == 'red') ||
+            ( diagram[0].color == 'red' && diagram[diagram.length-1].color == 'yellow');
+
+        if (lastInterval) {
+            intervals.push([s, i-1]);
+        }
+        return intervals;
     }
 };
 

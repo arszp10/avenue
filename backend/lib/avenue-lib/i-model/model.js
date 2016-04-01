@@ -2,7 +2,7 @@ var utils  = require('../utils/utils')();
 
 module.exports = {
 
-    stopLine:function(flow, queueTail){
+    stopLine:function(flow, offset, queueTail){
         flow.maxQueueLength = 0;
         var cycleTime = flow.cycleTime;
         var capacityPerSecond = flow.capacityPerSecond;
@@ -31,7 +31,7 @@ module.exports = {
 
         for (var i = 0; i < inFlow.length; i++){
             var j = (i + last.s) % cycleTime;
-            var value = inFlow[j];
+            var value = inFlow[(j + offset) % cycleTime];
             sumInFlow += value;
             queue += value;
 
@@ -41,7 +41,7 @@ module.exports = {
             if (j >= currInterval.s && j<= currInterval.f) {
                 delay += (rTime - t + Math.floor(queue/capacityPerSecond))*value;
                 t++;
-                outFlow[j] = 0;
+                outFlow[(j + offset) % cycleTime] = 0;
                 if (j != currInterval.f) {
                     continue;
                 }
@@ -59,22 +59,25 @@ module.exports = {
                 value = capacityPerSecond;
                 queue -= value;
                 delay += Math.floor(queue/capacityPerSecond)*value;
+                sumGreenCpacity += capacityPerSecond;
             }
 
             t = 0;
-            outFlow[j] = value;
+            outFlow[(j + offset) % cycleTime] = value;
             sumOutFlow += value;
             sumGreenFlow += value;
         }
 
         if (sumInFlow != sumOutFlow && queueTail == undefined) {
-            return this.stopLine(flow, queue);
+            return this.stopLine(flow, offset, queue);
         }
 
         flow.sumInFlow = sumInFlow;
         flow.sumOutFlow = sumOutFlow;
         flow.delay = delay;
         flow.outFlow = outFlow;
+
+        console.log(sumGreenFlow,sumGreenCpacity);
         flow.greenSaturation = Math.round(100*sumGreenFlow/sumGreenCpacity);
         flow.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
         return flow;

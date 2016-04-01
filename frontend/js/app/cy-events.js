@@ -25,6 +25,8 @@ var cyevents = {
         edge.data('portion', sum);
     },
 
+
+
     signalDiagramData: function(node){
         var stopLine = node;
         var crossRoad = app.cy.$('#'+stopLine.parent).data();
@@ -53,8 +55,43 @@ var cyevents = {
             prevGoff = -goff;
         }
         diagram[0].length += prevGoff;
-        this.redIntervals(diagram);
-        return diagram;
+        return this.offsetDiagram(diagram, crossRoad.offset, crossRoad.cycleTime);
+    },
+
+    offsetDiagram: function(diagram, offset, cycle){
+        if (offset == 0) {
+            return diagram;
+        }
+        var backOffset = cycle - offset - 1;
+        var sum = 0;
+        var l = diagram.length;
+        var i = 0;
+        var head = [];
+        var tail = [];
+        while (i < l){
+            sum += diagram[i].length
+            if (backOffset > sum ) {
+                head.push(diagram[i]);
+            } else {
+                if (tail.length == 0) {
+                    var icolor = diagram[i].color;
+                    var ilen = diagram[i].length ;
+                    head.push({
+                        color : icolor,
+                        length : ilen - (sum - backOffset) + 1
+                    });
+                    tail.push({
+                        color : icolor,
+                        length : sum - backOffset - 1
+                    });
+                    i++;
+                    continue;
+                }
+                tail.push(diagram[i]);
+            }
+            i++;
+        }
+        return tail.concat(head);
     },
 
     redIntervals: function(diagram){
