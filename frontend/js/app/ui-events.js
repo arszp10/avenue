@@ -61,6 +61,7 @@ var uievents = {
 
         app.buttons.btnDeleteNode.click(function(){
             app.cy.$(':selected').remove();
+            app.cy.trigger('unselect');
         });
 
         app.buttons.btnGroupNodes.click(function(){
@@ -342,8 +343,17 @@ var uievents = {
                 .done(function(d) {
                     if (d.result) {
                         app.state.lastModelingResult = d.data;
-                        console.log(d.data)
                         app.state.lastErrors = [];
+
+                        var sumDelay = 0;
+                        d.data.map(function(v){
+                            sumDelay += v.delay;
+                        });
+
+                        app.panels.statusBar.html(
+                            htmlTemplates.sumDelayStatus(sumDelay)
+                        );
+
                     } else {
                         app.state.lastModelingResult = [];
                         app.state.lastErrors = d.data;
@@ -516,7 +526,7 @@ var uievents = {
             var btn = $this.closest('ul').prev();
                 btn.addClass("active");
                 btn.find('i')
-                    .removeClass('fa fa-map-pin fa-circle-thin fa-exchange fa-filter fa-random fa-ellipsis-v fa-code-fork')
+                    .removeClass('fa fa-genderless fa-circle-thin fa-exchange fa-filter fa-random fa-ellipsis-v fa-code-fork')
                     .addClass($this.find('i').attr('class'));
                 ;
         } else {

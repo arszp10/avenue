@@ -47,7 +47,7 @@ var htmlTemplates = {
         var s = '';
         data.bars.forEach(function(v){
             v.cycleTime = cycleTime;
-            s += '<tr><td><span class="stop-line-icon text-'+ v.node.color +'">' + v.node.icon + '</span> '+v.node.tag +'&nbsp;</td>';
+            s += '<tr><td class="stop-line-td-label text-'+ v.node.color +'"><span class="stop-line-icon">' + v.node.icon + '</span> '+v.node.tag +'&nbsp;</td>';
             s += '<td>'+ this.signalBar(v, 'signals-bulk clearfix')+'</td></tr>';
 
         }, this);
@@ -90,14 +90,10 @@ var htmlTemplates = {
         var name = '...';
         var grayType = '';
 
-        if (data.type == 'point') {
-            return '';
-        }
-
         if (data.type != 'crossRoad') {
             grayType = '    <div class="node-type">'+data.type+'</div>';
             icon = data.icon;
-            tag = data.tag.length == 0 ? '(noname)' : data.tag;
+            tag = data.tag.length == 0 ? 'no-name' : data.tag;
             name =  data.name == undefined ? '(no parent)' : data.name;
         } else {
             icon = '<i class="fa fa-object-group"></i>';
@@ -182,5 +178,10 @@ var htmlTemplates = {
             '        <td>' + no + 'ongestion</span></td><td class="text-right">'+con+'</td><td class="measure-unit"></td>' +
             '    </tr></tbody>' +
             '</table>';
+    },
+
+
+    sumDelayStatus: function(delay){
+        return '&sum; Delay : <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">v*h/h</span>';
     }
 };

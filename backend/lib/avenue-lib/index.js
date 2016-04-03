@@ -30,7 +30,7 @@ module.exports = {
     _errors : [],
 
     recalculate: function(request){
-        if (request.length == 0) {
+        if (request == undefined || request.length == 0) {
             return [];
         }
 

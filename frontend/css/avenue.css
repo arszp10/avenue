@@ -200,12 +200,13 @@ body{
 
 .status-bar{
     float: right;
-    margin-top: -34px;
+    margin-top: -30px;
     width: 75%;
-    color: #cccccc;
+    color: #333;
     height: 30px;
     text-align: right;
-    padding-right: 10px;
+    padding-right: 15px;
+    font-size: 17px;
 }
 
 #input-edge-label {
@@ -479,6 +480,11 @@ body.show-edge-input #input-edge-label {
 .btn-stop-line {
     padding: 0px 6px;
     font-size: 13px;
+}
+
+.stop-line-td-label {
+    white-space: nowrap;
+    font-size: 11px;
 }
 
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {

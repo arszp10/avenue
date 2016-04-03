@@ -36,8 +36,17 @@ function CompetitorMerge(options, network, indexMap){
         this.copyFlow();
         model.competitor(this, this.secondary);
         this.merge(this.secondary.outFlow);
+
+
+        this.sumInFlow = this.inFlow.sum();
+        this.sumInFlow += this.secondary.sumInFlow;
+        this.sumOutFlow = this.outFlow.sum();
+
         this.delay = this.secondary.delay;
         this.maxQueueLength = this.secondary.maxQueueLength;
+
+        this.greenSaturation = 100 * this.sumOutFlow / (this.cycleTime * this.capacity/3600);
+        this.isCongestion = this.secondary.isCongestion;
 
         this.avgIntensity =  this.primaryIntensity + this.secondaryIntensity;
     };

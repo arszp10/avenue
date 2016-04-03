@@ -125,7 +125,7 @@ var settings = {
         dispersion: 0.5
     },
     point: {
-        icon: '\uf276',
+        icon: '\uf22d',
         type: 'point',
         tag: '',
         cycleTime: 100,

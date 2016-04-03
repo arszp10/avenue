@@ -144,9 +144,13 @@ var cyevents = {
                 v.removeClass('edge-in-flow');
                 v.removeClass('edge-out-flow');
             });
+        });
+
+        app.cy.on('unselect', function () {
             $('body').removeClass('show-right-panel');
         });
-        
+
+
         app.cy.on('click', 'edge:selected', null, function (e) {
             $('body').toggleClass('show-edge-input');
             app.inputs.inputEdgeLabel.css(
@@ -160,8 +164,7 @@ var cyevents = {
         app.cy.on('click', 'node:selected', null, function (e) {
             var type = e.cyTarget.data('type');
 
-            if (['select-mode','pan-mode'].indexOf(app.state.clickMode) == -1
-                || type == 'point' ) {
+            if (['select-mode','pan-mode'].indexOf(app.state.clickMode) == -1 ) {
                 return;
             }
 
