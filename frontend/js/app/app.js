@@ -219,7 +219,16 @@ $(document).ready(function() {
     var options = settings.cytoscape;
     options.style = cystyles;
     options.ready = function() {
-        app.cy = this;
+        var test = {
+            avenueAlignSelected: function (direction) {
+                var nodes = this.$('node:selected');
+                if (nodes.length == 0) {
+                    return;
+                }
+                this.$('node:selected').position(direction, nodes[0].position(direction));
+            }
+        };
+        app.cy = $.extend(this, test);
         app.cy.edgehandles({ });
         app.cy.panzoom({});
         cyevents.init();

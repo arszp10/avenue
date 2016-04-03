@@ -1,3 +1,23 @@
+(function(App){
+    var settings = App.Resources.Settings;
+    var samples = App.Resources.Samples;
+    var buttons = App.Controls.Buttons;
+    var exports = {}
+
+    App.Controls = $.extend({}, exports);
+})(app);
+
+
+(function(App){
+    App.Resources.Settings = {
+
+    };
+    var samples = App.Resources.Samples;
+    var buttons = App.Controls.Buttons;
+
+})(app);
+
+
 var uievents = {
     init: function(){
         var cookie = JSON.parse($.cookie('_avenue').substr(2));
@@ -27,7 +47,6 @@ var uievents = {
             var target = app.cy.$('#'+nodeId);
             app.actions.showNodePopup(target, e.clientX, e.clientY);
         });
-
 
         $(document).on('click', 'button.btn-edit-cross-road', function(e){
             var nodeId = $(this).closest('tr').data('id');
@@ -106,25 +125,27 @@ var uievents = {
         });
 
         app.buttons.btnHorizontalAlign.click(function(){
-            var nodes = app.cy.$('node:selected');
-            if (nodes.length == 0) {
-                return;
-            }
-            app.cy.$('node:selected').position('y', nodes[0].position('y'));
+            //var nodes = app.cy.$('node:selected');
+            //if (nodes.length == 0) {
+            //    return;
+            //}
+            //app.cy.$('node:selected').position('y', nodes[0].position('y'));
+            app.cy.avenueAlignSelected('y');
         });
 
         app.buttons.btnVerticalAlign.click(function(){
-            var nodes = app.cy.$('node:selected');
-            if (nodes.length == 0) {
-                return;
-            }
-            app.cy.$('node:selected').position('x', nodes[0].position('x'));
+            app.cy.avenueAlignSelected('x');
+            //var nodes = app.cy.$('node:selected');
+            //if (nodes.length == 0) {
+            //    return;
+            //}
+            //app.cy.$('node:selected').position('x', nodes[0].position('x'));
         });
 
-        app.buttons.btnCut.click(function() {
-            app.buttons.btnCopy.click();
-            app.cy.$(':selected').remove();
-        });
+        //app.buttons.btnCut.click(function() {
+        //    app.buttons.btnCopy.click();
+        //    app.cy.$(':selected').remove();
+        //});
 
         app.buttons.btnCopy.click(function(){
             var jsons = app.cy.$(':selected').jsons();
@@ -554,11 +575,5 @@ var uievents = {
            .addClass(tab.data('rel'))
     }
 };
-
-
-
-/*
-
-*/
 
 

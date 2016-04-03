@@ -131,11 +131,7 @@ var cyevents = {
                     v.addClass('edge-in-flow');
                 }
             });
-
-
             uievents.showNodeInformation(s.data());
-
-
         });
 
         app.cy.on('unselect', 'node', null, function (d, a) {

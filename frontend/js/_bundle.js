@@ -19,7 +19,6 @@
 //= app/cy-styles.js
 //= app/ui-events.js
 //= app/cy-events.js
-//= app/ws-client.js
 
 
 
