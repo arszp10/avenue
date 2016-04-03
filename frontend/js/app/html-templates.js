@@ -182,6 +182,6 @@ var htmlTemplates = {
 
 
     sumDelayStatus: function(delay){
-        return '&sum; Delay : <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">v*h/h</span>';
+        return '&sum; delay<sub><i>i</i></sub> = <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">v*h/h</span>';
     }
 };

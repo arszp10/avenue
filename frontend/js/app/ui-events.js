@@ -62,6 +62,7 @@ var uievents = {
         app.buttons.btnDeleteNode.click(function(){
             app.cy.$(':selected').remove();
             app.cy.trigger('unselect');
+            $('body').removeClass('show-panel-point-property');
         });
 
         app.buttons.btnGroupNodes.click(function(){
