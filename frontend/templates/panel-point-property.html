@@ -8,6 +8,30 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="input-node-tag" class="col-sm-6 control-label"><b>Node tag</b>:</label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control input-sm node-property" id="input-node-tag" data-key="tag"  value="" placeholder="node-1.1">
+                        <div class="input-group-btn is-stopLine">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle btn-node-color-selection"
+                                    data-toggle="dropdown" aria-haspopup="true" id="btn-node-color-selection"
+                                    data-key="labelColor" data-value="default" aria-expanded="false">
+                                <i class="fa fa-paint-brush"></i>
+                                <span class="caret"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right drop-down-color">
+                                <a class="label label-default" data-color="default">GREY</a>
+                                <a class="label label-primary" data-color="primary">BLUE</a>
+                                <a class="label label-info"    data-color="info">SKY</a>
+                                <a class="label label-success" data-color="success">GREEN</a>
+                                <a class="label label-warning" data-color="warning">ORANGE</a>
+                                <a class="label label-danger"  data-color="danger">RED</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="input-node-intensity" class="col-sm-6 control-label"><b>Intensity</b> (v/h):</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control input-sm node-property" id="input-node-intensity" data-key="avgIntensity" placeholder="Intensity (1800)">
@@ -60,30 +84,6 @@
                 <label for="input-node-intensity" class="col-sm-6 control-label"><b>Red intervals</b> (sec):</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control input-sm node-property" id="input-node-red-intervals" data-key="intervals" placeholder="[0, 10], [30, 54]">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="input-node-tag" class="col-sm-6 control-label"><b>Node tag</b>:</label>
-                <div class="col-sm-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control input-sm node-property" id="input-node-tag" data-key="tag"  value="" placeholder="node-1.1">
-                        <div class="input-group-btn is-stopLine">
-                            <button type="button" class="btn btn-default btn-sm dropdown-toggle btn-node-color-selection"
-                                    data-toggle="dropdown" aria-haspopup="true" id="btn-node-color-selection"
-                                    data-key="labelColor" data-value="default" aria-expanded="false">
-                                <i class="fa fa-paint-brush"></i>
-                                <span class="caret"></span>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right drop-down-color">
-                                <a class="label label-default" data-color="default">GREY</a>
-                                <a class="label label-primary" data-color="primary">BLUE</a>
-                                <a class="label label-info"    data-color="info">SKY</a>
-                                <a class="label label-success" data-color="success">GREEN</a>
-                                <a class="label label-warning" data-color="warning">ORANGE</a>
-                                <a class="label label-danger"  data-color="danger">RED</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="form-group is-stopLine">

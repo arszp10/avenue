@@ -146,8 +146,7 @@ var cyevents = {
             });
             $('body').removeClass('show-right-panel');
         });
-
-
+        
         app.cy.on('click', 'edge:selected', null, function (e) {
             $('body').toggleClass('show-edge-input');
             app.inputs.inputEdgeLabel.css(

@@ -20,6 +20,10 @@ module.exports = {
             }
         }
 
+        if (intervals.length == 0) {
+            intervals = [[-10, -1]];
+        }
+
         var currIntervalInx = intervals.length - 1;
         var currInterval = intervals[currIntervalInx];
         var rTime = currInterval.length;
@@ -77,7 +81,6 @@ module.exports = {
         flow.delay = delay;
         flow.outFlow = outFlow;
 
-        console.log(sumGreenFlow,sumGreenCpacity);
         flow.greenSaturation = Math.round(100*sumGreenFlow/sumGreenCpacity);
         flow.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
         return flow;
@@ -120,7 +123,6 @@ module.exports = {
         var lt = 0;
         var sumInFlow = 0;
         var sumOutFlow = 0;
-        //console.log(flow.id, inFlow);
         for (var i = 0; i < inFlow.length; i++){
             var value = inFlow[i];
             sumInFlow += value;

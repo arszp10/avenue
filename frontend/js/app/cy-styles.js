@@ -69,14 +69,7 @@ var cystyles = [
             'color': '#337ab7'
         }
     },
-    {
-        selector: '.has-error',
-        css: {
-            'border-color': '#d9534f',
-            'color': '#d9534f',
-            'border-width': 2.5
-        }
-    },
+
     {
         selector: '$node > node',
         css: {
@@ -95,6 +88,15 @@ var cystyles = [
             //'background-image':'http://road.perm.ru/images/2945.jpg',
             //'background-fit':'none',
             //'background-image-opacity': 0.6
+        }
+    },
+
+    {
+        selector: '.has-error',
+        css: {
+            'border-color': '#d9534f',
+            'color': '#d9534f',
+            'border-width': 2.5
         }
     },
 
@@ -178,18 +180,18 @@ var cystyles = [
     {
         selector: 'edge.edge-in-flow',
         css: {
-            'line-color': 'red',
-            'target-arrow-color': 'red',
-            'text-outline-color': 'red'
+            'line-color': '#444444',
+            'target-arrow-color': '#444444',
+            'text-outline-color': '#444444'
         }
     },
 
     {
         selector: 'edge.edge-out-flow',
         css: {
-            'line-color': '#00B000',
-            'target-arrow-color': '#00B000',
-            'text-outline-color': '#00B000'
+            'line-color': '#337AB7',
+            'target-arrow-color': '#337AB7',
+            'text-outline-color': '#337AB7'
         }
     },
 

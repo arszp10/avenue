@@ -15,7 +15,6 @@ function StopLine(options, network, indexMap){
             this.flipBack();
         }
         var offset  = this.parent ? this.getNode(this.parent).offset : 0;
-        console.log(this.intervals, offset);
         model.stopLine(this, offset);
         this.delay += delay;
     };

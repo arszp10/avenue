@@ -261,7 +261,7 @@ body.show-edge-input #input-edge-label {
     left:0px;
     z-index:2000;
     /*opacity: 0.95;*/
-    width: 275px;
+    width: 285px;
 }
 
 .show-panel-point-property .panel-point-property{
@@ -305,6 +305,8 @@ body.show-edge-input #input-edge-label {
 
 .panel-point-property .panel-body {
      padding: 8px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 
 .panel-point-property #input-node-type {
@@ -324,7 +326,12 @@ body.show-edge-input #input-edge-label {
     /*height:400px;*/
 }
 
-
+.btn-x-sm {
+    padding: 2px 5px;
+    font-size: 9px;
+    line-height: 1.5;
+    border-radius: 4px;
+}
 
 .signal-bar {
     width: 290px;
@@ -335,6 +342,15 @@ body.show-edge-input #input-edge-label {
     margin-top: -50px;
     margin-bottom: 40px;
 }
+
+.signal-bar.signals-bulk {
+    width: 265px;
+    padding: 5px 0;
+    clear: both;
+    opacity: .6;
+    margin: 0px;
+}
+
 .signal-bar:hover{
     opacity: 0.9;
     box-shadow: 4px;
@@ -419,9 +435,10 @@ body.show-edge-input #input-edge-label {
 
 
 .menu-directions {
-    width: 285px;
-    top: 35px;
+    width: 283px;
+    top: 39px;
     padding: 5px;
+    left: -157px;
 }
 
 .menu-directions .btn {
@@ -620,4 +637,12 @@ body.show-edge-input #input-edge-label {
     /*overflow: hidden;*/
     /*text-overflow: ellipsis;*/
     /*white-space: nowrap;*/
+}
+
+
+.measure-unit {
+    font-size: 12px;
+    color: #999;
+    vertical-align: bottom!important;
+    width: 1%;
 }

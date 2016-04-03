@@ -29,6 +29,12 @@ var uievents = {
         });
 
 
+        $(document).on('click', 'button.btn-edit-cross-road', function(e){
+            var nodeId = $(this).closest('tr').data('id');
+            var target = app.cy.$('#'+nodeId);
+            app.actions.showCrossroadModal(target);
+        });
+
         $(document).on('click', 'button.btn-pan-tonode', function(e){
             var nodeId = $(this).closest('tr').data('id');
             app.cy.fit(app.cy.$('#'+nodeId), 250);
@@ -399,6 +405,15 @@ var uievents = {
         return flattern;
     },
 
+    getConstantIntensity: function(node){
+        var sum = 0;
+        $.each(app.cy.$('edge[target="'+node.id+'"]'), function(inx, n){
+            sum += parseInt(n.data('portion'));
+        });
+        return node.avgIntensity - sum;
+    },
+
+
     showNodeInformation(node) {
         app.panels.nodeSearchResultlist.empty();
         app.panels.nodeSearchInfo.empty();
@@ -406,93 +421,81 @@ var uievents = {
         if (node.hasOwnProperty('parent') && node.type !== 'crossRoad') {
             node.name =  app.cy.$('#' + node.parent).data('name');
         }
-
+        node.constantIntensity =  this.getConstantIntensity(node);
         app.panels.nodeSearchResultlist.append(
             htmlTemplates.nodeSearchListItem(node, 'single')
         );
-        app.panels.nodeSearchInfo.append(
-            htmlTemplates.nodeCommonProps(node)
-        );
-        app.panels.nodeSearchInfo.append(
-            htmlTemplates.locateEditButtons(node)
-        );
+
+        if (node.type == 'crossRoad') {
+            app.panels.nodeSearchInfo.append(
+                htmlTemplates.nodeCrossRoadProps(node)
+            );
+        } else {
+            app.panels.nodeSearchInfo.append(
+                htmlTemplates.nodeCommonProps(node)
+            );
+            app.panels.nodeSearchInfo.append(
+                htmlTemplates.locateEditButtons(node)
+            );
+        }
+
 
         var errors = app.state.lastErrors.filter(function(val){
            return val.node ==  node.id;
         });
+
         if (errors.length > 0) {
             app.panels.nodeSearchInfo.append(
                 htmlTemplates.validationErrors(this.flatternErrors(errors))
             );
         }
 
+        if (node.type == 'crossRoad') {
+            var stopLines = app.cy.$('node[parent="'+node.id+'"][type="stopline"]');
+            var data = [];
+            $.each(stopLines, function(i,v){
+                data.push({
+                    node: v.data(),
+                    signals: cyevents.signalDiagramData(v.data())
+                });
+            });
+
+            app.panels.nodeSearchInfo.append(
+                htmlTemplates.crossRoadSignalBars({
+                    cycleTime: app.coordinationPlan.cycleTime,
+                    bars: data
+                })
+            );
+
+            app.panels.nodeSearchInfo.append(
+                htmlTemplates.locateEditButtons(node)
+            );
+            return;
+        }
+
         var results = app.state.lastModelingResult.filter(function(val){
             return val.id == node.id;
         });
-        //console.log(results);
-        if (results.length > 0) {
-            app.panels.nodeSearchInfo.append(
-                htmlTemplates.nodeModelingResults(results[0])
-            );
 
-            app.panels.nodeSearchInfo.append(
-                htmlTemplates.chartPanel()
-            );
-            var ctx = document.getElementById("chart-panel").getContext("2d");
-
-            var options = {
-                animation: false,
-                showScale: true,
-                bezierCurve : false,
-                pointDot : false,
-                scaleShowHorizontalLines: true,
-                scaleShowVerticalLines: false,
-                scaleSteps: null,
-                scaleStepWidth: null,
-                scaleStartValue: null,
-                scaleLineColor: "rgba(0,0,0,.1)",
-                scaleLineWidth: 1,
-                scaleShowLabels: true,
-                scaleLabel: "<%=value%>",
-                scaleIntegersOnly: true,
-                scaleBeginAtZero: true,
-                scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-                scaleFontSize: 8,
-                scaleFontStyle: "normal",
-                scaleFontColor: "#999",
-                responsive: false,
-                maintainAspectRatio: true,
-                showTooltips: false
-            };
-
-            var data = {
-                labels: settings.chart.labels(100),
-                datasets: [
-                    {
-                        label: "flow in",
-                        fillColor: "rgba(220,220,220,0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: results[0].inFlow
-                    },
-                    {
-                        label: "flow out",
-                        fillColor: "rgba(151,187,205,0.2)",
-                        strokeColor: "rgba(151,187,205,1)",
-                        pointColor: "rgba(151,187,205,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: results[0].outFlow
-                    }
-                ]
-            };
-            var myLineChart = new Chart(ctx).Line(data,options);
-
+        if (results.length == 0) {
+            return
         }
+
+        app.panels.nodeSearchInfo.append(
+            htmlTemplates.nodeModelingResults(results[0])
+        );
+
+        app.panels.nodeSearchInfo.append(htmlTemplates.chartPanel());
+
+        var ctx = document.getElementById("chart-panel").getContext("2d");
+        var data = {
+            labels: settings.chart.labels(app.coordinationPlan.cycleTime),
+            datasets: [
+                settings.chart.flowIn(results[0].inFlow),
+                settings.chart.flowOut(results[0].outFlow)
+            ]
+        };
+        var myLineChart = new Chart(ctx).Line(data, settings.chart.common);
 
         if (node.type == 'stopline' && node.hasOwnProperty('parent')){
             app.panels.nodeSearchInfo.append(
@@ -502,7 +505,6 @@ var uievents = {
                 })
             );
         }
-
     },
 
     paletteClick: function(){

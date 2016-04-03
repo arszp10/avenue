@@ -18,27 +18,59 @@ var settings = {
     },
 
     chart: {
-       labels: function(cT){
-           var labels = [];
-           for (var i = 0; i < cT; i++) {
-               labels.push(i%5 == 0?i:'');
-           }
-           return labels;
-       },
-       defaults: {
-           low: 0,
-           showArea: true,
-           width: '320px',
-           height: '200px',
-           showPoint: false,
-           lineSmooth: false,
-           axisX: {
-               low:0,
-               high: 100,
-               showGrid: false,
-               showLabel: true
-           }
-       }
+        labels: function(cT) {
+            var labels = [];
+            for (var i = 0; i < cT; i++) {
+                labels.push(i % 5 == 0 ? i : '');
+            }
+            return labels;
+        },
+        common: {
+            animation: false,
+            showScale: true,
+            bezierCurve : false,
+            pointDot : false,
+            scaleShowHorizontalLines: true,
+            scaleShowVerticalLines: false,
+            scaleOverride: false,
+            scaleStepWidth: 20,
+            scaleSteps: 0.1,
+            scaleStartValue: 0,
+            scaleLineWidth: 1,
+            scaleShowLabels: true,
+            scaleLabel: "<%=parseFloat(value).toFixed(2)%>",
+            scaleIntegersOnly: false,
+            scaleBeginAtZero: true,
+            scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+            scaleFontSize: 8,
+            scaleFontStyle: "normal",
+            scaleFontColor: "#999",
+            showTooltips: false
+        },
+        flowIn: function(data){
+            return {
+                label: "flow in",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: data
+            };
+        },
+        flowOut: function(data){
+            return {
+                label: "flow out",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: data
+            };
+        }
     },
 
     coordinationPlan: {

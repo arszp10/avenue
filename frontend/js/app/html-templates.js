@@ -41,9 +41,24 @@ var htmlTemplates = {
             s = s + '</tr>';
         return s;
     },
-    signalBar : function(data){
+
+    crossRoadSignalBars: function(data){
+        var cycleTime = data.cycleTime;
+        var s = '';
+        data.bars.forEach(function(v){
+            v.cycleTime = cycleTime;
+            s += '<tr><td><span class="stop-line-icon text-'+ v.node.color +'">' + v.node.icon + '</span> '+v.node.tag +'&nbsp;</td>';
+            s += '<td>'+ this.signalBar(v, 'signals-bulk clearfix')+'</td></tr>';
+
+        }, this);
+        return '<h4>Diagrams</h4>' +
+               '<table><tbody>' + s + '</tbody></table><hr>';
+    },
+
+    signalBar : function(data, cls){
         var w = 0.5;
-        var s = '<div class="signal-bar">';
+        var className = cls == undefined ? '' : cls;
+        var s = '<div class="signal-bar ' + className + '">';
             data.signals.forEach(function(v){
                 w = 100* v.length/data.cycleTime;
                 s +='<div class="signal signal-' + v.color + '" style="width:'+ w +'%"></div>';
@@ -53,7 +68,6 @@ var htmlTemplates = {
     },
 
     chartPanel: function(id){
-        //return '<div class="chart-panel"><div id="' + id + '" class="ct-chart"></div></div>';
         return '<canvas id="chart-panel" width="320" height="200"></canvas>';
 
     },
@@ -99,25 +113,43 @@ var htmlTemplates = {
         '</div>';
     },
 
+    nodeCrossRoadProps: function(data){
+        return '<table class="table table-condensed">' +
+            '<tbody><tr>' +
+            '    <td>Phases count</td>' +
+            '    <td class="text-right">' + data.phases.length + '</td><td class="measure-unit"></td>' +
+            '</tr><tr>' +
+            '    <td>Offset</td>' +
+            '    <td class="text-right">' + data.offset + '</td><td class="measure-unit">sec</td>' +
+            '</tr></tbody>' +
+            '</table>';
+    },
+
     nodeCommonProps: function(data){
+        var sign = data.constantIntensity > 0 ? '+' : '';
+        var className = 'text-default';
+        if (data.constantIntensity > 0) { className = 'text-success';}
+        if (data.constantIntensity < 0) { className = 'text-danger';}
+
         return '<table class="table table-condensed table-striped">' +
             '<tbody><tr>' +
             '    <td>Capacity</td>' +
-            '    <td>' + data.capacity + ' (v/h)</td>' +
+            '    <td class="text-right">' + data.capacity + '</td><td class="measure-unit">v/h</td>' +
             '</tr><tr>' +
-            '    <td>Avg. Intensity</td>' +
-            '    <td>' + data.avgIntensity + ' (v/h)</td>' +
+            '    <td>Average Intensity</td>' +
+            '    <td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">v/h</td>' +
             '</tr><tr>' +
-            '    <td>Const. flow</td>' +
-            '    <td>0 (v/h)</td>' +
+            '    <td>Constant comp. of intensity</td>' +
+            '    <td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">v/h</td>' +
             '</tr></tbody>' +
         '</table>';
     },
 
     locateEditButtons: function(data) {
+        var cls = (data.type !== 'crossRoad') ? 'btn-edit-node' : 'btn-edit-cross-road';
         return '<table><tr data-id="' + data.id + '"><td>' +
                '<button class="btn btn-primary btn-pan-tonode"><i class="fa fa-crosshairs"></i> Locate</button>&nbsp;&nbsp;' +
-               '<button class="btn btn-default btn-edit-node"><i class="fa fa-edit"></i> Edit <span class="caret"></span></button>' +
+               '<button class="btn btn-default ' + cls + '"><i class="fa fa-edit"></i> Edit <span class="caret"></span></button>' +
                '</td></tr></table>';
     },
 
@@ -135,15 +167,19 @@ var htmlTemplates = {
             ? '<i class="fa fa-exclamation-circle text-danger"></i>'
             : '<i class="fa fa-check-circle text-success"></i>';
 
-        var no = data.isCongestion ? '': 'No ';
+        var no = data.isCongestion ? '<span class="text-danger">C': '<span class="text-success">No c';
         return '<hr><h4>Modeling results</h4>' +
-            '<table class="table table-condensed table-striped">' +
-            '    <tbody><tr>' +
-            '        <td>Max queue</td><td>'+data.maxQueue+' (vench)</td>' +
+            '<table class="table table-condensed table-striped"><tbody>' +
+            '    <tr>' +
+            '        <td>Delay</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">v*h/h</td>' +
             '    </tr><tr>' +
-            '        <td>Delay</td><td>'+data.delay+' (v*h/h)</td>' +
+            '        <td>Max queue</td><td class="text-right">'+data.maxQueue.toFixed(2)+'</td><td class="measure-unit">vehicle</td>' +
             '    </tr><tr>' +
-            '        <td>' + no + 'Congestion</td><td>'+con+'</td>' +
+            '        <td>Green saturation</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td>' +
+            '    </tr><tr>' +
+            '        <td>Sum I/O flow</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">vehicle</td>' +
+            '    </tr><tr>' +
+            '        <td>' + no + 'ongestion</span></td><td class="text-right">'+con+'</td><td class="measure-unit"></td>' +
             '    </tr></tbody>' +
             '</table>';
     }

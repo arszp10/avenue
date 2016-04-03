@@ -81,8 +81,9 @@ module.exports = {
         });
 
         _.forEach(network, function(v){
-            if (v.type == 'stopline') {
+            if (v.type == 'stopline' && v.hasOwnProperty('parent')) {
                 v.intervals = that._redIntervals(v, getNode(v.parent));
+                console.log(v.intervals);
             }
 
             if (v.hasOwnProperty('edges')) {
@@ -244,18 +245,20 @@ module.exports = {
         var prevGoff = 0;
         for (i = 0; i < phCount; i++){
             icolor = stopLine.greenPhases[i] === 'true' ? 'green' : 'red';
-            goff = stopLine.greenPhases[i] === 'true' ? parseInt(stopLine.greenOffset2) : parseInt(stopLine.greenOffset1);
+            goff = stopLine.greenPhases[i] === 'true'
+                ? parseInt(stopLine.greenOffset2)
+                : parseInt(stopLine.greenOffset1);
             inext = (i + 1) % phCount;
             if (stopLine.greenPhases[i] === stopLine.greenPhases[inext]) {
                 diagram.push({
                     color : icolor,
-                    length : crossRoad.phases[i].length
+                    length : parseInt(crossRoad.phases[i].length)
                 });
                 continue;
             }
             diagram.push({
                 color : icolor,
-                length : crossRoad.phases[i].length - interTact[icolor].length + prevGoff + goff
+                length : parseInt(crossRoad.phases[i].length) - interTact[icolor].length + prevGoff + goff
             });
             diagram = diagram.concat(interTact[icolor].signals);
             prevGoff = -goff;
