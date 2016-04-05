@@ -12,14 +12,19 @@
 ;
 //= vendor/charts/Chart.min.js
 ;
-//= app/app.js
-//= app/html-templates.js
-//= app/settings.js
-//= app/network-samples.js
-//= app/cy-styles.js
-//= app/ui-events.js
-//= app/cy-events.js
 
+//= app/app.js
+
+//= app/resources/controls.js
+//= app/resources/settings.js
+//= app/resources/samples.js
+//= app/resources/cy-styles.js
+
+//= app/templates/templates.js
+
+//= app/modules/cytoscape.js
+//= app/modules/controls.js
+//= app/modules/traffic.js
 
 
 
