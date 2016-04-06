@@ -3,9 +3,9 @@
     var controls  = App.Controls;
     var settings  = App.Resources.Settings;
     var cy        = App.Modules.cytoscape;
-    var ui        = App.Modules.controls;
+    var editor        = App.Modules.editor;
 
-    var tapToBackground = function(e){
+    var onTapToBackground = function(e){
         if(e.cyTarget !== cy) { return }
         controls.inputs.inputEdgeLabel.blur();
 
@@ -20,7 +20,7 @@
         cy.aveAddNode(settings[App.State.nodeType], position);
     };
 
-    var innerCrossEdges = function(edge){
+    var markInnerCrossEdge = function(edge){
         var target = cy.$('#' + edge.data().target);
         var source = cy.$('#' + edge.data().source);
         if (
@@ -30,7 +30,7 @@
         }
     };
 
-    var edgeCalcPortion = function(edge, source){
+    var setEdgePortion = function(edge, source){
         if (edge.data('portion')!== undefined && edge.data('portion') > 0) {
             return;
         }
@@ -47,7 +47,7 @@
     };
 
     var initCytoscapeEvents = function() {
-        cy.on('tap', tapToBackground);
+        cy.on('tap', onTapToBackground);
 
         cy.on('select', 'node', null, function (d, a) {
             var s = cy.$('node:selected');
@@ -57,8 +57,9 @@
                 if (v.source() == s) { v.addClass('edge-out-flow'); }
                 if (v.target() == s) { v.addClass('edge-in-flow'); }
             });
-            ui.showSideNodeInfo(s.data());
+            editor.showSideNodeInfo(s.data());
         });
+
         cy.on('unselect', 'node', null, function (d, a) {
             var s = cy.$('edge');
             $.each(s, function (i, v) {
@@ -66,6 +67,7 @@
                 v.removeClass('edge-out-flow');
             });
         });
+
         cy.on('unselect', function () {
             controls.panels.body.removeClass('show-right-panel');
         });
@@ -78,6 +80,7 @@
                     left: e.originalEvent.clientX - 15
                 }).data("edge", e.cyTarget.data('id')).val(e.cyTarget.data('portion')).focus();
         });
+
         cy.on('click', 'node:selected', null, function (e) {
             var type = e.cyTarget.data('type');
 
@@ -86,25 +89,26 @@
             }
 
             if (type == 'crossRoad') {
-                ui.showCrossroadModal(e.cyTarget.data());
+                editor.showCrossroadModal(e.cyTarget.data());
                 return;
             }
 
-            ui.showNodePopup(e.cyTarget.data(), e.originalEvent.clientX, e.originalEvent.clientY );
+            editor.showNodePopup(e.cyTarget.data(), e.originalEvent.clientX, e.originalEvent.clientY );
             e.originalEvent.stopPropagation();
         });
 
         cy.on('add', 'node', null, function (e) {
             e.cyTarget.data('cycleTime', App.State.coordinationPlan.cycleTime);
         });
+
         cy.on('add', 'edge', null, function (e) {
             var edge = e.cyTarget.data();
             if (e.cyTarget.parallelEdges().length > 1) {
-                cy.$('#' + edge.id).remove();
+                cy.getElementById(edge.id).remove();
                 return;
             };
 
-            innerCrossEdges(e.cyTarget);
+            markInnerCrossEdge(e.cyTarget);
 
             var target = cy.getElementById(edge.target);
             var source = cy.getElementById(edge.source);
@@ -148,7 +152,7 @@
                 }
             }
 
-            edgeCalcPortion(e.cyTarget, source);
+            setEdgePortion(e.cyTarget, source);
 
         });
     };
@@ -157,9 +161,9 @@
     App.Modules.cytoscape =  {
         injectDependencies: function(modules) {
             cy  = modules.cytoscape;
-            ui  = modules.controls;
+            editor  = modules.editor;
         },
-        avenue: function(){
+        initModule: function(){
             //cy = this;
             initCytoscapeEvents();
         },

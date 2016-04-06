@@ -2,8 +2,11 @@ var AvenueApp = {
     Templates: {},
     Modules:   {
         controls:  null,
+        cytoscape: null,
+        editor: null,
         traffic:   null,
-        cytoscape: null
+        apiCalls:  null,
+        apiHandlers: null
     },
     Resources: {},
     Controls: {},
@@ -13,6 +16,20 @@ var AvenueApp = {
         lastModelingResult: [],
         lastErrors: [],
         coordinationPlan:{}
+    },
+    linkModules: function(){
+        $.each(this.Modules, function(i, v){
+            if (v.hasOwnProperty('injectDependencies')) {
+                v.injectDependencies(AvenueApp.Modules);
+            }
+        });
+    },
+    initModules: function(){
+        $.each(this.Modules, function(i, v){
+            if (v.hasOwnProperty('initModule') && i != 'controls') {
+                v.initModule(AvenueApp.Modules);
+            }
+        });
     }
 
 };
@@ -24,18 +41,17 @@ $(document).ready(function() {
     options.style = AvenueApp.Resources.CyStyles;
     options.ready = function() {
         var cy = $.extend(this, AvenueApp.Modules.cytoscape);
-
         AvenueApp.Modules.cytoscape = cy;
-        AvenueApp.Modules.controls.injectDependencies(AvenueApp.Modules);
-        AvenueApp.Modules.cytoscape.injectDependencies(AvenueApp.Modules);
-
         cy.edgehandles({ });
         cy.panzoom({});
         cy.avenue();
 
+
+        AvenueApp.linkModules();
+        AvenueApp.initModules();
     };
 
-    AvenueApp.Modules.controls.initControls();
+    AvenueApp.Modules.controls.initModule();
     AvenueApp.Controls.panels.cytoscape.cytoscape(options);
 
 });

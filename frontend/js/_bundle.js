@@ -18,12 +18,15 @@
 //= app/resources/controls.js
 //= app/resources/settings.js
 //= app/resources/samples.js
-//= app/resources/cy-styles.js
+//= app/resources/cyStyles.js
 
 //= app/templates/templates.js
 
-//= app/modules/cytoscape.js
 //= app/modules/controls.js
+//= app/modules/cytoscape.js
+//= app/modules/editor.js
+//= app/modules/apiCalls.js
+//= app/modules/apiHandlers.js
 //= app/modules/traffic.js
 
 
