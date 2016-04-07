@@ -58,7 +58,8 @@
             btnsCrossFormPhasesCount:   '.table-phases th.ph-th',
             btnSaveCrossroadData :      '#btn-save-crossroad-data',
             btnCalc:                    '#btn-calc',
-            btnsAddSampleItem:          '.add-sample-item'
+            btnsAddSampleItem:          '.add-sample-item',
+            btnPointPropertyDone:       '#btn-point-property-done'
         }
     };
 })(AvenueApp);

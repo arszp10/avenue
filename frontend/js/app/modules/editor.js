@@ -212,6 +212,9 @@
                 controls.buttons.btnNodeColorSelection.trigger('changeColor', ['btn-' + color]);
 
             });
+            controls.buttons.btnPointPropertyDone.click(function(){
+                that.toggleNodePopupPanel(false);
+            });
 
             /**
              *  Coordination plan modal events

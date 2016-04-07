@@ -463,7 +463,11 @@ body.show-edge-input #input-edge-label {
 }
 
 #btn-node-icon {
-    padding:5px 17px;
+    padding:5px 20px;
+}
+
+#btn-point-property-done {
+    margin-right: 15px;
 }
 
 #input-crossroad-name {

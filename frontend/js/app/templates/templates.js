@@ -136,7 +136,7 @@
         locateEditButtons:      function(data) {
             var cls = (data.type !== 'crossRoad') ? 'btn-edit-node' : 'btn-edit-cross-road';
             return '<table><tr data-id="' + data.id + '"><td>' +
-                '<button class="btn btn-primary btn-pan-tonode"><i class="fa fa-crosshairs"></i> Locate</button>&nbsp;&nbsp;' +
+                '<button class="btn btn-default btn-pan-tonode"><i class="fa fa-crosshairs"></i> Locate</button>&nbsp;&nbsp;' +
                 '<button class="btn btn-default ' + cls + '"><i class="fa fa-edit"></i> Edit <span class="caret"></span></button>' +
                 '</td></tr></table>';
         },
