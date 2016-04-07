@@ -11,6 +11,12 @@
 	bottom: 230px;
 }
 
+@media screen and (max-height: 770px) {
+    .cy-panzoom {
+        display:none;
+    }
+}
+
 .cy-panzoom-zoom-button {
 	cursor: pointer;
 	padding: 3px;

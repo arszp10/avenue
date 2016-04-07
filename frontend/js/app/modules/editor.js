@@ -2,15 +2,15 @@
     var controls  = App.Controls;
     var templates = App.Templates;
     var settings  = App.Resources.Settings;
-    var samples  = App.Resources.Samples;
-    var cy        = App.Modules.cytoscape;
-    var traffic   = App.Modules.traffic;
+    var samples   = App.Resources.Samples;
+    var cy, traffic, api;
     var that;
 
     App.Modules.editor = {
         injectDependencies: function(modules) {
             cy        = modules.cytoscape;
             traffic   = modules.traffic;
+            api   = modules.apiCalls;
         },
         initModule: function(){
             that = this;
@@ -99,45 +99,9 @@
             controls.buttons.btnCalc.click(function () {
                 var data = cy.avePrepareCalcRequest();
                 var $icon = $(this).find('i.fa');
-                $icon.addClass('fa-spin');
+                    $icon.addClass('fa-spin');
                 cy.nodes().removeClass('has-error');
-                var jqxhr = $.ajax({
-                    url: "/api/model/recalculate",
-                    data: {data: data},
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                    .done(function (d) {
-                        if (d.result) {
-                            App.State.lastModelingResult = d.data;
-                            App.State.lastErrors = [];
-
-                            var sumDelay = 0;
-                            d.data.map(function (v) {
-                                sumDelay += v.delay;
-                            });
-
-                            controls.panels.statusBar.html(
-                                templates.sumDelayStatus(sumDelay)
-                            );
-
-                        } else {
-                            App.State.lastModelingResult = [];
-                            App.State.lastErrors = d.data;
-                            d.data.map(function (v) {
-                                cy.getElementById(v.node).addClass('has-error');
-                            });
-                        }
-                        $.notify(d.message, {
-                            position: 'top center',
-                            className: d.result ? "success" : "error"
-                        });
-                    })
-                    .fail(function () {
-                        console.log("API request error!");
-                    }).always(function () {
-                        $icon.removeClass('fa-spin');
-                    });
+                api.recalculate({data: data}, $icon);
             });
 
         },
