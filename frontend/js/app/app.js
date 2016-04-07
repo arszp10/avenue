@@ -1,12 +1,12 @@
 var AvenueApp = {
     Templates: {},
     Modules:   {
-        controls:  null,
-        cytoscape: null,
-        editor: null,
-        traffic:   null,
-        apiCalls:  null,
-        apiHandlers: null
+        controls:  {},
+        cytoscape: {},
+        editor: {},
+        traffic:   {},
+        apiCalls:  {},
+        apiHandlers: {}
     },
     Resources: {},
     Controls: {},
@@ -18,14 +18,14 @@ var AvenueApp = {
         coordinationPlan:{}
     },
     linkModules: function(){
-        $.each(this.Modules, function(i, v){
+        $.each(AvenueApp.Modules, function(i, v){
             if (v.hasOwnProperty('injectDependencies')) {
                 v.injectDependencies(AvenueApp.Modules);
             }
         });
     },
     initModules: function(){
-        $.each(this.Modules, function(i, v){
+        $.each(AvenueApp.Modules, function(i, v){
             if (v.hasOwnProperty('initModule') && i != 'controls') {
                 v.initModule(AvenueApp.Modules);
             }
@@ -44,7 +44,6 @@ $(document).ready(function() {
         AvenueApp.Modules.cytoscape = cy;
         cy.edgehandles({ });
         cy.panzoom({});
-        cy.avenue();
 
 
         AvenueApp.linkModules();

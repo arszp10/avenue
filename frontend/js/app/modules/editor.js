@@ -2,6 +2,7 @@
     var controls  = App.Controls;
     var templates = App.Templates;
     var settings  = App.Resources.Settings;
+    var samples  = App.Resources.Samples;
     var cy        = App.Modules.cytoscape;
     var traffic   = App.Modules.traffic;
     var that;
@@ -15,13 +16,17 @@
             that = this;
             App.State.coordinationPlan = settings.coordinationPlan;
             this.initDocumentEvents();
-            this.initControlsEvents();
-
+            this.initLeftPanelEvents();
+            this.initTopPanelEvents();
+            this.initBottomPanelEvents();
+            this.initRightPanelEvents();
+            this.initWidgetsEvents();
         },
+
         initDocumentEvents: function(){
             this.initCheckBoxes(controls.panels.body);
             controls.panels.body.on('mouseup', function(){
-                that.togglePanelPointPrperty(false);
+                that.toggleNodePopupPanel(false);
             });
 
             $(document).on('keyup', function(event){
@@ -36,51 +41,22 @@
 
             $(document).on('keyup', 'input', function(e){ e.stopPropagation(); });
 
-            $(document).on('click', 'button.btn-stop-line, button.btn-edit-node', function(e){
-                var nodeId = $(this).closest('tr').data('id');
-                var target = cy.getElementById(nodeId).data();
-                that.showNodePopup(target, e.clientX, e.clientY);
-            });
-
-            $(document).on('click', 'button.btn-edit-cross-road', function(e){
-                var nodeId = $(this).closest('tr').data('id');
-                var target = cy.getElementById(nodeId).data();
-                that.showCrossroadModal(target);
-            });
-
-            $(document).on('click', 'button.btn-pan-tonode', function(e){
-                var nodeId = $(this).closest('tr').data('id');
-                var el = cy.getElementById(nodeId);
-                cy.fit(el, 250);
-                el.select();
-            });
-
-            $(document).on('click', '.node-list-item', function(event){
-                that.showSideNodeInfo(cy.getElementById($(this).data('id')).data());
-            });
-
             $(document).bind('copy', function(){controls.buttons.btnCopy.click();});
             $(document).bind('paste', function(){controls.buttons.btnPaste.click();});
             $(document).bind('cut', function(){controls.buttons.btnCut.click();});
 
         },
-        initControlsEvents: function() {
-            var cookie = JSON.parse($.cookie('_avenue').substr(2));
 
-            controls.labels.labelMyAccountUsername.text(cookie.fullName);
+        initLeftPanelEvents: function(){
+            controls.buttons.btnPanMode.on('click', this.cySelectionMode);
+            controls.buttons.btnSelectMode.on('click', this.cySelectionMode);
 
-            controls.buttons.btnPanMode.click(this.paletteClick);
-            controls.buttons.btnSelectMode.click(this.paletteClick);
-
-            controls.buttons.btnAddStopline.click(this.paletteClick);
-            controls.buttons.btnAddCarriageway.click(this.paletteClick);
-            controls.buttons.btnAddPoint.click(this.paletteClick);
-            controls.buttons.btnAddBottleneck.click(this.paletteClick);
-            controls.buttons.btnAddConcurrent.click(this.paletteClick);
-            controls.buttons.btnAddConcurrentMerge.click(this.paletteClick);
-
-            controls.buttons.btnShowResults.click(function () { that.bottomTabClick($(this)); });
-            controls.buttons.btnShowRoutes.click(function () { that.bottomTabClick($(this)); });
+            controls.buttons.btnAddStopline.on('click', this.nodesAddMode);
+            controls.buttons.btnAddCarriageway.on('click', this.nodesAddMode);
+            controls.buttons.btnAddPoint.on('click', this.nodesAddMode);
+            controls.buttons.btnAddBottleneck.on('click', this.nodesAddMode);
+            controls.buttons.btnAddConcurrent.on('click', this.nodesAddMode);
+            controls.buttons.btnAddConcurrentMerge.on('click', this.nodesAddMode);
 
             controls.buttons.btnHorizontalAlign.click(function () { cy.aveAlignSelected('y'); });
             controls.buttons.btnVerticalAlign.click(function () { cy.aveAlignSelected('x'); });
@@ -88,7 +64,7 @@
             controls.buttons.btnDeleteNode.click(function () {
                 cy.$(':selected').remove();
                 cy.trigger('unselect');
-                that.togglePanelPointPrperty(false);
+                that.toggleNodePopupPanel(false);
             });
 
             controls.buttons.btnGroupNodes.click(function () { cy.aveGroupNodes(); });
@@ -110,126 +86,14 @@
                 cy.avePaste(ids, data);
             });
 
-            controls.inputs.inputEdgeLabel.blur(function () {
-                controls.panels.body.removeClass('show-edge-input');
-            });
-            controls.inputs.inputEdgeLabel.change(function () {
-                var id = $(this).data('edge');
-                cy.getElementById(id).data('portion', parseInt($(this).val()))
-            });
-            controls.inputs.inputEdgeLabel.on('keyup', function (event) {
-                if (event.which == 13) {
-                    controls.inputs.inputEdgeLabel.blur();
-                }
-            });
+        },
 
-            controls.buttons.btnCloseRightPanel.click(function () {
-                controls.panels.body.toggleClass('show-right-panel');
-                controls.inputs.inputNodeSearch.val('');
-            });
+        initTopPanelEvents: function(){
+            var cookie = JSON.parse($.cookie('_avenue').substr(2));
+            controls.labels.labelMyAccountUsername.text(cookie.fullName);
 
-            controls.panels.pointProperty.mouseup(function(e){ e.stopPropagation(); });
-
-            controls.inputs.inputsNodeProperty.on('change', function () {
-                var th = $(this);
-                var id = controls.panels.pointProperty.data('node');
-                var val = th.val();
-                if (th.data('key') == 'intervals') { val = JSON.parse(val); }
-                cy.getElementById(id).data(th.data('key'), val);
-            });
-
-            controls.buttons.btnsDirection.on('click', function () {
-                var id = controls.panels.pointProperty.data('node');
-                var icon = window.getComputedStyle($('i', this)[0], ':before').getPropertyValue('content');
-                cy.getElementById(id).data('icon', icon.substring(1, 2));
-            });
-
-
-            controls.buttons.btnNodeColorSelection.on('changeColor', function (e, color) {
-                $(this)
-                    .removeClass('btn-default btn-primary btn-info btn-success btn-danger btn-warning')
-                    .addClass(color);
-            });
-
-            controls.buttons.btnsColorSelection.on('click', function () {
-                var id = controls.panels.pointProperty.data('node');
-                var color = $(this).data('color');
-                cy.getElementById(id).data('color', color);
-                controls.buttons.btnNodeColorSelection.trigger('changeColor', ['btn-' + color]);
-
-            });
-
-            controls.inputs.inputCrossroadOffset = $('#inputCrossroadOffset').slider({
-                max: 100,
-                value: 0,
-                tooltip: 'always'
-            });
-
-            controls.panels.crossRoadModal.on('shown.bs.modal', function () {
-                controls.inputs.inputCrossroadOffset.slider('relayout');
-            });
-
-            controls.buttons.btnCoPlanProperties.click(function () {
-                var cp = App.State.coordinationPlan;
-                controls.inputs.inputCoPlanCycleTime.val(cp.cycleTime);
-                controls.inputs.inputCoPlanName.val(cp.name);
-                controls.inputs.inputCoPlanNotes.val(cp.notes);
-                controls.panels.coPlanModal.modal('show');
-            });
-
-            controls.buttons.btnCoPlanSave.click(function () {
-                App.State.coordinationPlan.cycleTime = controls.inputs.inputCoPlanCycleTime.val();
-                App.State.coordinationPlan.name = controls.inputs.inputCoPlanName.val();
-                App.State.coordinationPlan.notes = controls.inputs.inputCoPlanNotes.val();
-                cy.aveSetCycleTime(App.State.coordinationPlan.cycleTime);
-                controls.panels.coPlanModal.modal('hide');
-            });
-
-            controls.buttons.btnsCrossFormPhasesCount.click(function () {
-                var cols = $(this).data('cols');
-                controls.buttons.btnsCrossFormPhasesCount.removeClass('ph-selected');
-                $(this).addClass('ph-selected');
-                controls.panels.tblPhasesBody.find('input[type="text"]').prop('disabled', true);
-                controls.panels.tblPhasesBody.find('input[type="checkbox"]').iCheck('disable');
-                cols.map(function (v) {
-                    controls.panels.tblPhasesBody.find('.ph-col-' + v + ' input[type="text"]').prop('disabled', false);
-                    controls.panels.tblPhasesBody.find('.ph-col-' + v + ' input[type="checkbox"]').iCheck('enable');
-                });
-            });
-
-            controls.buttons.btnSaveCrossroadData.click(function () {
-                var nodeId = controls.panels.crossRoadModal.data('id');
-
-                var tblPhasesBody = controls.panels.tblPhasesBody;
-                var phasesCount = controls.panels.crossRoadModal.find('.ph-selected').data('count');
-                var phases = [];
-                var tag = 0;
-                var pLength = 0;
-                var maxLength = 0;
-                for (var i = 1; i <= phasesCount; i++) {
-                    tag = tblPhasesBody.find('input#ph-tag-' + i).val();
-                    pLength = tblPhasesBody.find('input#ph-length-' + i).val();
-                    maxLength = tblPhasesBody.find('input#ph-max-length-' + i).val();
-                    phases.push({
-                        tag: tag,
-                        length: pLength ? parseInt(pLength) : 0,
-                        minLength: maxLength ? parseInt(maxLength) : 0
-                    });
-                }
-                cy.getElementById(nodeId).data('name', controls.inputs.inputCrossroadName.val());
-                cy.getElementById(nodeId).data('offset', controls.inputs.inputCrossroadOffset.slider('getValue'));
-                cy.getElementById(nodeId).data('phases', phases);
-
-                tblPhasesBody.find('tr.stop-line-row').each(function () {
-                    var $tr = $(this);
-                    var green = [];
-                    var inputs = $tr.find('td.ph-td:lt(' + phases.length + ') input[type="checkbox"]');
-                    for (var i = 0; i < phases.length; i++) {
-                        green.push(inputs[i].checked);
-                    }
-                    cy.getElementById($tr.data('id')).data('greenPhases', green);
-                });
-                controls.panels.crossRoadModal.modal('hide');
+            controls.buttons.btnsAddSampleItem.click(function(){
+                cy.avePaste([], samples[$(this).data('key')]);
             });
 
             controls.buttons.btnCalc.click(function () {
@@ -276,6 +140,42 @@
                     });
             });
 
+        },
+
+        initBottomPanelEvents: function(){
+            controls.buttons.btnShowResults.on('click', that.bottomTabSwitch);
+            controls.buttons.btnShowRoutes.on('click', that.bottomTabSwitch);
+        },
+
+        initRightPanelEvents: function(){
+            $(document).on('click', 'button.btn-stop-line, button.btn-edit-node', function(e){
+                var nodeId = $(this).closest('tr').data('id');
+                var target = cy.getElementById(nodeId).data();
+                that.showNodePopup(target, e.clientX, e.clientY);
+            });
+
+            $(document).on('click', 'button.btn-edit-cross-road', function(e){
+                var nodeId = $(this).closest('tr').data('id');
+                var target = cy.getElementById(nodeId).data();
+                that.showCrossroadModal(target);
+            });
+
+            $(document).on('click', 'button.btn-pan-tonode', function(e){
+                var nodeId = $(this).closest('tr').data('id');
+                var el = cy.getElementById(nodeId);
+                cy.fit(el, 250);
+                el.select();
+            });
+
+            $(document).on('click', '.node-list-item', function(event){
+                that.showSideNodeInfo(cy.getElementById($(this).data('id')).data());
+            });
+
+            controls.buttons.btnCloseRightPanel.click(function () {
+                controls.panels.body.toggleClass('show-right-panel');
+                controls.inputs.inputNodeSearch.val('');
+            });
+
             controls.inputs.inputNodeSearchForm.submit(function (e) {
                 var text = controls.inputs.inputNodeSearch.val();
                 var limit = 20;
@@ -302,10 +202,135 @@
                 return false;
             });
         },
+
+        initWidgetsEvents: function() {
+            /**
+             *  Edge input events
+             */
+            controls.inputs.inputEdgeLabel.blur(function () {
+                controls.panels.body.removeClass('show-edge-input');
+            });
+            controls.inputs.inputEdgeLabel.change(function () {
+                var id = $(this).data('edge');
+                cy.getElementById(id).data('portion', parseInt($(this).val()))
+            });
+            controls.inputs.inputEdgeLabel.on('keyup', function (event) {
+                if (event.which == 13) {
+                    controls.inputs.inputEdgeLabel.blur();
+                }
+            });
+
+            /**
+             *  Node popup properies block related events
+             */
+            controls.panels.pointProperty.mouseup(function(e){ e.stopPropagation(); });
+            controls.inputs.inputsNodeProperty.on('change', function () {
+                var th = $(this);
+                var id = controls.panels.pointProperty.data('node');
+                var val = th.val();
+                if (th.data('key') == 'intervals') { val = JSON.parse(val); }
+                cy.getElementById(id).data(th.data('key'), val);
+            });
+            controls.buttons.btnsDirection.on('click', function () {
+                var id = controls.panels.pointProperty.data('node');
+                var icon = window.getComputedStyle($('i', this)[0], ':before').getPropertyValue('content');
+                cy.getElementById(id).data('icon', icon.substring(1, 2));
+            });
+            controls.buttons.btnNodeColorSelection.on('changeColor', function (e, color) {
+                $(this)
+                    .removeClass('btn-default btn-primary btn-info btn-success btn-danger btn-warning')
+                    .addClass(color);
+            });
+            controls.buttons.btnsColorSelection.on('click', function () {
+                var id = controls.panels.pointProperty.data('node');
+                var color = $(this).data('color');
+                cy.getElementById(id).data('color', color);
+                controls.buttons.btnNodeColorSelection.trigger('changeColor', ['btn-' + color]);
+
+            });
+
+            /**
+             *  Coordination plan modal events
+             */
+            controls.buttons.btnCoPlanProperties.click(function () {
+                var cp = App.State.coordinationPlan;
+                controls.inputs.inputCoPlanCycleTime.val(cp.cycleTime);
+                controls.inputs.inputCoPlanName.val(cp.name);
+                controls.inputs.inputCoPlanNotes.val(cp.notes);
+                controls.panels.coPlanModal.modal('show');
+            });
+            controls.buttons.btnCoPlanSave.click(function () {
+                App.State.coordinationPlan.cycleTime = controls.inputs.inputCoPlanCycleTime.val();
+                App.State.coordinationPlan.name = controls.inputs.inputCoPlanName.val();
+                App.State.coordinationPlan.notes = controls.inputs.inputCoPlanNotes.val();
+                cy.aveSetCycleTime(App.State.coordinationPlan.cycleTime);
+                controls.panels.coPlanModal.modal('hide');
+            });
+
+            /**
+             *  Crossroad modal events
+             */
+            controls.inputs.inputCrossroadOffset = $('#inputCrossroadOffset').slider({
+                max: 100,
+                value: 0,
+                tooltip: 'always'
+            });
+            controls.panels.crossRoadModal.on('shown.bs.modal', function () {
+                controls.inputs.inputCrossroadOffset.slider('relayout');
+            });
+            controls.buttons.btnsCrossFormPhasesCount.click(function () {
+                var cols = $(this).data('cols');
+                controls.buttons.btnsCrossFormPhasesCount.removeClass('ph-selected');
+                $(this).addClass('ph-selected');
+                controls.panels.tblPhasesBody.find('input[type="text"]').prop('disabled', true);
+                controls.panels.tblPhasesBody.find('input[type="checkbox"]').iCheck('disable');
+                cols.map(function (v) {
+                    controls.panels.tblPhasesBody.find('.ph-col-' + v + ' input[type="text"]').prop('disabled', false);
+                    controls.panels.tblPhasesBody.find('.ph-col-' + v + ' input[type="checkbox"]').iCheck('enable');
+                });
+            });
+            controls.buttons.btnSaveCrossroadData.click(function () {
+                var nodeId = controls.panels.crossRoadModal.data('id');
+
+                var tblPhasesBody = controls.panels.tblPhasesBody;
+                var phasesCount = controls.panels.crossRoadModal.find('.ph-selected').data('count');
+                var phases = [];
+                var tag = 0;
+                var pLength = 0;
+                var maxLength = 0;
+                for (var i = 1; i <= phasesCount; i++) {
+                    tag = tblPhasesBody.find('input#ph-tag-' + i).val();
+                    pLength = tblPhasesBody.find('input#ph-length-' + i).val();
+                    maxLength = tblPhasesBody.find('input#ph-max-length-' + i).val();
+                    phases.push({
+                        tag: tag,
+                        length: pLength ? parseInt(pLength) : 0,
+                        minLength: maxLength ? parseInt(maxLength) : 0
+                    });
+                }
+                cy.getElementById(nodeId).data('name', controls.inputs.inputCrossroadName.val());
+                cy.getElementById(nodeId).data('offset', controls.inputs.inputCrossroadOffset.slider('getValue'));
+                cy.getElementById(nodeId).data('phases', phases);
+
+                tblPhasesBody.find('tr.stop-line-row').each(function () {
+                    var $tr = $(this);
+                    var green = [];
+                    var inputs = $tr.find('td.ph-td:lt(' + phases.length + ') input[type="checkbox"]');
+                    for (var i = 0; i < phases.length; i++) {
+                        green.push(inputs[i].checked);
+                    }
+                    cy.getElementById($tr.data('id')).data('greenPhases', green);
+                });
+                controls.panels.crossRoadModal.modal('hide');
+            });
+
+        },
+
+
         initCheckBoxes: function($el) {
             $el.find('input[type="checkbox"]').iCheck({ checkboxClass: 'icheckbox_minimal-blue' });
         },
-        togglePanelPointPrperty: function(show){
+        toggleNodePopupPanel: function(show){
             controls.panels.body.toggleClass('show-panel-point-property', show);
         },
         flattenErrors: function(errors){
@@ -316,7 +341,7 @@
             return flattern;
         },
         showNodePopup: function(target, x, y){
-            this.togglePanelPointPrperty();
+            this.toggleNodePopupPanel();
             controls.panels.pointProperty.css(
                 {
                     top: y + 10,
@@ -379,6 +404,7 @@
             controls.panels.nodeSearchResultlist.empty();
             controls.panels.nodeSearchInfo.empty();
             controls.panels.body.addClass('show-right-panel');
+            
             if (node.hasOwnProperty('parent') && node.type !== 'crossRoad') {
                 node.name =  cy.getElementById(node.parent).data('name');
             }
@@ -466,22 +492,23 @@
                 );
             }
         },
-        paletteClick: function(){
+        nodesAddMode: function(){
             var $this = $(this);
             $this.closest('.btn-group').find('.active').removeClass("active");
-            if($this.prop('tagName') == 'A') {
-                $this.closest('ul').find('li.active').removeClass("active");
-                $this.parent().addClass("active");
-                var btn = $this.closest('ul').prev();
-                btn.addClass("active");
-                btn.find('i')
-                    .removeClass('fa fa-genderless fa-circle-thin fa-exchange fa-filter fa-random fa-ellipsis-v fa-code-fork')
-                    .addClass($this.find('i').attr('class'));
-                ;
-            } else {
-                $this.addClass("active");
-            }
-
+            $this.closest('ul').find('li.active').removeClass("active");
+            $this.parent().addClass("active");
+            var btn = $this.closest('ul').prev();
+            btn.addClass("active");
+            btn.find('i')
+                .removeClass('fa fa-genderless fa-circle-thin fa-exchange fa-filter fa-random fa-ellipsis-v fa-code-fork')
+                .addClass($this.find('i').attr('class'));
+            App.State.nodeType = $this.data('type');
+            App.State.clickMode = String($this.attr('id')).substring(8);
+        },
+        cySelectionMode:function(){
+            var $this = $(this);
+            $this.closest('.btn-group').find('.active').removeClass("active");
+            $this.addClass("active");
             if ($this.attr('id') == controls.buttons.btnSelectMode.attr('id')) {
                 cy.boxSelectionEnabled(true);
                 cy.userPanningEnabled(false);
@@ -491,9 +518,9 @@
                 cy.userPanningEnabled(true);
             }
             App.State.clickMode = String($this.attr('id')).substring(8);
-            App.State.nodeType = $this.data('type');
         },
-        bottomTabClick: function(tab){
+        bottomTabSwitch: function(){
+            var tab = $(this);
             tab.parent().siblings().removeClass('active');
             tab.parent().addClass('active');
             controls.panels.body

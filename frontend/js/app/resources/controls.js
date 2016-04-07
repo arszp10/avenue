@@ -57,7 +57,8 @@
             btnNodeColorSelection:      '#btn-node-color-selection',
             btnsCrossFormPhasesCount:   '.table-phases th.ph-th',
             btnSaveCrossroadData :      '#btn-save-crossroad-data',
-            btnCalc:                    '#btn-calc'
+            btnCalc:                    '#btn-calc',
+            btnsAddSampleItem:          '.add-sample-item'
         }
     };
 })(AvenueApp);
