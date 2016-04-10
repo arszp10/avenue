@@ -130,6 +130,22 @@ module.exports = function(app) {
         });
     });
 
+    app.post('/api/model/optimize', function (req, res) {
+        var errors = avenueLib.validate(req.body.data);
+        if (errors.length) {
+            res.json({
+                result: false,
+                message: 'The requested data has some errors!',
+                data: errors
+            });
+            return;
+        }
+        res.json({
+            result: true,
+            message: 'Everything alright !',
+            data: avenueLib.optimize(req.body.data)
+        });
+    });
 
 
 

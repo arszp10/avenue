@@ -13,6 +13,35 @@
         }, 0);
     };
 
+    var doneCalcHandler = function (r){
+        if (r.result) {
+            App.State.lastModelingResult = r.data;
+            App.State.lastErrors = [];
+            var sumDelay = sum(r.data, 'delay');
+            controls.panels.statusBar.html(
+                templates.sumDelayStatus(sumDelay)
+            );
+        } else {
+            App.State.lastModelingResult = [];
+            App.State.lastErrors = r.data;
+            r.data.map(function (v) {
+                cy.getElementById(v.node).addClass('has-error');
+            });
+        }
+        $.notify(r.message, {
+            position: 'top center',
+            className: r.result ? "success" : "error"
+        });
+    };
+
+    var failCalcHandler = function(r, o){
+        console.log("API request error!");
+    };
+
+    var alwaysCalcHandler = function(options){
+        options.removeClass('fa-spin');
+    };
+
     App.Modules.apiHandlers = {
         injectDependencies: function(modules) {
             cy      = modules.cytoscape;
@@ -21,32 +50,25 @@
         initModule: function(){},
 
         recalculate: {
+            done: doneCalcHandler,
+            fail: failCalcHandler,
+            always: alwaysCalcHandler
+        },
+        optimize: {
             done: function(r, options){
-                if (r.result) {
-                    App.State.lastModelingResult = r.data;
-                    App.State.lastErrors = [];
-                    var sumDelay = sum(r.data, 'delay');
-                    controls.panels.statusBar.html(
-                        templates.sumDelayStatus(sumDelay)
-                    );
-                } else {
-                    App.State.lastModelingResult = [];
-                    App.State.lastErrors = r.data;
-                    r.data.map(function (v) {
-                        cy.getElementById(v.node).addClass('has-error');
-                    });
+                doneCalcHandler(r);
+                if (!r.result) {
+                    return;
                 }
-                $.notify(r.message, {
-                    position: 'top center',
-                    className: r.result ? "success" : "error"
+                r.data.map(function(v){
+                    if (v.type == 'crossRoad') {
+                        cy.getElementById(v.id).data('offset', parseInt(v.offset));
+                        cy.getElementById(v.id).data('phases', v.phases);
+                    }
                 });
             },
-            fail: function(r, o){
-                console.log("API request error!");
-            },
-            always: function(options){
-                options.removeClass('fa-spin');
-            }
+            fail: failCalcHandler,
+            always: alwaysCalcHandler
         }
     };
 

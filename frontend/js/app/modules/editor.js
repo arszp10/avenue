@@ -104,6 +104,14 @@
                 api.recalculate({data: data}, $icon);
             });
 
+            controls.buttons.btnOptimize.click(function () {
+                var data = cy.avePrepareCalcRequest();
+                var $icon = $(this).find('i.fa');
+                $icon.addClass('fa-spin');
+                cy.nodes().removeClass('has-error');
+                api.optimize({data: data}, $icon);
+            });
+
         },
 
         initBottomPanelEvents: function(){

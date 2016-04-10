@@ -1,4 +1,5 @@
 var utils  = require('../utils/utils')();
+var _      = require('lodash');
 
 module.exports = {
 
@@ -12,14 +13,6 @@ module.exports = {
         var queue = queueTail == undefined ? 0 : queueTail;
         var intervals = flow.intervals;
         var last = intervals.last();
-        var first = intervals.first();
-
-        if (last && first) {
-            if((last.f + 1) % cycleTime == first.s) {
-                last.length += first.length;
-            }
-        }
-
         if (intervals.length == 0) {
             intervals = [[-10, -1]];
         }
@@ -195,7 +188,6 @@ module.exports = {
             if (queue > flow2.maxQueueLength) {
                 flow2.maxQueueLength = queue;
             }
-
             if (outFlow2[i] <= 0.01){
                 virtRedTime++;
                 avgInVirtRed+=inFlow2[i];

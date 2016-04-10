@@ -29,6 +29,9 @@
         initModule: function(){},
         recalculate: function(data, options) {
             return action('POST:/api/model/recalculate', data, handlers.recalculate, options);
+        },
+        optimize: function(data, options) {
+            return action('POST:/api/model/optimize', data, handlers.optimize, options);
         }
     };
 

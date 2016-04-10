@@ -48,7 +48,7 @@ function CompetitorMerge(options, network, indexMap){
         this.greenSaturation = 100 * this.sumOutFlow / (this.cycleTime * this.capacity/3600);
         this.isCongestion = this.secondary.isCongestion;
 
-        this.avgIntensity =  this.primaryIntensity + this.secondaryIntensity;
+        //this.avgIntensity =  this.primaryIntensity + this.secondaryIntensity;
     };
 
 }

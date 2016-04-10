@@ -22,6 +22,10 @@ function Flow(options, network, indexMap)
     this.type = flow.type;
     this.edges = flow.edges;
     this.tag = flow.tag;
+    this.parent = flow.parent;
+    this.greenPhases = flow.greenPhases;
+    this.greenOffset1 = flow.greenOffset1;
+    this.greenOffset2 = flow.greenOffset2;
     this.cycleTime      = parseInt(flow.cycleTime);
     this.avgIntensity   = parseInt(flow.avgIntensity);
     this.capacity       = parseInt(flow.capacity);
@@ -40,6 +44,16 @@ function Flow(options, network, indexMap)
             length: v[1] - v[0]
         }
     });
+
+
+    var last = this.intervals.last();
+    var first = this.intervals.first();
+    if (last && first) {
+        if ((last.f + 1) % this.cycleTime == first.s) {
+            last.length += first.length;
+        }
+    }
+    this.sourceNodes = false;
     this.isCongestion   = false;
     this.maxQueueLength = 0;
     this.delay          = 0;
@@ -98,6 +112,7 @@ function Flow(options, network, indexMap)
     this.initInFlow = function initInFlow() {
         var sumInTotal = 0;
         var hasOverflow = false;
+        var that = this;
         if (this.edges.length > 0) {
             var sourceNodes = this._flowSourceNodes();
             var cfc = this.constantFlowCoeff();
@@ -105,9 +120,9 @@ function Flow(options, network, indexMap)
             for (var i = 0; i < this.inFlow.length; i++){
                 var sumI = 0;
 
-                this.edges.map(function(el){
-                    sumI +=  this._calcEdgePortionI(i, el, sourceNodes[el.source]);
-                }, this);
+                _.forEach(this.edges, function(el){
+                    sumI +=  that._calcEdgePortionI(i, el, sourceNodes[el.source]);
+                });
 
                 if (cfc <= 1) {
                     sumI = sumI * cfc;
@@ -143,7 +158,27 @@ function Flow(options, network, indexMap)
         }, this);
 
         return result;
+    };
+
+    this.resetIntervals = function(intervals){
+        this.intervals = intervals.map(function(v){
+            return {
+                s: parseInt(v[0]),
+                f: parseInt(v[1]),
+                length: v[1] - v[0]
+            }
+        });
+
+        var last = this.intervals.last();
+        var first = this.intervals.first();
+        if (last && first) {
+            if ((last.f + 1) % this.cycleTime == first.s) {
+                last.length += first.length;
+            }
+        }
     }
+
+
 }
 
 
