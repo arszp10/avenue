@@ -149,6 +149,9 @@ module.exports = {
         var that = this;
         var maxSatEl = _.maxBy(cr.phases, 'saturation');
         var minSatEl = _.minBy(cr.phases, 'saturation');
+        if (maxSatEl.saturation - minSatEl.saturation < 0.11) {
+            return;
+        }
         var maxInx = cr.phases.indexOf(maxSatEl);
         var minInx = cr.phases.indexOf(minSatEl);
         var sumSat = maxSatEl.saturation + minSatEl.saturation;
@@ -161,16 +164,10 @@ module.exports = {
         }
         maxSatEl.length = dMax;
         minSatEl.length = dMin;
-        console.log('-----------------------');
-        console.log(cr.id);
         _.forEach(this._crStopLines[cr.id], function(id){
             var sl = that._getNode(id);
-
-            console.log(1,sl.id, sl.intervals , that._redIntervals(sl, cr));
             sl.resetIntervals(that._redIntervals(sl, cr));
-            console.log(2,sl.id, sl.intervals);
         });
-
     },
 
     _optimize: function(){
@@ -182,22 +179,19 @@ module.exports = {
         var delays = [0.0,0.0,0.0];
         var mi = 0;
         var offset = 0;
-
-        var start = process.hrtime();
-
-        var elapsed_time = function(note){
-            var precision = 3; // 3 decimal places
-            var elapsed = process.hrtime(start)[1] / 1000000; // divide by a million to get nano to milli
-            console.log(process.hrtime(start)[0] + " s, " + elapsed.toFixed(precision) + " ms - " + note); // print message + time
-            start = process.hrtime(); // reset the timer
-        };
-
+        //
+        //var start = process.hrtime();
+        //
+        //var elapsed_time = function(note){
+        //    var precision = 3; // 3 decimal places
+        //    var elapsed = process.hrtime(start)[1] / 1000000; // divide by a million to get nano to milli
+        //    console.log(process.hrtime(start)[0] + " s, " + elapsed.toFixed(precision) + " ms - " + note); // print message + time
+        //    start = process.hrtime(); // reset the timer
+        //};
 
         _.forEach(steps, function(step, istep){
-            //elapsed_time("step "+i+" start");
             _.forEach(that._crIndexMap, function(inx){
                 cr = that._network[inx];
-                //console.log(cr.phases);
                 offset = cr.offset;
                 offsets = [
                     offset,
@@ -211,14 +205,7 @@ module.exports = {
                 }
                 mi = that._minIndexOfArray3(delays);
                 cr.offset = offsets[mi];
-
-                if (istep == 0) {
-                    that._optimizePhases(cr);
-                }
             });
-
-
-            //elapsed_time("step "+i+" finish");
         });
     },
 
@@ -315,6 +302,28 @@ module.exports = {
             intervals.push([s, i-1]);
         }
         return intervals;
+    },
+
+    optimizePhases: function(request){
+        if (request == undefined || request.length == 0) {
+            return [];
+        }
+
+        var that = this;
+        var cr;
+        this._prepareNetwork(request);
+        this._calc(3);
+
+        _.forEach(that._crIndexMap, function(inx){
+            cr = that._network[inx];
+            that._optimizePhases(cr);
+        });
+
+        this._calc(3);
+        //this._optimize();
+        return this._network.map(function(v){
+            return v.json();
+        });
     },
 
     optimize: function(request){

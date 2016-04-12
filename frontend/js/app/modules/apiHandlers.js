@@ -54,7 +54,7 @@
             fail: failCalcHandler,
             always: alwaysCalcHandler
         },
-        optimize: {
+        offsetsOptimize: {
             done: function(r, options){
                 doneCalcHandler(r);
                 if (!r.result) {
@@ -63,6 +63,20 @@
                 r.data.map(function(v){
                     if (v.type == 'crossRoad') {
                         cy.getElementById(v.id).data('offset', parseInt(v.offset));
+                    }
+                });
+            },
+            fail: failCalcHandler,
+            always: alwaysCalcHandler
+        },
+        phasesOptimize: {
+            done: function(r, options){
+                doneCalcHandler(r);
+                if (!r.result) {
+                    return;
+                }
+                r.data.map(function(v){
+                    if (v.type == 'crossRoad') {
                         cy.getElementById(v.id).data('phases', v.phases);
                     }
                 });

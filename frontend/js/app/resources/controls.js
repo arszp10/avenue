@@ -58,7 +58,8 @@
             btnsCrossFormPhasesCount:   '.table-phases th.ph-th',
             btnSaveCrossroadData :      '#btn-save-crossroad-data',
             btnCalc:                    '#btn-calc',
-            btnOptimize:                '#btn-optimize',
+            btnOffsetsOptimize:         '#btn-offsets-optimize',
+            btnPhasesOptimize:         '#btn-phases-optimize',
             btnsAddSampleItem:          '.add-sample-item',
             btnPointPropertyDone:       '#btn-point-property-done'
         }

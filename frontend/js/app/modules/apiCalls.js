@@ -30,8 +30,11 @@
         recalculate: function(data, options) {
             return action('POST:/api/model/recalculate', data, handlers.recalculate, options);
         },
-        optimize: function(data, options) {
-            return action('POST:/api/model/optimize', data, handlers.optimize, options);
+        offsetsOptimize: function(data, options) {
+            return action('POST:/api/model/offsets-optimize', data, handlers.offsetsOptimize, options);
+        },
+        phasesOptimize: function(data, options) {
+            return action('POST:/api/model/phases-optimize', data, handlers.phasesOptimize, options);
         }
     };
 
