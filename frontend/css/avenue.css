@@ -7,37 +7,33 @@ body{
 }
 
 .screen {
+    overflow-x: auto;
     position:absolute;
     top: 50px;
     bottom: 50px;
     left: 0px;
     right: 0px;
-    background-color: #f9f9f9;
+    background-color: #eeeeee;
     z-index: 1;
 }
 
-.screen-source, .screen-results, .screen-routes{
+.visible-files,
+.visible-network,
+.visible-routes,
+.visible-results,
+.visible-source {
     display:none;
-    background-color: #ffffff;
 }
 
-.visible-network, .visible-routes, .visible-results, .visible-source {
-    display:none;
-}
-
-.hidden-network, .hidden-routes, .hidden-results, .hidden-source {
+.hidden-files,
+.hidden-network,
+.hidden-routes,
+.hidden-results,
+.hidden-source {
     display:block;
 }
 
-.show-network .hidden-network,
-.show-routes .hidden-routes,
-.show-results .hidden-results,
-.show-source .hidden-source
-{
-    display:none;
-}
-
-
+.show-files .visible-files,
 .show-network .visible-network,
 .show-routes .visible-routes,
 .show-results .visible-results,
@@ -46,10 +42,11 @@ body{
     display:block;
 }
 
+.show-files .hidden-files,
 .show-network .hidden-network,
 .show-routes .hidden-routes,
 .show-results .hidden-results,
-.show-source. hidden-source
+.show-source .hidden-source
 {
     display:none;
 }
@@ -221,6 +218,17 @@ body{
 
 body.show-edge-input #input-edge-label {
     display:block;
+}
+.dropdown-menu{
+    padding:0px;
+}
+.dropdown-menu > li > a{
+    clear: both;
+    font-weight: 400;
+    color: #333;
+    font-size: 14px;
+    padding: 13px 20px;
+    border-bottom: 1px solid #ddd;
 }
 
 .left-panel ul.dropdown-menu {
@@ -655,4 +663,90 @@ body.show-edge-input #input-edge-label {
     color: #999;
     vertical-align: bottom!important;
     width: 1%;
+}
+
+.form-control.input-file-search {
+    width: 250px;
+    color: #f0f0f0;
+    background: rgba(255,255,255, 0.1);
+}
+
+.files-container {
+    margin-top:50px;
+}
+
+.table-files {
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+table.table-files>tbody>tr{
+
+}
+
+table.table-files>tbody>tr:hover{
+    background: #E0F3F9;
+}
+
+table.table-files>tbody>tr>td {
+    padding: 12px;
+    line-height: 28px;
+}
+
+td.model-name-col a {
+    /*max-width:330px;*/
+    min-width:200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /*white-space: nowrap;*/
+    text-decoration: none;
+}
+
+td.model-name-col .label {
+    font-size: 14px;
+}
+
+.time-col,.cycle-time-col,.property-col{
+    white-space: nowrap;
+}
+
+.property-col span,
+.cycle-time-col span {
+    font-size: 11px;
+    color:#999;
+}
+
+.time-col {
+    color:#999;
+}
+.actions-col {
+    width:20px;
+}
+.actions-col .btn-group>.btn {
+    padding:0px 5px;
+    font-size: 18px;
+}
+
+.actions-col .dropdown-menu {
+    top: 21px;
+    left: 0px;
+}
+
+.order-by-label {
+    padding: 0px 10px;
+    margin-top: 30px;
+}
+.order-by-label a {
+    text-decoration: none;
+}
+
+.btn-create-model {
+    diaplay: block;
+    margin-bottom: 15px;
+}
+
+.pages-info {
+    line-height: 45px;
 }

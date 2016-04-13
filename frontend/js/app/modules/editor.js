@@ -125,6 +125,8 @@
         },
 
         initBottomPanelEvents: function(){
+            controls.buttons.btnShowFiles.on('click', that.bottomTabSwitch);
+            controls.buttons.btnShowNetwork.on('click', that.bottomTabSwitch);
             controls.buttons.btnShowResults.on('click', that.bottomTabSwitch);
             controls.buttons.btnShowRoutes.on('click', that.bottomTabSwitch);
         },
@@ -509,7 +511,7 @@
             tab.parent().siblings().removeClass('active');
             tab.parent().addClass('active');
             controls.panels.body
-                .removeClass('show-network show-routes show-results show-source')
+                .removeClass('show-files show-network show-routes show-results show-source')
                 .addClass(tab.data('rel'))
         }
     };
