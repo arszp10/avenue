@@ -74,12 +74,6 @@
             }
         },
 
-        coordinationPlan: {
-            cycleTime: 100,
-            name: 'The Coordination plan',
-            notes: '...'
-        },
-
         crossRoad: {
             icon: '',
             type: 'crossRoad',

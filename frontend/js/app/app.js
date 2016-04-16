@@ -4,9 +4,11 @@ var AvenueApp = {
         controls:  {},
         cytoscape: {},
         editor: {},
+        modelManager: {},
         traffic:   {},
         apiCalls:  {},
         apiHandlers: {}
+
     },
     Resources: {},
     Controls: {},
@@ -15,7 +17,7 @@ var AvenueApp = {
         nodeType: 'stopline',
         lastModelingResult: [],
         lastErrors: [],
-        coordinationPlan:{}
+        currentModel: {}
     },
     linkModules: function(){
         $.each(AvenueApp.Modules, function(i, v){
@@ -26,8 +28,8 @@ var AvenueApp = {
     },
     initModules: function(){
         $.each(AvenueApp.Modules, function(i, v){
-            if (v.hasOwnProperty('initModule') && i != 'controls') {
-                v.initModule(AvenueApp.Modules);
+            if (v.hasOwnProperty('initModule') && i != 'controls' && i != 'cytoscape' ) {
+                v.initModule();
             }
         });
     }
@@ -42,15 +44,16 @@ $(document).ready(function() {
     options.ready = function() {
         var cy = $.extend(this, AvenueApp.Modules.cytoscape);
         AvenueApp.Modules.cytoscape = cy;
+        AvenueApp.linkModules();
+        AvenueApp.Modules.cytoscape.initModule();
+
         cy.edgehandles({ });
         cy.panzoom({});
-
-
-        AvenueApp.linkModules();
-        AvenueApp.initModules();
     };
 
     AvenueApp.Modules.controls.initModule();
+    AvenueApp.initModules();
+    AvenueApp.linkModules();
     AvenueApp.Controls.panels.cytoscape.cytoscape(options);
 
 });

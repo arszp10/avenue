@@ -58,7 +58,7 @@ module.exports = {
                 delay += Math.floor(queue/capacityPerSecond)*value;
                 sumGreenCpacity += capacityPerSecond;
             }
-
+            ;
             t = 0;
             outFlow[(j + offset) % cycleTime] = value;
             sumOutFlow += value;

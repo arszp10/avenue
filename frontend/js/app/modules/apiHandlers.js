@@ -14,7 +14,7 @@
     };
 
     var doneCalcHandler = function (r){
-        if (r.result) {
+        if (r.success) {
             App.State.lastModelingResult = r.data;
             App.State.lastErrors = [];
             var sumDelay = sum(r.data, 'delay');
@@ -30,7 +30,7 @@
         }
         $.notify(r.message, {
             position: 'top center',
-            className: r.result ? "success" : "error"
+            className: r.success ? "success" : "error"
         });
     };
 
@@ -49,7 +49,7 @@
         },
         initModule: function(){},
 
-        recalculate: {
+        modelExecute: {
             done: doneCalcHandler,
             fail: failCalcHandler,
             always: alwaysCalcHandler
@@ -57,7 +57,7 @@
         offsetsOptimize: {
             done: function(r, options){
                 doneCalcHandler(r);
-                if (!r.result) {
+                if (!r.success) {
                     return;
                 }
                 r.data.map(function(v){
@@ -72,7 +72,7 @@
         phasesOptimize: {
             done: function(r, options){
                 doneCalcHandler(r);
-                if (!r.result) {
+                if (!r.success) {
                     return;
                 }
                 r.data.map(function(v){
@@ -83,7 +83,48 @@
             },
             fail: failCalcHandler,
             always: alwaysCalcHandler
+        },
+        createModel: {
+            done: function(r,o){
+                if (r.success) {
+                    window.location = '/app/' + r.data.id;
+                }
+            },
+            fail: function(r,o){
+
+            },
+            always: function(r,o){
+
+            }
+        },
+        saveModel: {
+            done: function(r,o){
+                console.log(r);
+            },
+            fail: function(r,o){
+
+            },
+            always: function(r,o){
+
+            }
+        },
+        getModel: {
+            done: function(r,o){
+                if (r.success) {
+                    App.State.currentModel = r.data;
+                    var content = r.data.content === undefined ? [] : r.data.content;
+                    cy.add(content);
+                    delete App.State.currentModel.content;
+                }
+            },
+            fail: function(r,o){
+                console.log(r.responseJSON);
+            },
+            always: function(r,o){
+
+            }
         }
+
     };
 
 })(AvenueApp);

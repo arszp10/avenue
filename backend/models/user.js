@@ -19,7 +19,8 @@ var userSchema = new Schema({
     admin: Boolean,
     location: String,
     createdAt: Date,
-    updatedAt: Date
+    updatedAt: Date,
+    models : [{ type: Schema.Types.ObjectId, ref: 'Model' }]
 });
 
 userSchema.plugin(uniqueValidator);

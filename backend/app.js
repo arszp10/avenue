@@ -1,4 +1,5 @@
 var env = 'dev';
+var _ = require('lodash');
 var express = require('express');
 var mongoose = require('mongoose');
 var validate = require('validate.js');
@@ -21,7 +22,6 @@ var app = express();
 
 app.set('views', __dirname + '/views');
 
-app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(cookieParser());
 

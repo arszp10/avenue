@@ -4,6 +4,7 @@
     var settings  = App.Resources.Settings;
     var cy        = App.Modules.cytoscape;
     var editor        = App.Modules.editor;
+    var api;
 
     var onTapToBackground = function(e){
         if(e.cyTarget !== cy) { return }
@@ -98,7 +99,7 @@
         });
 
         cy.on('add', 'node', null, function (e) {
-            e.cyTarget.data('cycleTime', App.State.coordinationPlan.cycleTime);
+            e.cyTarget.data('cycleTime', App.State.currentModel.cycleTime);
         });
 
         cy.on('add', 'edge', null, function (e) {
@@ -162,10 +163,16 @@
         injectDependencies: function(modules) {
             cy  = modules.cytoscape;
             editor  = modules.editor;
+            api   = modules.apiCalls;
         },
         initModule: function(){
-            //cy = this;
-            initCytoscapeEvents();
+            console.log(controls.panels.cytoscape.length);
+            if (controls.panels.cytoscape.length) {
+                initCytoscapeEvents();
+                var modelId = window.location.pathname.split('/').pop();
+                App.State.modelId = modelId;
+                api.getModel(App.State.modelId);
+            }
         },
 
         aveSetCycleTime: function(t){

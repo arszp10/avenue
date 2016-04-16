@@ -45,7 +45,6 @@ function Flow(options, network, indexMap)
         }
     });
 
-
     var last = this.intervals.last();
     var first = this.intervals.first();
     if (last && first) {

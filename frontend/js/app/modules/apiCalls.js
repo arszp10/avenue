@@ -27,15 +27,27 @@
             handlers = modules.apiHandlers;
         },
         initModule: function(){},
-        recalculate: function(data, options) {
-            return action('POST:/api/model/recalculate', data, handlers.recalculate, options);
+
+        modelExecute: function(data, options) {
+            return action('POST:/api/model/execute', data, handlers.modelExecute, options);
         },
         offsetsOptimize: function(data, options) {
-            return action('POST:/api/model/offsets-optimize', data, handlers.offsetsOptimize, options);
+            return action('POST:/api/model/optimize/offsets', data, handlers.offsetsOptimize, options);
         },
         phasesOptimize: function(data, options) {
-            return action('POST:/api/model/phases-optimize', data, handlers.phasesOptimize, options);
-        }
+            return action('POST:/api/model/optimize/phases', data, handlers.phasesOptimize, options);
+        },
+
+        createModel: function(data, options) {
+            return action('POST:/api/model/create', data, handlers.createModel, options);
+        },
+        saveModel: function(id, data, options) {
+            return action('POST:/api/model/update/'+id, data, handlers.saveModel, options);
+        },
+        getModel: function(id, options) {
+            return action('GET:/api/model/get/'+id, {}, handlers.getModel, options);
+        },
+
     };
 
 })(AvenueApp);

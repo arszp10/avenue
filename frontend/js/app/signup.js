@@ -46,7 +46,7 @@ $(document).ready(function(event){
 
 
     var ajaxFormSubmit = function(res, options) {
-        if (res.result) {
+        if (res.success) {
             window.location = options.redirect
         } else {
             helpBlockErrors(options.form, res.data);
@@ -79,7 +79,7 @@ $(document).ready(function(event){
     });
 
     $('#sign-in-form').submit(function(){
-        return formSubmit($(this), 'signIn', '/app');
+        return formSubmit($(this), 'signIn', '/models');
     });
 });
 

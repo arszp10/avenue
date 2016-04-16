@@ -1,6 +1,6 @@
 //= vendor/jquery/jquery-2.2.1.min.js
 //= vendor/bootstrap/bootstrap.min.js
-//= vendor/cytoscape/cytoscape.min.js
+//= vendor/cytoscape/cytoscape.js
 //= vendor/cytoscape/cytoscape-edgehandles.js
 //= vendor/cytoscape/cytoscape-panzoom.js
 
@@ -25,6 +25,7 @@
 //= app/modules/controls.js
 //= app/modules/cytoscape.js
 //= app/modules/editor.js
+//= app/modules/modelManager.js
 //= app/modules/apiCalls.js
 //= app/modules/apiHandlers.js
 //= app/modules/traffic.js

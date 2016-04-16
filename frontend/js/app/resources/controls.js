@@ -43,7 +43,6 @@
             btnCut:                     '#btn-cut',
             btnCopy:                    '#btn-copy',
             btnPaste:                   '#btn-paste',
-            btnShowFiles:             '#btn-show-files',
             btnShowNetwork:             '#btn-show-network',
             btnShowResults:             '#btn-show-results',
             btnShowRoutes:              '#btn-show-routes',
@@ -58,11 +57,13 @@
             btnNodeColorSelection:      '#btn-node-color-selection',
             btnsCrossFormPhasesCount:   '.table-phases th.ph-th',
             btnSaveCrossroadData :      '#btn-save-crossroad-data',
+            btnModelSave:               '#btn-model-save',
             btnCalc:                    '#btn-calc',
             btnOffsetsOptimize:         '#btn-offsets-optimize',
             btnPhasesOptimize:         '#btn-phases-optimize',
             btnsAddSampleItem:          '.add-sample-item',
-            btnPointPropertyDone:       '#btn-point-property-done'
+            btnPointPropertyDone:       '#btn-point-property-done',
+            btnCreateNewModel:          '#btn-create-new-model'
         }
     };
 })(AvenueApp);

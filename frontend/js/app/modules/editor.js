@@ -14,13 +14,13 @@
         },
         initModule: function(){
             that = this;
-            App.State.coordinationPlan = settings.coordinationPlan;
             this.initDocumentEvents();
             this.initLeftPanelEvents();
             this.initTopPanelEvents();
             this.initBottomPanelEvents();
             this.initRightPanelEvents();
             this.initWidgetsEvents();
+
         },
 
         initDocumentEvents: function(){
@@ -101,7 +101,7 @@
                 var $icon = $(this).find('i.fa');
                     $icon.addClass('fa-spin');
                 cy.nodes().removeClass('has-error');
-                api.recalculate({data: data}, $icon);
+                api.modelExecute({data: data}, $icon);
             });
 
             controls.buttons.btnOffsetsOptimize.click(function () {
@@ -121,11 +121,22 @@
             });
 
 
+            controls.buttons.btnModelSave.click(function () {
+                api.saveModel(App.State.modelId, {
+                    data: {
+                        content: cy.elements().jsons(),
+                        name: App.State.currentModel.name,
+                        notes: App.State.currentModel.notes,
+                        nodeCount: cy.nodes().length,
+                        crossCount: cy.$('[type="crossRoad"]').length,
+                        cycleTime: App.State.currentModel.cycleTime
+                    }
+                });
+            });
 
         },
 
         initBottomPanelEvents: function(){
-            controls.buttons.btnShowFiles.on('click', that.bottomTabSwitch);
             controls.buttons.btnShowNetwork.on('click', that.bottomTabSwitch);
             controls.buttons.btnShowResults.on('click', that.bottomTabSwitch);
             controls.buttons.btnShowRoutes.on('click', that.bottomTabSwitch);
@@ -240,17 +251,17 @@
              *  Coordination plan modal events
              */
             controls.buttons.btnCoPlanProperties.click(function () {
-                var cp = App.State.coordinationPlan;
+                var cp = App.State.currentModel;
                 controls.inputs.inputCoPlanCycleTime.val(cp.cycleTime);
                 controls.inputs.inputCoPlanName.val(cp.name);
                 controls.inputs.inputCoPlanNotes.val(cp.notes);
                 controls.panels.coPlanModal.modal('show');
             });
             controls.buttons.btnCoPlanSave.click(function () {
-                App.State.coordinationPlan.cycleTime = controls.inputs.inputCoPlanCycleTime.val();
-                App.State.coordinationPlan.name = controls.inputs.inputCoPlanName.val();
-                App.State.coordinationPlan.notes = controls.inputs.inputCoPlanNotes.val();
-                cy.aveSetCycleTime(App.State.coordinationPlan.cycleTime);
+                App.State.currentModel.cycleTime = controls.inputs.inputCoPlanCycleTime.val();
+                App.State.currentModel.name = controls.inputs.inputCoPlanName.val();
+                App.State.currentModel.notes = controls.inputs.inputCoPlanNotes.val();
+                cy.aveSetCycleTime(App.State.currentModel.cycleTime);
                 controls.panels.coPlanModal.modal('hide');
             });
 

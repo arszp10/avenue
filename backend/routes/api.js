@@ -1,62 +1,71 @@
 var _ = require('lodash');
-
 var User = require('../models/user');
+var Model = require('../models/model');
 var avenueLib = require('../lib/avenue-lib');
+var responses = require('./api-responses');
 
-function wrongCredentials(res){
-    res.status(401);
-    res.json({
-        "code": 401,
-        "message": "Wrong api_key and api_secret combination"
-    })
-};
+
+var isint = /^[0-9]+$/;
+var isfloat = /^([0-9]+)?\.[0-9]+$/;
+
+function coerce(str) {
+    if ('null' == str) return null;
+    if ('true' == str) return true;
+    if ('false' == str) return false;
+    if (isfloat.test(str)) return parseFloat(str, 10);
+    if (isint.test(str)) return parseInt(str, 10);
+    return undefined;
+}
+
 
 function authenticateApi(req, res, next) {
     if (req.session.user_id) {
         next(); return;
     };
     var query = _.assign({api_key:false, api_secret:false}, req.query);
-    if (query.api_key && query.api_secret) {
-        var cond = {
-            apiKey: query.api_key,
-            apiSecret: query.api_secret
-        };
-        User.findOne(cond, function (err, user) {
-            if (user) {
-                next(); return;
-            }
-            wrongCredentials(res);
-        });
-        return;
+    if (!query.api_key || !query.api_secret) {
+        res.status(401);
+        res.json(responses.wrongCredentials());
     }
-    wrongCredentials(res);
+    var cond = {
+        apiKey: query.api_key,
+        apiSecret: query.api_secret
+    };
+    User.findOne(cond, function (err, user) {
+        if (user) {
+            next(); return;
+        }
+        res.status(401);
+        res.json(responses.wrongCredentials());
+    });
+}
+
+
+function validateModel(req, res, next) {
+    var errors = avenueLib.validate(req.body.data);
+    if (errors.length == 0) {
+        next(); return;
+    }
+    res.status(402);
+    res.json(responses.modelValidationFailed(errors));
+    return;
 }
 
 module.exports = function(app) {
+    app.get('/api/ping', authenticateApi, function (req, res) {
+        res.json(responses.pong());
+    });
 
     app.post('/api/user/sign-up', function (req, res) {
         var newUser = User(req.body);
         newUser.save(function (err) {
             if (err) {
-                var errors = [];
-                _.forIn(err.errors, function (v, k) {
-                    errors.push({path: v.path, message: v.message});
-                });
-                res.json({
-                    result: false,
-                    message: err.message,
-                    data: errors
-                });
+                res.json(responses.fieldsErrorsList(err));
                 return;
             }
-            res.json({
-                result: true,
-                message: 'User successfully created!',
-                data: []
-            });
+            res.json(responses.entityCreatedSuccessfully('User', []));
         });
     });
-
     app.post('/api/user/sign-in', function (req, res) {
         User.findOne({email: req.body.email}, function (err, user) {
             if (user && user.authenticate(req.body.password)) {
@@ -69,24 +78,12 @@ module.exports = function(app) {
                     email: user.email
                 };
                 res.cookie('_avenue', c);
-                res.json({
-                    result: true,
-                    message: 'User login successfully!',
-                    data: []
-                });
-            } else {
-                res.json({
-                    result: false,
-                    message: 'User invalid credentials!',
-                    data: [
-                        {path: 'email', message: 'Invalid email'},
-                        {path: 'password', message: '... or Password.'}
-                    ]
-                });
+                res.json(responses.userLoginSuccessfully());
+                return;
             }
+            res.json(responses.userLoginFailed());
         });
     });
-
     app.post('/api/user/reset-password', function (req, res) {
         User.findOne({email: req.body.email}, function (err, user) {
             if (user) {
@@ -105,64 +102,94 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/api/ping', authenticateApi, function (req, res) {
-        res.json({
-            result: true,
-            message: 'Pong',
-            data: []
-        });
+    app.post('/api/model/execute', validateModel,  function (req, res) {
+        //var bodyData = _.cloneDeepWith(req.body.data, coerce);
+        var bodyData = req.body.data;
+        res.json(
+            responses.modelSimulationSuccess(
+                avenueLib.recalculate(bodyData)
+        ));
+    });
+    app.post('/api/model/optimize/offsets', validateModel, function (req, res) {
+        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+        res.json(
+            responses.modelSimulationSuccess(
+                avenueLib.optimize(bodyData)
+        ));
+    });
+    app.post('/api/model/optimize/phases', validateModel, function (req, res) {
+        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+        res.json(
+            responses.modelSimulationSuccess(
+                avenueLib.optimizePhases(bodyData)
+        ));
     });
 
-    app.post('/api/model/recalculate', function (req, res) {
-        var errors = avenueLib.validate(req.body.data);
-        if (errors.length) {
-            res.json({
-                result: false,
-                message: 'The requested data has some errors!',
-                data: errors
+
+    app.post('/api/model/create', function (req, res) {
+        var userId = req.session.user_id;
+        var data = {
+            name: 'New coordination plan',
+            content: [],
+            _creator: userId
+        };
+        var newAveModel = Model(data);
+        newAveModel.save(function (err) {
+            if (err) {
+                res.json(responses.fieldsErrorsList(err));
+                return;
+            }
+            res.json(responses.entityCreatedSuccessfully('Model', {id: newAveModel._id}));
+        });
+    });
+    app.post('/api/model/update/:modelId', function (req, res) {
+        var modelId = req.params.modelId;
+        var userId = req.session.user_id;
+        Model.findOne({_id: modelId, _creator:userId}, function (err, model) {
+            if (err || !model) {
+                res.status(404);
+                res.json(responses.entityNotFound('Model', modelId));
+                return;
+            }
+            var bodyData = _.cloneDeepWith(req.body.data, coerce);
+            model.name          = bodyData.name;
+            model.nodeCount     = bodyData.nodeCount;
+            model.crossCount    = bodyData.crossCount;
+            model.cycleTime     = bodyData.cycleTime;
+            model.notes         = bodyData.notes;
+            model.content       = bodyData.content;
+            model.save(function(err){
+                if (err) {
+                    throw err;
+                }
+                res.json(responses.entityUpdatedSuccessfully('Model', {id:modelId}));
             });
-            return;
-        }
-        res.json({
-            result: true,
-            message: 'Everything alright !',
-            data: avenueLib.recalculate(req.body.data)
         });
     });
-
-    app.post('/api/model/offsets-optimize', function (req, res) {
-        var errors = avenueLib.validate(req.body.data);
-        if (errors.length) {
-            res.json({
-                result: false,
-                message: 'The requested data has some errors!',
-                data: errors
-            });
-            return;
-        }
-        res.json({
-            result: true,
-            message: 'Everything alright !',
-            data: avenueLib.optimize(req.body.data)
-        });
-    });
-
-    app.post('/api/model/phases-optimize', function (req, res) {
-        var errors = avenueLib.validate(req.body.data);
-        if (errors.length) {
-            res.json({
-                result: false,
-                message: 'The requested data has some errors!',
-                data: errors
-            });
-            return;
-        }
-        res.json({
-            result: true,
-            message: 'Everything alright !',
-            data: avenueLib.optimizePhases(req.body.data)
+    app.get('/api/model/get/:modelId', function (req, res) {
+        var modelId = req.params.modelId;
+        var userId = req.session.user_id;
+        Model.findOne({_id: modelId, _creator:userId}, function (err, model) {
+            if (err || !model) {
+                res.status(404);
+                res.json(responses.entityNotFound('Model', modelId));
+                return;
+            }
+            var result  = model.toObject();
+            delete result._creator;
+            delete result._id;
+            delete result.__v;
+            res.json(responses.entityFound('Model', modelId, result));
         });
     });
 
 
-}
+
+    app.get('/api/model/remove/:modelId', function (req, res) {
+
+    });
+
+    app.get('/api/model/list', function (req, res) {
+
+    });
+};

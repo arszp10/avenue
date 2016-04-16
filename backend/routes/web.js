@@ -13,13 +13,17 @@ module.exports = function(app) {
 
     app.use('/', express.static(__dirname + '/../public'));
 
-    app.use('/app', authenticateWeb, function (req, res) {
+    app.use('/app/:modelId', authenticateWeb, function (req, res) {
         res.sendFile('app.html', {root: __dirname + '/../public'});
+    });
+
+    app.use('/models', authenticateWeb, function (req, res) {
+        res.sendFile('models.html', {root: __dirname + '/../public'});
     });
 
     app.use('/sign-in', function (req, res) {
         if (req.session.user_id) {
-            res.redirect('/app');
+            res.redirect('/models');
             return;
         }
         res.sendFile('sign-in.html', {root: __dirname + '/../public'});
