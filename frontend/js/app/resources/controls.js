@@ -10,10 +10,13 @@
             tblPhasesBody:          '#crossroad-modal table.table-phases tbody',
             statusBar:              '#status-bar',
             nodeSearchResultlist:   '#node-search-result-list',
-            nodeSearchInfo:         '#node-search-info'
+            nodeSearchInfo:         '#node-search-info',
+            welcomePanel:           '#welcome-panel',
+            modelListPanel:         '#model-list-panel'
         },
         labels: {
-            labelMyAccountUsername: '#label-my-account-username'
+            labelMyAccountUsername: '#label-my-account-username',
+            labelWelcomeUsername:   '#label-welcome-username'
         },
         inputs: {
             inputEdgeLabel:         '#input-edge-label',

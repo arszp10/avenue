@@ -10,15 +10,15 @@
     //= templates/top-panel.html
     <div id="files-list" class="screen visible-files" data-tab="btn-show-files">
         <div class="container files-container">
-            <div class="text-center hidden">
-                <h4>Search results for <span class="label label-default">Coordination</span> showed</h4>
-            </div>
             <div class="row">
-                <div class="col-sm-12 hidden">
+
+                <div id="model-list-panel" class="col-sm-12 hidden">
+                    <div class="text-center hidden">
+                        <h4>Search results for <span class="label label-default">Coordination</span> showed</h4>
+                    </div>
                     <a class="btn btn-lg btn-primary btn-create-model" href="#" role="button"><i class="fa fa-plus-circle"></i> &nbsp;Create new model</a>
                     <div class="order-by-label pull-right">
                         <a href="">Latest first &nbsp; <i class="fa fa-angle-down"></i></a>
-                        <!--Oldest first <i class="fa fa-angle-up"></i>-->
                     </div>
 
                     <table class="table table-files">
@@ -118,13 +118,13 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12">
+                <div id="welcome-panel" class="col-sm-12 hidden">
                     <div class="jumbotron col-sm-10">
-                        <h1>Welcome, Mikhail!</h1>
+                        <h1>Welcome, <span id="label-welcome-username">{username}</span>!</h1>
                         <br>
                         <p>You do not have any models, click the button to create your first model.</p>
                         <br>
-                        <p><a class="btn btn-primary btn-lg" id="btn-create-new-model" href="#" role="button"><i class="fa fa-plus-circle"></i> Create new model</a></p>
+                        <p><a class="btn btn-primary btn-lg" id="btn-create-new-model" role="button"><i class="fa fa-plus-circle"></i> Create new model</a></p>
                     </div>
                 </div>
             </div>

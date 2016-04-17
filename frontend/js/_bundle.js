@@ -19,7 +19,6 @@
 //= app/resources/settings.js
 //= app/resources/samples.js
 //= app/resources/cyStyles.js
-
 //= app/templates/templates.js
 
 //= app/modules/controls.js

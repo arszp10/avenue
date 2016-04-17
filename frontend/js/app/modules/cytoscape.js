@@ -2,9 +2,10 @@
 
     var controls  = App.Controls;
     var settings  = App.Resources.Settings;
-    var cy        = App.Modules.cytoscape;
-    var editor        = App.Modules.editor;
+    var cy;
+    var editor;
     var api;
+    var that;
 
     var onTapToBackground = function(e){
         if(e.cyTarget !== cy) { return }
@@ -158,21 +159,36 @@
         });
     };
 
+    var initParent = function (ready){
+        var options   = settings.cytoscape;
+        options.style = App.Resources.CyStyles;
+        options.ready = function() {
+            cy = $.extend(this, that);
+
+            cy.edgehandles({ });
+            cy.panzoom({});
+            ready();
+        };
+        controls.panels.cytoscape.cytoscape(options);
+    };
 
     App.Modules.cytoscape =  {
         injectDependencies: function(modules) {
-            cy  = modules.cytoscape;
             editor  = modules.editor;
-            api   = modules.apiCalls;
+            api     = modules.apiCalls;
         },
         initModule: function(){
-            console.log(controls.panels.cytoscape.length);
-            if (controls.panels.cytoscape.length) {
-                initCytoscapeEvents();
-                var modelId = window.location.pathname.split('/').pop();
-                App.State.modelId = modelId;
-                api.getModel(App.State.modelId);
+            if (! controls.panels.cytoscape.length) {
+                return;
             }
+            that = this;
+            initParent(function(){
+                App.Modules.cytoscape = cy;
+                App.linkModules();
+                initCytoscapeEvents();
+                App.State.modelId = window.location.pathname.split('/').pop();;
+                api.getModel(App.State.modelId);
+            });
         },
 
         aveSetCycleTime: function(t){

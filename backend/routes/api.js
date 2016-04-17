@@ -181,13 +181,14 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/api/model/list', function (req, res) {
+        var userId = req.session.user_id;
+        var params = req.query;
+        res.json(responses.entityNotFound('Model', 123));
+    });
 
 
     app.get('/api/model/remove/:modelId', function (req, res) {
-
-    });
-
-    app.get('/api/model/list', function (req, res) {
 
     });
 };

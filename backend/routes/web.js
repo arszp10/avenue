@@ -4,8 +4,7 @@ function authenticateWeb(req, res, next) {
     if (req.session.user_id) {
         next();
         return;
-    }
-    ;
+    };
     res.redirect('/sign-in');
 }
 

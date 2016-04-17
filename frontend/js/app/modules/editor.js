@@ -10,7 +10,7 @@
         injectDependencies: function(modules) {
             cy        = modules.cytoscape;
             traffic   = modules.traffic;
-            api   = modules.apiCalls;
+            api       = modules.apiCalls;
         },
         initModule: function(){
             that = this;

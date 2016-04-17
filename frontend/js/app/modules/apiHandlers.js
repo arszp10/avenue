@@ -123,6 +123,21 @@
             always: function(r,o){
 
             }
+        },
+        listModel:{
+            done: function(r,o){
+                console.log(r);
+                if (r.data.length == 0) {
+                    controls.panels.modelListPanel.addClass('hidden');
+                    controls.panels.welcomePanel.removeClass('hidden');
+                }
+            },
+            fail: function(r,o){
+
+            },
+            always: function(r,o) {
+
+            }
         }
 
     };

@@ -1,17 +1,8 @@
 var AvenueApp = {
     Templates: {},
-    Modules:   {
-        controls:  {},
-        cytoscape: {},
-        editor: {},
-        modelManager: {},
-        traffic:   {},
-        apiCalls:  {},
-        apiHandlers: {}
-
-    },
+    Modules:   {},
     Resources: {},
-    Controls: {},
+    Controls:  {},
     State: {
         clickMode: 'select-mode', // select, add-stopline, ... add-concurrent
         nodeType: 'stopline',
@@ -28,33 +19,20 @@ var AvenueApp = {
     },
     initModules: function(){
         $.each(AvenueApp.Modules, function(i, v){
-            if (v.hasOwnProperty('initModule') && i != 'controls' && i != 'cytoscape' ) {
+            if (v.hasOwnProperty('initModule') ) {
                 v.initModule();
             }
         });
+    },
+    run: function(){
+        this.linkModules();
+        this.initModules();
     }
 
 };
 
 
 $(document).ready(function() {
-
-    var options   = AvenueApp.Resources.Settings.cytoscape;
-    options.style = AvenueApp.Resources.CyStyles;
-    options.ready = function() {
-        var cy = $.extend(this, AvenueApp.Modules.cytoscape);
-        AvenueApp.Modules.cytoscape = cy;
-        AvenueApp.linkModules();
-        AvenueApp.Modules.cytoscape.initModule();
-
-        cy.edgehandles({ });
-        cy.panzoom({});
-    };
-
-    AvenueApp.Modules.controls.initModule();
-    AvenueApp.initModules();
-    AvenueApp.linkModules();
-    AvenueApp.Controls.panels.cytoscape.cytoscape(options);
-
+    AvenueApp.run();
 });
 
