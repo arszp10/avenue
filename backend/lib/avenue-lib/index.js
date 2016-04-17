@@ -258,8 +258,8 @@ module.exports = {
         var prevGoff = 0;
         for (i = 0; i < phCount; i++){
             crossRoad.phases[i].saturation = 0;
-            icolor = stopLine.greenPhases[i] === 'true' ? 'green' : 'red';
-            goff = stopLine.greenPhases[i] === 'true'
+            icolor = stopLine.greenPhases[i] ? 'green' : 'red';
+            goff = stopLine.greenPhases[i]
                 ? parseInt(stopLine.greenOffset2)
                 : parseInt(stopLine.greenOffset1);
             inext = (i + 1) % phCount;

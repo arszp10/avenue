@@ -46,7 +46,6 @@ function validateModel(req, res, next) {
     if (errors.length == 0) {
         next(); return;
     }
-    res.status(402);
     res.json(responses.modelValidationFailed(errors));
     return;
 }
@@ -103,8 +102,7 @@ module.exports = function(app) {
     });
 
     app.post('/api/model/execute', validateModel,  function (req, res) {
-        //var bodyData = _.cloneDeepWith(req.body.data, coerce);
-        var bodyData = req.body.data;
+        var bodyData = _.cloneDeepWith(req.body.data, coerce);
         res.json(
             responses.modelSimulationSuccess(
                 avenueLib.recalculate(bodyData)
