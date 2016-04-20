@@ -36,6 +36,11 @@ module.exports = {
         return errObj(true, e +' id = ' + id , d);
     },
 
+    entityListFound: function(e, cnt, d){
+        return errObj(true, e +' list ' + cnt + ' items found.' , d);
+    },
+
+
 
     userLoginSuccessfully: function(){
         return errObj(true, 'User login successfully!', []);

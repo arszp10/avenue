@@ -127,9 +127,17 @@
         listModel:{
             done: function(r,o){
                 console.log(r);
-                if (r.data.length == 0) {
+                if (!r.data || r.data.length == 0) {
                     controls.panels.modelListPanel.addClass('hidden');
                     controls.panels.welcomePanel.removeClass('hidden');
+                } else {
+                    controls.panels.welcomePanel.addClass('hidden');
+                    controls.panels.modelListPanel.removeClass('hidden');
+                    controls.panels.modelListTable.empty();
+                    r.data.map(function(v){
+                        controls.panels.modelListTable.append(templates.modelListRow(v));
+                    });
+
                 }
             },
             fail: function(r,o){

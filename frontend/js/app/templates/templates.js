@@ -171,7 +171,35 @@
         },
         sumDelayStatus:         function(delay){
             return '&sum; delay<sub><i>i</i></sub> = <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">v*h/h</span>';
+        },
+
+
+        modelRowMenu:function(data){
+         return '<div class="btn-group">' +
+                '<a type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                '    <i class="fa fa-ellipsis-v"></i>' +
+                '</a>' +
+                '<ul class="dropdown-menu">' +
+                '<li><a href="#"><i class="fa fa-folder-open-o fa-fw"></i> &nbsp;Open</a></li>' +
+                '<li><a href="#"><i class="fa fa-folder-open fa-fw"></i> &nbsp;Open in new Tab</a></li>' +
+                '<li><a href="#"><i class="fa fa-trash fa-fw"></i> &nbsp;Remove</a></li>' +
+                '<li><a href="#"><i class="fa fa-copy fa-fw"></i> &nbsp;Copy</a></li>' +
+                '<li><a href="#"><i class="fa fa-info fa-fw"></i> &nbsp;Model info</a></li>' +
+                '</ul>' +
+                '</div>';
+        },
+
+        modelListRow: function(data){
+            return ' <tr>'+
+                '    <td class="actions-col">'+ this.modelRowMenu() + '</td>'+
+                '    <td class="model-name-col"><a href="/app/'+data._id+'">' + data.name + '</a></td>'+
+                '    <td class="cycle-time-col">' + data.cycleTime + ' <span>(sec)</span></td>'+
+                '    <td class="property-col">' + data.crossCount + ' <span>(cross)</span> &nbsp;&nbsp; ' + data.nodeCount + ' <span>(nodes)</span></td>'+
+                '    <td class="time-col">' + data.updatedAt + '</td>'+
+                '</tr>';
         }
+
+
     }
 })(AvenueApp);
 

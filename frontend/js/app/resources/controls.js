@@ -12,7 +12,8 @@
             nodeSearchResultlist:   '#node-search-result-list',
             nodeSearchInfo:         '#node-search-info',
             welcomePanel:           '#welcome-panel',
-            modelListPanel:         '#model-list-panel'
+            modelListPanel:         '#model-list-panel',
+            modelListTable:         '#model-list-result > tbody'
         },
         labels: {
             labelMyAccountUsername: '#label-my-account-username',
@@ -66,7 +67,7 @@
             btnPhasesOptimize:         '#btn-phases-optimize',
             btnsAddSampleItem:          '.add-sample-item',
             btnPointPropertyDone:       '#btn-point-property-done',
-            btnCreateNewModel:          '#btn-create-new-model'
+            btnCreateNewModel:          '.btn-create-new-model'
         }
     };
 })(AvenueApp);
