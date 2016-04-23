@@ -48,7 +48,7 @@
             return action('GET:/api/model/get/'+id, {}, handlers.getModel, options);
         },
         listModel: function(params, options) {
-            return action('GET:/api/model/list', {a:1, b:2}, handlers.listModel, options);
+            return action('GET:/api/model/list', params, handlers.listModel, options);
         }
 
     };

@@ -182,37 +182,21 @@ module.exports = function(app) {
     });
 
     app.get('/api/model/list', function (req, res) {
-        var userId = req.session.user_id;
-        var params = _.assign({
-            page:  1,
-            limit: 10,
-            text:  '',
-            orderBy: '-updatedAt'
-        }, req.query);
+        var params = _.cloneDeepWith(req.query, coerce);
+            params.userId = req.session.user_id;
 
-        if (['-updatedAt', 'updatedAt'].indexOf(params.orderBy) == -1) {
-            params.orderBy = '-updatedAt';
-        }
 
-        if (params.limit > 100) {
-            params.limit = 100;
-        }
-        if (params.limit < 10) {
-            params.limit = 10;
-        }
-
-        var userId = req.session.user_id;
-        Model.find({_creator:userId}).
-            skip(0).limit(params.limit).
-            sort(params.orderBy).
-            select('_id name nodeCount crossCount cycleTime createdAt updatedAt').
-            exec(function(err, data){
+        Model.findWithPages(params, function(err, data){
                 if (err) {
                     res.status(404);
                     res.json(responses.entityNotFound('Model', ''));
                 }
-                res.json(responses.entityListFound('Model', data.length, data));
-            });
+                res.json(
+                    responses.entityListFound('Model', data.table.length, data)
+                );
+            }
+        );
+
     });
 
 

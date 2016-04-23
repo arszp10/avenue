@@ -13,11 +13,15 @@
             nodeSearchInfo:         '#node-search-info',
             welcomePanel:           '#welcome-panel',
             modelListPanel:         '#model-list-panel',
-            modelListTable:         '#model-list-result > tbody'
+            modelListTable:         '#model-list-result > tbody',
+            modelPagesStat:         '#model-pages-stat'
         },
         labels: {
             labelMyAccountUsername: '#label-my-account-username',
-            labelWelcomeUsername:   '#label-welcome-username'
+            labelWelcomeUsername:   '#label-welcome-username',
+            labelModelPagesStart:   '#label-model-pages-start',
+            labelModelPagesFinish:   '#label-model-pages-finish',
+            labelModelPagesTotal:   '#label-model-pages-total',
         },
         inputs: {
             inputEdgeLabel:         '#input-edge-label',
@@ -29,7 +33,9 @@
             inputsNodeProperty:     'input.node-property',
             inputCrossroadName:     '#input-crossroad-name',
             inputNodeSearch:        '#input-node-search',
-            inputNodeSearchForm:    '#input-node-search-form'
+            inputNodeSearchForm:    '#input-node-search-form',
+            inputModelSearch:        '#input-model-search',
+            inputModelSearchForm:    '#input-model-search-form'
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',
@@ -67,7 +73,12 @@
             btnPhasesOptimize:         '#btn-phases-optimize',
             btnsAddSampleItem:          '.add-sample-item',
             btnPointPropertyDone:       '#btn-point-property-done',
-            btnCreateNewModel:          '.btn-create-new-model'
+            btnCreateNewModel:          '.btn-create-new-model',
+            btnModelOrderDown:          '#btn-model-order-down',
+            btnModelOrderUp:            '#btn-model-order-up',
+            btnsModelOrder:             '.btn-model-order',
+            btnModePagePrev:            '#btn-model-page-prev',
+            btnModePageNext:            '#btn-model-page-next'
         }
     };
 })(AvenueApp);

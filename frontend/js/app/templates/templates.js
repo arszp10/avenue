@@ -189,13 +189,23 @@
                 '</div>';
         },
 
-        modelListRow: function(data){
+        modelEmptyListRow: function(state){
+            return ' <tr>'+
+                '    <td class="model-name-col text-center"> Model with name <span class="label label-default">' + state.text+ '</span> not found! </td>'+
+                '</tr>';
+        },
+
+        modelListRow: function(data, state){
+            var name =  data.name;
+            if (state.text.length > 2) {
+                name = name.replace(state.text, '<span class="label label-default">'+state.text+'</span>');
+            }
             return ' <tr>'+
                 '    <td class="actions-col">'+ this.modelRowMenu() + '</td>'+
-                '    <td class="model-name-col"><a href="/app/'+data._id+'">' + data.name + '</a></td>'+
-                '    <td class="cycle-time-col">' + data.cycleTime + ' <span>(sec)</span></td>'+
-                '    <td class="property-col">' + data.crossCount + ' <span>(cross)</span> &nbsp;&nbsp; ' + data.nodeCount + ' <span>(nodes)</span></td>'+
-                '    <td class="time-col">' + data.updatedAt + '</td>'+
+                '    <td class="model-name-col"><a href="/app/'+data._id+'">' + name + '</a></td>'+
+                '    <td class="cycle-time-col text-right">' + data.cycleTime + ' <span>(sec)</span></td>'+
+                '    <td class="property-col  text-right">' + data.crossCount + ' <span>(cross)</span> &nbsp;&nbsp; ' + data.nodeCount + ' <span>(nodes)</span></td>'+
+                '    <td class="time-col text-right">' + new Date(data.updatedAt).toLocaleString() + '</td>'+
                 '</tr>';
         }
 

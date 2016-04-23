@@ -16,9 +16,10 @@
                     <div class="text-center hidden">
                         <h4>Search results for <span class="label label-default">Coordination</span> showed</h4>
                     </div>
-                    <a class="btn btn-lg btn-primary btn-create-new-mode" href="#" role="button"><i class="fa fa-plus-circle"></i> &nbsp;Create new model</a>
+                    <a class="btn btn-lg btn-primary btn-create-new-model" href="#" role="button"><i class="fa fa-plus-circle"></i> &nbsp;Create new model</a>
                     <div class="order-by-label pull-right">
-                        <a href="">Latest first &nbsp; <i class="fa fa-angle-down"></i></a>
+                        <a href="#" id="btn-model-order-down" class="btn-model-order" role="button" data-order="updatedAt">Newest first &nbsp; <i class="fa fa-angle-down"></i></a>
+                        <a href="#" id="btn-model-order-up" class="btn-model-order hidden" role="button" data-order="-updatedAt">Oldest first &nbsp; <i class="fa fa-angle-up"></i></a>
                     </div>
 
                     <table id="model-list-result" class="table table-files">
@@ -26,11 +27,11 @@
                     </table>
 
                     <div class="btn-group btn-group-lg" role="group" aria-label="...">
-                        <button type="button" class="btn btn-default"><i class="fa fa-angle-left"></i></button>
-                        <button type="button" class="btn btn-default"><i class="fa fa-angle-right"></i></button>
+                        <button type="button" id="btn-model-page-prev"  class="btn btn-model-page btn-default"><i class="fa fa-angle-left"></i></button>
+                        <button type="button" id="btn-model-page-next"  class="btn btn-model-page btn-default"><i class="fa fa-angle-right"></i></button>
                     </div>
-                    <div class="pull-right pages-info">
-                        <strong>1</strong> ... <strong>100</strong> <span class="text-muted">from</span> <strong>1000</strong>
+                    <div id="model-pages-stat" class="hidden pull-right pages-info">
+                        <strong id="label-model-pages-start">1</strong>&nbsp;...&nbsp;<strong id="label-model-pages-finish"></strong> &nbsp;<span class="text-muted">from</span> &nbsp;<strong id="label-model-pages-total">1</strong>
                     </div>
                 </div>
 
@@ -40,7 +41,7 @@
                         <br>
                         <p>You do not have any models, click the button to create your first model.</p>
                         <br>
-                        <p><a class="btn btn-primary btn-lg btn-create-new-mode" id="btn-create-new-model" role="button"><i class="fa fa-plus-circle"></i> Create new model</a></p>
+                        <p><a class="btn btn-primary btn-lg btn-create-new-model" id="btn-create-new-model" role="button"><i class="fa fa-plus-circle"></i> Create new model</a></p>
                     </div>
                 </div>
             </div>

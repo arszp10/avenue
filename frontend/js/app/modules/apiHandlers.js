@@ -1,8 +1,7 @@
 (function(App){
     var controls  = App.Controls;
     var templates = App.Templates;
-    var cy;
-    var editor;
+    var cy, editor, modelManager;
 
 
     var sum = function(items, prop){
@@ -46,6 +45,7 @@
         injectDependencies: function(modules) {
             cy      = modules.cytoscape;
             editor  = modules.editor;
+            modelManager = modules.modelManager;
         },
         initModule: function(){},
 
@@ -126,18 +126,30 @@
         },
         listModel:{
             done: function(r,o){
-                console.log(r);
-                if (!r.data || r.data.length == 0) {
+                if (r.data.table.length == 0 && modelManager.getState().text.length == 0) {
                     controls.panels.modelListPanel.addClass('hidden');
                     controls.panels.welcomePanel.removeClass('hidden');
                 } else {
                     controls.panels.welcomePanel.addClass('hidden');
                     controls.panels.modelListPanel.removeClass('hidden');
                     controls.panels.modelListTable.empty();
-                    r.data.map(function(v){
-                        controls.panels.modelListTable.append(templates.modelListRow(v));
-                    });
+                    controls.panels.modelPagesStat.removeClass('hidden');
+                    if (r.data.total == 0) {
+                        controls.panels.modelListTable.append(
+                            templates.modelEmptyListRow(modelManager.getState())
+                        );
+                    } else {
+                        r.data.table.map(function(v){
+                            controls.panels.modelListTable.append(
+                                templates.modelListRow(v, modelManager.getState())
+                            );
+                        });
+                    }
 
+                    controls.labels.labelModelPagesStart.text(r.data.start);
+                    controls.labels.labelModelPagesFinish.text(r.data.finish);
+                    controls.labels.labelModelPagesTotal.text(r.data.total);
+                    modelManager.setPage(r.data.page);
                 }
             },
             fail: function(r,o){

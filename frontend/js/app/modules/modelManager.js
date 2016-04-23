@@ -2,6 +2,12 @@
     var controls  = App.Controls;
     var api;
     var that;
+    var state = {
+        page:  1,
+        limit: 10,
+        text:  '',
+        orderBy: '-updatedAt'
+    };
 
     App.Modules.modelManager = {
         injectDependencies: function(modules) {
@@ -21,9 +27,42 @@
                 api.createModel();
             });
 
-            api.listModel(1);
 
+            controls.buttons.btnsModelOrder.click(function(e){
+                controls.buttons.btnsModelOrder.removeClass('hidden');
+                state.orderBy = $(this).data('order');
+                state.page = 1;
+                $(this).addClass('hidden');
+                api.listModel(state);
+            });
 
+            controls.buttons.btnModePagePrev.click(function(){
+                state.page--;
+                api.listModel(state);
+            });
+
+            controls.buttons.btnModePageNext.click(function(){
+                state.page++;
+                api.listModel(state);
+            });
+
+            controls.inputs.inputModelSearchForm.submit(function(){
+                state.text = controls.inputs.inputModelSearch.val();
+                state.page = 1;
+                api.listModel(state);
+                return false;
+            });
+
+            api.listModel(state);
+
+        },
+
+        setPage: function(p){
+            state.page = p;
+        },
+
+        getState: function(p){
+            return state;
         }
     }
 })(AvenueApp);
