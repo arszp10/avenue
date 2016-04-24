@@ -58,8 +58,8 @@ gulp.task('js:build', function () {
     gulp.src(path.src.js)
         .pipe(rigger())
         .pipe(sourcemaps.init())
-      // .pipe(uglify())
-      // .pipe(gzip())
+        //.pipe(uglify())
+        //.pipe(gzip())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(path.build.js))
         .pipe(reload({stream: true}));

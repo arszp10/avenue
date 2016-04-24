@@ -31,9 +31,12 @@ module.exports = {
         return errObj(false, e + ' with id ' + id + ' is not found!', []);
     },
 
-
     entityFound: function(e, id, d){
         return errObj(true, e +' id = ' + id , d);
+    },
+
+    entityRemoved: function(e, id, d){
+        return errObj(true, e +' with id = ' + id + ' has ben removed.' , d);
     },
 
     entityListFound: function(e, cnt, d){

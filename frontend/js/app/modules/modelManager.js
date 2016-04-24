@@ -53,6 +53,12 @@
                 return false;
             });
 
+
+            $(document).on('click', 'a.btn-model-remove', function(){
+                var id = $(this).closest('tr').data('id');
+                api.removeModel(id, function(){api.listModel(state);});
+            });
+
             api.listModel(state);
 
         },

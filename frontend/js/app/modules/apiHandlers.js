@@ -158,7 +158,21 @@
             always: function(r,o) {
 
             }
-        }
+        },
+        removeModel: {
+            done: function(r,ready){
+                if (r.success) {
+                    console.log(r);
+                    ready();
+                }
+            },
+            fail: function(r,o){
+                console.log(r);
+            },
+            always: function(r,o){
+
+            }
+        },
 
     };
 

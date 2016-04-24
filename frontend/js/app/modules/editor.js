@@ -32,11 +32,11 @@
             $(document).on('keyup', function(event){
                 if (event.which == 46 || event.which == 8){
                     controls.buttons.btnDeleteNode.click();
-                };
+                }
 
                 if (event.which == 142 || event.which == 116){
                     controls.buttons.btnCalc.click();
-                };
+                }
             });
 
             $(document).on('keyup', 'input', function(e){ e.stopPropagation(); });
@@ -398,11 +398,11 @@
             controls.inputs.inputCrossroadOffset.slider('setValue', node.offset);
             controls.panels.crossRoadModal.modal('show');
         },
-        showSideNodeInfo(node) {
+        showSideNodeInfo: function(node) {
             controls.panels.nodeSearchResultlist.empty();
             controls.panels.nodeSearchInfo.empty();
             controls.panels.body.addClass('show-right-panel');
-            
+
             if (node.hasOwnProperty('parent') && node.type !== 'crossRoad') {
                 node.name =  cy.getElementById(node.parent).data('name');
             }
@@ -436,9 +436,9 @@
 
             if (node.type == 'crossRoad') {
                 var stopLines = cy.aveGetCrossroadStoplines(node.id);
-                var data = [];
+                var dataBars = [];
                 $.each(stopLines, function(i,v){
-                    data.push({
+                    dataBars.push({
                         node: v.data(),
                         signals: traffic.signalDiagramData(node, v.data())
                     });
@@ -447,7 +447,7 @@
                 controls.panels.nodeSearchInfo.append(
                     templates.crossRoadSignalBars({
                         cycleTime: node.cycleTime,
-                        bars: data
+                        bars: dataBars
                     })
                 );
 
@@ -462,7 +462,7 @@
             });
 
             if (results.length == 0) {
-                return
+                return;
             }
 
             controls.panels.nodeSearchInfo.append(
@@ -525,6 +525,6 @@
                 .removeClass('show-files show-network show-routes show-results show-source')
                 .addClass(tab.data('rel'))
         }
-    };
+    }
 
 })(AvenueApp);

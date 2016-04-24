@@ -49,7 +49,11 @@
         },
         listModel: function(params, options) {
             return action('GET:/api/model/list', params, handlers.listModel, options);
+        },
+        removeModel: function(id, options) {
+            return action('GET:/api/model/remove/'+id, {}, handlers.removeModel, options);
         }
+
 
     };
 

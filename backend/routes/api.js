@@ -180,7 +180,6 @@ module.exports = function(app) {
             res.json(responses.entityFound('Model', modelId, result));
         });
     });
-
     app.get('/api/model/list', function (req, res) {
         var params = _.cloneDeepWith(req.query, coerce);
             params.userId = req.session.user_id;
@@ -199,8 +198,19 @@ module.exports = function(app) {
 
     });
 
-
     app.get('/api/model/remove/:modelId', function (req, res) {
+        var modelId = req.params.modelId;
+        var userId = req.session.user_id;
+
+        Model.remove({_id: modelId, _creator:userId}, function (err, model) {
+            if (err || !model) {
+                res.status(404);
+                res.json(responses.entityNotFound('Model', modelId));
+                return;
+            }
+            res.json(responses.entityRemoved('Model', modelId, {id:modelId}));
+        });
+
 
     });
 };

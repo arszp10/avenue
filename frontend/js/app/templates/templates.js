@@ -180,11 +180,11 @@
                 '    <i class="fa fa-ellipsis-v"></i>' +
                 '</a>' +
                 '<ul class="dropdown-menu">' +
-                '<li><a href="#"><i class="fa fa-folder-open-o fa-fw"></i> &nbsp;Open</a></li>' +
-                '<li><a href="#"><i class="fa fa-folder-open fa-fw"></i> &nbsp;Open in new Tab</a></li>' +
-                '<li><a href="#"><i class="fa fa-trash fa-fw"></i> &nbsp;Remove</a></li>' +
-                '<li><a href="#"><i class="fa fa-copy fa-fw"></i> &nbsp;Copy</a></li>' +
-                '<li><a href="#"><i class="fa fa-info fa-fw"></i> &nbsp;Model info</a></li>' +
+                '<li><a href="/app/'+data._id+'"><i class="fa fa-folder-open-o fa-fw"></i> &nbsp;Open</a></li>' +
+                '<li><a href="/app/'+data._id+'" target="_blank"><i class="fa fa-folder-open fa-fw"></i> &nbsp;Open in new Tab</a></li>' +
+                '<li><a href="#" class="btn-model-remove"><i class="fa fa-trash-o fa-fw"></i> &nbsp;Remove</a></li>' +
+                //'<li><a href="#"><i class="fa fa-copy fa-fw"></i> &nbsp;Copy</a></li>' +
+                //'<li><a href="#"><i class="fa fa-info fa-fw"></i> &nbsp;Model info</a></li>' +
                 '</ul>' +
                 '</div>';
         },
@@ -200,8 +200,8 @@
             if (state.text.length > 2) {
                 name = name.replace(state.text, '<span class="label label-default">'+state.text+'</span>');
             }
-            return ' <tr>'+
-                '    <td class="actions-col">'+ this.modelRowMenu() + '</td>'+
+            return ' <tr data-id="' + data._id + '">' +
+                '    <td class="actions-col">'+ this.modelRowMenu(data) + '</td>'+
                 '    <td class="model-name-col"><a href="/app/'+data._id+'">' + name + '</a></td>'+
                 '    <td class="cycle-time-col text-right">' + data.cycleTime + ' <span>(sec)</span></td>'+
                 '    <td class="property-col  text-right">' + data.crossCount + ' <span>(cross)</span> &nbsp;&nbsp; ' + data.nodeCount + ' <span>(nodes)</span></td>'+
