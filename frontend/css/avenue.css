@@ -17,6 +17,12 @@ body{
     z-index: 1;
 }
 
+.screen-scroll {
+    bottom: 0px;
+    overflow-y: auto;
+}
+
+
 .visible-files,
 .visible-network,
 .visible-routes,

@@ -8,10 +8,9 @@
 <body class="show-files">
 <div>
     //= templates/top-panel.html
-    <div id="files-list" class="screen visible-files" data-tab="btn-show-files">
+    <div id="files-list" class="screen screen-scroll visible-files" data-tab="btn-show-files">
         <div class="container files-container">
             <div class="row">
-
                 <div id="model-list-panel" class="col-sm-12 hidden">
                     <div class="text-center hidden">
                         <h4>Search results for <span class="label label-default">Coordination</span> showed</h4>
@@ -25,7 +24,6 @@
                     <table id="model-list-result" class="table table-files">
                         <tbody></tbody>
                     </table>
-
                     <div class="btn-group btn-group-lg" role="group" aria-label="...">
                         <button type="button" id="btn-model-page-prev"  class="btn btn-model-page btn-default"><i class="fa fa-angle-left"></i></button>
                         <button type="button" id="btn-model-page-next"  class="btn btn-model-page btn-default"><i class="fa fa-angle-right"></i></button>
@@ -41,7 +39,8 @@
                         <br>
                         <p>You do not have any models, click the button to create your first model.</p>
                         <br>
-                        <p><a class="btn btn-primary btn-lg btn-create-new-model" id="btn-create-new-model" role="button"><i class="fa fa-plus-circle"></i> Create new model</a></p>
+                        <p><a class="btn btn-primary btn-lg btn-create-new-model" id="btn-create-new-model" role="button">
+                            <i class="fa fa-plus-circle"></i> Create new model</a></p>
                     </div>
                 </div>
             </div>
