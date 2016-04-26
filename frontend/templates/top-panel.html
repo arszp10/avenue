@@ -29,11 +29,17 @@
                 </ul>
 
                 <form class="visible-network navbar-form navbar-left" role="search">
-                    <button type="button" class="btn btn-inverse" id="btn-model-save"><i class="fa fa-save"></i> Save</button>
-                    <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-spinner"></i> Recalc</button>
-                    <button type="button" class="btn btn-inverse" id="btn-phases-optimize"><i class="fa fa-spinner"></i> Phases</button>
-                    <button type="button" class="btn btn-inverse" id="btn-offsets-optimize"><i class="fa fa-spinner"></i> Offsets</button>
-
+                    <button type="button" class="btn btn-inverse" id="btn-model-save"><i class="fa fa-save"></i></button>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-rocket"></i> &nbsp;&nbsp;Launch</button>
+                        <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu nav-btn-group-dropdown">
+                            <li><a type="button" href="#" id="btn-phases-optimize"><i class="fa fa-server "></i> &nbsp;Phases</a></li>
+                            <li><a type="button" href="#" id="btn-offsets-optimize"><i class="fa fa-sliders "></i> &nbsp;Offsets</a></li>
+                        </ul>
+                    </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right ">
                     <!--<li><a href="#">Link</a></li>-->

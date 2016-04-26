@@ -106,7 +106,7 @@
 
             controls.buttons.btnOffsetsOptimize.click(function () {
                 var data = cy.avePrepareCalcRequest();
-                var $icon = $(this).find('i.fa');
+                var $icon = controls.buttons.btnCalc.find('i.fa');
                 $icon.addClass('fa-spin');
                 cy.nodes().removeClass('has-error');
                 api.offsetsOptimize({data: data}, $icon);
@@ -114,7 +114,7 @@
 
             controls.buttons.btnPhasesOptimize.click(function () {
                 var data = cy.avePrepareCalcRequest();
-                var $icon = $(this).find('i.fa');
+                var $icon = controls.buttons.btnCalc.find('i.fa');
                 $icon.addClass('fa-spin');
                 cy.nodes().removeClass('has-error');
                 api.phasesOptimize({data: data}, $icon);
@@ -122,6 +122,9 @@
 
 
             controls.buttons.btnModelSave.click(function () {
+                var $icon = $(this).find('i.fa');
+                $icon.addClass('fa-spinner fa-spin');
+                $icon.removeClass('fa-save');
                 api.saveModel(App.State.modelId, {
                     data: {
                         content: cy.elements().jsons(),
@@ -131,7 +134,7 @@
                         crossCount: cy.$('[type="crossRoad"]').length,
                         cycleTime: App.State.currentModel.cycleTime
                     }
-                });
+                }, $icon);
             });
 
         },

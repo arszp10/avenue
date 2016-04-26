@@ -51,6 +51,11 @@ function CompetitorMerge(options, network, indexMap){
         //this.avgIntensity =  this.primaryIntensity + this.secondaryIntensity;
     };
 
+    this.getAvgIntensity = function(){
+        return this.primaryIntensity + this.secondaryIntensity;
+    };
+
+
 }
 
 module.exports = CompetitorMerge;

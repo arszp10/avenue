@@ -757,3 +757,12 @@ td.model-name-col .label {
 .pages-info {
     line-height: 45px;
 }
+
+.nav-btn-group-dropdown {
+    top:35px;
+}
+
+.navbar-form .btn-group {
+    display: inline-block;
+    margin: 0px 5px;
+}

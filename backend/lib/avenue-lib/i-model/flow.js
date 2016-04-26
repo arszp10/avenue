@@ -143,7 +143,7 @@ function Flow(options, network, indexMap)
     };
 
     this._calcEdgePortionI = function (i, edge, sourceNode, constFlowPerSecond){
-        return sourceNode.outFlow[i] * parseInt(edge.portion) / sourceNode.avgIntensity;
+        return sourceNode.outFlow[i] * parseInt(edge.portion) / sourceNode.getAvgIntensity();
     };
 
     this._flowSourceNodes = function () {
@@ -157,6 +157,10 @@ function Flow(options, network, indexMap)
         }, this);
 
         return result;
+    };
+
+    this.getAvgIntensity = function(){
+        return this.avgIntensity;
     };
 
     this.resetIntervals = function(intervals){

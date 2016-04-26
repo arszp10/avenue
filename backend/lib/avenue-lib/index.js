@@ -348,7 +348,7 @@ module.exports = {
         }
 
         this._prepareNetwork(request);
-        this._calc(3);
+        this._calc(5);
 
         return this._network.map(function(v){
             return v.json();

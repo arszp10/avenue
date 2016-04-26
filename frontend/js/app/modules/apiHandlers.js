@@ -3,6 +3,7 @@
     var templates = App.Templates;
     var cy, editor, modelManager;
 
+    var nop = function(r,o){ };
 
     var sum = function(items, prop){
         return items.reduce( function(a, b){
@@ -47,7 +48,7 @@
             editor  = modules.editor;
             modelManager = modules.modelManager;
         },
-        initModule: function(){},
+        initModule: nop,
 
         modelExecute: {
             done: doneCalcHandler,
@@ -90,22 +91,20 @@
                     window.location = '/app/' + r.data.id;
                 }
             },
-            fail: function(r,o){
-
-            },
-            always: function(r,o){
-
-            }
+            fail: nop,
+            always: nop
         },
         saveModel: {
-            done: function(r,o){
-                console.log(r);
+            done: function(r, o){
+                $.notify(r.message, {
+                    position: 'top center',
+                    className: r.success ? "success" : "error"
+                });
             },
-            fail: function(r,o){
-
-            },
-            always: function(r,o){
-
+            fail: nop,
+            always: function(options){
+                options.removeClass('fa-spin fa-spinner');
+                options.addClass('fa-save');
             }
         },
         getModel: {
@@ -117,12 +116,8 @@
                     delete App.State.currentModel.content;
                 }
             },
-            fail: function(r,o){
-                console.log(r.responseJSON);
-            },
-            always: function(r,o){
-
-            }
+            fail: nop,
+            always: nop
         },
         listModel:{
             done: function(r,o){
@@ -152,27 +147,14 @@
                     modelManager.setPage(r.data.page);
                 }
             },
-            fail: function(r,o){
-
-            },
-            always: function(r,o) {
-
-            }
+            fail: nop,
+            always: nop
         },
         removeModel: {
-            done: function(r,ready){
-                if (r.success) {
-                    console.log(r);
-                    ready();
-                }
-            },
-            fail: function(r,o){
-                console.log(r);
-            },
-            always: function(r,o){
-
-            }
-        },
+            done: function(r,ready){ if (r.success) { ready(); } },
+            fail: nop,
+            always: nop
+        }
 
     };
 

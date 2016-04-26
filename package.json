@@ -28,11 +28,13 @@
   "devDependencies": {
     "browser-sync": "*",
     "gulp": "*",
+    "gulp-gzip": "*",
+    "gulp-htmlmin": "^1.3.0",
     "gulp-minify-css": "*",
     "gulp-rigger": "*",
     "gulp-sass": "*",
-    "gulp-gzip": "*",
     "gulp-sourcemaps": "*",
+    "gulp-strip-comments": "^2.4.3",
     "gulp-uglify": "*",
     "gulp-watch": "*",
     "rimraf": "*"

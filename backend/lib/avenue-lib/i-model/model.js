@@ -188,7 +188,7 @@ module.exports = {
             if (queue > flow2.maxQueueLength) {
                 flow2.maxQueueLength = queue;
             }
-            if (outFlow2[i] <= 0.01){
+            if (outFlow2[i] <= 0.05){
                 virtRedTime++;
                 avgInVirtRed+=inFlow2[i];
             }

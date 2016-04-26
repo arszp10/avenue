@@ -3,6 +3,8 @@
 var gulp = require('gulp'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
+    htmlmin = require('gulp-htmlmin'),
+    strip = require('gulp-strip-comments'),
     sourcemaps = require('gulp-sourcemaps'),
     rigger = require('gulp-rigger'),
     sass = require('gulp-sass'),
@@ -50,6 +52,8 @@ var config = {
 gulp.task('html:build', function () {
     gulp.src(path.src.html)
         .pipe(rigger())
+        .pipe(strip())
+        .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest(path.build.html))
         .pipe(reload({stream: true}));
 });
