@@ -142,14 +142,14 @@
 
             if (isTargetConcurrent) {
                 var sec = cy.$('edge[target="' + edge.target + '"][^secondary]');
-                if (sec.length == 2) {
+                if (sec.length == 2 || edge.secondary) {
                     cy.getElementById(edge.id).data('secondary', 'true');
                 }
             }
 
             if (isSourceConcurrent) {
                 var sec = cy.$('edge[source="' + edge.source + '"][^secondary]');
-                if (sec.length > 2) {
+                if (sec.length > 2 || edge.secondary) {
                     cy.getElementById(edge.id).data('secondary', 'true');
                 }
             }

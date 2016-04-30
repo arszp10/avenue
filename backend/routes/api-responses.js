@@ -50,7 +50,7 @@ module.exports = {
     },
     userLoginFailed: function(){
         return {
-            result: false,
+            success: false,
             message: 'User invalid credentials!',
             data: [
                 {path: 'email', message: 'Invalid email'},

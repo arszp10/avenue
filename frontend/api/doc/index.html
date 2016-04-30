@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>avenue</title>
+    <link href="/css/_bundle.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="show-api-doc">
+<div>
+    //= templates/top-panel.html
+    <div id="api-doc" class="screen screen-scroll">
+        <div class="container container-api">
+            <div class="row">
+                <div class="col-md-9" role="main">
+                    <div class="bs-docs-section">
+                        <h1 id="overview" class="page-header">Документация API</h1>
+
+                        <p class="lead">Данная API предназначена для .....</p>
+
+                        <h3 id="common" class="page-header">Введение</h3>
+                        <p>Все команды посылаются путем HTTP(S) запросов (GET/POST) к серверу (...). Результат возвращается в виде JSON объекта.</p>
+                        <p>Пример вызова команды:</p>
+
+                        <div class="highlight">
+<pre><code class="html">
+
+</code></pre>
+                        </div>
+
+                        <p>Пример ответа сервера:</p>
+
+                        <div class="highlight">
+<pre><code class="js">{
+    "success": true,
+    "message": "Simulation was successful!",
+    "data":[
+        {
+            "id": "wh1h4mqj76hwgrjf",
+            "type": "stopline",
+            "cycleTime": 100,
+            "inFlow": [...],
+            "outFlow": [...],
+            "isCongestion": false,
+            "maxQueue":5.5,
+            "delay":216,
+            "greenSaturation":79,
+            "sumInFlow":25,
+            "sumOutFlow":25
+        }
+    ]
+}</code></pre>
+                        </div>
+
+                        <p>
+                            Ответ сервера всегда содержит поля: <code>success</code>, <code>message</code> и поле <code>data</code>.
+                        </p>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 100px;">Поле</th>
+                                <th>Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><code>success</code></td>
+                                <td>Статус вашего запроса, может принимать два значения: <code>true</code> или <code>false</code></td>
+                            </tr>
+                            <tr>
+                                <td><code><a href="#errors">message</a></code></td>
+                                <td>Текстовое описание ошибки или сообщение об успешном завершении операции.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>data</code></td>
+                                <td>Здесь помещаются данные ответа сервера, если они есть.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+ <!--
+                        <h3 id="commands-list" class="page-header">Список команд</h3>
+                        <p>В текущей версии API поддерживатеся всего три команды. Команда указывается в параметре <code>&cmd=...</code> запроса к серверу</p>
+
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 100px;">Команда</th>
+                                <th>Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><code><a href="#account-command">account</a></code></td>
+                                <td>Возвращает состояние счета данного пользователя</td>
+                            </tr>
+                            <tr>
+                                <td><code><a href="#send-command">send</a></code></td>
+                                <td>Отправляет сообщение на указанные номера</td>
+                            </tr>
+                            <tr>
+                                <td><code><a href="#message-status-command">message_status</a></code></td>
+                                <td>Возвращаетс статусы и дополнительную информацию по указанным сообщениям
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <p>
+                            Для любой команды обязательными параметрами являются логин <code>user_login</code> пользователя и его пароль <code>user_password</code>
+                        </p>
+                        <div class="highlight">
+                        <pre>
+                            <code class="html">/api?<strong>user_login</strong>=test&<strong>user_password</strong>=test...</code>
+                        </pre>
+                        </div>
+
+                        <h3 id="account-command" class="page-header">Команда  account</h3>
+                        <p>Эта команда возвращает данные о количестве средств на вашем акаунте, пример вызова команды</p>
+                        <div class="highlight">
+                        <pre>
+                            <code class="html">/api?user_login=test&user_password=test&cmd=account</code>
+                        </pre>
+                        </div>
+
+                        <p>
+                            Пример ответа сервера:
+                        </p>
+                        <div class="highlight">
+                        <pre>
+                            <code class="js">{
+                                "status": "success",
+                                "code": 0,
+                                "message": "",
+                                "data": {
+                                "balance": 1000,
+                                "credit": 50
+                                }
+                                }</code>
+                        </pre>
+                        </div>
+
+                        <p>
+                            Поле <code>data</code> в ответе содержит в себе 2 поля <code>balance</code> и <code>credit</code>
+                        </p>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 100px;">Поле</th>
+                                <th>Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><code>balance</code></td>
+                                <td>Значение баланса в рублях</td>
+                            </tr>
+                            <tr>
+                                <td><code>credit</code></td>
+                                <td>Значение баланса, при которой вам разрешено отправлять сообщения. Например: значение 50 обозначает, что вы можете отправить сообщения с балансом в -50 рублей</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <h3 id="send-command" class="page-header">Команда  send</h3>
+                        <p>С помощью команды <code>send</code> вы может отправить сообщение по одному или нескольким адресам, максимальное количество номеров в одном запросе не должно превышать  <b>100</b>.
+                            Пример немедленной отправки
+                        </p>
+                        <div class="highlight">
+                        <pre>
+                            <code class="html">/api?user_login=test&user_password=test&cmd=send&text=text%20to%20send&phones=79045856906,79045856907&sender=PRIVET</code>
+                        </pre>
+                        </div>
+
+                        <p>
+                            Пример ответа сервера:
+                        </p>
+                        <div class="highlight">
+                        <pre>
+                            <code class="js">{
+                                "status": "success",
+                                "code": 0,
+                                "message": "",
+                                "data": {
+                                "scheduled": 0,
+                                "started": "2014-07-20 15:23:29+0700",
+                                "text": "text to send",
+                                "sender": "PRIVET",
+                                "price": 3,
+                                "messages": [
+                                {
+                                "id": "768602753923548861",
+                                "to": "79045856906",
+                                "parts": 1,
+                                "price": 1.5
+                                },
+                                {
+                                "id": "768602755718710974",
+                                "to": "79045856907",
+                                "parts": 1,
+                                "price":1.5
+                                }
+                                ]
+                                }
+                                }</code>
+                        </pre>
+                        </div>
+
+                        <p>Команда <code>send</code> принимает на вход следующий набор параметров:</p>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 100px;">Параметр</th>
+                                <th>Значения</th>
+                                <th>Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><span class="label label-warning">!</span>&nbsp;<code>text</code></td>
+                                <td><a href="http://en.wikipedia.org/wiki/Percent-encoding">Urlencoded</a> cтрока минимум 2, максимум 673 символа</td>
+                                <td>Текст сообщения</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-warning">!</span>&nbsp;<code>phones</code></td>
+                                <td>Строка: <code>79045856906,79056784664</code></td>
+                                <td>Список номеров телефонов через запятую в формате 79040000000, т.е. 11 цифр первая цифра 7</td>
+                            </tr>
+                            <tr>
+                                <td><span class="label label-warning">!</span>&nbsp;<code>sender</code></td>
+                                <td>Строка: <code>PRIVET</code>, <code>79045856906</code>. Максимум 11 символов.</td>
+                                <td>Строка, набор букв или цифр, идетнификатор отправителя, можно использовать только те идентификаторы, которые зарегистрированы в вашем кабинете, в противном случае будет выдана ошибка.</td>
+                            </tr>
+                            <tr>
+                                <td><code>scheduled</code></td>
+                                <td>Число: <code>0</code> или <code>1</code></td>
+                                <td>Признак отправки отложенного сообщения, по умолчанию значение этого параметра = 0, то есть сообщение будет отправлено немедленно, если вы указываете значение этого параметра = 1, то необходимо также передать параметр <code>started</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><code>started</code></td>
+                                <td>Urlencoded cтрока: <code>21.08.2014 10:15</code></td>
+                                <td>Строка соддержащая время отправки в формате <code>d.m.Y H:i</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>timezone</code></td>
+                                <td>cтрока: <code>Europe/Moscow</code>, <code>Asia/Omsk</code></td>
+                                <td>
+                                    Строка соддержащая <a href="http://en.wikipedia.org/wiki/List_of_tz_database_time_zones">строковый идентификатор</a> часового пояса, которому соответствует время из параметра <code>started</code>.
+                                    Если параметр не указан используется часовой пояс указанный в вашем акаунте <code>user_login</code>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p><span class="label label-warning">!</span>&nbsp;<span class="text-muted">обязательный параметр запроса.</span></p>
+
+                        <p>В качестве ответа сервер возвращает переданные ему параметры, добавляя в ответ два поля <code>price</code> - общая стоимость рассылки в рублях и <code>messages</code> - массив отправленных сообщений.</p>
+                        <p>Поля описывающие отправленные сообщения в  ответе сервера:</p>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 120px;">Поле</th>
+                                <th>Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><code>id</code> <span class="text-muted">(bigint)</span></td>
+                                <td>Идентификатор сообщения, его необходимо указать при проверки <a href="#message-status-command">статуса сообщения</a></td>
+                            </tr>
+                            <tr>
+                                <td><code>to</code> <span class="text-muted">(string)</span></td>
+                                <td>Номер телефона, на который было отправлено это сообщение</td>
+                            </tr>
+                            <tr>
+                                <td><code>parts</code> <span class="text-muted">(int)</span> </td>
+                                <td>Число на которое было разбито сообщение при отправке</td>
+                            </tr>
+                            <tr>
+                                <td><code>price</code> <span class="text-muted">(float)</span></td>
+                                <td>Цена в рублях за отправку этого сообщения</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <h3 id="message-status-command" class="page-header">Команда  message_status</h3>
+                        <p>Эта команда возвращает данные о статусе ранее отправленных сообщений, пример вызова команды</p>
+                        <div class="highlight">
+                        <pre>
+                            <code class="html">/api?user_login=test&user_password=test&cmd=message_status&ids=748563064080565932,748563262907352749</code>
+                        </pre>
+                        </div>
+
+                        <p>
+                            Пример ответа сервера:
+                        </p>
+                        <div class="highlight">
+                        <pre>
+                            <code class="js">{
+                                "status": "success",
+                                "code": 0,
+                                "message": "",
+                                "data": {
+                                "748563064080565932": {
+                                "id": "748563064080565932",
+                                "status": <a href="#statuses"><kbd>"q"</kbd></a>,
+                                "created": "2014-06-22 23:48:12+0700",
+                                "delivered": null,
+                                "to": "79045856906",
+                                "partsCount": 1,
+                                "price": 1.5,
+                                "text": "111111111",
+                                "from": "PRIVET"
+                                },
+                                "748563262907352749": {
+                                "id": "748563262907352749",
+                                "status": <a href="#statuses"><kbd>"s"</kbd></a>,
+                                "created": "2014-06-22 23:48:36+0700",
+                                "delivered": null,
+                                "to": "79045856906",
+                                "partsCount": 1,
+                                "price": 1.5,
+                                "text": "45464646465",
+                                "from": "PRIVET"
+                                }
+                                }
+                                }</code>
+                        </pre>
+                        </div>
+
+                        <p>Команда <code>message_status</code> принимает на вход один обязательный параметр <code>ids</code></p>
+
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 100px;">Параметр</th>
+                                <th>Значения</th>
+                                <th>Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><span class="label label-warning">!</span>&nbsp;<code>ids</code></td>
+                                <td>Строка: <code>748563064080565932,748563262907352749</code></td>
+                                <td>Список идентификаторов сообщений через запятую</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p><span class="label label-warning">!</span>&nbsp;<span class="text-muted">обязательный параметр запроса.</span></p>
+
+                        <h3 id="statuses" class="page-header">Расшифровка статусов сообщений</h3>
+                        <p>Ниже представлена таблица расшифровки статусов отправленных сообщений:</p>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 50px;">Код</th>
+                                <th>Кабинет</th>
+                                <th>Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><code>q</code></td>
+                                <td><span class="label label-info">О</span></td>
+                                <td>Сообщение поставлено в очередь</td>
+                            </tr>
+                            <tr>
+                                <td><code>s</code></td>
+                                <td><span class="label label-primary">П</span></td>
+                                <td>Сообщение запланировано к отправке</td>
+                            </tr>
+                            <tr>
+                                <td><code>e</code></td>
+                                <td><span class="label label-info">E</span></td>
+                                <td>Сообщение передается оператору (в процессе)</td>
+                            </tr>
+                            <tr>
+                                <td><code>a</code></td>
+                                <td><span class="label label-warning">X</span></td>
+                                <td>Оператор подтвердил прием сообщения (у оператора)</td>
+                            </tr>
+                            <tr>
+                                <td><code>d</code></td>
+                                <td><span class="label label-success">Д</span></td>
+                                <td>Сообщение доставлено</td>
+                            </tr>
+                            <tr>
+                                <td><code>f</code></td>
+                                <td><span class="label label-danger">Н</span></td>
+                                <td>Сообщение не доставлено</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                        <h3 id="errors" class="page-header">Ошибки</h3>
+                        <p>Коды ошибок и текстовые сообщения, которые могут встречаться в полях <code>code</code> и <code>message</code> ответа сервера:</p>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 150px;">Код</th>
+                                <th>Описание</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><code>unknown_error</code></td>
+                                <td>Ой! Кажется что-то пошло совсем не так! Отправте строку запроса в поддержку мы разберемся!</td>
+                            </tr>
+                            <tr>
+                                <td><code>wrong_credentials</code></td>
+                                <td>Неверный логин и пароль</td>
+                            </tr>
+                            <tr>
+                                <td><code>invalid_command</code></td>
+                                <td>Данная команда не поддерживается</td>
+                            </tr>
+                            <tr>
+                                <td><code>found_nothing</code></td>
+                                <td>По вашему запросу ничего не найдено!</td>
+                            </tr>
+                            <tr>
+                                <td><code>wrong_senderid</code></td>
+                                <td>Указаный отправитель не найден</td>
+                            </tr>
+                            <tr>
+                                <td><code>user_suspended</code></td>
+                                <td>Действие данного акаунта временнно приостановлено!</td>
+                            </tr>
+                            <tr>
+                                <td><code>parameters_missing</code></td>
+                                <td>В запросе отсутсвуют необходимые параметры!</td>
+                            </tr>
+                            <tr>
+                                <td><code>sending_error</code></td>
+                                <td>Выберите время отправки</td>
+                            </tr>
+                            <tr>
+                                <td><code>sending_error</code></td>
+                                <td>Сообщение слишком короткое, минимальная длинна 2 символа</td>
+                            </tr>
+                            <tr>
+                                <td><code>sending_error</code></td>
+                                <td>Введите хотя бы один номер телефона</td>
+                            </tr>
+                            <tr>
+                                <td><code>sending_error</code></td>
+                                <td>Не верный формат номера телефона ...</td>
+                            </tr>
+                            <tr>
+                                <td><code>sending_error</code></td>
+                                <td>Внимание! Данные номера в черном списке, удалите их и попробуйте заного ...</td>
+                            </tr>
+                            <tr>
+                                <td><code>sending_error</code></td>
+                                <td>Выбран не верный адрес отправителя ...</td>
+                            </tr>
+                            <tr>
+                                <td><code>sending_error</code></td>
+                                <td>Для данного типа имени отправителя у вас не подключен ни один провайдер, обратитесь к администрации</td>
+                            </tr>
+                            <tr>
+                                <td><code>sending_error</code></td>
+                                <td>Недостаточно денег на счете ...</td>
+                            </tr>
+                            </tbody>
+                        </table-->
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" role="complementary">
+                        <br>
+                        <ul class="nav bs-docs-sidenav">
+                            <li class="active">
+                                <a href="#overview">Документация API</a>
+                                <ul class="nav">
+                                    <li><a href="#common">Введение</a></li>
+                                    <li><a href="#commands-list">Список команд</a></li>
+                                    <li><a href="#account-command">Команда  account</a></li>
+                                    <li><a href="#send-command">Команда  send</a></li>
+                                    <li><a href="#message-status-command">Команда  message_status</a></li>
+                                    <li><a href="#statuses">Расшифровка статусов</a></li>
+                                    <li><a href="#errors">Ошибки</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -23,6 +23,8 @@ body{
 }
 
 
+
+.visible-api-doc,
 .visible-files,
 .visible-network,
 .visible-routes,
@@ -31,6 +33,7 @@ body{
     display:none;
 }
 
+.hidden-api-doc
 .hidden-files,
 .hidden-network,
 .hidden-routes,
@@ -39,6 +42,7 @@ body{
     display:block;
 }
 
+.show-api-doc .visible-api-doc,
 .show-files .visible-files,
 .show-network .visible-network,
 .show-routes .visible-routes,
@@ -48,6 +52,7 @@ body{
     display:block;
 }
 
+.show-api-doc .hidden-api-doc,
 .show-files .hidden-files,
 .show-network .hidden-network,
 .show-routes .hidden-routes,
@@ -765,4 +770,13 @@ td.model-name-col .label {
 .navbar-form .btn-group {
     display: inline-block;
     margin: 0px 5px;
+}
+
+.container-api {
+    background: #fff;
+    padding: 20px 40px;
+}
+
+.bs-docs-sidebar {
+
 }
