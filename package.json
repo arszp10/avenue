@@ -1,7 +1,7 @@
 {
   "name": "avenue-model",
   "version": "1.0.0",
-  "description": "",
+  "description": "The Avenue2.0 traffic model",
   "main": "js/app.js",
   "scripts": {
     "start": "gulp build && node backend/app"
