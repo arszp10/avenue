@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(require('express-session')(config.session(store)));
 
 require('./routes/web.js')(app);
-require('./routes/api.js')(app);
+require('./routes/api.js')(app, config);
 require('./routes/errors.js')(app);
 
 app.listen(9000);

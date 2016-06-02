@@ -1,9 +1,10 @@
 var _ = require('lodash');
+var nodemailer = require('nodemailer');
+
 var User = require('../models/user');
 var Model = require('../models/model');
 var avenueLib = require('../lib/avenue-lib');
 var responses = require('./api-responses');
-
 
 var isint = /^[0-9]+$/;
 var isfloat = /^([0-9]+)?\.[0-9]+$/;
@@ -40,7 +41,6 @@ function authenticateApi(req, res, next) {
     });
 }
 
-
 function validateModel(req, res, next) {
     var errors = avenueLib.validate(req.body.data);
     if (errors.length == 0) {
@@ -50,7 +50,10 @@ function validateModel(req, res, next) {
     return;
 }
 
-module.exports = function(app) {
+module.exports = function(app, config) {
+
+    var transporter = nodemailer.createTransport(config.mailTransportOptions);
+
     app.get('/api/ping', authenticateApi, function (req, res) {
         res.json(responses.pong());
     });
@@ -62,11 +65,20 @@ module.exports = function(app) {
                 res.json(responses.fieldsErrorsList(err));
                 return;
             }
+
+            var mail = _.assign({}, config.emailTemplates.activation);
+            var link = config.baseUrl + '/user/activate/' + newUser.activationKey;
+            mail.to = newUser.email;
+            mail.html = mail.html.split('{link}').join(link);
+           // transporter.sendMail(mail, function(error, info){});
+
             res.json(responses.entityCreatedSuccessfully('User', []));
         });
     });
+
+
     app.post('/api/user/sign-in', function (req, res) {
-        User.findOne({email: req.body.email}, function (err, user) {
+        User.findOne({email: req.body.email, active:true}, function (err, user) {
             if (user && user.authenticate(req.body.password)) {
                 req.session.user_id = user.id;
                 req.session.user_name = user.fullName;

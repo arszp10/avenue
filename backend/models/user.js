@@ -17,6 +17,8 @@ var userSchema = new Schema({
     apiKey:    { type: String, required: true, unique: true },
     apiSecret: { type: String, required: true },
     admin: Boolean,
+    active: Boolean,
+    activationKey: String,
     location: String,
     createdAt: Date,
     updatedAt: Date,
@@ -32,6 +34,8 @@ userSchema.pre('validate', function(next) {
         var apikey = this.email;
         var apisec = this.genSalt();
         this.salt = this.genSalt();
+        this.active = true;
+        this.activationKey =  this.encryptPassword(apikey + apisec);
         this.createdAt = currentDate;
         this.passwordHash  = this.encryptPassword(this.password);
         this.apiKey    = this.encryptPassword(apikey).substr(0, 10);

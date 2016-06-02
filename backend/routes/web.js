@@ -20,6 +20,15 @@ module.exports = function(app) {
         res.sendFile('models.html', {root: __dirname + '/../public'});
     });
 
+    app.use('/user/activate/:key', function (req, res) {
+        if (true) {
+            res.redirect('/sign-in#activation-success');
+            return;
+        }
+        res.redirect('/sign-in#activation-failed');
+    });
+
+
     app.use('/sign-in', function (req, res) {
         if (req.session.user_id) {
             res.redirect('/models');
