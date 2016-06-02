@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "js/app.js",
-  "scripts": {},
+  "scripts": {
+    "start": "gulp build && node backend/app"
+  },
+
   "repository": {
     "type": "git",
     "url": "https://github.com/kuzinmv/avenue.git"

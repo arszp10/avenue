@@ -1,6 +1,6 @@
 module.exports = {
    baseUrl: 'http://localhost:9000',
-   database: 'mongodb://localhost/avenue-dev',
+   database: 'mongodb://avenue-prod:ghjcgtrn20@ds036709.mlab.com:36709/avenue-prod',
    mailTransportOptions: {
        service: 'Gmail',
        auth: {
