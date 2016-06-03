@@ -70,7 +70,7 @@ module.exports = function(app, config) {
             var link = config.baseUrl + '/user/activate/' + newUser.activationKey;
             mail.to = newUser.email;
             mail.html = mail.html.split('{link}').join(link);
-            transporter.sendMail(mail, function(error, info){});
+           // transporter.sendMail(mail, function(error, info){});
 
             res.json(responses.entityCreatedSuccessfully('User', []));
         });
