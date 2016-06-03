@@ -1,16 +1,16 @@
 module.exports = {
-   baseUrl: 'http://localhost:9000',
-   database: 'mongodb://avenue-prod:ghjcgtrn20@ds036709.mlab.com:36709/avenue-prod',
+   baseUrl: process.env.BASE_URL || 'http://localhost:9000',
+   database: process.env.MONGODB_PATH || 'mongodb://localhost/avenue-dev',
    mailTransportOptions: {
        service: 'Gmail',
        auth: {
-           user: 'kuzinmv83@gmail.com',
-           pass: ''
+           user: 'avenue.2.0.robot@gmail.com',
+           pass: process.env.GMAIL_ACCOUNT_PASSWORD
        }
    },
    emailTemplates: {
         activation: {
-            from: 'kuzinmv83@gmail.com', // sender address
+            from: 'avenue.2.0.robot@gmail.com', // sender address
             to: '', // list of receivers
             subject: 'Activate your Avenue 2.0 account', // Subject line
             text: '',
