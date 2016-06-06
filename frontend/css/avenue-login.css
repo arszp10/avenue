@@ -14,6 +14,10 @@ body.signup {
     margin: 100px auto;
 }
 
+.login-form.presenatation {
+    max-width: 770px;
+}
+
 .login-form .tizer {
     color:#59C0ED;
     font-size:20px;
