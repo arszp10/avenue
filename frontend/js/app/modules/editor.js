@@ -389,7 +389,14 @@
         },
         showCrossroadModal: function(node){
             var stopLines = cy.aveGetCrossroadStoplines(node.id);
+            var phasesCntButtons = controls.buttons.btnsCrossFormPhasesCount;
             controls.panels.crossRoadModal.data('id', node.id);
+
+            phasesCntButtons.removeClass('ph-selected');
+            controls.panels.crossRoadModal
+                .find('[data-count='+node.phases.length+']')
+                .addClass('ph-selected');
+
             controls.panels.tblPhasesBody.find('tr').remove();
             controls.panels.tblPhasesBody.append(templates.crossRoadTablePhaseRow(node.phases));
             $.each(stopLines, function(i,v){

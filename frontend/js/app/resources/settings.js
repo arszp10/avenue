@@ -42,9 +42,10 @@
                 showTooltips: false
             },
             labels: function(cT) {
+                var module = cT > 100 ? 10 : 5;
                 var labels = [];
                 for (var i = 0; i < cT; i++) {
-                    labels.push(i % 5 == 0 ? i : '');
+                    labels.push(i % module == 0 ? i : '');
                 }
                 return labels;
             },

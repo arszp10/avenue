@@ -11,8 +11,10 @@ module.exports = {
         var outFlow = flow.outFlow;
         var delay = 0;
         var queue = queueTail == undefined ? 0 : queueTail;
+
         var intervals = flow.intervals;
-        var last = intervals.last();
+        var lastStart = intervals.last() ? intervals.last().s : 0;
+
         if (intervals.length == 0) {
             intervals = [[-10, -1]];
         }
@@ -27,11 +29,10 @@ module.exports = {
         var sumGreenCpacity = 0;
 
         for (var i = 0; i < inFlow.length; i++){
-            var j = (i + last.s) % cycleTime;
+            var j = (i + lastStart) % cycleTime;
             var value = inFlow[(j + offset) % cycleTime];
             sumInFlow += value;
             queue += value;
-
             if (queue > flow.maxQueueLength) {
                 flow.maxQueueLength = queue;
             }
