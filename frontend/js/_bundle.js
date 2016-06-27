@@ -3,7 +3,7 @@
 //= vendor/cytoscape/cytoscape.js
 //= vendor/cytoscape/cytoscape-edgehandles.js
 //= vendor/cytoscape/cytoscape-panzoom.js
-
+//= vendor/d3/d3.v3.min.js
 
 //= vendor/i-check/icheck.min.js
 //= vendor/bootstrap/bootstrap-slider.min.js
@@ -24,6 +24,7 @@
 //= app/modules/controls.js
 //= app/modules/cytoscape.js
 //= app/modules/editor.js
+//= app/modules/routes.js
 //= app/modules/modelManager.js
 //= app/modules/apiCalls.js
 //= app/modules/apiHandlers.js

@@ -4,13 +4,16 @@
     var settings  = App.Resources.Settings;
     var samples   = App.Resources.Samples;
     var cy, traffic, api;
+    var routes;
     var that;
 
-    App.Modules.editor = {
+
+   App.Modules.editor = {
         injectDependencies: function(modules) {
             cy        = modules.cytoscape;
             traffic   = modules.traffic;
             api       = modules.apiCalls;
+            routes    = modules.routes;
         },
         initModule: function(){
             that = this;
@@ -135,6 +138,54 @@
                         cycleTime: App.State.currentModel.cycleTime
                     }
                 }, $icon);
+            });
+
+            controls.buttons.btnCheckRoute.click(function () {
+                var selected = cy.$('node[type="stopline"]:selected');
+                if (!(selected.length == 2 || selected.length == 4)){
+                    $.notify(
+                        "The number of selected stop lines should be equal 2 or 4",
+                        { position: 'top center', className: "error" }
+                    );
+                    return;
+                }
+                var parents = selected.map(function(node){
+                    return node.data('parent')
+                });
+
+                var unique = $.unique(parents);
+                if (unique.length != 2) {
+                    $.notify(
+                        "The number of selected crossroads should be equal 2",
+                        { position: 'top center', className: "error" }
+                    );
+                    return;
+                }
+
+                var cyRoutesNodes = cy.aveBuildRoutes(selected);
+                var forward = routes.filterNodes(cyRoutesNodes[0]);
+                var back    = cyRoutesNodes.length > 1
+                    ? routes.filterNodes(cyRoutesNodes[1])
+                    : [];
+                var route = routes.createRoute('New route', App.State.currentModel.cycleTime);
+
+                forward.forEach(function(stopline){
+                    var pointId = stopline.parent;
+                    var crossRoad = cy.getElementById(pointId).data();
+                    route
+                        .addPoint(pointId, stopline.name, stopline.length, crossRoad.offset)
+                        .getPoint(pointId).forward = routes.newPointNode(crossRoad, stopline);
+                });
+
+                back.forEach(function(stopline){
+                    var pointId = stopline.parent;
+                    var crossRoad = cy.getElementById(pointId).data();
+                    route.getPoint(pointId).back = routes.newPointNode(crossRoad, stopline);
+                });
+
+                console.log(route);
+                routes.selectRoute(route);
+                routes.drawRoute(route);
             });
 
         },

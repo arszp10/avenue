@@ -9,7 +9,7 @@
                 <a class="navbar-brand" href="#"><img src="/img/logo0.png" height="30"></a></div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown visible-files hidden-api-doc hidden-network">
+                    <li class="dropdown visible-files hidden-api-doc hidden-network hidden-routes">
                         <form class="navbar-form navbar-left" role="search">
                             <a class="btn btn-primary" href="/api/doc">API Docs</a>
                         </form>
@@ -19,7 +19,7 @@
                             <i class="fa fa-bars fa-lg "></i>
                         </a>
                     </li>
-                    <li class="dropdown hidden-files hidden-api-doc">
+                    <li class="dropdown hidden-files hidden-api-doc hidden-routes">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Samples
                             <span class="caret"></span>
                         </a>
@@ -35,7 +35,7 @@
                     <!--<li><a href="#"><i class="fa fa-save"></i> Save</a></li>-->
                 </ul>
 
-                <form class="visible-network navbar-form navbar-left" role="search">
+                <form class="visible-network visible-routes navbar-form navbar-left" role="search">
                     <button type="button" class="btn btn-inverse" id="btn-model-save"><i class="fa fa-save"></i></button>
                     <div class="btn-group">
                         <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-rocket"></i> &nbsp;&nbsp;Launch</button>
@@ -48,6 +48,22 @@
                         </ul>
                     </div>
                 </form>
+                <form class="visible-network navbar-form navbar-left" role="search">
+                    <button type="button" class="btn btn-inverse" id="btn-check-route"><i class="fa fa-plus"></i> Route</button>
+                </form>
+                <form class="visible-routes navbar-form navbar-left" role="search">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-inverse" id=""><i class="fa fa-map-marker"></i> &nbsp;&nbsp;Select a route</button>
+                        <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu nav-btn-group-dropdown">
+                            <li><a type="button" href="#" id=""> The new route #1</a></li>
+                            <li><a type="button" href="#" id=""> The new route #2</a></li>
+                        </ul>
+                    </div>
+                </form>
+
                 <ul class="nav navbar-nav navbar-right ">
                     <!--<li><a href="#">Link</a></li>-->
                     <li class="dropdown">

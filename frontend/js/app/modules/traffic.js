@@ -24,7 +24,7 @@
                     color : icolor,
                     length : crossRoad.phases[i].length - interTact[icolor].length + prevGoff + goff
                 });
-                diagram = diagram.concat(interTact[icolor].signals);
+                diagram = diagram.concat(JSON.parse(JSON.stringify(interTact[icolor].signals)));
                 prevGoff = -goff;
             }
             diagram[0].length += prevGoff;
@@ -41,7 +41,7 @@
             var head = [];
             var tail = [];
             while (i < l){
-                sum += diagram[i].length
+                sum += diagram[i].length;
                 if (backOffset > sum ) {
                     head.push(diagram[i]);
                 } else {

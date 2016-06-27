@@ -78,7 +78,8 @@
             btnModelOrderUp:            '#btn-model-order-up',
             btnsModelOrder:             '.btn-model-order',
             btnModePagePrev:            '#btn-model-page-prev',
-            btnModePageNext:            '#btn-model-page-next'
+            btnModePageNext:            '#btn-model-page-next',
+            btnCheckRoute:              '#btn-check-route'
         }
     };
 })(AvenueApp);

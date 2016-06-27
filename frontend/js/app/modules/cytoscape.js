@@ -3,6 +3,8 @@
     var controls  = App.Controls;
     var settings  = App.Resources.Settings;
     var cy;
+    var routes;
+    var traffic;
     var editor;
     var api;
     var that;
@@ -172,10 +174,14 @@
         controls.panels.cytoscape.cytoscape(options);
     };
 
+
+
     App.Modules.cytoscape =  {
         injectDependencies: function(modules) {
             editor  = modules.editor;
             api     = modules.apiCalls;
+            routes  = modules.routes;
+            traffic = modules.traffic;
         },
         initModule: function(){
             if (! controls.panels.cytoscape.length) {
@@ -319,8 +325,47 @@
                 sum += parseInt(n.data('portion'));
             });
             return node.avgIntensity - sum;
+        },
+
+        aveBuildRoutes:function(selectedNodes){
+            var cyRoutes = [];
+            selectedNodes.forEach(function(node1){
+               var data1 = node1.data();
+               if (data1.type != 'stopline') return;
+
+                selectedNodes.forEach(function(node2){
+                    var data2 = node2.data();
+                    if (data2.type != 'stopline') return;
+                    if (data1.id == data2.id) return;
+                    if (data1.parent == data2.parent) return;
+
+                    var aStar = cy.elements().aStar({
+                        root: '#'+data1.id,
+                        goal: '#'+data2.id,
+                        directed:true
+                    });
+                    if (aStar.path) {
+                        if (aStar.path[0].data('parent') == aStar.path[aStar.path.length -1].data('parent')) return;
+                        cyRoutes.push(aStar.path);
+                    }
+               });
+            });
+
+            var result = cyRoutes.length > 2 ? cyRoutes.slice(0,2) : cyRoutes;
+
+            result.forEach(function(r){  r.select(); });
+            return result;
+
         }
     };
+
+
+
+
+
+
+
+
 
 })(AvenueApp);
 

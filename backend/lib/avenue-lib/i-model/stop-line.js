@@ -41,7 +41,6 @@ function StopLine(options, network, indexMap){
         var offset  = this.parent ? this.getNode(this.parent).offset : 0;
         model.stopLine(this, offset);
         this.delay += delay;
-
         if (this.parent) {
             this.phaseSaturation();
         }
