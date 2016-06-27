@@ -167,7 +167,11 @@
                 var back    = cyRoutesNodes.length > 1
                     ? routes.filterNodes(cyRoutesNodes[1])
                     : [];
-                var route = routes.createRoute('New route', App.State.currentModel.cycleTime);
+                var route = routes.createRoute(
+                    'New route',
+                    App.State.currentModel.cycleTime,
+                    back.length == 0
+                );
 
                 forward.forEach(function(stopline){
                     var pointId = stopline.parent;
