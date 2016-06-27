@@ -5,7 +5,7 @@
     var that;
     var routes = [];
 
-    var svgMargin = {top: 50, right: 50, bottom: 50, left: 50};
+    var svgMargin = {top: 50, right: 200, bottom: 50, left: 50};
     var routeDirections = ['forward', 'back'];
 
     function Route(name, cycleTime, forwardOnly){
@@ -132,7 +132,7 @@
 
             route.points.forEach(function(d) {
                 routeDirections.forEach(function(direction){
-                    if (!d.hasOwnProperty(direction)) return;
+                    if (! d[direction]) return;
 
                     var a = JSON.parse(JSON.stringify(d[direction].signals));
                     var b = JSON.parse(JSON.stringify(d[direction].signals));
@@ -149,9 +149,11 @@
 
             route.points.reduce(function (sum, current) {
                 var directionLag = 0;
-                current.forwardGeoOffset = current.length + sum - 1;
-                current.backGeoOffset = current.length + sum + 15;
-                return current.forwardGeoOffset - directionLag;
+                current.geoOffset = current.length + sum;
+                current.forwardGeoOffset = current.geoOffset  - 1;
+                current.backGeoOffset = current.geoOffset + 15;
+                console.log(current.geoOffset);
+                return current.geoOffset;
             }, 0);
 
         },
@@ -173,21 +175,49 @@
             var cycleTime = route.cycleTime;
             var totalRouteLenght = route.points.reduce(function(sum, point){return sum + point.length;} ,0);
 
-            var width  = window.innerWidth - 400 - svgMargin.left - svgMargin.right;
+            var width  = window.innerWidth - 150 - svgMargin.left - svgMargin.right;
             var height = totalRouteLenght - svgMargin.top - svgMargin.bottom;
 
+            var x = d3.scale.linear().rangeRound([0, width]);
             var y = d3.scale.linear().rangeRound([height, 0]);
             var y1 = d3.scale.linear().rangeRound([height, 0]);
-            var y2 = d3.scale.ordinal().range([height, 0]).domain(['start','stop']);
-            var x = d3.scale.linear().rangeRound([0, width]);
 
             y.domain([0, totalRouteLenght + 100]);
             y1.domain([0, 0]);
             x.domain([0, cycleTime * 3 ]);
 
-            var yAxis  = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s"));
+
+            var rrange = route.points.map(function(v){return y(v.geoOffset)});
+            var rlabels = route.points.map(function(v){return v.name});
+            rrange.unshift(totalRouteLenght - 100);
+            rrange.push(0);
+            rlabels.unshift('');
+            rlabels.push('');
+
+            var y2 = d3.scale.ordinal().range(rrange).domain(rlabels);
+
+            var lrange = [];
+            var llabels = [];
+
+            route.points.map(function(v){
+                lrange.push(y(v.forwardGeoOffset - 6));
+                lrange.push(y(v.backGeoOffset - 6));
+                llabels.push(v.forward.tag);
+                llabels.push(v.back.tag);
+            });
+
+            lrange.unshift(totalRouteLenght - 100);
+            lrange.push(0);
+            llabels.unshift('');
+            llabels.push('');
+
+            var y3 = d3.scale.ordinal().range(lrange).domain(llabels);
+
+            var yAxis  = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"));
+            var yAxis0  = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s"));
             var yAxis1 = d3.svg.axis().scale(y1).orient("left");
             var yAxis2 = d3.svg.axis().scale(y2).orient("right");
+            var yAxis3 = d3.svg.axis().scale(y3).orient("left");
             var xAxis  = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format(".2s"));
 
             //d3.select("svg").remove();
@@ -197,14 +227,15 @@
                 .append("g")
                 .attr("transform", "translate(" + svgMargin.left + "," + svgMargin.top + ")");
 
-            ;
-
             svg.append("g").attr("class", "x axis").attr("transform", "translate(0, " + height + ")").call(xAxis)
                 .append("text").style("text-anchor", "end").attr("x", width).attr("y", 40).text("Time (s)");
 
-            svg.append("g").attr("class", "y axis").call(yAxis)
-                .append("text").attr("transform", "rotate(-90)")
-                .attr("y", 0).attr("dy", -40).style("text-anchor", "end").text("Route length (m)");
+            svg.append("g").attr("class", "y axis").call(yAxis);
+            svg.append("g") .attr("class", "y2 axis")
+                .attr("transform", "translate(" + (width) + ",0)").call(yAxis0);
+
+            //.append("text").attr("transform", "rotate(-90)")
+                //.attr("y", 0).attr("dy", 40).style("text-anchor", "end").text("Route length (m)");
 
             svg.append("g").attr("class", "y1 axis")
                 .attr("transform", "translate(" + x(cycleTime) + ",0)").call(yAxis1);
@@ -214,6 +245,9 @@
 
             svg.append("g") .attr("class", "y2 axis")
                 .attr("transform", "translate(" + (width) + ",0)").call(yAxis2);
+
+            svg.append("g") .attr("class", "y3 axis").call(yAxis3);
+
 
             prepareD3SvgDefs(svg);
 
@@ -226,7 +260,7 @@
                 var bar = svg.selectAll('.' + className)
                     .data(route.points).enter().append("g")
                     .attr("class", className)
-                    .attr("transform", function(d) { return "translate(0," + y(d[geoOffset]) + ")"; })
+                    .attr("transform", function(d) { console.log(d[geoOffset]); return "translate(0," + y(d[geoOffset]) + ")"; })
 
                 bar.selectAll("rect")
                     .data(function(d) { return d[direction].signals; }).enter()
