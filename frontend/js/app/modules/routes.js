@@ -44,12 +44,12 @@
 
         amber.append("stop")
             .attr("offset", "0%")
-            .attr("stop-color", "#ff0")
+            .attr("stop-color", "#f00")
             .attr("stop-opacity", 1);
 
         amber.append("stop")
             .attr("offset", "100%")
-            .attr("stop-color", "#f00")
+            .attr("stop-color", "#ff0")
             .attr("stop-opacity", 1);
 
 
@@ -143,8 +143,10 @@
                         return current.offset + current.length;
                     }, 0);
 
+                    d[direction].isGreenMoment = traffic.greenRedArray(d[direction].signals);
                     d[direction].signals = result;
                 });
+
             });
 
             route.points.reduce(function (sum, current) {
@@ -152,9 +154,9 @@
                 current.geoOffset = current.length + sum;
                 current.forwardGeoOffset = current.geoOffset  - 1;
                 current.backGeoOffset = current.geoOffset + 15;
-                console.log(current.geoOffset);
                 return current.geoOffset;
             }, 0);
+
 
         },
 
@@ -169,6 +171,43 @@
 
         deleteRoute:function(){},
         selectRoute:function(route){},
+
+
+        greenLine: function(route, direction, callback){
+            var cycleTime = route.cycleTime;
+            for(var i=0; i < route.points.length - 1; i++){
+                var sl1 = route.points[i];
+                var sl2 = route.points[i + 1];
+                var state = 'end-block';
+                var tpr = direction == 'forward' ? sl2[direction].routeTime : - sl1[direction].routeTime;
+                var y1 = sl1.geoOffset;
+                var y2 = sl2.geoOffset;
+
+                var points = [{x:0,y:y1},{x:0,y:y2},{x:0,y:y2},{x:0,y:y1}];
+                for(var j=0; j< cycleTime * 5; j++){
+                    var bothPointIsGreen = sl1[direction].isGreenMoment[j % cycleTime] && sl2[direction].isGreenMoment[(j + tpr)% cycleTime];
+                    if (state == 'end-block') {
+                        if (bothPointIsGreen) {
+                            state = 'start-block';
+                            points[0].x = (j - cycleTime);
+                            points[1].x = (j + tpr - cycleTime);
+                        }
+                    }
+
+                    if (state == 'start-block') {
+                        if (!bothPointIsGreen) {
+                            state = 'end-block';
+                            points[2].x = (j + tpr - cycleTime);
+                            points[3].x = (j - cycleTime);
+                            callback(points);
+                        }
+                    }
+                }
+
+            }
+        },
+
+
         drawRoute:function(route){
             this.expandSignals(route);
 
@@ -234,19 +273,12 @@
             svg.append("g") .attr("class", "y2 axis")
                 .attr("transform", "translate(" + (width) + ",0)").call(yAxis0);
 
-            //.append("text").attr("transform", "rotate(-90)")
-                //.attr("y", 0).attr("dy", 40).style("text-anchor", "end").text("Route length (m)");
-
             svg.append("g").attr("class", "y1 axis")
                 .attr("transform", "translate(" + x(cycleTime) + ",0)").call(yAxis1);
 
             svg.append("g").attr("class", "y1 axis")
                 .attr("transform", "translate(" + x(2 * cycleTime) + ",0)").call(yAxis1);
 
-            svg.append("g") .attr("class", "y2 axis")
-                .attr("transform", "translate(" + (width) + ",0)").call(yAxis2);
-
-            svg.append("g") .attr("class", "y3 axis").call(yAxis3);
 
 
             prepareD3SvgDefs(svg);
@@ -254,13 +286,41 @@
             routeDirections.forEach(function(direction){
                 if (route.forwardOnly && direction == 'back') return;
 
+
+                this.greenLine(route, direction, function(points){
+                    svg.append("polygon")       // attach a polygon
+                        .attr("stroke", "black")
+                        .style("opacity", .1)
+                        .attr("fill", direction == 'forward' ? "green":"blue")
+                        .attr("points",  x(points[0].x)+","+y(points[0].y)+", "
+                        +x(points[1].x)+","+y(points[1].y)+", "
+                        +x(points[2].x)+","+y(points[2].y)+", "
+                        +x(points[3].x)+","+y(points[3].y)
+                    );  // x,y points
+                });
+
+                svg.append("rect")
+                .attr("x", -50)
+                .attr("y", 0)
+                .attr("width", 50)
+                .attr("height", height)
+                .style("fill","#eee");
+
+
+                svg.append("rect")
+                    .attr("x", width+1)
+                    .attr("y", 0)
+                    .attr("width", 550)
+                    .attr("height", height)
+                    .style("fill","#eee");
+
                 var className = 'bar-' + direction;
                 var geoOffset = direction + 'GeoOffset';
 
                 var bar = svg.selectAll('.' + className)
                     .data(route.points).enter().append("g")
                     .attr("class", className)
-                    .attr("transform", function(d) { console.log(d[geoOffset]); return "translate(0," + y(d[geoOffset]) + ")"; })
+                    .attr("transform", function(d) { return "translate(0," + y(d[geoOffset]) + ")"; })
 
                 bar.selectAll("rect")
                     .data(function(d) { return d[direction].signals; }).enter()
@@ -273,7 +333,13 @@
                         if (d.color == 'amber') return 'url(#amber)';
                         return d.color;
                     });
-            });
+
+            }, this);
+
+            svg.append("g") .attr("class", "y2 axis")
+                .attr("transform", "translate(" + (width) + ",0)").call(yAxis2);
+
+            svg.append("g") .attr("class", "y3 axis").call(yAxis3);
 
 
 //        var dragStartX = 0;
@@ -287,19 +353,6 @@
 //                        d3.selectAll(".bar").style('opacity', 0.7);
 //                    }))
 //                .call(drag.on('drag', function (d) {}))
-//        svg.append("polygon")       // attach a polygon
-//                .attr("stroke", "black")
-//                .style("opacity", .2)
-//                .attr("fill", "green")
-//                .attr("points", x(-10)+","+y(0)+", "+x(10)+","+y(0)+", "+x(30)+","+y(100)+", "+x(10)+","+y(100));  // x,y points
-//
-//        svg.append("polygon")       // attach a polygon
-//                .attr("stroke", "black")
-//                .style("opacity", .2)
-//                .attr("fill", "blue")
-//                .attr("points", x(20)+","+y(0)+", "+x(160)+","+y(0)+", "+x(140)+","+y(100)+", "+x(0)+","+y(100));  // x,y points
-//
-//    });
 
         }
 

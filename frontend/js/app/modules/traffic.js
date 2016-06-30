@@ -1,6 +1,11 @@
 (function(App){
     var settings  = App.Resources.Settings;
 
+    var booleanArrayPad = function (n, v) {
+        return Array.apply(null, Array(n)).map(Boolean.prototype.valueOf, v);
+    };
+
+
     App.Modules.traffic =  {
         signalDiagramData:  function(crossRoad, node){
             var stopLine = node;
@@ -85,6 +90,14 @@
                 intervals.push([s, i-1]);
             }
             return intervals;
+        },
+
+        greenRedArray: function(diagram){
+            var result = [];
+            diagram.forEach(function(block){
+                result = result.concat(booleanArrayPad(block.length, block.color == 'green'||block.color == 'blink'))
+            });
+            return result;
         }
     };
 
