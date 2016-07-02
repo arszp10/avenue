@@ -1,7 +1,5 @@
 (function(App){
-    var controls  = App.Controls;
-    var templates = App.Templates;
-    var cy, traffic, api;
+    var cy, traffic;
     var that;
 
     var svgMargin = {top: 50, right: 200, bottom: 50, left: 50};
@@ -14,7 +12,6 @@
         this.forward = [];
         this.back = [];
     };
-
 
     Route.prototype.select = function() {
 
@@ -58,11 +55,11 @@
         return this;
     };
 
-
     Route.prototype.getPoint = function(id){
         var results = this.points.filter(function(a){ return a.id == id });
         return results.length > 0 ? results[0]: false;
     };
+
 
     var prepareD3SvgDefs = function(svg){
         var amber = svg.append("defs")
@@ -172,8 +169,8 @@
 
                     var stopline  = cy.getElementById(point[direction].id).data();
                     var crossroad = cy.getElementById(point.id).data();
-
-
+                    point.name = crossroad.name;
+                    point[direction].tag = stopline.tag;
                     point[direction].routeTime =  point[direction].hasOwnProperty('carriages')
                         ? point[direction].carriages.reduce(function (sum, cwId) {
                                 return sum + cy.getElementById(cwId).data('routeTime');
@@ -205,16 +202,13 @@
                 current.backGeoOffset = current.geoOffset + 15;
                 return current.geoOffset;
             }, 0);
-            console.log(route);
             return route;
         },
 
-
         deleteRoute:function(){},
 
-
         greenLine: function(cycleTime, route, direction, callback){
-            
+
             for(var i=0; i < route.points.length - 1; i++){
                 var sl1 = route.points[i];
                 var sl2 = route.points[i + 1];
@@ -246,7 +240,6 @@
 
             }
         },
-
 
         drawRoute:function(data){
             var route = this.expandRoute(data);
@@ -348,7 +341,6 @@
                 .attr("height", height)
                 .style("fill","#eee");
 
-
                 svg.append("rect")
                     .attr("x", width+1)
                     .attr("y", 0)
@@ -358,28 +350,9 @@
 
                 var className = 'bar-' + direction;
                 var geoOffset = direction + 'GeoOffset';
-                //
-                //var dragStartX = 0;
-                //var drag = d3.behavior.drag().origin(Object);
-                //drag.on('dragstart', function (d) {
-                //    dragStartX = d3.event.sourceEvent.clientX;
-                //    svg.selectAll('.green-line').style("opacity", 0);
-                //});
-                //drag.on('drag', function (d) {
-                //    bar.attr("x",  d3.event.x)
-                //    //var dragDeltaX = d3.event.sourceEvent.clientX - dragStartX;
-                //    console.log(d3.event.x);
-                //});
-                //
-                //drag.on('dragend', function (d) {
-                //    var dragDeltaX = d3.event.sourceEvent.clientX - dragStartX;
-                //    svg.selectAll('.green-line').style("opacity", 0.2);
-                //    console.log(dragDeltaX);
-                //});
 
                 var bar = svg.selectAll('.' + className)
                     .data(route.points).enter().append("g")
-                    //.call(drag)
                     .attr("class", className)
                     .attr("x", 0)
                     .attr("transform", function(d) { return "translate(0," + y(d[geoOffset]) + ")"; })
@@ -388,8 +361,6 @@
                 bar.selectAll("rect")
                     .data(function(d) { return d[direction].signals; }).enter()
                     .append("rect")
-
-                    //.call(drag.on('drag', function (d) {}))
                     .attr("height", 11)
                     .attr("x",      function(d) { return x(d.offset); })
                     .attr("width",  function(d) { return x(d.length); })
@@ -405,7 +376,6 @@
                 .attr("transform", "translate(" + (width) + ",0)").call(yAxis2);
 
             svg.append("g") .attr("class", "y3 axis").call(yAxis3);
-
 
         }
 
