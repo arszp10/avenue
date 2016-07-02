@@ -48,18 +48,19 @@
                         </ul>
                     </div>
                 </form>
-                <form class="visible-network navbar-form navbar-left" role="search">
-                    <button type="button" class="btn btn-inverse" id="btn-check-route"><i class="fa fa-plus"></i> Route</button>
-                </form>
-                <form class="visible-routes navbar-form navbar-left" role="search">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-inverse" id=""><i class="fa fa-map-marker"></i> &nbsp;&nbsp;Select a route</button>
-                        <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
-                        </button>
+                <form class="visible-network visible-routes navbar-form navbar-left" role="search">
+                    <div class="btn-group pull-left hidden" id="routes-list-button-panel">
+                        <button type="button" class="btn btn-inverse dropdown-toggle" id="" data-toggle="dropdown"><i class="fa fa-map-marker"></i> &nbsp;Choose a route</button>
+                        <ul class="dropdown-menu nav-btn-group-dropdown" id="routes-dropdown-list">
+                        </ul>
+                    </div>
+                    <div class="btn-group pull-left">
+                        <button type="button" class="btn btn-inverse hidden-routes dropdown-toggle" data-toggle="dropdown" id="btn-add-route"><i class="fa fa-plus"></i> Route</button>
                         <ul class="dropdown-menu nav-btn-group-dropdown">
-                            <li><a type="button" href="#" id=""> The new route #1</a></li>
-                            <li><a type="button" href="#" id=""> The new route #2</a></li>
+                            <li class="li-route-name-dropdown">
+                                <input type="text" class="form-control input-route-name" id="input-route-name" placeholder="Enter a route name">
+                                <button type="button" class="btn btn-sm btn-info" id="btn-create-route">Create</button>
+                            </li>
                         </ul>
                     </div>
                 </form>

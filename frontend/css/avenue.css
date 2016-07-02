@@ -193,8 +193,10 @@ body{
 
 .nav-tabs.bottom-tabs > li.active > a {
     border-bottom-color: #ddd;
+    background-color: #eee;
     border-top-color: transparent;
 }
+
 .nav-tabs.bottom-tabs > li > a {
     border-radius: 0 0 4px 4px;
 }
@@ -799,8 +801,12 @@ td.model-name-col .label {
     overflow-y: auto;
     overflow-x: hidden;
     font-size: 10px;
-    /*border-radius: 5px;*/
-    /*border :1px solid #e1e1e1;*/
-    /*padding: 10px;*/
-    /*background: white;*/
+}
+
+.input-route-name {
+    margin-bottom: 5px;
+}
+
+.li-route-name-dropdown {
+    padding:5px;
 }

@@ -3,29 +3,61 @@
     var templates = App.Templates;
     var cy, traffic, api;
     var that;
-    var routes = [];
 
     var svgMargin = {top: 50, right: 200, bottom: 50, left: 50};
     var routeDirections = ['forward', 'back'];
 
-    function Route(name, cycleTime, forwardOnly){
+    function Route(name, forwardOnly){
         this.routeName = name || 'testRoute';
-        this.cycleTime = cycleTime;
         this.forwardOnly = forwardOnly;
         this.points = [];
+        this.forward = [];
+        this.back = [];
     };
 
-    Route.prototype.addPoint = function(id, name, length, offset){
+
+    Route.prototype.select = function() {
+
+        return this;
+    };
+
+    Route.prototype.addPoints = function(data) {
+        if (!data) {return this; }
+        data.forEach(function(node){
+            this.addPoint(node.parent);
+        }, this);
+        return this;
+    };
+
+    Route.prototype.addLines = function(data, direction) {
+        if (!data) {return this; }
+        data.forEach(function(node){
+            this.getPoint(node.parent)[direction] = this.newPointLine(node);
+        }, this);
+
+        if (data.length == 0) {return this; }
+        this[direction].push(data[0].id);
+        this[direction].push(data[data.length - 1].id);
+        return this;
+    };
+
+    Route.prototype.addPoint = function(id){
         this.points.push({
             id:      id,
-            name:    name,
-            length:  length,
-            offset:  offset,
             forward: false,
             back:    false
         });
         return this;
     };
+
+    Route.prototype.newPointLine =  function(node){
+        return {
+            id: node.id,
+            carriages: node.carriages
+        };
+        return this;
+    };
+
 
     Route.prototype.getPoint = function(id){
         var results = this.points.filter(function(a){ return a.id == id });
@@ -76,7 +108,7 @@
 
     App.Modules.routes = {
         injectDependencies: function (modules) {
-            //cy      = modules.cytoscape;
+            cy      = modules.cytoscape;
             traffic = modules.traffic;
         },
 
@@ -84,14 +116,14 @@
             that = this;
         },
 
-        createRoute:function(name, cycleTime, forwardOnly){
-            var route = new Route(name, cycleTime, forwardOnly);
-            routes.push(route);
+        createRoute:function(name, forwardOnly){
+            var route = new Route(name, forwardOnly);
+            App.State.currentModel.routes.push(route);
             return route;
         },
 
         getRoute: function(inx){
-            return routes[inx];
+            return App.State.currentModel.routes[inx];
         },
 
         filterNodes: function(cyRoutePath){
@@ -102,10 +134,8 @@
                     return (val.type == 'stopline' && val.hasOwnProperty('parent')) || val.type == 'carriageway';
                 });
             var prevCw = {
-                length:100,
-                routeTime: 0
+                carriages: []
             };
-
             for (var i=0; i< route.length; i++) {
                 if (route[i].type == 'stopline') {
                     if ( prevCw !== false) {
@@ -116,38 +146,57 @@
                 if (route[i].type == 'carriageway') {
                     if ( prevCw === false) {
                         prevCw = {
-                            length:route[i].length,
-                            routeTime: route[i].routeTime
+                            carriages: [route[i].id]
                         }
                     } else {
-                        prevCw.length+=route[i].length;
-                        prevCw.routeTime+=route[i].routeTime;
+                        prevCw.carriages.push(route[i].id);
                     }
                 }
             }
             return routeInfo;
         },
 
-        expandSignals: function(route){
+        expandRoute: function(data){
+            var route = JSON.parse(JSON.stringify(data));
 
-            route.points.forEach(function(d) {
+            route.points.forEach(function(point) {
+
+                point.length = point.forward.hasOwnProperty('carriages')
+                    ? point.forward.carriages.reduce(function (sum, cwId) {
+                        return sum + cy.getElementById(cwId).data('length');
+                      }, 0)
+                    : 0;
+
                 routeDirections.forEach(function(direction){
-                    if (! d[direction]) return;
+                    if (! point[direction]) return;
 
-                    var a = JSON.parse(JSON.stringify(d[direction].signals));
-                    var b = JSON.parse(JSON.stringify(d[direction].signals));
-                    var result = d[direction].signals.concat(a,b);
+                    var stopline  = cy.getElementById(point[direction].id).data();
+                    var crossroad = cy.getElementById(point.id).data();
+
+
+                    point[direction].routeTime =  point[direction].hasOwnProperty('carriages')
+                        ? point[direction].carriages.reduce(function (sum, cwId) {
+                                return sum + cy.getElementById(cwId).data('routeTime');
+                            }, 0)
+                        : 0;
+
+                    point[direction].signals = traffic.signalDiagramData(crossroad, stopline);
+                    var a = JSON.parse(JSON.stringify(point[direction].signals));
+                    var b = JSON.parse(JSON.stringify(point[direction].signals));
+                    var result = point[direction].signals.concat(a,b);
 
                     result.reduce(function (sum, current) {
                         current.offset = sum;
                         return current.offset + current.length;
                     }, 0);
 
-                    d[direction].isGreenMoment = traffic.greenRedArray(d[direction].signals);
-                    d[direction].signals = result;
+                    point[direction].isGreenMoment = traffic.greenRedArray(point[direction].signals);
+                    point[direction].signals = result;
                 });
 
             });
+
+            route.points[0].length = 100;
 
             route.points.reduce(function (sum, current) {
                 var directionLag = 0;
@@ -156,25 +205,16 @@
                 current.backGeoOffset = current.geoOffset + 15;
                 return current.geoOffset;
             }, 0);
-
-
+            console.log(route);
+            return route;
         },
 
-        newPointNode:function(crossRoad, stopline){
-            return {
-                id: stopline.id,
-                tag: stopline.tag,
-                routeTime: stopline.routeTime,
-                signals: traffic.signalDiagramData(crossRoad, stopline)
-            };
-        },
 
         deleteRoute:function(){},
-        selectRoute:function(route){},
 
 
-        greenLine: function(route, direction, callback){
-            var cycleTime = route.cycleTime;
+        greenLine: function(cycleTime, route, direction, callback){
+            
             for(var i=0; i < route.points.length - 1; i++){
                 var sl1 = route.points[i];
                 var sl2 = route.points[i + 1];
@@ -208,10 +248,11 @@
         },
 
 
-        drawRoute:function(route){
-            this.expandSignals(route);
+        drawRoute:function(data){
+            var route = this.expandRoute(data);
 
-            var cycleTime = route.cycleTime;
+            //return;
+            var cycleTime = App.State.currentModel.cycleTime;
             var totalRouteLenght = route.points.reduce(function(sum, point){return sum + point.length;} ,0);
 
             var width  = window.innerWidth - 150 - svgMargin.left - svgMargin.right;
@@ -252,14 +293,16 @@
 
             var y3 = d3.scale.ordinal().range(lrange).domain(llabels);
 
-            var yAxis  = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"));
+            var yAxis   = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"));
             var yAxis0  = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s"));
-            var yAxis1 = d3.svg.axis().scale(y1).orient("left");
-            var yAxis2 = d3.svg.axis().scale(y2).orient("right");
-            var yAxis3 = d3.svg.axis().scale(y3).orient("left");
-            var xAxis  = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format(".2s"));
+            var yAxis1  = d3.svg.axis().scale(y1).orient("left");
+            var yAxis2  = d3.svg.axis().scale(y2).orient("right");
+            var yAxis3  = d3.svg.axis().scale(y3).orient("left");
+            var xAxis   = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format(".2s"));
 
-            //d3.select("svg").remove();
+
+
+            d3.select("svg").remove();
             var svg = d3.select("#diagram-panel").append("svg")
                 .attr("width", width + svgMargin.left + svgMargin.right)
                 .attr("height", height + svgMargin.top + svgMargin.bottom)
@@ -286,17 +329,16 @@
             routeDirections.forEach(function(direction){
                 if (route.forwardOnly && direction == 'back') return;
 
-
-                this.greenLine(route, direction, function(points){
-                    svg.append("polygon")       // attach a polygon
+                this.greenLine(cycleTime, route, direction, function(points){
+                    svg.append("polygon")
+                        .attr("class", "green-line") // attach a polygon
                         .attr("stroke", "black")
                         .style("opacity", .1)
                         .attr("fill", direction == 'forward' ? "green":"blue")
                         .attr("points",  x(points[0].x)+","+y(points[0].y)+", "
                         +x(points[1].x)+","+y(points[1].y)+", "
                         +x(points[2].x)+","+y(points[2].y)+", "
-                        +x(points[3].x)+","+y(points[3].y)
-                    );  // x,y points
+                        +x(points[3].x)+","+y(points[3].y));  // x,y points
                 });
 
                 svg.append("rect")
@@ -316,15 +358,38 @@
 
                 var className = 'bar-' + direction;
                 var geoOffset = direction + 'GeoOffset';
+                //
+                //var dragStartX = 0;
+                //var drag = d3.behavior.drag().origin(Object);
+                //drag.on('dragstart', function (d) {
+                //    dragStartX = d3.event.sourceEvent.clientX;
+                //    svg.selectAll('.green-line').style("opacity", 0);
+                //});
+                //drag.on('drag', function (d) {
+                //    bar.attr("x",  d3.event.x)
+                //    //var dragDeltaX = d3.event.sourceEvent.clientX - dragStartX;
+                //    console.log(d3.event.x);
+                //});
+                //
+                //drag.on('dragend', function (d) {
+                //    var dragDeltaX = d3.event.sourceEvent.clientX - dragStartX;
+                //    svg.selectAll('.green-line').style("opacity", 0.2);
+                //    console.log(dragDeltaX);
+                //});
 
                 var bar = svg.selectAll('.' + className)
                     .data(route.points).enter().append("g")
+                    //.call(drag)
                     .attr("class", className)
+                    .attr("x", 0)
                     .attr("transform", function(d) { return "translate(0," + y(d[geoOffset]) + ")"; })
+                    ;
 
                 bar.selectAll("rect")
                     .data(function(d) { return d[direction].signals; }).enter()
                     .append("rect")
+
+                    //.call(drag.on('drag', function (d) {}))
                     .attr("height", 11)
                     .attr("x",      function(d) { return x(d.offset); })
                     .attr("width",  function(d) { return x(d.length); })
@@ -341,18 +406,6 @@
 
             svg.append("g") .attr("class", "y3 axis").call(yAxis3);
 
-
-//        var dragStartX = 0;
-//        var drag = d3.behavior.drag();
-//                .call(drag.on('dragstart', function (d) {
-//                        dragStartX = d3.event.sourceEvent.clientX;
-//                        d3.select(this).style('opacity', 1);
-//                    }))
-//                .call(drag.on('dragend', function (d) {
-//                        var dragDeltaX = d3.event.sourceEvent.clientX - dragStartX;
-//                        d3.selectAll(".bar").style('opacity', 0.7);
-//                    }))
-//                .call(drag.on('drag', function (d) {}))
 
         }
 

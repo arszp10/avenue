@@ -10,7 +10,8 @@ var required   = [true, 'Please enter your {PATH}.'];
 var modelSchema = new Schema({
     name:       { type: String, required: required, maxlength: maxlength, minlength: minlength },
     notes:      { type: String },
-    content:            Object,
+    content:    Object,
+    routes:     Object,
     cycleTime:  { type: Number, required: required},
     crossCount: { type: Number, required: required},
     nodeCount:  { type: Number, required: required},

@@ -168,6 +168,7 @@ module.exports = function(app, config) {
             model.cycleTime     = bodyData.cycleTime;
             model.notes         = bodyData.notes;
             model.content       = bodyData.content;
+            model.routes        = bodyData.routes;
             model.save(function(err){
                 if (err) {
                     throw err;

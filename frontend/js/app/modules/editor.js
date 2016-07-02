@@ -132,6 +132,7 @@
                     data: {
                         content: cy.elements().jsons(),
                         name: App.State.currentModel.name,
+                        routes: JSON.parse(JSON.stringify(App.State.currentModel.routes))||[],
                         notes: App.State.currentModel.notes,
                         nodeCount: cy.nodes().length,
                         crossCount: cy.$('[type="crossRoad"]').length,
@@ -140,7 +141,20 @@
                 }, $icon);
             });
 
-            controls.buttons.btnCheckRoute.click(function () {
+
+            controls.buttons.btnAddRoute.click(function () {
+                controls.inputs.inputRouteName.val('');
+            });
+
+            controls.buttons.btnCreateRoute.click(function () {
+                var routeName = controls.inputs.inputRouteName.val();
+                if (routeName.length  == 0) {
+                    $.notify(
+                        "Please enter a route name",
+                        { position: 'top center', className: "error" }
+                    );
+                    return;
+                }
                 var selected = cy.$('node[type="stopline"]:selected');
                 if (!(selected.length == 2 || selected.length == 4)){
                     $.notify(
@@ -167,29 +181,25 @@
                 var back    = cyRoutesNodes.length > 1
                     ? routes.filterNodes(cyRoutesNodes[1])
                     : [];
-                var route = routes.createRoute(
-                    'New route',
-                    App.State.currentModel.cycleTime,
-                    back.length == 0
-                );
 
-                forward.forEach(function(stopline){
-                    var pointId = stopline.parent;
-                    var crossRoad = cy.getElementById(pointId).data();
-                    route
-                        .addPoint(pointId, stopline.name, stopline.length, crossRoad.offset)
-                        .getPoint(pointId).forward = routes.newPointNode(crossRoad, stopline);
-                });
+                var route = routes.createRoute(routeName, back.length == 0)
+                    .addPoints(forward)
+                    .addLines(forward, 'forward')
+                    .addLines(back , 'back')
+                ;
 
-                back.forEach(function(stopline){
-                    var pointId = stopline.parent;
-                    var crossRoad = cy.getElementById(pointId).data();
-                    route.getPoint(pointId).back = routes.newPointNode(crossRoad, stopline);
-                });
-
-                console.log(route);
-                routes.selectRoute(route);
+                that.renderRoutesDropDown();
                 routes.drawRoute(route);
+            });
+
+
+            $(document).on('click', 'a.choose-route-link', function(){
+               var inx = $(this).data('inx');
+               var route = routes.getRoute(inx);
+               var str1 = '#' + route.forward.join(', #');
+               var str2 = route.back.length > 0 ? ', #'+route.back.join(', #') : '';
+               cy.aveBuildRoutes(cy.$(str1 + str2));
+               routes.drawRoute(route);
             });
 
         },
@@ -388,6 +398,18 @@
         },
         toggleNodePopupPanel: function(show){
             controls.panels.body.toggleClass('show-panel-point-property', show);
+        },
+
+        renderRoutesDropDown: function(){
+            var routes = App.State.currentModel.routes;
+            if (routes.length == 0) {
+                controls.panels.routesDropDownButton.addClass('hidden');
+            } else {
+                controls.panels.routesDropDownButton.removeClass('hidden');
+                controls.panels.routesDropDownList.html(
+                    templates.routesDropDouwnList(routes)
+                );
+            }
         },
         flattenErrors: function(errors){
             var err = errors.map(function(val){

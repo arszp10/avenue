@@ -14,7 +14,9 @@
             welcomePanel:           '#welcome-panel',
             modelListPanel:         '#model-list-panel',
             modelListTable:         '#model-list-result > tbody',
-            modelPagesStat:         '#model-pages-stat'
+            modelPagesStat:         '#model-pages-stat',
+            routesDropDownButton:   '#routes-list-button-panel',
+            routesDropDownList:     '#routes-dropdown-list'
         },
         labels: {
             labelMyAccountUsername: '#label-my-account-username',
@@ -35,7 +37,8 @@
             inputNodeSearch:        '#input-node-search',
             inputNodeSearchForm:    '#input-node-search-form',
             inputModelSearch:        '#input-model-search',
-            inputModelSearchForm:    '#input-model-search-form'
+            inputModelSearchForm:    '#input-model-search-form',
+            inputRouteName:          '#input-route-name'
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',
@@ -79,7 +82,8 @@
             btnsModelOrder:             '.btn-model-order',
             btnModePagePrev:            '#btn-model-page-prev',
             btnModePageNext:            '#btn-model-page-next',
-            btnCheckRoute:              '#btn-check-route'
+            btnAddRoute:                '#btn-add-route',
+            btnCreateRoute:                '#btn-create-route'
         }
     };
 })(AvenueApp);

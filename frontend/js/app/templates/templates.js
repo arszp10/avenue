@@ -207,6 +207,12 @@
                 '    <td class="property-col  text-right">' + data.crossCount + ' <span>(cross)</span> &nbsp;&nbsp; ' + data.nodeCount + ' <span>(nodes)</span></td>'+
                 '    <td class="time-col text-right">' + new Date(data.updatedAt).toLocaleString() + '</td>'+
                 '</tr>';
+        },
+
+        routesDropDouwnList: function(data){
+            return data.map(function(route, inx){
+                return '<li><a type="button" href="#" class="choose-route-link" data-inx="'+inx+'">'+route.routeName+'</a></li>';
+            }).join('');
         }
 
 

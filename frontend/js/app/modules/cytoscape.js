@@ -327,7 +327,7 @@
             return node.avgIntensity - sum;
         },
 
-        aveBuildRoutes:function(selectedNodes){
+        aveBuildRoutes: function(selectedNodes){
             var cyRoutes = [];
             selectedNodes.forEach(function(node1){
                var data1 = node1.data();
@@ -352,7 +352,7 @@
             });
 
             var result = cyRoutes.length > 2 ? cyRoutes.slice(0,2) : cyRoutes;
-
+            this.$(":selected").unselect();
             result.forEach(function(r){  r.select(); });
             return result;
 

@@ -111,9 +111,13 @@
             done: function(r,o){
                 if (r.success) {
                     App.State.currentModel = r.data;
+                    if (!App.State.currentModel.hasOwnProperty('routes')) {
+                        App.State.currentModel.routes = [];
+                    }
                     var content = r.data.content === undefined ? [] : r.data.content;
                     cy.add(content);
                     delete App.State.currentModel.content;
+                    editor.renderRoutesDropDown();
                 }
             },
             fail: nop,
