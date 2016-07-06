@@ -102,6 +102,23 @@
             .attr("stop-opacity", 1);
 
     };
+    var drawBarLine = function(route, bar, direction, x, cycleTime){
+        if (route.forwardOnly && direction == 'back') {return;};
+        bar.selectAll("rect." + direction)
+            .data(function(d) { return d[direction].signals; }).enter()
+            .append("rect")
+            .attr('class',direction)
+            .attr("height", 11)
+            .attr("x",      function(d) { return x(d.offset - 3*cycleTime); })
+            .attr("y",     direction == 'forward'? 1 : -13)
+            .attr("width",  function(d) { return x(d.length)  >= 0 ? x(d.length) : 0; })
+            .style("fill",  function(d) {
+                if (d.color == 'blink') return 'url(#blink)';
+                if (d.color == 'amber') return 'url(#amber)';
+                return d.color;
+            });
+    };
+
 
     App.Modules.routes = {
         injectDependencies: function (modules) {
@@ -178,9 +195,17 @@
                         : 0;
 
                     point[direction].signals = traffic.signalDiagramData(crossroad, stopline);
-                    var a = JSON.parse(JSON.stringify(point[direction].signals));
-                    var b = JSON.parse(JSON.stringify(point[direction].signals));
-                    var result = point[direction].signals.concat(a,b);
+                    var signalsString = JSON.stringify(point[direction].signals);
+                    var a1 = JSON.parse(signalsString);
+                    var a2 = JSON.parse(signalsString);
+                    var a3 = JSON.parse(signalsString);
+                    var a4 = JSON.parse(signalsString);
+                    var a5 = JSON.parse(signalsString);
+                    var a6 = JSON.parse(signalsString);
+                    var a7 = JSON.parse(signalsString);
+                    var a8 = JSON.parse(signalsString);
+
+                    var result = point[direction].signals.concat(a1,a2,a3,a4,a5,a6,a7,a8);
 
                     result.reduce(function (sum, current) {
                         current.offset = sum;
@@ -208,7 +233,7 @@
         deleteRoute:function(){},
 
         greenLine: function(cycleTime, route, direction, callback){
-
+            if (route.forwardOnly && direction == 'back') {return;};
             for(var i=0; i < route.points.length - 1; i++){
                 var sl1 = route.points[i];
                 var sl2 = route.points[i + 1];
@@ -243,8 +268,6 @@
 
         drawRoute:function(data){
             var route = this.expandRoute(data);
-
-            //return;
             var cycleTime = App.State.currentModel.cycleTime;
             var totalRouteLenght = route.points.reduce(function(sum, point){return sum + point.length;} ,0);
 
@@ -294,7 +317,6 @@
             var xAxis   = d3.svg.axis().scale(x).orient("bottom").tickFormat(d3.format(".2s"));
 
 
-
             d3.select("svg").remove();
             var svg = d3.select("#diagram-panel").append("svg")
                 .attr("width", width + svgMargin.left + svgMargin.right)
@@ -302,6 +324,7 @@
                 .append("g")
                 .attr("transform", "translate(" + svgMargin.left + "," + svgMargin.top + ")");
 
+            // add main axis
             svg.append("g").attr("class", "x axis").attr("transform", "translate(0, " + height + ")").call(xAxis)
                 .append("text").style("text-anchor", "end").attr("x", width).attr("y", 40).text("Time (s)");
 
@@ -316,61 +339,83 @@
                 .attr("transform", "translate(" + x(2 * cycleTime) + ",0)").call(yAxis1);
 
 
-
+            // add defs for amber & flashed green
             prepareD3SvgDefs(svg);
 
-            routeDirections.forEach(function(direction){
-                if (route.forwardOnly && direction == 'back') return;
-
-                this.greenLine(cycleTime, route, direction, function(points){
+            // Draw green-lines
+            routeDirections.forEach(function(direction) {
+                this.greenLine(cycleTime, route, direction, function (points) {
                     svg.append("polygon")
                         .attr("class", "green-line") // attach a polygon
                         .attr("stroke", "black")
                         .style("opacity", .1)
-                        .attr("fill", direction == 'forward' ? "green":"blue")
-                        .attr("points",  x(points[0].x)+","+y(points[0].y)+", "
-                        +x(points[1].x)+","+y(points[1].y)+", "
-                        +x(points[2].x)+","+y(points[2].y)+", "
-                        +x(points[3].x)+","+y(points[3].y));  // x,y points
+                        .attr("fill", direction == 'forward' ? "green" : "blue")
+                        .attr("points", x(points[0].x) + "," + y(points[0].y) + ", "
+                        + x(points[1].x) + "," + y(points[1].y) + ", "
+                        + x(points[2].x) + "," + y(points[2].y) + ", "
+                        + x(points[3].x) + "," + y(points[3].y));  // x,y points
+                });
+            }, this);
+
+
+            // drag behavior
+            var start = 0;
+            var drag = d3.behavior.drag()
+                .origin(Object)
+                .on("dragstart", function() {
+                    d3.event.sourceEvent.stopPropagation(); // silence other listeners
+                    start = d3.event.sourceEvent.clientX;
+                    d3.select(this)
+                        .attr("cursor","move")
+                        .attr("opacity","0.5");
+                })
+                .on("drag", function(){
+                    var stop = d3.event.sourceEvent.clientX;
+                    d3.select(this).attr("transform", function(d) {
+                        return "translate("+(stop-start)+"," + y(d.forwardGeoOffset) + ")";
+                    })
+                })
+                .on("dragend", function() {
+                    d3.event.sourceEvent.stopPropagation(); // silence other listeners
+                    var stop = d3.event.sourceEvent.clientX;
+                    var b = d3.select(this).attr("opacity","0.5");
+                    var pointId = b.data()[0].id;
+                    var o = cy.getElementById(pointId).data('offset');
+                    var newOffset = (o + Math.round(cycleTime*(stop-start)/ x(cycleTime)) + cycleTime) % cycleTime;
+                    cy.getElementById(pointId).data('offset', newOffset);
+
+                    // redraw graphic on dragend event
+                    that.drawRoute(data);
                 });
 
-                svg.append("rect")
+            // add bar groups
+            var bar = svg.selectAll('.bar')
+                .data(route.points).enter().append("g")
+                .attr("class", function(d) { return 'bar ' + 'bar-' + d.id})
+                .attr("x", 0)
+                .attr("transform", function(d) { return "translate(0," + y(d.forwardGeoOffset) + ")"; })
+                .call(drag)
+                .on("mouseenter", function(){ d3.select(this).attr("cursor","pointer"); })
+                .on("mouseleave", function(){ d3.select(this).attr("cursor","default"); })
+                ;
+
+            drawBarLine(route, bar, 'forward', x, cycleTime);
+            drawBarLine(route, bar, 'back',  x, cycleTime);
+
+            // clearing border effects & additional labeled axis
+            svg.append("rect")
                 .attr("x", -50)
                 .attr("y", 0)
                 .attr("width", 50)
                 .attr("height", height)
                 .style("fill","#eee");
 
-                svg.append("rect")
-                    .attr("x", width+1)
-                    .attr("y", 0)
-                    .attr("width", 550)
-                    .attr("height", height)
-                    .style("fill","#eee");
-
-                var className = 'bar-' + direction;
-                var geoOffset = direction + 'GeoOffset';
-
-                var bar = svg.selectAll('.' + className)
-                    .data(route.points).enter().append("g")
-                    .attr("class", className)
-                    .attr("x", 0)
-                    .attr("transform", function(d) { return "translate(0," + y(d[geoOffset]) + ")"; })
-                    ;
-
-                bar.selectAll("rect")
-                    .data(function(d) { return d[direction].signals; }).enter()
-                    .append("rect")
-                    .attr("height", 11)
-                    .attr("x",      function(d) { return x(d.offset); })
-                    .attr("width",  function(d) { return x(d.length); })
-                    .style("fill",  function(d) {
-                        if (d.color == 'blink') return 'url(#blink)';
-                        if (d.color == 'amber') return 'url(#amber)';
-                        return d.color;
-                    });
-
-            }, this);
+            svg.append("rect")
+                .attr("x", width + 1)
+                .attr("y", 0)
+                .attr("width", 550)
+                .attr("height", height)
+                .style("fill","#eee");
 
             svg.append("g") .attr("class", "y2 axis")
                 .attr("transform", "translate(" + (width) + ",0)").call(yAxis2);

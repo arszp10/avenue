@@ -2,6 +2,7 @@
     var settings  = App.Resources.Settings;
 
     var booleanArrayPad = function (n, v) {
+        if (n < 1 ) return [];
         return Array.apply(null, Array(n)).map(Boolean.prototype.valueOf, v);
     };
 

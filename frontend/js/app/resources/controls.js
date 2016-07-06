@@ -83,7 +83,8 @@
             btnModePagePrev:            '#btn-model-page-prev',
             btnModePageNext:            '#btn-model-page-next',
             btnAddRoute:                '#btn-add-route',
-            btnCreateRoute:                '#btn-create-route'
+            btnCreateRoute:             '#btn-create-route',
+            btnDeleteRoute:             '#btn-delete-route'
         }
     };
 })(AvenueApp);
