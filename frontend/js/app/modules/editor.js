@@ -197,7 +197,7 @@
                var inx = $(this).data('inx');
                var route = routes.getRoute(inx);
                var str1 = '#' + route.forward.join(', #');
-               var str2 = route.back.length > 0 ? ', #'+route.back.join(', #') : '';
+               var str2 = route.back != undefined && route.back.length > 0 ? ', #'+route.back.join(', #') : '';
                cy.aveBuildRoutes(cy.$(str1 + str2));
                routes.drawRoute(route);
             });
