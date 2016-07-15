@@ -2,7 +2,7 @@ module.exports = {
     id: {
         presence: true
     },
-    cycleTime:{
+    cycleLength:{
         presence: true,
         numericality: {
             onlyInteger: true,
@@ -16,7 +16,7 @@ module.exports = {
             onlyInteger: true,
             greaterThanOrEqualTo: 0
         },
-        lessThanField: 'cycleTime'
+        lessThanField: 'cycleLength'
     },
     phases: {
         presence: true,

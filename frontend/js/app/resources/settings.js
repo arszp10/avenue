@@ -79,7 +79,7 @@
             icon: '',
             type: 'crossRoad',
             name: '',
-            cycleTime: 100,
+            cycleLength: 100,
             offset: 10,
             phases: [
                 {
@@ -99,7 +99,7 @@
             type: 'stopline',
             tag: '',
             color: 'primary',
-            cycleTime: 100,
+            cycleLength: 100,
             avgIntensity: 900,
             capacity: 1800,
             greenOffset1:0,
@@ -111,7 +111,7 @@
             icon:'\uf0ec',
             type: 'carriageway',
             tag: '',
-            cycleTime: 100,
+            cycleLength: 100,
             avgIntensity: 900,
             capacity: 1800,
             routeTime: 20,
@@ -122,7 +122,7 @@
             icon: '\uf22d',
             type: 'point',
             tag: '',
-            cycleTime: 100,
+            cycleLength: 100,
             avgIntensity: 900,
             capacity: 1800
         },
@@ -130,7 +130,7 @@
             icon: '\uf0b0',
             type: 'bottleneck',
             tag: '',
-            cycleTime: 100,
+            cycleLength: 100,
             avgIntensity: 900,
             capacity: 2000
         },
@@ -138,7 +138,7 @@
             icon: '\uf074',
             type: 'concurrent',
             tag: '',
-            cycleTime: 100,
+            cycleLength: 100,
             avgIntensity: 900,
             capacity: 1800,
             secondaryFlowCapacity: 1800
@@ -147,7 +147,7 @@
             icon: '\uf126',
             type: 'concurrentMerge',
             tag: '',
-            cycleTime: 100,
+            cycleLength: 100,
             avgIntensity: 900,
             capacity: 1800,
             secondaryFlowCapacity: 1800

@@ -29,7 +29,7 @@
             inputEdgeLabel:         '#input-edge-label',
             inputNodeType:          '#input-node-type',
             inputCrossroadOffset:   '#inputCrossroadOffset',
-            inputCoPlanCycleTime:   '#inputCoPlanCycleTime',
+            inputCoPlanCycleLength:   '#inputCoPlanCycleLength',
             inputCoPlanName:        '#inputCoPlanName',
             inputCoPlanNotes:       '#inputCoPlanNotes',
             inputsNodeProperty:     'input.node-property',

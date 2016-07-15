@@ -5,7 +5,7 @@ module.exports = {
 
     stopLine:function(flow, offset, queueTail){
         flow.maxQueueLength = 0;
-        var cycleTime = flow.cycleTime;
+        var cycleLength = flow.cycleLength;
         var capacityPerSecond = flow.capacityPerSecond;
         var inFlow = flow.inFlow;
         var outFlow = flow.outFlow;
@@ -29,8 +29,8 @@ module.exports = {
         var sumGreenCpacity = 0;
 
         for (var i = 0; i < inFlow.length; i++){
-            var j = (i + lastStart) % cycleTime;
-            var value = inFlow[(j + offset) % cycleTime];
+            var j = (i + lastStart) % cycleLength;
+            var value = inFlow[(j + offset) % cycleLength];
             sumInFlow += value;
             queue += value;
             if (queue > flow.maxQueueLength) {
@@ -39,7 +39,7 @@ module.exports = {
             if (j >= currInterval.s && j<= currInterval.f) {
                 delay += (rTime - t + Math.floor(queue/capacityPerSecond))*value;
                 t++;
-                outFlow[(j + offset) % cycleTime] = 0;
+                outFlow[(j + offset) % cycleLength] = 0;
                 if (j != currInterval.f) {
                     continue;
                 }
@@ -61,7 +61,7 @@ module.exports = {
             }
             ;
             t = 0;
-            outFlow[(j + offset) % cycleTime] = value;
+            outFlow[(j + offset) % cycleLength] = value;
             sumOutFlow += value;
             sumGreenFlow += value;
         }
@@ -91,8 +91,8 @@ module.exports = {
         do {
             k++;
             for (var i = 0; i < inFlow.length; i++) {
-                var ttprm1 = (i + flow.routeTime) % flow.cycleTime;
-                var ttpr = (i + flow.routeTime + 1) % flow.cycleTime;
+                var ttprm1 = (i + flow.routeTime) % flow.cycleLength;
+                var ttpr = (i + flow.routeTime + 1) % flow.cycleLength;
                 outFlow[ttpr] = (1 - f) * outFlow[ttprm1] + inFlow[i] * f;
             }
             sumOutFlow = outFlow.sum();
@@ -101,14 +101,14 @@ module.exports = {
         flow.sumInFlow = sumInFlow;
         flow.sumOutFlow = sumOutFlow;
         flow.outFlow = outFlow;
-        flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleTime));
+        flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleLength));
         return flow;
     },
 
 
     bottleNeck: function(flow, queueTail) {
         flow.maxQueueLength = 0;
-        var cycleTime = flow.cycleTime;
+        var cycleLength = flow.cycleLength;
         var capacityPerSecond = flow.capacityPerSecond;
         var inFlow = flow.inFlow;
         var outFlow = flow.outFlow;
@@ -142,7 +142,7 @@ module.exports = {
         flow.outFlow = outFlow;
         flow.sumInFlow = sumInFlow;
         flow.sumOutFlow = sumOutFlow;
-        flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleTime));
+        flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleLength));
         flow.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
         return flow;
     },
@@ -201,7 +201,7 @@ module.exports = {
         flow2.sumOutFlow = sumOutFlow;
         flow2.delay = 0.5 * 0.5 * virtRedTime * avgInVirtRed;
         flow2.outFlow = outFlow2;
-        flow2.greenSaturation = Math.round(100*sumOutFlow/(flow2.capacityPerSecond*flow2.cycleTime));
+        flow2.greenSaturation = Math.round(100*sumOutFlow/(flow2.capacityPerSecond*flow2.cycleLength));
         flow2.isCongestion = (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
 
         return flow2;

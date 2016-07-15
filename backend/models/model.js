@@ -12,7 +12,7 @@ var modelSchema = new Schema({
     notes:      { type: String },
     content:    Object,
     routes:     Object,
-    cycleTime:  { type: Number, required: required},
+    cycleLength:  { type: Number, required: required},
     crossCount: { type: Number, required: required},
     nodeCount:  { type: Number, required: required},
     createdAt:          Date,
@@ -25,7 +25,7 @@ modelSchema.pre('validate', function(next) {
     var currentDate = new Date();
     this.updatedAt = currentDate;
     if (! this.createdAt) {
-        this.cycleTime = 100;
+        this.cycleLength = 100;
         this.crossCount = 0;
         this.nodeCount = 0;
         this.createdAt = currentDate;
@@ -65,7 +65,7 @@ Model.findWithPages = function(p, ready){
     this.find(conditions).
         skip(skip).limit(params.limit).
         sort(params.orderBy).
-        select('_id name nodeCount crossCount cycleTime createdAt updatedAt').
+        select('_id name nodeCount crossCount cycleLength createdAt updatedAt').
         exec(function(err, data){
             if (err) {
                 ready(err, null);

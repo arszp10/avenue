@@ -102,7 +102,7 @@
         });
 
         cy.on('add', 'node', null, function (e) {
-            e.cyTarget.data('cycleTime', App.State.currentModel.cycleTime);
+            e.cyTarget.data('cycleLength', App.State.currentModel.cycleLength);
         });
 
         cy.on('add', 'edge', null, function (e) {
@@ -198,7 +198,7 @@
         },
 
         aveSetCycleTime: function(t){
-            this.$('node').data('cycleTime', t);
+            this.$('node').data('cycleLength', t);
         },
         aveNextId: function(){
             return Math.random().toString(36).substr(2, 16);

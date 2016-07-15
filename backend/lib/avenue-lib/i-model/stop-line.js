@@ -14,7 +14,7 @@ function StopLine(options, network, indexMap){
         var sat = 0;
         var pi = parseInt(crossRoad.phases[cf].length) - 1;
         for (var i = 0; i < this.outFlow.length; i++){
-            j = (i + crossRoad.offset) % this.cycleTime;
+            j = (i + crossRoad.offset) % this.cycleLength;
             sat +=  this.outFlow[j];
             if (pi == i) {
                 sat = sat / this.capacityPerSecond / parseInt(crossRoad.phases[cf].length);

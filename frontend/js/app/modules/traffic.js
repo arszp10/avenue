@@ -34,7 +34,7 @@
                 prevGoff = -goff;
             }
             diagram[0].length += prevGoff;
-            return this.offsetDiagram(diagram, crossRoad.offset, crossRoad.cycleTime);
+            return this.offsetDiagram(diagram, crossRoad.offset, crossRoad.cycleLength);
         },
         offsetDiagram:      function(diagram, offset, cycle){
             if (offset == 0) {

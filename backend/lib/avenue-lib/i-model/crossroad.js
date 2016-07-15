@@ -1,7 +1,7 @@
 function CrossRoad(options){
     this.options = options;
     this.offset = parseInt(options.offset);
-    this.cycleTime = parseInt(options.cycleTime);
+    this.cycleLength = parseInt(options.cycleLength);
     this.name = options.name;
     this.id = options.id;
     this.phases = options.phases;
@@ -16,7 +16,7 @@ function CrossRoad(options){
             id: this.id,
             type: this.options.type,
             offset: this.offset,
-            cycleTime: this.cycleTime,
+            cycleLength: this.cycleLength,
             phases: this.phases
         }
     };

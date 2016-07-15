@@ -102,14 +102,14 @@
             .attr("stop-opacity", 1);
 
     };
-    var drawBarLine = function(route, bar, direction, x, cycleTime){
+    var drawBarLine = function(route, bar, direction, x, cycleLength){
         if (route.forwardOnly && direction == 'back') {return;};
         bar.selectAll("rect." + direction)
             .data(function(d) { return d[direction].signals; }).enter()
             .append("rect")
             .attr('class',direction)
             .attr("height", 11)
-            .attr("x",      function(d) { return x(d.offset - 3*cycleTime); })
+            .attr("x",      function(d) { return x(d.offset - 3*cycleLength); })
             .attr("y",     direction == 'forward'? 1 : -13)
             .attr("width",  function(d) { return x(d.length)  >= 0 ? x(d.length) : 0; })
             .style("fill",  function(d) {
@@ -232,7 +232,7 @@
 
         deleteRoute:function(){},
 
-        greenLine: function(cycleTime, route, direction, callback){
+        greenLine: function(cycleLength, route, direction, callback){
             if (route.forwardOnly && direction == 'back') {return;};
             for(var i=0; i < route.points.length - 1; i++){
                 var sl1 = route.points[i];
@@ -243,21 +243,21 @@
                 var y2 = sl2.geoOffset;
 
                 var points = [{x:0,y:y1},{x:0,y:y2},{x:0,y:y2},{x:0,y:y1}];
-                for(var j=0; j< cycleTime * 5; j++){
-                    var bothPointIsGreen = sl1[direction].isGreenMoment[j % cycleTime] && sl2[direction].isGreenMoment[(j + tpr)% cycleTime];
+                for(var j=0; j< cycleLength * 5; j++){
+                    var bothPointIsGreen = sl1[direction].isGreenMoment[j % cycleLength] && sl2[direction].isGreenMoment[(j + tpr)% cycleLength];
                     if (state == 'end-block') {
                         if (bothPointIsGreen) {
                             state = 'start-block';
-                            points[0].x = (j - cycleTime);
-                            points[1].x = (j + tpr - cycleTime);
+                            points[0].x = (j - cycleLength);
+                            points[1].x = (j + tpr - cycleLength);
                         }
                     }
 
                     if (state == 'start-block') {
                         if (!bothPointIsGreen) {
                             state = 'end-block';
-                            points[2].x = (j + tpr - cycleTime);
-                            points[3].x = (j - cycleTime);
+                            points[2].x = (j + tpr - cycleLength);
+                            points[3].x = (j - cycleLength);
                             callback(points);
                         }
                     }
@@ -268,7 +268,7 @@
 
         drawRoute:function(data){
             var route = this.expandRoute(data);
-            var cycleTime = App.State.currentModel.cycleTime;
+            var cycleLength = App.State.currentModel.cycleLength;
             var totalRouteLenght = route.points.reduce(function(sum, point){return sum + point.length;} ,0);
 
             var width  = window.innerWidth - 150 - svgMargin.left - svgMargin.right;
@@ -280,7 +280,7 @@
 
             y.domain([0, totalRouteLenght + 100]);
             y1.domain([0, 0]);
-            x.domain([0, cycleTime * 3 ]);
+            x.domain([0, cycleLength * 3 ]);
 
 
             var rrange = route.points.map(function(v){return y(v.geoOffset)});
@@ -333,10 +333,10 @@
                 .attr("transform", "translate(" + (width) + ",0)").call(yAxis0);
 
             svg.append("g").attr("class", "y1 axis")
-                .attr("transform", "translate(" + x(cycleTime) + ",0)").call(yAxis1);
+                .attr("transform", "translate(" + x(cycleLength) + ",0)").call(yAxis1);
 
             svg.append("g").attr("class", "y1 axis")
-                .attr("transform", "translate(" + x(2 * cycleTime) + ",0)").call(yAxis1);
+                .attr("transform", "translate(" + x(2 * cycleLength) + ",0)").call(yAxis1);
 
 
             // add defs for amber & flashed green
@@ -344,7 +344,7 @@
 
             // Draw green-lines
             routeDirections.forEach(function(direction) {
-                this.greenLine(cycleTime, route, direction, function (points) {
+                this.greenLine(cycleLength, route, direction, function (points) {
                     svg.append("polygon")
                         .attr("class", "green-line") // attach a polygon
                         .attr("stroke", "black")
@@ -381,7 +381,7 @@
                     var b = d3.select(this).attr("opacity","0.5");
                     var pointId = b.data()[0].id;
                     var o = cy.getElementById(pointId).data('offset');
-                    var newOffset = (o + Math.round(cycleTime*(stop-start)/ x(cycleTime)) + cycleTime) % cycleTime;
+                    var newOffset = (o + Math.round(cycleLength*(stop-start)/ x(cycleLength)) + cycleLength) % cycleLength;
                     cy.getElementById(pointId).data('offset', newOffset);
 
                     // redraw graphic on dragend event
@@ -399,8 +399,8 @@
                 .on("mouseleave", function(){ d3.select(this).attr("cursor","default"); })
                 ;
 
-            drawBarLine(route, bar, 'forward', x, cycleTime);
-            drawBarLine(route, bar, 'back',  x, cycleTime);
+            drawBarLine(route, bar, 'forward', x, cycleLength);
+            drawBarLine(route, bar, 'back',  x, cycleLength);
 
             // clearing border effects & additional labeled axis
             svg.append("rect")

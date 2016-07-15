@@ -1,26 +1,18 @@
-Доделать регистрацию до нормального флоу
-логи сервера нормальные енвайронметы
-документация к API и страничка о программе
+Переименовать все поля
+    cycleTime = Cycle length
+    crossroad = intersection
+    intensity = flow rate
+    capacity  = saturation flow rate
+    competitior-merge = ramp terminal, entrance ramp
+    concurrent        = conflicting approach
+    carriageway       = freeway, link
 
-
-экспорт импорт
+документация к API
 апи запрос на рассчет/оптимизацию сохранненной модели с новыми числовыми параметрами
-
---------- Запуск ---------
-
 экспорт апи запроса для данной модели
+рефакторинг библиотеки + тесты
 мои расчеты, мои шаблоны, дефолтные установки
 устойчивость пк см диссертацию
-графики светофорной сигнализации + маршруты + расчет времени проезда волна
 
+логи сервера нормальные енвайронметы
 
-
-
-cycleTime = Cycle length
-crossroad = intersection
-intensity = flow rate
-capacity  = saturation flow rate
-
-competitior-merge = ramp terminal, entrance ramp
-concurrent        = conflicting approach
-carriageway       = freeway, link

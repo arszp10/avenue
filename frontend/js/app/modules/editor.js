@@ -136,7 +136,7 @@
                         notes: App.State.currentModel.notes,
                         nodeCount: cy.nodes().length,
                         crossCount: cy.$('[type="crossRoad"]').length,
-                        cycleTime: App.State.currentModel.cycleTime
+                        cycleLength: App.State.currentModel.cycleLength
                     }
                 }, $icon);
             });
@@ -320,16 +320,16 @@
              */
             controls.buttons.btnCoPlanProperties.click(function () {
                 var cp = App.State.currentModel;
-                controls.inputs.inputCoPlanCycleTime.val(cp.cycleTime);
+                controls.inputs.inputCoPlanCycleLength.val(cp.cycleLength);
                 controls.inputs.inputCoPlanName.val(cp.name);
                 controls.inputs.inputCoPlanNotes.val(cp.notes);
                 controls.panels.coPlanModal.modal('show');
             });
             controls.buttons.btnCoPlanSave.click(function () {
-                App.State.currentModel.cycleTime = controls.inputs.inputCoPlanCycleTime.val();
+                App.State.currentModel.cycleLength = controls.inputs.inputCoPlanCycleLength.val();
                 App.State.currentModel.name = controls.inputs.inputCoPlanName.val();
                 App.State.currentModel.notes = controls.inputs.inputCoPlanNotes.val();
-                cy.aveSetCycleTime(App.State.currentModel.cycleTime);
+                cy.aveSetCycleTime(App.State.currentModel.cycleLength);
                 controls.panels.coPlanModal.modal('hide');
             });
 
@@ -481,7 +481,7 @@
                 that.initCheckBoxes(controls.panels.tblPhasesBody);
             });
             controls.inputs.inputCrossroadName.val(node.name);
-            controls.inputs.inputCrossroadOffset.slider('setAttribute', 'max', node.cycleTime - 1);
+            controls.inputs.inputCrossroadOffset.slider('setAttribute', 'max', node.cycleLength - 1);
             controls.inputs.inputCrossroadOffset.slider('setValue', node.offset);
             controls.panels.crossRoadModal.modal('show');
         },
@@ -533,7 +533,7 @@
 
                 controls.panels.nodeSearchInfo.append(
                     templates.crossRoadSignalBars({
-                        cycleTime: node.cycleTime,
+                        cycleLength: node.cycleLength,
                         bars: dataBars
                     })
                 );
@@ -560,7 +560,7 @@
 
             var ctx = document.getElementById("chart-panel").getContext("2d");
             var data = {
-                labels: settings.chart.labels(node.cycleTime),
+                labels: settings.chart.labels(node.cycleLength),
                 datasets: [
                     settings.chart.flowIn(results[0].inFlow),
                     settings.chart.flowOut(results[0].outFlow)
@@ -571,7 +571,7 @@
             if (node.type == 'stopline' && node.hasOwnProperty('parent')){
                 controls.panels.nodeSearchInfo.append(
                     templates.signalBar({
-                        cycleTime: node.cycleTime,
+                        cycleLength: node.cycleLength,
                         signals: traffic.signalDiagramData(cy.getElementById(node.parent).data(), node)
                     })
                 );

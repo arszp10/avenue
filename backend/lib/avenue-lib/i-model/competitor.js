@@ -8,18 +8,18 @@ function Competitor(options, network, indexMap){
     var primaryEdges = [];
     var secondaryEdges =[];
 
-    _.each(options.edges, function(v){
-        if (v.hasOwnProperty('secondary')){
-            secondaryEdges.push(v);
+    _.each(options.edges, function(edge){
+        if (edge.hasOwnProperty('secondary')){
+            secondaryEdges.push(edge);
         } else {
-            primaryEdges.push(v);
+            primaryEdges.push(edge);
     }});
 
     this.primaryIntensity  =  parseInt(primaryEdges[0].portion);
     this.secondaryIntensity  = parseInt(secondaryEdges[0].portion);
 
-    var pOptions = _.assign({}, options);
-    var sOptions = _.assign({}, options);
+    var pOptions = Object.assign({}, options);
+    var sOptions = Object.assign({}, options);
 
     pOptions.edges = primaryEdges;
     pOptions.avgIntensity = this.primaryIntensity;

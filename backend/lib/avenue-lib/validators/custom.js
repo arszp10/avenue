@@ -36,8 +36,8 @@ module.exports = {
         attributes.phases.map(function(v){
             sum += parseInt(v.length);
         });
-        if (sum != attributes.cycleTime) {
-            return "amount length must be equal CycleTime = " + attributes.cycleTime
+        if (sum != attributes.cycleLength) {
+            return "amount length must be equal CycleTime = " + attributes.cycleLength
         }
         return undefined;
     },
@@ -96,8 +96,8 @@ module.exports = {
         }
         var i  = intervals.length-1;
         v1 = parseInt(intervals[i][1]);
-        if (v1 >= parseInt(attributes.cycleTime)) {
-            return "item[" + i + "], second value must be less than Cycle Time (" + attributes.cycleTime + "). Ex: ..., 40]]";
+        if (v1 >= parseInt(attributes.cycleLength)) {
+            return "item[" + i + "], second value must be less than Cycle Time (" + attributes.cycleLength + "). Ex: ..., 40]]";
         }
 
         return undefined;

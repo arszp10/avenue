@@ -171,8 +171,8 @@ module.exports = {
     },
 
     _optimize: function(){
-        var cycleTime = this._network[0].cycleTime;
-        var steps = settings.offsetOptimizationSteps(cycleTime);
+        var cycleLength = this._network[0].cycleLength;
+        var steps = settings.offsetOptimizationSteps(cycleLength);
         var that = this;
         var cr;
         var offsets = [0,0,0];
@@ -195,8 +195,8 @@ module.exports = {
                 offset = cr.offset;
                 offsets = [
                     offset,
-                    (offset + step) % cycleTime,
-                    (offset + cycleTime - step) % cycleTime
+                    (offset + step) % cycleLength,
+                    (offset + cycleLength - step) % cycleLength
                 ];
 
                 for(var i = 0; i < 3; i++) {

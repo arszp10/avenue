@@ -43,10 +43,10 @@
             return s;
         },
         crossRoadSignalBars:    function(data){
-            var cycleTime = data.cycleTime;
+            var cycleLength = data.cycleLength;
             var s = '';
             data.bars.forEach(function(v){
-                v.cycleTime = cycleTime;
+                v.cycleLength = cycleLength;
                 s += '<tr><td class="stop-line-td-label text-'+ v.node.color +'"><span class="stop-line-icon">' + v.node.icon + '</span> '+v.node.tag +'&nbsp;</td>';
                 s += '<td>'+ this.signalBar(v, 'signals-bulk clearfix')+'</td></tr>';
 
@@ -59,7 +59,7 @@
             var className = cls == undefined ? '' : cls;
             var s = '<div class="signal-bar ' + className + '">';
             data.signals.forEach(function(v){
-                w = 100* v.length/data.cycleTime;
+                w = 100* v.length/data.cycleLength;
                 s +='<div class="signal signal-' + v.color + '" style="width:'+ w +'%"></div>';
             })
             s += '</div>';
@@ -203,7 +203,7 @@
             return ' <tr data-id="' + data._id + '">' +
                 '    <td class="actions-col">'+ this.modelRowMenu(data) + '</td>'+
                 '    <td class="model-name-col"><a href="/app/'+data._id+'">' + name + '</a></td>'+
-                '    <td class="cycle-time-col text-right">' + data.cycleTime + ' <span>(sec)</span></td>'+
+                '    <td class="cycle-time-col text-right">' + data.cycleLength + ' <span>(sec)</span></td>'+
                 '    <td class="property-col  text-right">' + data.crossCount + ' <span>(cross)</span> &nbsp;&nbsp; ' + data.nodeCount + ' <span>(nodes)</span></td>'+
                 '    <td class="time-col text-right">' + new Date(data.updatedAt).toLocaleString() + '</td>'+
                 '</tr>';

@@ -2,7 +2,7 @@ module.exports = {
     tag: {
         length: {maximum: 32}
     },
-    cycleTime:{
+    cycleLength:{
         presence: true,
         numericality: {
             onlyInteger: true,

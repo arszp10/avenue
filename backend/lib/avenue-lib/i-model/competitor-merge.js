@@ -45,7 +45,7 @@ function CompetitorMerge(options, network, indexMap){
         this.delay = this.secondary.delay;
         this.maxQueueLength = this.secondary.maxQueueLength;
 
-        this.greenSaturation = 100 * this.sumOutFlow / (this.cycleTime * this.capacity/3600);
+        this.greenSaturation = 100 * this.sumOutFlow / (this.cycleLength * this.capacity/3600);
         this.isCongestion = this.secondary.isCongestion;
 
         //this.avgIntensity =  this.primaryIntensity + this.secondaryIntensity;
