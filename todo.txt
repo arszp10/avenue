@@ -13,3 +13,14 @@
 устойчивость пк см диссертацию
 графики светофорной сигнализации + маршруты + расчет времени проезда волна
 
+
+
+
+cycleTime = Cycle length
+crossroad = intersection
+intensity = flow rate
+capacity  = saturation flow rate
+
+competitior-merge = ramp terminal, entrance ramp
+concurrent        = conflicting approach
+carriageway       = freeway, link
