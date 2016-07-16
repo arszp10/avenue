@@ -1,10 +1,10 @@
-var _ = require('lodash');
-var nodemailer = require('nodemailer');
+var _           = require('lodash');
+var nodemailer  = require('nodemailer');
 
-var User = require('../models/user');
-var Model = require('../models/model');
-var avenueLib = require('../lib/avenue-lib');
-var responses = require('./api-responses');
+var User        = require('../models/user');
+var Model       = require('../models/model');
+var avenueLib   = require('../lib/avelib');
+var responses   = require('./api-responses');
 
 var isint = /^[0-9]+$/;
 var isfloat = /^([0-9]+)?\.[0-9]+$/;
@@ -17,7 +17,6 @@ function coerce(str) {
     if (isint.test(str)) return parseInt(str, 10);
     return undefined;
 }
-
 
 function authenticateApi(req, res, next) {
     if (req.session.user_id) {
@@ -41,13 +40,13 @@ function authenticateApi(req, res, next) {
     });
 }
 
-function validateModel(req, res, next) {
+function validateRequest(req, res, next) {
     var errors = avenueLib.validate(req.body.data);
-    if (errors.length == 0) {
-        next(); return;
+    if (errors.length > 0) {
+        res.json(responses.modelValidationFailed(errors));
+        return;
     }
-    res.json(responses.modelValidationFailed(errors));
-    return;
+    next(); return;
 }
 
 module.exports = function(app, config) {
@@ -76,7 +75,6 @@ module.exports = function(app, config) {
         });
     });
 
-
     app.post('/api/user/sign-in', function (req, res) {
         User.findOne({email: req.body.email, active:true}, function (err, user) {
             if (user && user.authenticate(req.body.password)) {
@@ -95,6 +93,7 @@ module.exports = function(app, config) {
             res.json(responses.userLoginFailed());
         });
     });
+
     app.post('/api/user/reset-password', function (req, res) {
         User.findOne({email: req.body.email}, function (err, user) {
             if (user) {
@@ -113,28 +112,29 @@ module.exports = function(app, config) {
         });
     });
 
-    app.post('/api/model/execute', validateModel,  function (req, res) {
+    app.post('/api/model/execute', validateRequest,  function (req, res) {
         var bodyData = _.cloneDeepWith(req.body.data, coerce);
         res.json(
             responses.modelSimulationSuccess(
-                avenueLib.recalculate(bodyData)
-        ));
-    });
-    app.post('/api/model/optimize/offsets', validateModel, function (req, res) {
-        var bodyData = _.cloneDeepWith(req.body.data, coerce);
-        res.json(
-            responses.modelSimulationSuccess(
-                avenueLib.optimize(bodyData)
-        ));
-    });
-    app.post('/api/model/optimize/phases', validateModel, function (req, res) {
-        var bodyData = _.cloneDeepWith(req.body.data, coerce);
-        res.json(
-            responses.modelSimulationSuccess(
-                avenueLib.optimizePhases(bodyData)
+                avenueLib.simulate(bodyData)
         ));
     });
 
+    app.post('/api/model/optimize/offsets', validateRequest, function (req, res) {
+        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+        res.json(
+            responses.modelSimulationSuccess(
+                avenueLib.optimizeOffsets(bodyData)
+        ));
+    });
+
+    app.post('/api/model/optimize/splits', validateRequest, function (req, res) {
+        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+        res.json(
+            responses.modelSimulationSuccess(
+                avenueLib.optimizeSplits(bodyData)
+        ));
+    });
 
     app.post('/api/model/create', function (req, res) {
         var userId = req.session.user_id;
@@ -152,6 +152,7 @@ module.exports = function(app, config) {
             res.json(responses.entityCreatedSuccessfully('Model', {id: newAveModel._id}));
         });
     });
+
     app.post('/api/model/update/:modelId', function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user_id;
@@ -165,7 +166,7 @@ module.exports = function(app, config) {
             model.name          = bodyData.name;
             model.nodeCount     = bodyData.nodeCount;
             model.crossCount    = bodyData.crossCount;
-            model.cycleLength     = bodyData.cycleLength;
+            model.cycleLength   = bodyData.cycleLength;
             model.notes         = bodyData.notes;
             model.content       = bodyData.content;
             model.routes        = bodyData.routes;
@@ -177,6 +178,7 @@ module.exports = function(app, config) {
             });
         });
     });
+
     app.get('/api/model/get/:modelId', function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user_id;
@@ -193,6 +195,7 @@ module.exports = function(app, config) {
             res.json(responses.entityFound('Model', modelId, result));
         });
     });
+
     app.get('/api/model/list', function (req, res) {
         var params = _.cloneDeepWith(req.query, coerce);
             params.userId = req.session.user_id;
@@ -221,7 +224,7 @@ module.exports = function(app, config) {
                 res.json(responses.entityNotFound('Model', modelId));
                 return;
             }
-            res.json(responses.entityRemoved('Model', modelId, {id:modelId}));
+            res.json(responses.entityRemoved('Model', modelId, {id: modelId}));
         });
 
 

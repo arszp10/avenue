@@ -61,7 +61,7 @@ module.exports = {
 
 
     modelValidationFailed: function(e){
-        return errObj(false, 'The model failed a validation!', e);
+        return errObj(false, 'The model validation failed!', e);
     },
     modelSimulationSuccess: function(d){
         return errObj(true, 'Simulation was successful!', d);

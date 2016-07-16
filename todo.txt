@@ -6,6 +6,9 @@
     competitior-merge = ramp terminal, entrance ramp
     concurrent        = conflicting approach
     carriageway       = freeway, link
+    routeTime = travelTime
+
+carriageWay = freeWay
 
 документация к API
 апи запрос на рассчет/оптимизацию сохранненной модели с новыми числовыми параметрами
