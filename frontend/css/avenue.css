@@ -602,17 +602,17 @@ body.show-edge-input #input-edge-label {
     margin-right: 10px;
 }
 
-.node-avatar.crossRoad,
+.node-avatar.intersection,
 .node-avatar.point,
 .node-avatar.bottleneck,
-.node-avatar.concurrent,
-.node-avatar.concurrentMerge,
-.node-avatar.carriageway {
+.node-avatar.conflictingApproach,
+.node-avatar.entranceRamp,
+.node-avatar.freeway {
     font-family: FontAwesome;
     font-weight: 300;
 }
 
-.node-avatar.crossRoad {
+.node-avatar.intersection {
     border-radius: 4px;
     line-height: 32px;
 }

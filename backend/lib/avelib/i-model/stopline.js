@@ -1,7 +1,7 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function StopLine(options, network, indexMap){
+function StopLine(options, network){
 
     Flow.apply(this, arguments);
 
@@ -10,7 +10,7 @@ function StopLine(options, network, indexMap){
 
 
     this.phaseSaturation = function () {
-        var crossRoad = this.getNode(this.parent);
+        var crossRoad = this.network.getNode(this.parent);
         var cf = 0;
         var j = 0;
         var sat = 0;
@@ -35,7 +35,8 @@ function StopLine(options, network, indexMap){
     this.calc = function (){
         var delay = 0;
         var hasOverflow = this.initInFlow();
-        var offset  = this.parent ? this.getNode(this.parent).offset : 0;
+
+        var offset  = this.parent ? this.network.getNode(this.parent).offset : 0;
 
         if (hasOverflow) {
             model.bottleNeck(this);

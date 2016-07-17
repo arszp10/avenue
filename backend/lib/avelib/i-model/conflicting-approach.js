@@ -2,7 +2,7 @@ var _ = require('lodash');
 var Flow = require('./flow');
 var model = require('./model');
 
-function ConflictingApproach(options, network, indexMap){
+function ConflictingApproach(options, network){
     this.primary = {};
 
     var primaryEdges = [];
@@ -29,8 +29,8 @@ function ConflictingApproach(options, network, indexMap){
     sOptions.flowRate           = this.secondaryFlowRate;
 
 
-    Flow.apply(this.primary, [pOptions, network, indexMap]);
-    Flow.apply(this, [sOptions, network, indexMap]);
+    Flow.apply(this.primary, [pOptions, network]);
+    Flow.apply(this, [sOptions, network]);
 
     this.calc = function(){
         this.initInFlow();

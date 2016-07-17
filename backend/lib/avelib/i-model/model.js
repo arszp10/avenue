@@ -193,7 +193,7 @@ module.exports = {
             }
         }
         if (sumInFlow != sumOutFlow && queueTail == undefined) {
-            return this.competitor(flow1, flow2, queue);
+            return this.conflictingApproach(flow1, flow2, queue);
         }
 
         flow2.delay = 0.5 * 0.5 * virtRedTime * avgInVirtRed;

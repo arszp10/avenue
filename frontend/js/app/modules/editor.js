@@ -135,7 +135,7 @@
                         routes: JSON.parse(JSON.stringify(App.State.currentModel.routes))||[],
                         notes: App.State.currentModel.notes,
                         nodeCount: cy.nodes().length,
-                        crossCount: cy.$('[type="crossRoad"]').length,
+                        crossCount: cy.$('[type="intersection"]').length,
                         cycleLength: App.State.currentModel.cycleLength
                     }
                 }, $icon);
@@ -250,7 +250,7 @@
                 controls.panels.body.addClass('show-right-panel');
                 if (foundNodes.length > 0) {
                     $.each(foundNodes, function (inx, node) {
-                        if (node.data.hasOwnProperty('parent') && node.data.type !== 'crossRoad') {
+                        if (node.data.hasOwnProperty('parent') && node.data.type !== 'intersection') {
                             node.data.name = cy.$('#' + node.data.parent).data('name');
                         }
                         controls.panels.nodeSearchResultlist.append(
@@ -334,7 +334,7 @@
             });
 
             /**
-             *  Crossroad modal events
+             *  intersection modal events
              */
             controls.inputs.inputIntersectionOffset = $('#inputIntersectionOffset').slider({
                 max: 100,
@@ -441,23 +441,23 @@
             if (target.type == 'stopline'){
                 controls.panels.pointProperty.find('.is-stopLine').show();
                 if (target.parent == undefined) {
-                    controls.panels.pointProperty.find('.out-crossroad').show();
-                    controls.panels.pointProperty.find('.in-crossroad').hide();
+                    controls.panels.pointProperty.find('.out-intersection').show();
+                    controls.panels.pointProperty.find('.in-intersection').hide();
                 } else {
-                    controls.panels.pointProperty.find('.out-crossroad').hide();
-                    controls.panels.pointProperty.find('.in-crossroad').show();
+                    controls.panels.pointProperty.find('.out-intersection').hide();
+                    controls.panels.pointProperty.find('.in-intersection').show();
                 }
             } else {
                 controls.panels.pointProperty.find('.is-stopLine').hide();
             }
 
-            if (target.type == 'carriageway'){
-                controls.panels.pointProperty.find('.is-carriageway').show();
+            if (target.type == 'freeway'){
+                controls.panels.pointProperty.find('.is-freeway').show();
             } else {
-                controls.panels.pointProperty.find('.is-carriageway').hide();
+                controls.panels.pointProperty.find('.is-freeway').hide();
             }
 
-            if (target.type == 'concurrent' ||target.type == 'concurrentMerge'){
+            if (target.type == 'conflictingApproach' || target.type == 'entranceRamp'){
                 controls.panels.pointProperty.find('.is-concurrent').show();
             } else {
                 controls.panels.pointProperty.find('.is-concurrent').hide();
@@ -490,15 +490,15 @@
             controls.panels.nodeSearchInfo.empty();
             controls.panels.body.addClass('show-right-panel');
 
-            if (node.hasOwnProperty('parent') && node.type !== 'crossRoad') {
+            if (node.hasOwnProperty('parent') && node.type !== 'intersection') {
                 node.name =  cy.getElementById(node.parent).data('name');
             }
-            node.constantIntensity =  cy.aveConstantIntensity(node);
+            node.constantFlowRate =  cy.aveConstantFlowRate(node);
             controls.panels.nodeSearchResultlist.append(
                 templates.nodeSearchListItem(node, 'single')
             );
 
-            if (node.type == 'crossRoad') {
+            if (node.type == 'intersection') {
                 controls.panels.nodeSearchInfo.append(
                     templates.nodeCrossRoadProps(node)
                 );
@@ -521,7 +521,7 @@
                 );
             }
 
-            if (node.type == 'crossRoad') {
+            if (node.type == 'intersection') {
                 var stopLines = cy.aveGetCrossroadStoplines(node.id);
                 var dataBars = [];
                 $.each(stopLines, function(i,v){

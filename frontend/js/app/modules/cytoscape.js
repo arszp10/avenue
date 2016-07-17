@@ -30,7 +30,7 @@
         if (
             target.data().hasOwnProperty('parent')
             && target.data('parent') == source.data('parent')) {
-            edge.addClass('edge-in-crossroad');
+            edge.addClass('edge-in-intersection');
         }
     };
 
@@ -45,8 +45,8 @@
             p = e.data('portion');
             sum += p== undefined ? 0 : p;
         });
-        var avgIntensity = source.data('avgIntensity');
-        sum = sum >= avgIntensity ? 0 : avgIntensity - sum;
+        var flowRate = source.data('flowRate');
+        sum = sum >= flowRate ? 0 : flowRate - sum;
         edge.data('portion', sum);
     };
 
@@ -92,7 +92,7 @@
                 return;
             }
 
-            if (type == 'crossRoad') {
+            if (type == 'intersection') {
                 editor.showCrossroadModal(e.cyTarget.data());
                 return;
             }
@@ -117,14 +117,14 @@
             var target = cy.getElementById(edge.target);
             var source = cy.getElementById(edge.source);
 
-            if (target.data('type') == 'crossRoad' || source.data('type') == 'crossRoad') {
+            if (target.data('type') == 'intersection' || source.data('type') == 'intersection') {
                 cy.getElementById(edge.id).remove();
                 return;
             }
 
             var targetEdges = cy.$('edge[target="' + edge.target + '"]');
-            var isTargetConcurrent = (target.data('type') == 'concurrent' || target.data('type') == 'concurrentMerge');
-            var isSourceConcurrent = (source.data('type') == 'concurrent' || source.data('type') == 'concurrentMerge');
+            var isTargetConcurrent = (target.data('type') == 'conflictingApproach' || target.data('type') == 'entranceRamp');
+            var isSourceConcurrent = (source.data('type') == 'conflictingApproach' || source.data('type') == 'entranceRamp');
 
             if (isTargetConcurrent && targetEdges.length > 2) {
                 cy.getElementById(edge.id).remove();
@@ -132,7 +132,7 @@
             }
 
             var sourceEdges = cy.$('edge[source="' + edge.source + '"]');
-            if (source.data('type') == 'concurrentMerge' && sourceEdges.length > 2) {
+            if (source.data('type') == 'entranceRamp' && sourceEdges.length > 2) {
                 cy.getElementById(edge.id).remove();
                 return;
             }
@@ -248,7 +248,7 @@
             if (selected.length == 0) {
                 return;
             }
-            var parentId = this.aveAddNode(settings.crossRoad);
+            var parentId = this.aveAddNode(settings.intersection);
             var nodes = selected.jsons();
             var edges = selected.neighborhood('edge').jsons();
 
@@ -259,7 +259,7 @@
             selected.remove();
             this.add(nodes);
             this.add(edges);
-            this.$("node:selected[parent][type='crossRoad']").remove();
+            this.$("node:selected[parent][type='intersection']").remove();
         },
         aveUngroupNodes: function(){
             var selected = this.$('node:selected[^parent] node');
@@ -268,7 +268,7 @@
             }
             var nodes = selected.jsons();
             var edges = selected.neighborhood('edge')
-                .removeClass('edge-in-crossroad')
+                .removeClass('edge-in-intersection')
                 .jsons();
             var parent;
 
@@ -319,12 +319,12 @@
         aveGetCrossroadStoplines: function(id) {
             return this.$('node[parent="' + id + '"][type="stopline"]');
         },
-        aveConstantIntensity: function(node){
+        aveConstantFlowRate: function(node){
             var sum = 0;
             $.each(this.$('edge[target="' + node.id + '"]'), function(inx, n){
                 sum += parseInt(n.data('portion'));
             });
-            return node.avgIntensity - sum;
+            return node.flowRate - sum;
         },
 
         aveBuildRoutes: function(selectedNodes){

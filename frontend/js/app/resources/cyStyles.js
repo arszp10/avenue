@@ -119,7 +119,7 @@
             }
         },
         {
-            selector: 'node[type="crossRoad"]',
+            selector: 'node[type="intersection"]',
             css: {
                 'font-family': 'Arial',
                 'font-size': '14px'
@@ -141,7 +141,7 @@
             }
         },
         {
-            selector: 'edge.edge-in-crossroad',
+            selector: 'edge.edge-in-intersection',
             css: {
                 'line-style': 'dotted',
                 'text-outline-color': '#cccccc',

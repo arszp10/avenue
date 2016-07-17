@@ -1,7 +1,7 @@
 var _      = require('lodash');
 var utils  = require('../utils/utils')();
 
-function Flow(props, network, indexMap) {
+function Flow(props, network) {
 
     this.resetIntervals =  function(intervals){
         this.intervals = intervals.map(function(v){
@@ -60,10 +60,6 @@ function Flow(props, network, indexMap) {
         }
     };
 
-    this.getNode = function (id) {
-        return this.network[this.indexMap[id]];
-    };
-
     this.constantFlowCoeff = function(){
         var sum = 0;
         _.forEach(this.edges, function(edge, i){
@@ -76,7 +72,7 @@ function Flow(props, network, indexMap) {
         var sumInTotal = 0;
         var hasOverflow = false;
         var that = this;
-        if (this.edges.length > 0) {
+        if (this.edges && this.edges.length > 0) {
             var sourceNodes = this.sourceNodes();
             var cfc = this.constantFlowCoeff();
             var avFlow = (this.flowRate - this.flowRate/cfc) / 3600;
@@ -113,7 +109,7 @@ function Flow(props, network, indexMap) {
     this.sourceNodes = function () {
         var result = {};
         this.edges.map(function(edge){
-            var sourceNode = this.getNode(edge.source);
+            var sourceNode = this.network.getNode(edge.source);
             if (sourceNode.type == 'concurrent' && !edge.hasOwnProperty('secondary')) {
                 sourceNode = sourceNode.primary;
             }
@@ -170,8 +166,6 @@ function Flow(props, network, indexMap) {
 
     // store pointer to whole network
     this.network         = network;
-    this.indexMap        = indexMap;
-
 
 }
 

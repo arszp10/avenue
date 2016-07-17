@@ -1,7 +1,7 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function FreeWay(options, network, indexMap){
+function FreeWay(options, network){
     Flow.apply(this, arguments);
 
     this.calc = function (){

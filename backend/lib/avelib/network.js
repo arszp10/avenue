@@ -70,7 +70,7 @@ function Network(request) {
         if (node.type == 'intersection') {
             that.crIndexMap[node.id] = i;
         }
-        network[i] = new objects[node.type](node, this);
+        network[i] = new objects[node.type](node, that);
     });
 
     this.network = network;
@@ -129,10 +129,11 @@ Network.prototype.traceRoute = function(nodes, w, trace){
 
 Network.prototype.simulate = function(numberOfIteration){
     var sum = 0;
+    var that = this;
     for (var i = 0; i < numberOfIteration; i++) {
         _.forEach(this.network, function(node){
-            if (this.outterNodes.indexOf(node.id) > -1 && i > 0) {
-                continue;
+            if (that.outterNodes.indexOf(node.id) > -1 && i > 0) {
+                return;
             }
             node.calc();
             if (i == numberOfIteration - 1){

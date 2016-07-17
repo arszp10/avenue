@@ -35,7 +35,7 @@
             return action('POST:/api/model/optimize/offsets', data, handlers.offsetsOptimize, options);
         },
         phasesOptimize: function(data, options) {
-            return action('POST:/api/model/optimize/phases', data, handlers.phasesOptimize, options);
+            return action('POST:/api/model/optimize/splits', data, handlers.phasesOptimize, options);
         },
 
         createModel: function(data, options) {

@@ -2,7 +2,7 @@ var _ = require('lodash');
 var Flow = require('./flow');
 var model = require('./model');
 
-function EntranceRamp(options, network, indexMap){
+function EntranceRamp(options, network){
     this.secondary = {};
     var primaryEdges = [];
     var secondaryEdges =[];
@@ -27,8 +27,8 @@ function EntranceRamp(options, network, indexMap){
     sOptions.saturationFlowRate = options.secondaryFlowSaturationFlowRate;
     sOptions.flowRate = this.secondaryFlowRate;
 
-    Flow.apply(this, [pOptions, network, indexMap]);
-    Flow.apply(this.secondary, [sOptions, network, indexMap]);
+    Flow.apply(this, [pOptions, network]);
+    Flow.apply(this.secondary, [sOptions, network]);
 
     this.calc = function (){
         this.secondary.initInFlow();

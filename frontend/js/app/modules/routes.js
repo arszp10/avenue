@@ -50,7 +50,7 @@
     Route.prototype.newPointLine =  function(node){
         return {
             id: node.id,
-            carriages: node.carriages
+            freeways: node.freeways
         };
         return this;
     };
@@ -145,10 +145,10 @@
             var route = cyRoutePath.nodes().jsons()
                 .map(function(v){ return v.data })
                 .filter(function(val){
-                    return (val.type == 'stopline' && val.hasOwnProperty('parent')) || val.type == 'carriageway';
+                    return (val.type == 'stopline' && val.hasOwnProperty('parent')) || val.type == 'freeway';
                 });
             var prevCw = {
-                carriages: []
+                freeways: []
             };
             for (var i=0; i< route.length; i++) {
                 if (route[i].type == 'stopline') {
@@ -157,13 +157,13 @@
                         prevCw = false;
                     }
                 }
-                if (route[i].type == 'carriageway') {
+                if (route[i].type == 'freeway') {
                     if ( prevCw === false) {
                         prevCw = {
-                            carriages: [route[i].id]
+                            freeways: [route[i].id]
                         }
                     } else {
-                        prevCw.carriages.push(route[i].id);
+                        prevCw.freeways.push(route[i].id);
                     }
                 }
             }
@@ -175,8 +175,8 @@
 
             route.points.forEach(function(point) {
 
-                point.length = point.forward.hasOwnProperty('carriages')
-                    ? point.forward.carriages.reduce(function (sum, cwId) {
+                point.length = point.forward.hasOwnProperty('freeways')
+                    ? point.forward.freeways.reduce(function (sum, cwId) {
                         return sum + cy.getElementById(cwId).data('length');
                       }, 0)
                     : 0;
@@ -188,9 +188,9 @@
                     var crossroad = cy.getElementById(point.id).data();
                     point.name = crossroad.name;
                     point[direction].tag = stopline.tag;
-                    point[direction].routeTime =  point[direction].hasOwnProperty('carriages')
-                        ? point[direction].carriages.reduce(function (sum, cwId) {
-                                return sum + cy.getElementById(cwId).data('routeTime');
+                    point[direction].travelTime =  point[direction].hasOwnProperty('freeways')
+                        ? point[direction].freeways.reduce(function (sum, cwId) {
+                                return sum + cy.getElementById(cwId).data('travelTime');
                             }, 0)
                         : 0;
 
@@ -238,7 +238,7 @@
                 var sl1 = route.points[i];
                 var sl2 = route.points[i + 1];
                 var state = 'end-block';
-                var tpr = direction == 'forward' ? sl2[direction].routeTime : - sl1[direction].routeTime;
+                var tpr = direction == 'forward' ? sl2[direction].travelTime : - sl1[direction].travelTime;
                 var y1 = sl1.geoOffset;
                 var y2 = sl2.geoOffset;
 

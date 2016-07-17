@@ -114,9 +114,9 @@
             cycleLength: 100,
             flowRate: 900,
             saturationFlowRate: 1800,
-            routeTime: 20,
+            travelTime: 20,
             length: 300,
-            dispersion: 0.5
+            platoonDispersion: 0.5
         },
         point: {
             icon: '\uf22d',

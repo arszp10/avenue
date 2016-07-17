@@ -85,14 +85,14 @@
             var name = '...';
             var grayType = '';
 
-            if (data.type != 'crossRoad') {
-                grayType = '    <div class="node-type">'+data.type+'</div>';
-                icon = data.icon;
-                tag = data.tag.length == 0 ? 'no-name' : data.tag;
-                name =  data.name == undefined ? '(no parent)' : data.name;
+            if (data.type != 'intersection') {
+                grayType = '<div class="node-type">' + data.type + '</div>';
+                icon     = data.icon;
+                tag      = data.tag.length == 0 ? 'no-name' : data.tag;
+                name     = data.name == undefined ? '(no parent)' : data.name;
             } else {
                 icon = '<i class="fa fa-object-group"></i>';
-                tag = 'crossroad';
+                tag  = 'intersection';
                 name =  data.name;
             }
 
@@ -115,26 +115,26 @@
                 '</table>';
         },
         nodeCommonProps:        function(data){
-            var sign = data.constantIntensity > 0 ? '+' : '';
+            var sign = data.constantFlowRate > 0 ? '+' : '';
             var className = 'text-default';
-            if (data.constantIntensity > 0) { className = 'text-success';}
-            if (data.constantIntensity < 0) { className = 'text-danger';}
+            if (data.constantFlowRate > 0) { className = 'text-success';}
+            if (data.constantFlowRate < 0) { className = 'text-danger';}
 
             return '<table class="table table-condensed table-striped">' +
                 '<tbody><tr>' +
-                '    <td>Capacity</td>' +
-                '    <td class="text-right">' + data.capacity + '</td><td class="measure-unit">v/h</td>' +
+                '    <td>Saturation flow rate</td>' +
+                '    <td class="text-right">' + data.saturationFlowRate + '</td><td class="measure-unit">v/h</td>' +
                 '</tr><tr>' +
-                '    <td>Average Intensity</td>' +
-                '    <td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">v/h</td>' +
+                '    <td>Flow rate</td>' +
+                '    <td class="text-right">' + data.flowRate + '</td><td class="measure-unit">v/h</td>' +
                 '</tr><tr>' +
-                '    <td>Constant comp. of intensity</td>' +
-                '    <td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">v/h</td>' +
+                '    <td>Constant flow rate</td>' +
+                '    <td class="text-right"><span class="'+className+'">' + sign + data.constantFlowRate + '</span></td><td class="measure-unit">v/h</td>' +
                 '</tr></tbody>' +
                 '</table>';
         },
         locateEditButtons:      function(data) {
-            var cls = (data.type !== 'crossRoad') ? 'btn-edit-node' : 'btn-edit-cross-road';
+            var cls = (data.type !== 'intersection') ? 'btn-edit-node' : 'btn-edit-cross-road';
             return '<table><tr data-id="' + data.id + '"><td>' +
                 '<button class="btn btn-default btn-pan-tonode"><i class="fa fa-crosshairs"></i> Locate</button>&nbsp;&nbsp;' +
                 '<button class="btn btn-default ' + cls + '"><i class="fa fa-edit"></i> Edit <span class="caret"></span></button>' +

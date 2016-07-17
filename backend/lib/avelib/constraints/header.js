@@ -5,7 +5,7 @@ module.exports = {
     type: {
         presence: true,
             inclusion: {
-            within: ['intersection', 'stopline', 'freeeway', 'point', 'bottleneck', 'conflictingApproach', 'entranceRamp'],
+            within: ['intersection', 'stopline', 'freeway', 'point', 'bottleneck', 'conflictingApproach', 'entranceRamp'],
                 message: "^ Node type not supported"
         }
     }
