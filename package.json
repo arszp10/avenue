@@ -4,9 +4,9 @@
   "description": "The Avenue2.0 traffic model",
   "main": "js/app.js",
   "scripts": {
-    "start": "gulp build && node backend/app"
+    "start": "gulp build && node backend/app",
+    "generate-apidoc": "./node_modules/.bin/jsdoc backend/routes/api.js -d backend/public/api/docs"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/kuzinmv/avenue.git"
@@ -21,6 +21,7 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "jade": "^1.11.0",
+    "jsdoc": "^3.4.0",
     "lodash": "4.1.0",
     "mailer": "^0.6.7",
     "mongoose": "^4.4.7",

@@ -291,7 +291,9 @@
                 if (! edges.hasOwnProperty(v.data('target'))) {
                     edges[v.data('target')] = [];
                 };
-                edges[v.data('target')].push(v.data());
+                var edgeData = v.data();
+                delete  edgeData.id;
+                edges[v.data('target')].push(edgeData);
             });
 
             elems = this.nodes();
@@ -301,7 +303,18 @@
                     return
                 }
                 item = v.data();
-                item.edges = edges[v.data('id')];
+                if (edges[v.data('id')]) {
+                    item.edges = edges[v.data('id')];
+                }
+                delete item.icon;
+                delete item.color;
+                delete item.constantFlowRate;
+
+                if (item.type == 'stopline' && !item.hasOwnProperty('parent')) {
+                    delete item.greenPhases;
+                    delete item.greenOffset1;
+                    delete item.greenOffset2;
+                }
                 map.push(item);
             });
             return map;

@@ -104,7 +104,7 @@
                 var $icon = $(this).find('i.fa');
                     $icon.addClass('fa-spin');
                 cy.nodes().removeClass('has-error');
-                api.modelExecute({data: data}, $icon);
+                api.modelExecute({nodes: data}, $icon);
             });
 
             controls.buttons.btnOffsetsOptimize.click(function () {
@@ -112,7 +112,7 @@
                 var $icon = controls.buttons.btnCalc.find('i.fa');
                 $icon.addClass('fa-spin');
                 cy.nodes().removeClass('has-error');
-                api.offsetsOptimize({data: data}, $icon);
+                api.offsetsOptimize({nodes: data}, $icon);
             });
 
             controls.buttons.btnSplitsOptimize.click(function () {
@@ -120,7 +120,7 @@
                 var $icon = controls.buttons.btnCalc.find('i.fa');
                 $icon.addClass('fa-spin');
                 cy.nodes().removeClass('has-error');
-                api.phasesOptimize({data: data}, $icon);
+                api.phasesOptimize({nodes: data}, $icon);
             });
 
 

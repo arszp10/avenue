@@ -154,7 +154,7 @@
                 : '<i class="fa fa-check-circle text-success"></i>';
 
             var no = data.isCongestion ? '<span class="text-danger">C': '<span class="text-success">No c';
-            return '<hr><h4>Modeling results</h4>' +
+            return '<hr><h4>Simulation results</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
                 '    <tr>' +
                 '        <td>Delay</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">v*h/h</td>' +

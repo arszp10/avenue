@@ -49,6 +49,19 @@ function validateRequest(req, res, next) {
     next(); return;
 }
 
+/**
+ * Represents a book.
+ * @constructor
+ * @param {string} title - The title of the book.
+ * @param {string} author - The author of the book.
+ *
+ *  @namespace
+ * @property {object}  defaults               - The default values for parties.
+ * @property {number}  defaults.players       - The default number of players.
+ * @property {string}  defaults.level         - The default level for the party.
+ * @property {object}  defaults.treasure      - The default treasure.
+ * @property {number}  defaults.treasure.gold - How much gold the party starts with.
+ */
 module.exports = function(app, config) {
 
     var transporter = nodemailer.createTransport(config.mailTransportOptions);
@@ -112,8 +125,11 @@ module.exports = function(app, config) {
         });
     });
 
+
+
+
     app.post('/api/model/execute', validateRequest,  function (req, res) {
-        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+        var bodyData = _.cloneDeepWith(req.body.nodes, coerce);
         res.json(
             responses.modelSimulationSuccess(
                 avenueLib.simulate(bodyData)
@@ -121,7 +137,7 @@ module.exports = function(app, config) {
     });
 
     app.post('/api/model/optimize/offsets', validateRequest, function (req, res) {
-        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+        var bodyData = _.cloneDeepWith(req.body.nodes, coerce);
         res.json(
             responses.modelSimulationSuccess(
                 avenueLib.optimizeOffsets(bodyData)
@@ -129,7 +145,7 @@ module.exports = function(app, config) {
     });
 
     app.post('/api/model/optimize/splits', validateRequest, function (req, res) {
-        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+        var bodyData = _.cloneDeepWith(req.body.nodes, coerce);
         res.json(
             responses.modelSimulationSuccess(
                 avenueLib.optimizeSplits(bodyData)
@@ -229,4 +245,122 @@ module.exports = function(app, config) {
 
 
     });
+
+};
+
+
+var example = {
+
+    nodes: [
+        {
+            "type": "point",
+            "id": "sehh5gug4tz751h2",
+            "tag": "",
+            "cycleLength": 100,
+            "flowRate": 900,
+            "saturationFlowRate": 1800,
+            "edges": [{
+                "source": "yh5bn7i24xjjqwmq",
+                "target": "sehh5gug4tz751h2",
+                "portion": 900
+            }]
+        },  {
+            "type": "stopline",
+            "id": "bu14ipfs608kt9fq",
+            "tag": "",
+            "cycleLength": 100,
+            "flowRate": 900,
+            "saturationFlowRate": 1800,
+            "intervals": [[0, 20], [40, 55]],
+            "edges": [{
+                "source": "315ultyg379j41nn",
+                "target": "bu14ipfs608kt9fq",
+                "portion": 900
+            }]
+        }, {
+            "type": "freeway",
+            "id": "qp8fi01xz48zfbub",
+            "tag": "",
+            "cycleLength": 100,
+            "flowRate": 900,
+            "saturationFlowRate": 1800,
+            "length": 300,
+            "travelTime": 20,
+            "platoonDispersion": 0.5,
+            "edges": [{
+                "source": "yh5bn7i24xjjqwmq",
+                "target": "qp8fi01xz48zfbub",
+                "id": "ele22",
+                "secondary": "true",
+                "portion": 500
+            }]
+        }, {
+            "type": "bottleneck",
+            "id": "0mg1yowyocz9tesa",
+            "tag": "",
+            "cycleLength": 100,
+            "flowRate": 900,
+            "saturationFlowRate": 2000
+        }, {
+            "type": "conflictingApproach",
+            "id": "yh5bn7i24xjjqwmq",
+            "tag": "",
+            "cycleLength": 100,
+            "flowRate": 900,
+            "saturationFlowRate": 1800,
+            "secondaryFlowSaturationFlowRate": 1800,
+            "edges": [{
+                "source": "0mg1yowyocz9tesa",
+                "target": "yh5bn7i24xjjqwmq",
+                "portion": 500
+            }, {
+                "source": "r2082od4yu20ql6n",
+                "target": "yh5bn7i24xjjqwmq",
+                "secondary": "true",
+                "portion": 500
+            }]
+        }, {
+            "type": "entranceRamp",
+            "id": "315ultyg379j41nn",
+            "tag": "",
+            "cycleLength": 100,
+            "flowRate": 900,
+            "saturationFlowRate": 1800,
+            "secondaryFlowSaturationFlowRate": 1800,
+            "edges": [{
+                "source": "0mg1yowyocz9tesa",
+                "target": "315ultyg379j41nn",
+                "id": "ele7",
+                "portion": 400
+            }, {
+                "source": "r2082od4yu20ql6n",
+                "target": "315ultyg379j41nn",
+                "secondary": "true",
+                "portion": 400
+            }]
+        }, {
+            "type": "intersection",
+            "id": "zb5bapgzzl947i89",
+            "name": "Intersection #1",
+            "cycleLength": 100,
+            "offset": 44,
+            "phases": [
+                {"tag": "ph-1", "length": 50, "minLength": 15},
+                {"tag": "ph-2", "length": 50, "minLength": 15}
+            ]
+        }, {
+            "type": "stopline",
+            "id": "r2082od4yu20ql6n",
+            "parent": "zb5bapgzzl947i89",
+            "tag": "",
+            "cycleLength": 100,
+            "flowRate": 900,
+            "saturationFlowRate": 1800,
+            "greenOffset1": 0,
+            "greenOffset2": 0,
+            "intervals": [[0, 20], [40, 55]],
+            "greenPhases": [true, false]
+
+        }
+    ]
 };
