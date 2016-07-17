@@ -55,11 +55,11 @@
             controls.buttons.btnSelectMode.on('click', this.cySelectionMode);
 
             controls.buttons.btnAddStopline.on('click', this.nodesAddMode);
-            controls.buttons.btnAddCarriageway.on('click', this.nodesAddMode);
+            controls.buttons.btnAddFreeway.on('click', this.nodesAddMode);
             controls.buttons.btnAddPoint.on('click', this.nodesAddMode);
             controls.buttons.btnAddBottleneck.on('click', this.nodesAddMode);
-            controls.buttons.btnAddConcurrent.on('click', this.nodesAddMode);
-            controls.buttons.btnAddConcurrentMerge.on('click', this.nodesAddMode);
+            controls.buttons.btnAddConflictingApproach.on('click', this.nodesAddMode);
+            controls.buttons.btnAddEntranceRamp.on('click', this.nodesAddMode);
 
             controls.buttons.btnHorizontalAlign.click(function () { cy.aveAlignSelected('y'); });
             controls.buttons.btnVerticalAlign.click(function () { cy.aveAlignSelected('x'); });
@@ -115,7 +115,7 @@
                 api.offsetsOptimize({data: data}, $icon);
             });
 
-            controls.buttons.btnPhasesOptimize.click(function () {
+            controls.buttons.btnSplitsOptimize.click(function () {
                 var data = cy.avePrepareCalcRequest();
                 var $icon = controls.buttons.btnCalc.find('i.fa');
                 $icon.addClass('fa-spin');
@@ -336,17 +336,17 @@
             /**
              *  Crossroad modal events
              */
-            controls.inputs.inputCrossroadOffset = $('#inputCrossroadOffset').slider({
+            controls.inputs.inputIntersectionOffset = $('#inputIntersectionOffset').slider({
                 max: 100,
                 value: 0,
                 tooltip: 'always'
             });
-            controls.panels.crossRoadModal.on('shown.bs.modal', function () {
-                controls.inputs.inputCrossroadOffset.slider('relayout');
+            controls.panels.intersectionModal.on('shown.bs.modal', function () {
+                controls.inputs.inputIntersectionOffset.slider('relayout');
             });
-            controls.buttons.btnsCrossFormPhasesCount.click(function () {
+            controls.buttons.btnsIntersectionFormPhasesCount.click(function () {
                 var cols = $(this).data('cols');
-                controls.buttons.btnsCrossFormPhasesCount.removeClass('ph-selected');
+                controls.buttons.btnsIntersectionFormPhasesCount.removeClass('ph-selected');
                 $(this).addClass('ph-selected');
                 controls.panels.tblPhasesBody.find('input[type="text"]').prop('disabled', true);
                 controls.panels.tblPhasesBody.find('input[type="checkbox"]').iCheck('disable');
@@ -355,11 +355,11 @@
                     controls.panels.tblPhasesBody.find('.ph-col-' + v + ' input[type="checkbox"]').iCheck('enable');
                 });
             });
-            controls.buttons.btnSaveCrossroadData.click(function () {
-                var nodeId = controls.panels.crossRoadModal.data('id');
+            controls.buttons.btnSaveIntersectionData.click(function () {
+                var nodeId = controls.panels.intersectionModal.data('id');
 
                 var tblPhasesBody = controls.panels.tblPhasesBody;
-                var phasesCount = controls.panels.crossRoadModal.find('.ph-selected').data('count');
+                var phasesCount = controls.panels.intersectionModal.find('.ph-selected').data('count');
                 var phases = [];
                 var tag = 0;
                 var pLength = 0;
@@ -374,8 +374,8 @@
                         minLength: maxLength ? parseInt(maxLength) : 0
                     });
                 }
-                cy.getElementById(nodeId).data('name', controls.inputs.inputCrossroadName.val());
-                cy.getElementById(nodeId).data('offset', controls.inputs.inputCrossroadOffset.slider('getValue'));
+                cy.getElementById(nodeId).data('name', controls.inputs.inputIntersectionName.val());
+                cy.getElementById(nodeId).data('offset', controls.inputs.inputIntersectionOffset.slider('getValue'));
                 cy.getElementById(nodeId).data('phases', phases);
 
                 tblPhasesBody.find('tr.stop-line-row').each(function () {
@@ -387,7 +387,7 @@
                     }
                     cy.getElementById($tr.data('id')).data('greenPhases', green);
                 });
-                controls.panels.crossRoadModal.modal('hide');
+                controls.panels.intersectionModal.modal('hide');
             });
 
         },
@@ -466,11 +466,11 @@
         },
         showCrossroadModal: function(node){
             var stopLines = cy.aveGetCrossroadStoplines(node.id);
-            var phasesCntButtons = controls.buttons.btnsCrossFormPhasesCount;
-            controls.panels.crossRoadModal.data('id', node.id);
+            var phasesCntButtons = controls.buttons.btnsIntersectionFormPhasesCount;
+            controls.panels.intersectionModal.data('id', node.id);
 
             phasesCntButtons.removeClass('ph-selected');
-            controls.panels.crossRoadModal
+            controls.panels.intersectionModal
                 .find('[data-count='+node.phases.length+']')
                 .addClass('ph-selected');
 
@@ -480,10 +480,10 @@
                 controls.panels.tblPhasesBody.append(templates.crossRoadTableCheckRow(v.data()));
                 that.initCheckBoxes(controls.panels.tblPhasesBody);
             });
-            controls.inputs.inputCrossroadName.val(node.name);
-            controls.inputs.inputCrossroadOffset.slider('setAttribute', 'max', node.cycleLength - 1);
-            controls.inputs.inputCrossroadOffset.slider('setValue', node.offset);
-            controls.panels.crossRoadModal.modal('show');
+            controls.inputs.inputIntersectionName.val(node.name);
+            controls.inputs.inputIntersectionOffset.slider('setAttribute', 'max', node.cycleLength - 1);
+            controls.inputs.inputIntersectionOffset.slider('setValue', node.offset);
+            controls.panels.intersectionModal.modal('show');
         },
         showSideNodeInfo: function(node) {
             controls.panels.nodeSearchResultlist.empty();

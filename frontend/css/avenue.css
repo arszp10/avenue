@@ -344,7 +344,7 @@ body.show-edge-input #input-edge-label {
     }
 }
 
-#crossroad-modal .modal-body {
+#intersection-modal .modal-body {
     /*height:400px;*/
 }
 
@@ -491,7 +491,7 @@ body.show-edge-input #input-edge-label {
     margin-right: 15px;
 }
 
-#input-crossroad-name {
+#input-intersection-name {
     border: 0px solid white;
     font-size: 18px;
     width: 500px;

@@ -75,9 +75,9 @@
             }
         },
 
-        crossRoad: {
+        intersection: {
             icon: '',
-            type: 'crossRoad',
+            type: 'intersection',
             name: '',
             cycleLength: 100,
             offset: 10,
@@ -100,20 +100,20 @@
             tag: '',
             color: 'primary',
             cycleLength: 100,
-            avgIntensity: 900,
-            capacity: 1800,
+            flowRate: 900,
+            saturationFlowRate: 1800,
             greenOffset1:0,
             greenOffset2:0,
             intervals: [[0,20], [40,55]],
             greenPhases: [true, false]
         },
-        carriageway:{
+        freeway:{
             icon:'\uf0ec',
-            type: 'carriageway',
+            type: 'freeway',
             tag: '',
             cycleLength: 100,
-            avgIntensity: 900,
-            capacity: 1800,
+            flowRate: 900,
+            saturationFlowRate: 1800,
             routeTime: 20,
             length: 300,
             dispersion: 0.5
@@ -123,34 +123,34 @@
             type: 'point',
             tag: '',
             cycleLength: 100,
-            avgIntensity: 900,
-            capacity: 1800
+            flowRate: 900,
+            saturationFlowRate: 1800
         },
         bottleneck: {
             icon: '\uf0b0',
             type: 'bottleneck',
             tag: '',
             cycleLength: 100,
-            avgIntensity: 900,
-            capacity: 2000
+            flowRate: 900,
+            saturationFlowRate: 2000
         },
-        concurrent: {
+        conflictingApproach: {
             icon: '\uf074',
-            type: 'concurrent',
+            type: 'conflictingApproach',
             tag: '',
             cycleLength: 100,
-            avgIntensity: 900,
-            capacity: 1800,
-            secondaryFlowCapacity: 1800
+            flowRate: 900,
+            saturationFlowRate: 1800,
+            secondaryFlowSaturationFlowRate: 1800
         },
-        concurrentMerge: {
+        entranceRamp: {
             icon: '\uf126',
-            type: 'concurrentMerge',
+            type: 'entranceRamp',
             tag: '',
             cycleLength: 100,
-            avgIntensity: 900,
-            capacity: 1800,
-            secondaryFlowCapacity: 1800
+            flowRate: 900,
+            saturationFlowRate: 1800,
+            secondaryFlowSaturationFlowRate: 1800
         },
 
         interTact: {
