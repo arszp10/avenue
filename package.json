@@ -20,13 +20,11 @@
     "cookie-parser": "^1.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
-    "jade": "^1.11.0",
     "lodash": "4.1.0",
     "mailer": "^0.6.7",
     "mongoose": "^4.4.7",
     "mongoose-unique-validator": "^1.0.2",
     "nodemailer": "^2.4.1",
-    "socket.io": "1.4.4",
     "validate.js": "^0.9.0"
   },
   "devDependencies": {
