@@ -19,12 +19,10 @@ $ cd avenue
 $ npm install
 ```
 
-Минифицируем и склеим ресурсы (html, css, js, fonts)
+Минифицируем и склеим ресурсы (html, css, js, fonts). Все собранные файлы будут помещены в папку `avenue/backend/public`
 ```bash
 $ gulp build
 ```
-
-Все собранные файлы будут помещены в папку `avenue/backend/public`
 
 Запустите сервер
 ```bash
