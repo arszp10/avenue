@@ -24,13 +24,12 @@ $ npm install
 $ gulp build
 ```
 
-Запустите сервер
+Убедитесь что сервер MongoDB запущен и запустите сервер
 ```bash
 $ node backend/app
 ```
 
 Отройте в браузере
-
 ```
 http://localhost:9000
 ```
