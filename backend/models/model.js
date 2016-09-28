@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -37,7 +36,7 @@ modelSchema.pre('validate', function(next) {
 var Model = mongoose.model('Model', modelSchema);
 
 Model.findWithPages = function(p, ready){
-    var params = _.assign({
+    var params = Object.assign({
         page:  1,
         limit: 10,
         text:  '',

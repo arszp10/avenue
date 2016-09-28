@@ -18,8 +18,8 @@ function Competitor(options, network, indexMap){
     this.primaryIntensity  =  parseInt(primaryEdges[0].portion);
     this.secondaryIntensity  = parseInt(secondaryEdges[0].portion);
 
-    var pOptions = _.assign({}, options);
-    var sOptions = _.assign({}, options);
+    var pOptions = Object.assign({}, options);
+    var sOptions = Object.assign({}, options);
 
     pOptions.edges = primaryEdges;
     pOptions.avgIntensity = this.primaryIntensity;

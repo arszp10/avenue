@@ -16,7 +16,7 @@ function Flow(options, network, indexMap)
         intervals: [],
         edges: []
     };
-    var flow = _.assign({}, defaults, options);
+    var flow = Object.assign({}, defaults, options);
 
     this.id = flow.id;
     this.type = flow.type;

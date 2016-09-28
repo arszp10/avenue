@@ -23,7 +23,7 @@ function authenticateApi(req, res, next) {
     if (req.session.user_id) {
         next(); return;
     };
-    var query = _.assign({api_key:false, api_secret:false}, req.query);
+    var query = Object.assign({api_key:false, api_secret:false}, req.query);
     if (!query.api_key || !query.api_secret) {
         res.status(401);
         res.json(responses.wrongCredentials());
@@ -66,7 +66,7 @@ module.exports = function(app, config) {
                 return;
             }
 
-            var mail = _.assign({}, config.emailTemplates.activation);
+            var mail = Object.assign({}, config.emailTemplates.activation);
             var link = config.baseUrl + '/user/activate/' + newUser.activationKey;
             mail.to = newUser.email;
             mail.html = mail.html.split('{link}').join(link);

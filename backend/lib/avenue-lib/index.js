@@ -24,7 +24,7 @@ var phasesConstraints        = require('./constraints/phase-data');
 var stoplineConstraints      = require('./constraints/stopline');
 var extraConstraints         = require('./constraints/parametrized');
 
-_.assign(validate.validators, require('./validators/custom'));
+Object.assign(validate.validators, require('./validators/custom'));
 
 module.exports = {
     _errors : [],
