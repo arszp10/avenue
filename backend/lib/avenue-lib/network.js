@@ -47,22 +47,8 @@ function Network(request) {
         }
     });
 
-    var outterNodes = [];
-
-    _.forEach(network, function(node){
-        if (!node.hasOwnProperty('edges') && node.type != 'crossRoad') {
-            outterNodes.push(node.id);
-        }
-    });
-
-    if (outterNodes.length == 0) {
-        outterNodes.push(network[0].id);
-    }
-
-    this.outterNodes = outterNodes;
-
-    this.traceRoute(outterNodes, 0, []);
-    network.sort(function (a, b) { return a.weight - b.weight;});
+    this.weighNodes();
+    this.network.sort(function (a, b) { return a.weight - b.weight;});
 
     _.forEach(network, function(node, i){
         indexMap[node.id] = i;
@@ -75,6 +61,29 @@ function Network(request) {
     this.network = network;
     this.indexMap = indexMap;
 }
+
+
+Network.prototype.weighNodes = function () {
+    this.outterNodes = this.findOutterNodes();
+    this.traceRoute(this.outterNodes, 0, []);
+};
+
+
+Network.prototype.findOutterNodes = function () {
+    var outterNodes = [];
+
+    _.forEach(this.network, function(node){
+        if (!node.hasOwnProperty('edges') && node.type != 'crossRoad') {
+            outterNodes.push(node.id);
+        }
+    });
+
+    if (outterNodes.length == 0) {
+        outterNodes.push(network[0].id);
+    }
+    return outterNodes;
+};
+
 
 Network.prototype.json = function () {
     return this.network.map(function(node){
