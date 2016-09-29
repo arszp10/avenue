@@ -75,8 +75,6 @@ module.exports = function(app, config) {
             res.json(responses.entityCreatedSuccessfully('User', []));
         });
     });
-
-
     app.post('/api/user/sign-in', function (req, res) {
         User.findOne({email: req.body.email, active:true}, function (err, user) {
             if (user && user.authenticate(req.body.password)) {
@@ -113,25 +111,26 @@ module.exports = function(app, config) {
         });
     });
 
+
     app.post('/api/model/execute', validateModel,  function (req, res) {
         var bodyData = _.cloneDeepWith(req.body.data, coerce);
         res.json(
             responses.modelSimulationSuccess(
-                avenueLib.recalculate(bodyData)
+                avenueLib.simulate(bodyData)
         ));
     });
     app.post('/api/model/optimize/offsets', validateModel, function (req, res) {
         var bodyData = _.cloneDeepWith(req.body.data, coerce);
         res.json(
             responses.modelSimulationSuccess(
-                avenueLib.optimize(bodyData)
+                avenueLib.optimizeOffsets(bodyData)
         ));
     });
     app.post('/api/model/optimize/phases', validateModel, function (req, res) {
         var bodyData = _.cloneDeepWith(req.body.data, coerce);
         res.json(
             responses.modelSimulationSuccess(
-                avenueLib.optimizePhases(bodyData)
+                avenueLib.optimizeSplits(bodyData)
         ));
     });
 

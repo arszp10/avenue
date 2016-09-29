@@ -1,7 +1,7 @@
 var _      = require('lodash');
 var utils  = require('../utils/utils')();
 
-function Flow(options, network, indexMap)
+function Flow(options, network)
 {
     var defaults = {
         id: _.uniqueId(),
@@ -58,7 +58,6 @@ function Flow(options, network, indexMap)
     this.delay          = 0;
     this.greenSaturation = 0;
     this.network  = network;
-    this.indexMap = indexMap;
     this.sumInFlow = 0;
     this.sumOutFlow = 0;
 
@@ -96,9 +95,7 @@ function Flow(options, network, indexMap)
         }
     };
 
-    this.getNode = function (id) {
-        return this.network[this.indexMap[id]];
-    };
+
 
     this.constantFlowCoeff = function(){
         var sum = 0;
@@ -149,7 +146,7 @@ function Flow(options, network, indexMap)
     this._flowSourceNodes = function () {
         var result = {};
         this.edges.map(function(el){
-            var sourceNode = this.getNode(el.source);
+            var sourceNode = this.network.getNode(el.source);
             if (sourceNode.type == 'concurrent' && !el.hasOwnProperty('secondary')) {
                 sourceNode = sourceNode.primary;
             }

@@ -1,7 +1,7 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function CarriageWay(options, network, indexMap){
+function CarriageWay(options, network){
     Flow.apply(this, arguments);
 
     this.calc = function (){

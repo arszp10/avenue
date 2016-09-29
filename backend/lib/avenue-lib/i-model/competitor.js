@@ -2,7 +2,7 @@ var _ = require('lodash');
 var Flow = require('./flow');
 var model = require('./model');
 
-function Competitor(options, network, indexMap){
+function Competitor(options, network){
     this.primary = {};
 
     var primaryEdges = [];
@@ -29,8 +29,8 @@ function Competitor(options, network, indexMap){
     sOptions.avgIntensity = this.secondaryIntensity;
 
 
-    Flow.apply(this.primary, [pOptions, network, indexMap]);
-    Flow.apply(this, [sOptions, network, indexMap]);
+    Flow.apply(this.primary, [pOptions, network]);
+    Flow.apply(this, [sOptions, network]);
 
     this.calc = function(){
         this.initInFlow();

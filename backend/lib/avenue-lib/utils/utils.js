@@ -26,4 +26,15 @@ module.exports = function() {
         }
         return total;
     }
+
+    Array.prototype.minIndex3 = function () {
+        var a = this;
+        if (a[0] < a[1]) {
+            if (a[0] < a[2]) { return 0;}
+            return 2;
+        } else {
+            if (a[1] < a[2]) { return 1;}
+            return 2;
+        }
+    }
 };

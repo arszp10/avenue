@@ -1,14 +1,14 @@
 var Flow = require('./flow');
 var model = require('./model');
 
-function StopLine(options, network, indexMap){
+function StopLine(options, network){
     Flow.apply(this, arguments);
     this.parent = options.hasOwnProperty('parent')
         ? options.parent : false;
 
 
     this.phaseSaturation = function () {
-        var crossRoad = this.getNode(this.parent);
+        var crossRoad = this.network.getNode(this.parent);
         var cf = 0;
         var j = 0;
         var sat = 0;
@@ -38,7 +38,7 @@ function StopLine(options, network, indexMap){
             delay = this.delay;
             this.flipBack();
         }
-        var offset  = this.parent ? this.getNode(this.parent).offset : 0;
+        var offset  = this.parent ? this.network.getNode(this.parent).offset : 0;
         model.stopLine(this, offset);
         this.delay += delay;
         if (this.parent) {
