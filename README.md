@@ -1,6 +1,8 @@
-# Avenue - 2.0
+# Avenue 2.0
 
 Система моделирования транспортных потоков и оптимизации координированных режимов управления. 
+[Краткое описание принципов работы модели](https://docs.google.com/document/d/1mdmcT0b6X0agkceEUA5OEeeyhi6zV6zl3avihBE69j4/edit?usp=sharing)
+
 
 ## Installation
 
@@ -41,8 +43,3 @@ http://localhost:9000
 baseUrl:  'http://localhost:9000',
 database: 'mongodb://localhost/avenue-dev',
 ```
-
-## Описание модели
-
-[https://docs.google.com/document/d/1mdmcT0b6X0agkceEUA5OEeeyhi6zV6zl3avihBE69j4/edit?usp=sharing](https://docs.google.com/document/d/1mdmcT0b6X0agkceEUA5OEeeyhi6zV6zl3avihBE69j4/edit?usp=sharing)
-
