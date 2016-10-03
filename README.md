@@ -20,11 +20,17 @@ $ cd avenue
 ```bash
 $ npm install
 ```
+Возможно вам понадобится установить [gulp](http://gulpjs.com/)
+
+```bash
+$ sudo npm install gulp -g
+```
 
 Минифицируем и склеим ресурсы (html, css, js, fonts). Все собранные файлы будут помещены в папку `avenue/backend/public`
 ```bash
 $ gulp build
 ```
+
 
 Убедитесь что сервер MongoDB запущен и запустите сервер
 ```bash
