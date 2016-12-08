@@ -3,6 +3,13 @@
 Система моделирования транспортных потоков и оптимизации координированных режимов управления. 
 [Краткое описание принципов работы модели](https://docs.google.com/document/d/1mdmcT0b6X0agkceEUA5OEeeyhi6zV6zl3avihBE69j4/edit?usp=sharing)
 
+## Demo
+
+[Работающий проект](http://avenue-2p0.herokuapp.com/) на heroku (возможно придется подождать или обновить еще раз)
+```
+логин: test@user.com
+пароль: 123
+```
 
 ## Installation
 
