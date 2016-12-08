@@ -6,6 +6,8 @@
 ## Demo
 
 [Работающий проект](http://avenue-2p0.herokuapp.com/) на heroku (возможно придется подождать или обновить еще раз)
+
+вход: [http://avenue-2p0.herokuapp.com/sign-in](http://avenue-2p0.herokuapp.com/sign-in)
 ```
 логин: test@user.com
 пароль: 123
