@@ -286,6 +286,25 @@
             /**
              *  Node popup properies block related events
              */
+            controls.panels.addGreenProperty.mouseup(function(e){ e.stopPropagation(); });
+            $(document).on('click', 'a.btn-edit-add-green', function(e){
+                e.preventDefault();
+                //var nodeId = $(this).closest('tr').data('id');
+                //var target = cy.getElementById(nodeId).data();
+                controls.panels.addGreenProperty
+                    .css({ top: e.clientY + 17, left: e.clientX - 145})
+                    //.data("node", target.id)
+                    .show();
+            });
+
+            controls.buttons.btnAddGreenDone.click(function(){
+                controls.panels.addGreenProperty.hide();
+            });
+
+
+            /**
+             *  Node popup properies block related events
+             */
             controls.panels.pointProperty.mouseup(function(e){ e.stopPropagation(); });
             controls.inputs.inputsNodeProperty.on('change', function () {
                 var th = $(this);
@@ -364,14 +383,17 @@
                 var tag = 0;
                 var pLength = 0;
                 var maxLength = 0;
+                var intertact = 0;
                 for (var i = 1; i <= phasesCount; i++) {
                     tag = tblPhasesBody.find('input#ph-tag-' + i).val();
                     pLength = tblPhasesBody.find('input#ph-length-' + i).val();
                     maxLength = tblPhasesBody.find('input#ph-max-length-' + i).val();
+                    intertact = tblPhasesBody.find('input#ph-intertact-' + i).val();
                     phases.push({
                         tag: tag,
                         length: pLength ? parseInt(pLength) : 0,
-                        minLength: maxLength ? parseInt(maxLength) : 0
+                        minLength: maxLength ? parseInt(maxLength) : 0,
+                        intertact: intertact ? parseInt(intertact) : 0
                     });
                 }
                 cy.getElementById(nodeId).data('name', controls.inputs.inputCrossroadName.val());

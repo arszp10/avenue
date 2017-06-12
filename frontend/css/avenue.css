@@ -487,6 +487,7 @@ body.show-edge-input #input-edge-label {
     padding:5px 20px;
 }
 
+#btn-add-green-done ,
 #btn-point-property-done {
     margin-right: 15px;
 }
@@ -809,4 +810,8 @@ td.model-name-col .label {
 
 .li-route-name-dropdown {
     padding:5px;
+}
+
+.label.label-grey {
+    background-color: #cecece;
 }

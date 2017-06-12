@@ -2,42 +2,49 @@
     App.Templates = {
         crossRoadTablePhaseRow: function(data){
             var disAttr = '';
-            var row0 = '', row1 = '', row2 = '';
-            var l0, l1,l2;
+            var row0 = '', row1 = '', row2 = '', row3 = '';
+            var l0, l1,l2, l3;
             for (var i = 1; i<= 8; i++){
                 disAttr = '';
                 if (data[i-1] === undefined) {
                     disAttr = 'disabled';
-                    l0 = ''; l1 = ''; l2 = '';
+                    l0 = ''; l1 = ''; l2 = ''; l3 ='';
                 } else {
                     l0 = data[i-1].tag;
                     l1 = data[i-1].length;
                     l2 = data[i-1].minLength;
+                    l3 = data[i-1].intertact === undefined ? '' : data[i-1].intertact;
                 }
                 row0 = row0 + '<td class="ph-td ph-col-' + i + '"><input type="text" id="ph-tag-' + i + '" class="form-control input-sm" '+disAttr+' value="'+l0+'"></td>';
                 row1 = row1 + '<td class="ph-td ph-col-' + i + '"><input type="text" id="ph-length-' + i + '" class="form-control input-sm" '+disAttr+' value="'+l1+'"></td>';
                 row2 = row2 + '<td class="ph-td ph-col-' + i + '"><input type="text" id="ph-max-length-' + i + '" class="form-control input-sm" '+disAttr+' value="'+l2+'"></td>';
+                row3 = row3 + '<td class="ph-td ph-col-' + i + '"><input type="text" id="ph-intertact-' + i + '" class="form-control input-sm" '+disAttr+' value="'+l3+'"></td>';
             }
             var s =
                 '<tr><td class="col-sm-2 text-right"><label>Tag:</label></td>' + row0 + '</tr>' +
                 '<tr><td class="col-sm-2 text-right"><label>Length:</label></td>' + row1 + '</tr>' +
-                '<tr><td class="col-sm-2 text-right"><label>Minimal:</label></td>' +  row2 + '</tr>';
+                '<tr><td class="col-sm-2 text-right"><label>Minimal:</label></td>' +  row2 + '</tr>' +
+                '<tr><td class="col-sm-2 text-right"><label>Intertact:</label></td>' +  row3 + '</tr>';
             return s;
         },
         crossRoadTableCheckRow: function(data){
             var checkboxAttr = '';
+            var link = '';
             var s = '<tr class="stop-line-row" data-id="' + data.id + '">' +
                 '<td class="col-sm-2 text-right">' +
                 '<button type="button" class="btn btn-sm btn-stop-line btn-' + data.color + '"><span class="stop-line-icon">' + data.icon + '</span>&nbsp;' + data.tag + '</button></td>';
             for (var i = 1; i<= 8; i++){
                 checkboxAttr = '';
+                link = '&nbsp;<a href="#" class="btn-edit-add-green"><span class="label label-grey">3&nbsp;<span class="caret"></span></span></a>';
+
                 if (data.greenPhases[i-1] === true) {
                     checkboxAttr = 'checked';
                 }
                 if (data.greenPhases[i-1] === undefined) {
                     checkboxAttr = 'disabled';
+                    link = '';
                 }
-                s = s + '<td class="ph-td ph-col-' + i + '"><input type="checkbox" '+checkboxAttr+'></td>';
+                s = s + '<td class="ph-td ph-col-' + i + '"><input type="checkbox" '+checkboxAttr+'>' + link + '</td>';
             }
             s = s + '</tr>';
             return s;
