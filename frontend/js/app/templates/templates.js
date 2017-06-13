@@ -30,21 +30,29 @@
         crossRoadTableCheckRow: function(data){
             var checkboxAttr = '';
             var link = '';
+            var addGreen = '';
             var s = '<tr class="stop-line-row" data-id="' + data.id + '">' +
                 '<td class="col-sm-2 text-right">' +
                 '<button type="button" class="btn btn-sm btn-stop-line btn-' + data.color + '"><span class="stop-line-icon">' + data.icon + '</span>&nbsp;' + data.tag + '</button></td>';
             for (var i = 1; i<= 8; i++){
                 checkboxAttr = '';
-                link = '&nbsp;<a href="#" class="btn-edit-add-green"><span class="label label-grey">3&nbsp;<span class="caret"></span></span></a>';
 
                 if (data.greenPhases[i-1] === true) {
                     checkboxAttr = 'checked';
                 }
                 if (data.greenPhases[i-1] === undefined) {
                     checkboxAttr = 'disabled';
-                    link = '';
                 }
-                s = s + '<td class="ph-td ph-col-' + i + '"><input type="checkbox" '+checkboxAttr+'>' + link + '</td>';
+
+                if (!data.hasOwnProperty('additionalGreens') || !data.additionalGreens[i-1] || data.additionalGreens[i-1] == 0) {
+                    addGreen = '<span id="add-green-' + data.id + '-' + (i-1) + '" class="add-green-value" data-value="0"></span>';
+                } else {
+                    var value = parseInt(data.additionalGreens[i-1]);
+                    addGreen = '<span id="add-green-' + data.id + '-' + (i-1) + '" class="add-green-value" data-value="'+value+'">+'+value+'</span>';
+                }
+
+                link = '&nbsp;<a href="#" class="btn-edit-add-green" '+checkboxAttr+'>'+addGreen+'&nbsp;<span class="caret"></span></a>';
+                s = s + '<td class="ph-td ph-col-' + i + ' ph-col-checkbox"><input type="checkbox" '+checkboxAttr+'>' + link + '</td>';
             }
             s = s + '</tr>';
             return s;
@@ -68,7 +76,7 @@
             data.signals.forEach(function(v){
                 w = 100* v.length/data.cycleTime;
                 s +='<div class="signal signal-' + v.color + '" style="width:'+ w +'%"></div>';
-            })
+            });
             s += '</div>';
             return s;
         },

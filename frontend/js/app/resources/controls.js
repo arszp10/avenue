@@ -39,7 +39,8 @@
             inputNodeSearchForm:    '#input-node-search-form',
             inputModelSearch:        '#input-model-search',
             inputModelSearchForm:    '#input-model-search-form',
-            inputRouteName:          '#input-route-name'
+            inputRouteName:          '#input-route-name',
+            inputAddGreen:            '#input-add-green'
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',

@@ -30,6 +30,7 @@
             this.initCheckBoxes(controls.panels.body);
             controls.panels.body.on('mouseup', function(){
                 that.toggleNodePopupPanel(false);
+                that.toggleAddGreenPanel(false);
             });
 
             $(document).on('keyup', function(event){
@@ -141,7 +142,6 @@
                 }, $icon);
             });
 
-
             controls.buttons.btnAddRoute.click(function () {
                 controls.inputs.inputRouteName.val('');
             });
@@ -191,7 +191,6 @@
                 that.renderRoutesDropDown();
                 routes.drawRoute(route);
             });
-
 
             $(document).on('click', 'a.choose-route-link', function(){
                var inx = $(this).data('inx');
@@ -287,18 +286,30 @@
              *  Node popup properies block related events
              */
             controls.panels.addGreenProperty.mouseup(function(e){ e.stopPropagation(); });
+
             $(document).on('click', 'a.btn-edit-add-green', function(e){
                 e.preventDefault();
-                //var nodeId = $(this).closest('tr').data('id');
-                //var target = cy.getElementById(nodeId).data();
+                if ($(this).attr('disabled')) {
+                    return;
+                }
                 controls.panels.addGreenProperty
-                    .css({ top: e.clientY + 17, left: e.clientX - 145})
-                    //.data("node", target.id)
-                    .show();
+                    .css({ top: e.clientY + 17, left: e.clientX - 145});
+                that.toggleAddGreenPanel(true);
+                var $displayElement = $(this).find('span.add-green-value');
+                var value = $displayElement.data('value');
+                var id = $displayElement.attr('id');
+
+                controls.panels.addGreenProperty.data('object', id);
+                controls.inputs.inputAddGreen.val(value);
             });
 
             controls.buttons.btnAddGreenDone.click(function(){
-                controls.panels.addGreenProperty.hide();
+
+                var id = controls.panels.addGreenProperty.data('object');
+                var value =  +parseInt(controls.inputs.inputAddGreen.val()) || 0;
+                var text = value == 0 ? '' : '+' + value;
+                $('#'+id).data('value', value).text(text);
+                that.toggleAddGreenPanel(false);
             });
 
 
@@ -371,6 +382,7 @@
                 controls.panels.tblPhasesBody.find('input[type="checkbox"]').iCheck('disable');
                 cols.map(function (v) {
                     controls.panels.tblPhasesBody.find('.ph-col-' + v + ' input[type="text"]').prop('disabled', false);
+                    controls.panels.tblPhasesBody.find('.ph-col-' + v + ' a.btn-edit-add-green').attr('disabled', false);
                     controls.panels.tblPhasesBody.find('.ph-col-' + v + ' input[type="checkbox"]').iCheck('enable');
                 });
             });
@@ -402,12 +414,19 @@
 
                 tblPhasesBody.find('tr.stop-line-row').each(function () {
                     var $tr = $(this);
-                    var green = [];
+                    var greenPhases = [];
+                    var additionalGreens = [];
+
                     var inputs = $tr.find('td.ph-td:lt(' + phases.length + ') input[type="checkbox"]');
+                    var addGreen = $tr.find('td.ph-td:lt(' + phases.length + ') a.btn-edit-add-green span.add-green-value');
                     for (var i = 0; i < phases.length; i++) {
-                        green.push(inputs[i].checked);
+                        greenPhases.push(inputs[i].checked);
+                        additionalGreens.push($(addGreen[i]).data('value'));
                     }
-                    cy.getElementById($tr.data('id')).data('greenPhases', green);
+                    cy.getElementById($tr.data('id'))
+                        .data('greenPhases', greenPhases)
+                        .data('additionalGreens', additionalGreens);
+                    ;
                 });
                 controls.panels.crossRoadModal.modal('hide');
             });
@@ -418,8 +437,13 @@
         initCheckBoxes: function($el) {
             $el.find('input[type="checkbox"]').iCheck({ checkboxClass: 'icheckbox_minimal-blue' });
         },
+
         toggleNodePopupPanel: function(show){
             controls.panels.body.toggleClass('show-panel-point-property', show);
+        },
+
+        toggleAddGreenPanel: function(show){
+           controls.panels.body.toggleClass('show-panel-add-green', show);
         },
 
         renderRoutesDropDown: function(){

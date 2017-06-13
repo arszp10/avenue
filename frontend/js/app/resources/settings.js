@@ -105,7 +105,9 @@
             greenOffset1:0,
             greenOffset2:0,
             intervals: [[0,20], [40,55]],
-            greenPhases: [true, false]
+            greenPhases: [true, false],
+            additionalGreens: [0, 0]
+
         },
         carriageway:{
             icon:'\uf0ec',

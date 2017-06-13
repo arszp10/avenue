@@ -276,6 +276,7 @@ body.show-edge-input #input-edge-label {
     background-color: rgba(255,255,255,0.1) ;
 }
 
+.add-green-property,
 .panel-point-property {
     display:none;
     position:absolute;
@@ -289,7 +290,19 @@ body.show-edge-input #input-edge-label {
 .show-panel-point-property .panel-point-property{
     display: block;
 }
+.show-panel-point-property .add-green-property{
+    display:none;
+}
 
+
+.show-panel-add-green .add-green-property{
+    display: block;
+}
+.show-panel-add-green .panel-point-property {
+    display:none;
+}
+
+.add-green-property:before, .add-green-property:after,
 .panel-point-property:before, .panel-point-property:after {
     content: " ";
     display: block;
@@ -306,31 +319,36 @@ body.show-edge-input #input-edge-label {
     z-index: 9999;
 }
 
+.add-green-property:before,
 .panel-point-property:before {
     border-bottom-color: #dadada;
     margin-top: 4px;
 }
 
+.add-green-property .form-group,
 .panel-point-property .form-group {
     margin-bottom: 4px;
 }
-
+.add-green-property .form-group:last-child,
 .panel-point-property .form-group:last-child {
     margin-bottom: 0px;
 }
 
+.add-green-property label,
 .panel-point-property label {
     font-weight:normal;
     font-size: 12px;
     text-align: right;
 }
 
+.add-green-property .panel-body,
 .panel-point-property .panel-body {
      padding: 8px;
     -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 
+.add-green-property #input-node-type,
 .panel-point-property #input-node-type {
     display: block;
     margin-top: 5px;
@@ -455,6 +473,9 @@ body.show-edge-input #input-edge-label {
     border-radius: 5px;
 }
 
+.table-phases>tbody>tr>td.ph-col-checkbox {
+    text-align: left;
+}
 
 .menu-directions {
     width: 283px;
@@ -792,7 +813,6 @@ td.model-name-col .label {
     shape-rendering: crispEdges;
 }
 
-
 .diagram-panel{
     position:absolute;
     top:0px;
@@ -814,4 +834,16 @@ td.model-name-col .label {
 
 .label.label-grey {
     background-color: #cecece;
+}
+
+a.btn-edit-add-green,
+a.btn-edit-add-green:hover{
+    text-decoration: none;
+    color:#cccccc;
+}
+
+a.btn-edit-add-green span.add-green-value {
+    color:#5D942F;
+    font-size: 12px;
+    font-weight:bold;
 }
