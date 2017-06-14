@@ -4,38 +4,6 @@ var settings    = require('./settings');
 
 module.exports = {
 
-    signalDiagramDataOld: function(stopLine, crossRoad){
-        var i = 0, icolor = '', inext = 0, goff = 0;
-        var diagram = [];
-        var phCount =  crossRoad.phases.length;
-        var interTact = settings.interTact;
-        var prevGoff = 0;
-        for (i = 0; i < phCount; i++){
-            crossRoad.phases[i].saturation = 0;
-            icolor = stopLine.greenPhases[i] ? 'green' : 'red';
-            goff = stopLine.greenPhases[i]
-                ? parseInt(stopLine.greenOffset2)
-                : parseInt(stopLine.greenOffset1);
-            inext = (i + 1) % phCount;
-            if (stopLine.greenPhases[i] === stopLine.greenPhases[inext]) {
-                diagram.push({
-                    color : icolor,
-                    length : parseInt(crossRoad.phases[i].length)
-                });
-                continue;
-            }
-            diagram.push({
-                color : icolor,
-                length : parseInt(crossRoad.phases[i].length) - interTact[icolor].length + prevGoff + goff
-            });
-            diagram = diagram.concat(interTact[icolor].signals);
-            prevGoff = -goff;
-        }
-        diagram[0].length += prevGoff;
-        return diagram;
-    },
-
-
     readToGreenInterPhase: function(len, addGreen){
         var ipDefaults = settings.interPhaseDefaults;
         if (len < ipDefaults.totalLength) {
@@ -125,7 +93,6 @@ module.exports = {
             diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
         }
         return diagram;
-        //return this.offsetDiagram(diagram, crossRoad.offset, crossRoad.cycleTime);
     },
 
     redIntervals: function(stopLine, crossRoad){
