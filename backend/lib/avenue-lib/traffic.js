@@ -4,7 +4,7 @@ var settings    = require('./settings');
 
 module.exports = {
 
-    signalDiagramData: function(stopLine, crossRoad){
+    signalDiagramDataOld: function(stopLine, crossRoad){
         var i = 0, icolor = '', inext = 0, goff = 0;
         var diagram = [];
         var phCount =  crossRoad.phases.length;
@@ -35,6 +35,99 @@ module.exports = {
         return diagram;
     },
 
+
+    readToGreenInterPhase: function(len, addGreen){
+        var ipDefaults = settings.interPhaseDefaults;
+        if (len < ipDefaults.totalLength) {
+            len = ipDefaults.totalLength;
+        }
+        if (addGreen + ipDefaults.amber > len) {
+            addGreen = len - ipDefaults.amber;
+        }
+
+        var red = len - addGreen - ipDefaults.amber;
+        var amber = ipDefaults.amber;
+        var green = addGreen;
+
+        var signals = [];
+        if (red > 0) {
+            signals.push({ color: 'red', length: red });
+        }
+        signals.push({ color: 'amber', length: amber });
+        if (green > 0) {
+            signals.push({ color: 'green', length: green });
+        }
+        return {
+            length : len,
+            signals : signals
+        }
+
+    },
+    greenToRedInterPhase: function(len, addGreen){
+        var ipDefaults = settings.interPhaseDefaults;
+        if (len < ipDefaults.totalLength) {
+            len = ipDefaults.totalLength;
+        }
+        if (addGreen + ipDefaults.blink + ipDefaults.yellow > len) {
+            addGreen = len - (ipDefaults.blink + ipDefaults.yellow);
+        }
+
+        var green = addGreen;
+        var blink = ipDefaults.blink;
+        var yellow = ipDefaults.yellow;
+        var red = len - (ipDefaults.blink + ipDefaults.yellow + addGreen);
+        var signals = [];
+        if (green > 0) {
+            signals.push({ color: 'green', length: green });
+        }
+        signals.push({ color: 'blink', length: blink });
+        signals.push({ color: 'yellow', length: yellow });
+
+        if (red > 0) {
+            signals.push({ color: 'red', length: red });
+        }
+
+        return {
+            length : len,
+            signals : signals
+        }
+    },
+
+    signalDiagramData:  function(stopLine, crossRoad){
+        var i = 0, icolor = '', inext = 0;
+        var diagram = [];
+        var phCount =  crossRoad.phases.length;
+        var interTact ;
+
+        for (i = 0; i < phCount; i++){
+            icolor = stopLine.greenPhases[i] ? 'green' : 'red';
+            inext = (i + 1) % phCount;
+            if (stopLine.greenPhases[i] === stopLine.greenPhases[inext]) {
+                diagram.push({
+                    color : icolor,
+                    length : crossRoad.phases[i].length
+                });
+                continue;
+            }
+            var addGreen = stopLine.hasOwnProperty('additionalGreens')
+                ? stopLine.additionalGreens[i] : 0;
+            var interPhaseLength = crossRoad.phases[i].hasOwnProperty('intertact')
+                ? crossRoad.phases[i].intertact : 6;
+
+            interTact = stopLine.greenPhases[i]
+                ? this.greenToRedInterPhase(interPhaseLength, addGreen)
+                : this.readToGreenInterPhase(interPhaseLength, addGreen);
+
+            diagram.push({
+                color : icolor,
+                length : crossRoad.phases[i].length - interTact.length
+            });
+            diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
+        }
+        return diagram;
+        //return this.offsetDiagram(diagram, crossRoad.offset, crossRoad.cycleTime);
+    },
+
     redIntervals: function(stopLine, crossRoad){
         var diagram = this.signalDiagramData (stopLine, crossRoad);
         var intervals = [];
@@ -58,4 +151,4 @@ module.exports = {
         return intervals;
     }
 
-}
+};

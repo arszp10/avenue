@@ -1,4 +1,12 @@
 module.exports = {
+
+    interPhaseDefaults:{
+        amber: 3,
+        blink: 3,
+        yellow: 3,
+        totalLength: 6
+    },
+
     interTact: {
         red: {
             length: 6,
