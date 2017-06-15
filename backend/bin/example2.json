@@ -1,9 +1,50 @@
 {
   "data": [
     {
-      "icon": "",
+      "id": "z3bjk8hln6x88rxx",
+      "type": "crossRoad",
+      "name": "",
+      "cycleTime": 100,
+      "offset": 30,
+      "phases": [
+        {
+          "tag": "ph-1",
+          "length": 50,
+          "minLength": 25,
+          "intertact": 10
+        },
+        {
+          "tag": "ph-2",
+          "length": 50,
+          "minLength": 25,
+          "intertact": 10
+        }
+      ]
+    },
+    {
+      "id": "j36zhrox3tmk87y0",
+      "type": "crossRoad",
+      "name": "",
+      "cycleTime": 100,
+      "offset": 26,
+      "phases": [
+        {
+          "tag": "ph-1",
+          "length": 50,
+          "minLength": 25,
+          "intertact": 6
+        },
+        {
+          "tag": "ph-2",
+          "length": 50,
+          "minLength": 25,
+          "intertact": 6
+        }
+      ]
+
+    },
+    {
       "type": "carriageway",
-      "tag": "",
       "cycleTime": 100,
       "avgIntensity": 900,
       "capacity": 1800,
@@ -22,9 +63,7 @@
       ]
     },
     {
-      "icon": "",
       "type": "carriageway",
-      "tag": "",
       "cycleTime": 100,
       "avgIntensity": 900,
       "capacity": 1800,
@@ -43,53 +82,21 @@
       ]
     },
     {
-      "icon": "",
-      "type": "crossRoad",
-      "name": "",
-      "cycleTime": 100,
-      "offset": 30,
-      "phases": [
-        {
-          "tag": "ph-1",
-          "length": 50,
-          "minLength": 25,
-          "intertact": 10
-        },
-        {
-          "tag": "ph-2",
-          "length": 50,
-          "minLength": 25,
-          "intertact": 10
-        }
-      ],
-      "id": "z3bjk8hln6x88rxx",
-      "constantIntensity": "NaN"
-    },
-    {
-      "icon": "J",
       "type": "stopline",
-      "tag": "",
-      "color": "primary",
       "cycleTime": 100,
       "avgIntensity": 900,
       "capacity": 1800,
-      "intervals": [[0,20],[40,55]],
       "greenPhases": [false,true],
       "id": "kktenytskye8lltg",
       "constantIntensity": 900,
       "parent": "z3bjk8hln6x88rxx",
-      "name": "",
       "additionalGreens": [0,0]
     },
     {
-      "icon": "C",
       "type": "stopline",
-      "tag": "",
-      "color": "primary",
       "cycleTime": 100,
       "avgIntensity": 900,
       "capacity": 1800,
-      "intervals": [[0,20],[40,55]],
       "greenPhases": [false,true],
       "id": "0uqdfzudsnqlljqq",
       "constantIntensity": 0,
@@ -102,46 +109,17 @@
           "id": "ele1"
         }
       ],
-      "name": "",
       "additionalGreens": [2,2]
     },
     {
-      "icon": "",
-      "type": "crossRoad",
-      "name": "",
-      "cycleTime": 100,
-      "offset": 26,
-      "phases": [
-        {
-          "tag": "ph-1",
-          "length": 50,
-          "minLength": 25,
-          "intertact": 6
-        },
-        {
-          "tag": "ph-2",
-          "length": 50,
-          "minLength": 25,
-          "intertact": 6
-        }
-      ],
-      "id": "j36zhrox3tmk87y0",
-      "constantIntensity": "NaN"
-    },
-    {
-      "icon": "J",
       "type": "stopline",
-      "tag": "",
-      "color": "primary",
       "cycleTime": 100,
       "avgIntensity": 900,
       "capacity": 1800,
-      "intervals": [[0,20],[40,55]],
       "greenPhases": [true,false],
       "id": "ysrszmq1llb5lsbd",
       "constantIntensity": 0,
       "parent": "j36zhrox3tmk87y0",
-      "name": "",
       "edges": [
         {
           "source": "9r81wbrzetweksd0",
@@ -153,19 +131,14 @@
       "additionalGreens": [0,0]
     },
     {
-      "icon": "C",
       "type": "stopline",
-      "tag": "",
-      "color": "primary",
       "cycleTime": 100,
       "avgIntensity": 900,
       "capacity": 1800,
-      "intervals": [[0,20],[40,55]],
       "greenPhases": [true,false],
       "id": "fx294hty7fvep99q",
       "constantIntensity": 0,
       "parent": "j36zhrox3tmk87y0",
-      "name": "",
       "additionalGreens": [0,0]
     }
   ]
