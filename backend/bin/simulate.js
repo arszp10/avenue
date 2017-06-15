@@ -17,7 +17,19 @@ function coerce(str) {
 
 var fileName = process.argv[2];
 var contents = fs.readFileSync(fileName, 'utf8');
-var requestBodyData = _.cloneDeepWith(JSON.parse(contents), coerce);
+
+try {
+    var jsonData = JSON.parse(contents);
+}
+catch (e){
+    if(e instanceof SyntaxError) {
+        var err = { success: false,  message: 'Invalid JSON request',  data: {code: 500} };
+        console.log(JSON.stringify(err));
+        process.exit(1);
+    }
+}
+
+var requestBodyData = _.cloneDeepWith(jsonData, coerce);
 
 requestBodyData = requestBodyData.data;
 
