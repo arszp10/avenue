@@ -6,11 +6,12 @@
         var jqxhr = $.ajax({
             method: path[0],
             url: path[1],
-            data: data,
-            dataType: 'json'
+            //data: data,
+            dataType: 'json',
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=UTF-8'
         });
-        //data: JSON.stringify(data),
-        //contentType: 'application/json; charset=UTF-8'
+
 
         if (handler.hasOwnProperty('done')) {
             jqxhr.done(function(r){handler.done(r, handlerOptions)});
