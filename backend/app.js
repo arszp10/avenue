@@ -21,7 +21,7 @@ var db   = mongoose.connect(config.database);
 var app = express();
 
 app.set('views', __dirname + '/views');
-
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(cookieParser());
 

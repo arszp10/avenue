@@ -9,6 +9,8 @@
             data: data,
             dataType: 'json'
         });
+        //data: JSON.stringify(data),
+        //contentType: 'application/json; charset=UTF-8'
 
         if (handler.hasOwnProperty('done')) {
             jqxhr.done(function(r){handler.done(r, handlerOptions)});

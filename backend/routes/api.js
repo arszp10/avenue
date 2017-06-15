@@ -21,12 +21,14 @@ function coerce(str) {
 
 function authenticateApi(req, res, next) {
     if (req.session.user_id) {
-        next(); return;
+        next();
+        return;
     };
     var query = Object.assign({api_key:false, api_secret:false}, req.query);
     if (!query.api_key || !query.api_secret) {
         res.status(401);
         res.json(responses.wrongCredentials());
+        return;
     }
     var cond = {
         apiKey: query.api_key,
@@ -38,11 +40,16 @@ function authenticateApi(req, res, next) {
         }
         res.status(401);
         res.json(responses.wrongCredentials());
+        return;
     });
 }
 
+function requestBodyData(req) {
+    return _.cloneDeepWith(req.body.data, coerce);
+}
+
 function validateModel(req, res, next) {
-    var errors = avenueLib.validate(req.body.data);
+    var errors = avenueLib.validate(requestBodyData(req));
     if (errors.length == 0) {
         next(); return;
     }
@@ -112,22 +119,22 @@ module.exports = function(app, config) {
     });
 
 
-    app.post('/api/model/execute', validateModel,  function (req, res) {
-        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+    app.post('/api/model/execute', authenticateApi, validateModel,  function (req, res) {
+        var bodyData = requestBodyData(req);
         res.json(
             responses.modelSimulationSuccess(
                 avenueLib.simulate(bodyData)
         ));
     });
-    app.post('/api/model/optimize/offsets', validateModel, function (req, res) {
-        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+    app.post('/api/model/optimize/offsets',authenticateApi, validateModel, function (req, res) {
+        var bodyData = requestBodyData(req);
         res.json(
             responses.modelSimulationSuccess(
                 avenueLib.optimizeOffsets(bodyData)
         ));
     });
-    app.post('/api/model/optimize/phases', validateModel, function (req, res) {
-        var bodyData = _.cloneDeepWith(req.body.data, coerce);
+    app.post('/api/model/optimize/phases',authenticateApi, validateModel, function (req, res) {
+        var bodyData = requestBodyData(req);
         res.json(
             responses.modelSimulationSuccess(
                 avenueLib.optimizeSplits(bodyData)
@@ -209,7 +216,6 @@ module.exports = function(app, config) {
         );
 
     });
-
     app.get('/api/model/remove/:modelId', function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user_id;

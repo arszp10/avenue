@@ -11,6 +11,15 @@ module.exports = function(app){
         res.sendFile('errors/404.html', {root: __dirname + '/../public'});
     });
 
+    app.use(function (error, req, res, next) {
+        if (error instanceof SyntaxError) {
+            res.json( { success: false,  message: 'Invalid JSON request',  data: {code: 500} });
+            return;
+        } else {
+            next();
+        }
+    });
+
     //app.use(function(err, req, res, next){
     //    res.status(err.status || 500);
     //    if(isJson.test(req.get('accept'))) {
