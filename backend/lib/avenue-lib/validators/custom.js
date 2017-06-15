@@ -49,7 +49,7 @@ module.exports = {
         }
         var i = value.length;
         while (i--){
-            if (value[i] !== 'true' && value[i] !== 'false') {
+            if (value[i] !== true && value[i] !== false) {
                 return "must be Array of Boolean. Ex: [true, false, true]";
             }
         }

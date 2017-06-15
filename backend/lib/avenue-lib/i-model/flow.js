@@ -24,8 +24,8 @@ function Flow(options, network)
     this.tag = flow.tag;
     this.parent = flow.parent;
     this.greenPhases = flow.greenPhases;
-    this.greenOffset1 = flow.greenOffset1;
-    this.greenOffset2 = flow.greenOffset2;
+    //this.greenOffset1 = flow.greenOffset1;
+    //this.greenOffset2 = flow.greenOffset2;
     this.cycleTime      = parseInt(flow.cycleTime);
     this.avgIntensity   = parseInt(flow.avgIntensity);
     this.capacity       = parseInt(flow.capacity);
