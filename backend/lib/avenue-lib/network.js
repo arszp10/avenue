@@ -197,7 +197,7 @@ Network.prototype.optimizeSplits = function(){
         var maxSatEl = _.maxBy(crossRoad.phases, 'saturation');
         var minSatEl = _.minBy(crossRoad.phases, 'saturation');
         if (maxSatEl.saturation - minSatEl.saturation < 0.11) {
-            return this;
+            return that;
         }
         var maxInx = crossRoad.phases.indexOf(maxSatEl);
         var minInx = crossRoad.phases.indexOf(minSatEl);

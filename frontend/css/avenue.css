@@ -706,6 +706,22 @@ body.show-edge-input #input-edge-label {
     background: rgba(255,255,255, 0.1);
 }
 
+#api-credentials .input-group {
+    width: 170px;
+}
+
+#api-credentials .input-group-addon {
+    color: #999;
+    border-color: #eee;
+    background-color: transparent;
+}
+
+.form-control.input-api-key {
+    color: #f0f0f0;
+    background: rgba(255,255,255, 0.1);
+}
+
+
 .files-container {
     margin-top:50px;
 }

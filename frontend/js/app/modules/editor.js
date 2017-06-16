@@ -95,6 +95,8 @@
         initTopPanelEvents: function(){
             var cookie = JSON.parse($.cookie('_avenue').substr(2));
             controls.labels.labelMyAccountUsername.text(cookie.fullName);
+            controls.inputs.inputApiKey.val(cookie.apiKey);
+            controls.inputs.inputApiSecret.val(cookie.apiSecret);
 
             controls.buttons.btnsAddSampleItem.click(function(){
                 cy.avePaste([], samples[$(this).data('key')]);
@@ -656,7 +658,8 @@
             tab.parent().addClass('active');
             controls.panels.body
                 .removeClass('show-files show-network show-routes show-results show-source')
-                .addClass(tab.data('rel'))
+                .addClass(tab.data('rel'));
+            window.dispatchEvent(new Event('resize'));
         }
     }
 

@@ -24,7 +24,7 @@
             labelWelcomeUsername:   '#label-welcome-username',
             labelModelPagesStart:   '#label-model-pages-start',
             labelModelPagesFinish:   '#label-model-pages-finish',
-            labelModelPagesTotal:   '#label-model-pages-total',
+            labelModelPagesTotal:   '#label-model-pages-total'
         },
         inputs: {
             inputEdgeLabel:         '#input-edge-label',
@@ -40,7 +40,10 @@
             inputModelSearch:        '#input-model-search',
             inputModelSearchForm:    '#input-model-search-form',
             inputRouteName:          '#input-route-name',
-            inputAddGreen:            '#input-add-green'
+            inputAddGreen:            '#input-add-green',
+            inputApiKey:            '#input-api-key',
+            inputApiSecret:         '#input-api-secret'
+
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',

@@ -192,7 +192,7 @@
         modelRowMenu:function(data){
          return '<div class="btn-group">' +
                 '<a type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                '    <i class="fa fa-ellipsis-v"></i>' +
+                '    <i class="fa fa-cog"></i>' +
                 '</a>' +
                 '<ul class="dropdown-menu">' +
                 '<li><a href="/app/'+data._id+'"><i class="fa fa-folder-open-o fa-fw"></i> &nbsp;Open</a></li>' +

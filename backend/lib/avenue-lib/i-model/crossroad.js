@@ -4,7 +4,10 @@ function CrossRoad(options){
     this.cycleTime = parseInt(options.cycleTime);
     this.name = options.name;
     this.id = options.id;
-    this.phases = options.phases;
+    this.phases = options.phases.map(function(ph){
+        ph.saturation = 0;
+        return ph;
+    });
 
 
     this.calc = function (){

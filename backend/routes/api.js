@@ -89,9 +89,11 @@ module.exports = function(app, config) {
                 req.session.user_name = user.fullName;
                 req.session.user_email = user.email;
                 var c = {
-                    userId: user.id,
-                    fullName: user.fullName,
-                    email: user.email
+                    userId:    user.id,
+                    fullName:  user.fullName,
+                    email:     user.email,
+                    apiKey:    user.apiKey,
+                    apiSecret: user.apiSecret
                 };
                 res.cookie('_avenue', c);
                 res.json(responses.userLoginSuccessfully());
@@ -126,18 +128,20 @@ module.exports = function(app, config) {
                 avenueLib.simulate(bodyData)
         ));
     });
+    app.post('/api/model/optimize/phases', authenticateApi, validateModel, function (req, res) {
+        var bodyData = requestBodyData(req);
+        console.log();
+        res.json(
+            responses.modelSimulationSuccess(
+                avenueLib.optimizeSplits(bodyData)
+            ));
+    });
+
     app.post('/api/model/optimize/offsets',authenticateApi, validateModel, function (req, res) {
         var bodyData = requestBodyData(req);
         res.json(
             responses.modelSimulationSuccess(
                 avenueLib.optimizeOffsets(bodyData)
-        ));
-    });
-    app.post('/api/model/optimize/phases',authenticateApi, validateModel, function (req, res) {
-        var bodyData = requestBodyData(req);
-        res.json(
-            responses.modelSimulationSuccess(
-                avenueLib.optimizeSplits(bodyData)
         ));
     });
 

@@ -3,13 +3,10 @@
     {
       "id": "i6d2hpz71wahftiu",
       "type": "stopline",
-      "tag": "",
       "cycleTime": 100,
       "avgIntensity": 900,
       "capacity": 1800,
-      "intervals": [[0, 20], [40, 55]],
-      "greenPhases": [true, false],
-      "additionalGreens": [0, 0]
+      "intervals": [[0, 20], [40, 55]]
     }
   ]
 }
