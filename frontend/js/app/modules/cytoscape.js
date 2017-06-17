@@ -288,10 +288,11 @@
                 if(! v.isEdge()){
                     return
                 };
-                if (! edges.hasOwnProperty(v.data('target'))) {
-                    edges[v.data('target')] = [];
+                var target = v.data('target');
+                if (! edges.hasOwnProperty()) {
+                    edges[target] = [];
                 };
-                edges[v.data('target')].push(v.data());
+                edges[target].push(v.data());
             });
 
             elems = this.nodes();
@@ -302,6 +303,13 @@
                 }
                 item = v.data();
                 item.edges = edges[v.data('id')];
+
+                delete item.icon;
+                delete item.tag;
+                delete item.color;
+                delete item.greenOffset1;
+                delete item.greenOffset2;
+
                 map.push(item);
             });
             return map;

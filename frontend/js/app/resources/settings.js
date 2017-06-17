@@ -102,8 +102,6 @@
             cycleTime: 100,
             avgIntensity: 900,
             capacity: 1800,
-            //greenOffset1:0,
-            //greenOffset2:0,
             intervals: [[0,20], [40,55]],
             greenPhases: [true, false],
             additionalGreens: [0, 0]

@@ -7,9 +7,9 @@
             method: path[0],
             url: path[1],
             data: data,
-            dataType: 'json'
-            //data: JSON.stringify(data),
-            //contentType: 'application/json; charset=UTF-8'
+            dataType: 'json',
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=UTF-8'
         });
 
 

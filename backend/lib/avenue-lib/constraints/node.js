@@ -1,7 +1,7 @@
 module.exports = {
-    tag: {
-        length: {maximum: 32}
-    },
+    //tag: {
+    //    length: {maximum: 32}
+    //},
     cycleTime:{
         presence: true,
         numericality: {
