@@ -1,4 +1,4 @@
-var a =
+var asIs =
 {
     "HcmIntersection":[
         {
