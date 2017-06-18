@@ -303,13 +303,6 @@
                 }
                 item = v.data();
                 item.edges = edges[v.data('id')];
-
-                delete item.icon;
-                delete item.tag;
-                delete item.color;
-                delete item.greenOffset1;
-                delete item.greenOffset2;
-
                 map.push(item);
             });
             return map;
