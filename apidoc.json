@@ -1,15 +1,23 @@
 {
   "name": "Avenue 2.0 - документация API",
-  "version": "0.1.0",
-  "description": "... а если тут что-то написать ...",
+  "description": "Моделирование транспортных потоков и оптимизации координированных режимов управления.",
   "title": "Avenue 2.0 - документация API",
-  "url" : "http://avenue-app.com/api",
+  "url" : "http://avenue-2p0.herokuapp.com/api",
+  "header": {
+    "title": "Начало",
+    "filename": "backend/resources/header.md"
+  },
+  "footer": {
+    "title": "Примечания",
+    "filename": "backend/resources/footer.md"
+  },
   "order": [
     "StopLineExample",
     "CarriagewayExample",
     "BottleneckExample",
     "PointExample",
     "ConcurrentExample",
-    "ConcurrentMergeExample"
+    "ConcurrentMergeExample",
+    "CrossroadExample"
   ]
 }

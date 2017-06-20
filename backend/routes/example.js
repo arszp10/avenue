@@ -4,17 +4,24 @@ module.exports = function(app, config) {
 
     /**
      * @apiName StopLineExample
-     * @apiGroup  NodeTypes
+     * @apiGroup  Examples
      *
      * @api {post} /example/stopline Stopline
-     * @apiDescription Этот API вызов не делает никаких  вычислений или преобразований, он нужен лишь для того, чтобы показать
-     * пример объекта типа стоп-линия, который используется в теле запроса на [рассчет](#ancor) или [оптимизацию модели](link).
-     * То есть если передать в запросе на рассчет модели объект типа stopline, то ответ будет содержать объект описанный ниже.
+     * @apiDescription
      *
-     * ....  Красткое описание точки ....
+     * Точка типа `stopline` используется для моделирования процесса движения ТП на стоп-линии регулируемого перекрестка.
+     * Основной особенностью работы данной точки является накопление очереди на запрещающий сигнал светофора и ее разгрузка на разрешающий.
+     * Точка может работать в составе [перекрестка](#api-Examples-CrossroadExample) и тогда длительности сигналов рассчитываются на основе данных перекрестка.
+     *
+     * Этот API вызов не делает никаких  вычислений или преобразований, он нужен лишь для того, чтобы показать
+     * пример объекта типа стоп-линия, который используется в теле запроса на [рассчет](#ancor) или [оптимизацию модели](link).
+     * То есть если передать в запросе на рассчет модели объект типа `stopline`, то ответ будет содержать объект описанный ниже.
+     *
      *
      * @apiHeader {String} Content-Type=application/x-www-form-urlencoded  Параметры передаются в теле запроса либо в виде _JSON_, либо *URLENCODED*.
-     * Если вы передаете параметры в виде JSON. то значение заголовка должно быть `application/json`. `Важно!` Это правило применяется ко всем запросам описанным в данном документе.
+     * Если вы передаете параметры в виде JSON. то значение заголовка должно быть `application/json`.
+     *
+     * `Важно!` Это правило применяется ко всем запросам описанным в данном документе.
      *
      * @apiParam  {String} id Уникальный идентификатор точки.
      * @apiParam  {String} type тип объекта  `stopline` - для объекта(точки) типа стоп-линия. так же (crossRoad, carriageway, bottleneck, concurrent, concurrentMerge, point)
@@ -22,7 +29,7 @@ module.exports = function(app, config) {
      * @apiParam  {String} [parent] Идентификатор объекта типа `crossroad` -  перекресток, к которому относится данная стоп-линия.
      * @apiParam  {Number} cycleTime Длительность цикла (сек)
      * @apiParam  {Number} capacity Пропускная способность (авт/ч)
-     * @apiParam  {Number} avgIntensity Приведенная интенсивность (авт/ч) [Работающий проект](http://avenue-2p0.herokuapp.com/)
+     * @apiParam  {Number} avgIntensity Приведенная интенсивность (авт/ч) 
      * @apiParam  {Number} constantIntensity Приведенная интенсивность постоянного потока (авт/ч)
      *
      * @apiParam  {Boolean[]} [greenPhases] Если ключ `parent` присутствует то данный масив указывает цвета фаз, в которых разрешено движение, индекс занчения равен индексу фазы
@@ -65,7 +72,7 @@ module.exports = function(app, config) {
      *
      * @apiSuccess {Boolean} success Результат запроса (успешно/неуспешно).
      * @apiSuccess {String}  message Текстовое сообщение об ошибке.
-     * @apiSuccess {Array[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования(см ниже), так и список ошибок валидации модели.
+     * @apiSuccess {Object[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования(см ниже), так и список ошибок валидации модели.
      *
      *
      * @apiSuccess (Stopline response object) {String} id Уникальный идентификатор точки.
@@ -125,13 +132,16 @@ module.exports = function(app, config) {
 
     /**
      * @apiName CarriagewayExample
-     * @apiGroup  NodeTypes
-     *
+     * @apiGroup  Examples
      * @api {post} /example/carriageway Carriageway
-     * @apiDescription Этот API вызов не делает никаких  вычислений или преобразований, он нужен лишь для того, чтобы показать
+     *
+     * @apiDescription
+     * Точка типа `carriageway` используется для моделирования процесса движения ТП на перегоне(дороге) между двумя перекрестками или пересечениями.
+     * Особенностью данной точки явлеятся сглаживание функции интенсивности ТП, таким образом моделируется явление распада пачки по ходу движения.
+     *
+     * Этот API вызов не делает никаких вычислений или преобразований, он нужен лишь для того, чтобы показать
      * формат объекта типа перегон, который используется в теле запроса на [рассчет](#ancor) или [оптимизацию модели](link).
      *
-     * ....  Красткое описание точки ....
      *
      * @apiParam  {String} id Уникальный идентификатор точки.
      * @apiParam  {String} type тип объекта  `carriageway` - для объекта(точки) типа перегон.
@@ -146,7 +156,7 @@ module.exports = function(app, config) {
      * @apiParam  {Number} routeTime Время проезда (с)
      *
      * @apiParam  {Edge[]} [edges] Массив объектов типа `Edge`, свзяи *входящие* в данную точку.
-     * Развернутое описание объекта Edge [см. Stopline](#api-NodeTypes-StoplineExample).
+     * Развернутое описание объекта Edge [см. Stopline](#api-Examples-StoplineExample).
      *
 
      * @apiParamExample {json} Carriageway node example:
@@ -174,8 +184,8 @@ module.exports = function(app, config) {
      *
      * @apiSuccess {Boolean} success Результат запроса (успешно/неуспешно).
      * @apiSuccess {String}  message Текстовое сообщение об ошибке.
-     * @apiSuccess {Array[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
-     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-NodeTypes-StopLineExample),
+     * @apiSuccess {Object[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
+     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-Examples-StopLineExample),
      * только ключ `type` имеет значение `carriageway`.
      *
      */
@@ -201,16 +211,18 @@ module.exports = function(app, config) {
 
     /**
      * @apiName BottleneckExample
-     * @apiGroup  NodeTypes
+     * @apiGroup  Examples
      *
      * @api {post} /example/bottleneck Bottleneck
-     * @apiDescription Этот API вызов не делает никаких  вычислений или преобразований, он нужен лишь для того, чтобы показать
+     * @apiDescription Сужение (бутылочное горлышко), при превышении интенсивностью пропускной способности дороги, начинает скапливаться очередь и учитываться задержка в данной точке.
+     * Сужение может использоваться для объединения потоков на выходе из перекрестка. Любая точка кроме `point`, `concurrent`, `concurrentMerge` на входе ужк включает в себя сужение,
+     * так как мы можем привязать неограниченное число связей к точке и суммарный поток может превышать пропускную способность.
+     *
+     * Этот API вызов не делает никаких  вычислений или преобразований, он нужен лишь для того, чтобы показать
      * формат объекта типа "бутылочное горлышко", который используется в теле запроса на [рассчет](#ancor) или [оптимизацию модели](link).
      *
-     * ....  Красткое описание точки ....
      *
-     *
-     *  @apiParam  {String} id Уникальный идентификатор точки.
+     * @apiParam  {String} id Уникальный идентификатор точки.
      * @apiParam  {String} type тип объекта  `bottleneck` - для объекта(точки) типа "бутылочное горлышко".
      * @apiParam  {String} [tag] Ярлык пользователя для данного объекта
      * @apiParam  {String} [parent] Идентификатор объекта типа `crossroad` -  перекресток, к которому относится данная точка,
@@ -220,7 +232,7 @@ module.exports = function(app, config) {
      * @apiParam  {Number} avgIntensity Приведенная интенсивность (авт/ч)
      *
      * @apiParam  {Edge[]} [edges] Массив объектов типа `Edge`, свзяи *входящие* в данную точку.
-     * Развернутое описание объекта Edge [см. Stopline](#api-NodeTypes-StoplineExample).
+     * Развернутое описание объекта Edge [см. Stopline](#api-Examples-StoplineExample).
      *
 
      * @apiParamExample {json} Bottleneck node example:
@@ -245,8 +257,8 @@ module.exports = function(app, config) {
      *
      * @apiSuccess {Boolean} success Результат запроса (успешно/неуспешно).
      * @apiSuccess {String}  message Текстовое сообщение об ошибке.
-     * @apiSuccess {Array[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
-     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-NodeTypes-StopLineExample),
+     * @apiSuccess {Object[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
+     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-Examples-StopLineExample),
      * только ключ `type` имеет значение `bottleneck`.
      *
      */
@@ -272,7 +284,7 @@ module.exports = function(app, config) {
 
     /**
      * @apiName PointExample
-     * @apiGroup  NodeTypes
+     * @apiGroup  Examples
      *
      * @api {post} /example/point Point
      * @apiDescription Этот API вызов не делает никаких  вычислений или преобразований, он нужен лишь для того, чтобы показать
@@ -285,7 +297,7 @@ module.exports = function(app, config) {
      * POST request body as JSON string:
      * {
      *     id: "1yjpdnra9a76dut2",
-     *     type: "bottleneck",
+     *     type: "point",
      *     tag: "",
      *     cycleTime: 100,
      *     avgIntensity: 900,
@@ -301,8 +313,8 @@ module.exports = function(app, config) {
      *
      * @apiSuccess {Boolean} success Результат запроса (успешно/неуспешно).
      * @apiSuccess {String}  message Текстовое сообщение об ошибке.
-     * @apiSuccess {Array[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
-     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-NodeTypes-StopLineExample),
+     * @apiSuccess {Object[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
+     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-Examples-StopLineExample),
      * только ключ `type` имеет значение `point`.
      *
      */
@@ -311,7 +323,7 @@ module.exports = function(app, config) {
         res.json(responses.modelSimulationSuccess(
             {
                 id: "1yjpdnra9a76dut2",
-                type: "bottleneck",
+                type: "point",
                 cycleTime: 100,
                 delay: 205.973,
                 greenSaturation: 91,
@@ -329,7 +341,7 @@ module.exports = function(app, config) {
 
     /**
      * @apiName ConcurrentExample
-     * @apiGroup  NodeTypes
+     * @apiGroup  Examples
      *
      * @api {post} /example/concurrent Concurrent
      * @apiDescription Этот API вызов не делает никаких  вычислений или преобразований, он нужен лишь для того, чтобы показать
@@ -388,8 +400,8 @@ module.exports = function(app, config) {
      *
      * @apiSuccess {Boolean} success Результат запроса (успешно/неуспешно).
      * @apiSuccess {String}  message Текстовое сообщение об ошибке.
-     * @apiSuccess {Array[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
-     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-NodeTypes-StopLineExample),
+     * @apiSuccess {Object[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
+     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-Examples-StopLineExample),
      * только ключ `type` имеет значение `concurrent`.
      *
      */
@@ -415,7 +427,7 @@ module.exports = function(app, config) {
 
     /**
      * @apiName ConcurrentMergeExample
-     * @apiGroup  NodeTypes
+     * @apiGroup  Examples
      *
      * @api {post} /example/concurrent-merge ConcurrentMerge
      * @apiDescription Этот API вызов не делает никаких  вычислений или преобразований, он нужен лишь для того, чтобы показать
@@ -436,7 +448,7 @@ module.exports = function(app, config) {
      *
      * @apiParam  {Edge[]} [edges] Массив объектов типа `Edge`, свзяи *входящие* в данную точку, для точек данного типа
      * допустимо иметь ровно две (2) входящиее свзи от других точек, при этом одна из них обязательно должна быть второстепенной.
-     * Развернутое описание объекта Edge [см. Concurrent](#api-NodeTypes-ConcurrentExample).
+     * Развернутое описание объекта Edge [см. Concurrent](#api-Examples-ConcurrentExample).
      *
      *
      * @apiParamExample {json} ConcurrentMerge node example:
@@ -471,8 +483,8 @@ module.exports = function(app, config) {
      *
      * @apiSuccess {Boolean} success Результат запроса (успешно/неуспешно).
      * @apiSuccess {String}  message Текстовое сообщение об ошибке.
-     * @apiSuccess {Array[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
-     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-NodeTypes-StopLineExample),
+     * @apiSuccess {Object[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
+     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что возвращается при запросе на моделирование стоп-линии. см [Stopline response object](#api-Examples-StopLineExample),
      * только ключ `type` имеет значение `concurrent`.
      *
      */
@@ -490,6 +502,123 @@ module.exports = function(app, config) {
                 outFlow: [0, 0, 0, 0, 0.5, 0.5, 0.5, 0.5, 0.5],
                 sumInFlow: 20.99,
                 sumOutFlow: 21
+            }
+        ));
+        return;
+    });
+
+
+    /**
+     * @apiName CrossroadExample
+     * @apiGroup  Examples
+     *
+     * @api {post} /example/crossroad Crossroad
+     * @apiDescription Этот API вызов не делает никаких  вычислений или преобразований, он нужен лишь для того, чтобы показать
+     * формат объекта "перекресток", который используется в теле запроса на [рассчет](#ancor) или [оптимизацию модели](link).
+     *
+     * ....  Красткое описание перекрестка
+     *
+     * @apiParam  {String} id Уникальный идентификатор точки.
+     * @apiParam  {String} type тип объекта  `crossRoad` - для объекта(точки) типа "перекресток".
+     * @apiParam  {Number} cycleTime Длительность цикла (сек)
+     * @apiParam  {Number} offset Смещение начала первой фазы в секундах
+     * @apiParam  {Phase[]} phases Массив объектов типа `Phase`, интервалы на которые разбит цикл регулирования
+     *
+     * @apiParam  (Phase){String} tag Пользователькое наименование фазы - ярлык.
+     * @apiParam  (Phase){Number} length Длительность данного интервала в секундах. Сумма длительностей всех интервалов для перекрестка должна быть равна длительности цикла.
+     * @apiParam  (Phase){Number} minLength Минимальная допустимая длительность данного интервала в секундах.
+     * @apiParam  (Phase){Number} intertact Длительность промежуточного такта в конце данного интервала в секундах.
+     *
+     * `Примечание`. На данный момент минимальная длительность промтакта составляет 6 секунд, если `intertact` будет указан меньше 6 или не указан, модель будет использовать значение 6 сек.
+     * Красный -> Зеленый (3с Кр + 3с КрЖ), Зеленый -> Красный (3с Зм + 3с Ж),
+     *
+     * @apiParamExample {json} Crossroad node example:
+     * Content-Type:application/json;
+     * POST request body as JSON string:
+     * {
+     *     id: "aesefv8fbtoq7tsi",
+     *     type: "crossRoad",
+     *     cycleTime: 100,
+     *     offset: 28,
+     *     phases: [
+     *        {
+     *            tag: "ph-1",
+     *            length: 60,
+     *            minLength: 15,
+     *            intertact: 10
+     *        },
+     *        {
+     *            tag: "ph-2",
+     *            length: 40,
+     *            minLength: 15,
+     *            intertact: 10
+     *        }
+     *    ]
+     * }
+
+
+     * @apiSuccess {Boolean} success Результат запроса (успешно/неуспешно).
+     * @apiSuccess {String}  message Текстовое сообщение об ошибке.
+     * @apiSuccess {Object[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
+     * При удачном результате рассчета содержание секции `data` имеет формат идентичный тому, что был передан в запросе, может быть изменено значение ключей
+     * `offset`, `length`. Добавляется для каждого интервала лишь ключ `saturation` - насыщение данного интервала.
+     *
+     *
+     * @apiSuccessExample Crossroad node response example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       success: true,
+     *       message: "Simulation was successful!",
+     *       data: [
+     *           {
+     *               id: "aesefv8fbtoq7tsi",
+     *               type: "crossRoad",
+     *               cycleTime: 100,
+     *               offset: 28,
+     *               phases: [
+     *                  {
+     *                      tag: "ph-1",
+     *                      length: 60,
+     *                      minLength: 15,
+     *                      intertact: 10,
+     *                      saturation: 0.7122
+     *                  },
+     *                  {
+     *                      tag: "ph-2",
+     *                      length: 40,
+     *                      minLength: 15,
+     *                      intertact: 10,
+     *                      saturation: 0.0023
+     *                  }
+     *              ]
+     *           }
+     *       ]
+     *     }
+     *
+     */
+    app.post('/api/example/crossroad', function (req, res) {
+        res.json(responses.modelSimulationSuccess(
+            {
+                id:"aesefv8fbtoq7tsi",
+                type:"crossRoad",
+                cycleTime:100,
+                offset:28,
+                phases:[
+                    {
+                        tag: "ph-1",
+                        length: 60,
+                        minLength: 15,
+                        intertact:10,
+                        saturation: 0.7122
+                    },
+                    {
+                        tag: "ph-2",
+                        length: 40,
+                        minLength: 15,
+                        intertact:10,
+                        saturation: 0.03
+                    }
+                ]
             }
         ));
         return;
