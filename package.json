@@ -4,7 +4,8 @@
   "description": "The Avenue2.0 traffic model",
   "main": "js/app.js",
   "scripts": {
-    "start": "gulp build && node backend/app"
+    "apidoc-generate" : "node_modules/apidoc/bin/apidoc -i backend/routes/ -o backend/public/api/doc/",
+    "start": "npm run apidoc-generate && gulp build && node backend/app"
   },
 
   "repository": {

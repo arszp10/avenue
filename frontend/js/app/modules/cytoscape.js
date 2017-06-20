@@ -289,7 +289,7 @@
                     return
                 };
                 var target = v.data('target');
-                if (! edges.hasOwnProperty()) {
+                if (! edges.hasOwnProperty(target)) {
                     edges[target] = [];
                 };
                 edges[target].push(v.data());
