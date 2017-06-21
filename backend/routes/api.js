@@ -121,6 +121,63 @@ module.exports = function(app, config) {
     });
 
 
+    /**
+     * @apiName ModelExecute
+     * @apiGroup  Simulate
+     *
+     * @api {post} /model/execute?api_key={:api_key}&api_secret={:api_secret} Execute
+     * @apiDescription Рассчитать модель. Рассчитываются функции интенсивности входа/выхода для каждой точки, задержка, насыщеность зеленого и т.д.
+     * В данном методе не изменяются ни сдвиги ни длительности фаз на перекрестках, просто валидация и рассчет параметров, отправленных в теле запроса, модели сети.
+     *
+     * `Внимание!` Данный запрос доступен только зарегистрированным пользователям и требует на вход два параметра `api_key` и `api_secret`.
+     *
+     * @apiParam  {Object[]} data Массив объектов типа `stopline`, `carriageway`, `crossroad` и т.д. см. [Примеры](#api-Examples)
+     * @apiParamExample {json} Simulate request example:
+     * Content-Type:application/json;
+     * POST request body as JSON string:
+     * {
+     *    data: [
+     *      {
+     *           id: "1yjpdnra9a76dut2",
+     *           type: "point",
+     *           cycleTime: 100,
+     *           ...
+     *      },
+     *      {
+     *           id: "uxbjeic5f2ar8m2i",
+     *           type: "stopline",
+     *           cycleTime: 100,
+     *           ...
+     *      },
+     *      ....
+     *   ]
+     * }
+     *
+     * @apiSuccess {Boolean} success Результат запроса (успешно/неуспешно).
+     * @apiSuccess {String}  message Текстовое сообщение об ошибке.
+     * @apiSuccess {Object[]} data Массив содержащий данные ответа сервера, там могут быть как результаты моделирования, так и список ошибок валидации модели.
+     * При удачном результате рассчета в секции `data` содержится массив объектов, каждый из которых соответсвует объекту поданному на вход, примеры ответов см. [Примеры](#api-Examples)
+     *
+     * В случае если модель не может быть построена, или же параметры вне допустимых диапазонов, пример ответа может выглядеть так:
+     *
+     * @apiErrorExample Execute model ErrorResponse:
+     * HTTP/1.1 200 (!)
+     * {
+     *   success: false,
+     *   message: "The model failed a validation!",
+     *   data: [
+     *      {
+     *          node: "28hsh1ugilg874ic",
+     *          errors: ["Avg intensity  must be less than 1800"]
+     *      },
+     *      {
+     *          node: "21g19fmdkfodid1s",
+     *          errors: ["Edges array length must be equal 2"]
+     *      }
+     *   ]
+     * }
+     *
+     */
     app.post('/api/model/execute', authenticateApi, validateModel,  function (req, res) {
         var bodyData = requestBodyData(req);
         res.json(
@@ -128,16 +185,21 @@ module.exports = function(app, config) {
                 avenueLib.simulate(bodyData)
         ));
     });
-    app.post('/api/model/optimize/phases', authenticateApi, validateModel, function (req, res) {
-        var bodyData = requestBodyData(req);
-        console.log();
-        res.json(
-            responses.modelSimulationSuccess(
-                avenueLib.optimizeSplits(bodyData)
-            ));
-    });
 
-    app.post('/api/model/optimize/offsets',authenticateApi, validateModel, function (req, res) {
+    /**
+     * @apiName ModelOptimizeOffsets
+     * @apiGroup  Simulate
+     *
+     * @api {post} /model/optimize/offsets?api_key={:api_key}&api_secret={:api_secret} OptimizeOffsets
+     * @apiDescription Производится запуск процедуры оптимизации сдвигов циклов регулирования исходя из минимальной суммарной задержки во всей сети.
+     * Параметры запроса и ответы абсолютно идентичны запросу на [рассчет модели](#api-Simulate-ModelExecute).
+     * Запрос изменяет значения ключа `offset` у всех объектов типа [crossroad](#api-Examples-CrossroadExample).
+     *
+     * `Внимание!` Данный запрос доступен только зарегистрированным пользователям и требует на вход два параметра `api_key` и `api_secret`.
+     *
+     * @apiParam  {Object[]} data Массив объектов типа `stopline`, `carriageway`, `crossroad` и т.д. см. [Примеры](#api-Examples)
+     */
+     app.post('/api/model/optimize/offsets',authenticateApi, validateModel, function (req, res) {
         var bodyData = requestBodyData(req);
         res.json(
             responses.modelSimulationSuccess(
@@ -145,6 +207,26 @@ module.exports = function(app, config) {
         ));
     });
 
+    /**
+     * @apiName ModelOptimizePhases
+     * @apiGroup  Simulate
+     *
+     * @api {post} /model/optimize/phases?api_key={:api_key}&api_secret={:api_secret} OptimizePhases
+     * @apiDescription Производится запуск процедуры оптимизации длительностей фаз на перекрестке исходя из рассичтанной насыщенности каждой фазы.
+     * Параметры запроса и ответы абсолютно идентичны запросу на [рассчет модели](#api-Simulate-ModelExecute).
+     * Запрос изменяет значения ключей `phases[].length` у всех объектов типа [crossroad](#api-Examples-CrossroadExample).
+     *
+     * `Внимание!` Данный запрос доступен только зарегистрированным пользователям и требует на вход два параметра `api_key` и `api_secret`.
+     *
+     * @apiParam  {Object[]} data Массив объектов типа `stopline`, `carriageway`, `crossroad` и т.д. см. [Примеры](#api-Examples)
+     */
+    app.post('/api/model/optimize/phases', authenticateApi, validateModel, function (req, res) {
+        var bodyData = requestBodyData(req);
+        res.json(
+            responses.modelSimulationSuccess(
+                avenueLib.optimizeSplits(bodyData)
+            ));
+    });
 
     app.post('/api/model/create', function (req, res) {
         var userId = req.session.user_id;
