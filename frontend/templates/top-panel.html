@@ -9,11 +9,11 @@
                 <a class="navbar-brand" href="#"><img src="/img/logo0.png" height="30"></a></div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="dropdown visible-files hidden-api-doc hidden-network hidden-routes">
-                        <form class="navbar-form navbar-left" role="search">
-                            <a class="btn btn-primary" href="/api/v1/doc/">API Docs</a>
-                        </form>
-                    </li>
+                    <!--<li class="dropdown visible-files hidden-api-doc hidden-network hidden-routes">-->
+                        <!--<form class="navbar-form navbar-left" role="search">-->
+                            <!--<a class="btn btn-primary" href="/api/v1/doc/">API Docs</a>-->
+                        <!--</form>-->
+                    <!--</li>-->
                     <li class="dropdown hidden-files visible-api-doc">
                         <a href="/models" title="Back to the model list">
                             <i class="fa fa-bars fa-lg "></i>
@@ -41,11 +41,14 @@
                             <span class="input-group-addon" id="basic-addon1">Key</span>
                             <input type="text" id="input-api-key" class="form-control input-api-key" placeholder="ApiKey">
                         </div>
-                        &nbsp;&nbsp;
+                        &nbsp;
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">Secret</span>
                             <input type="text" id="input-api-secret" class="form-control input-api-key" placeholder="ApiSecret">
                          </div>
+                        &nbsp;
+                        <a class="btn btn-primary" href="/api/v1/doc/">API Docs</a>
+
                     </div>
 
                 </form>
