@@ -29,7 +29,7 @@
             });
         }
         $.notify(r.message, {
-            position: 'top center',
+            position: 'top right',
             className: r.success ? "success" : "error"
         });
     };
@@ -97,7 +97,7 @@
         saveModel: {
             done: function(r, o){
                 $.notify(r.message, {
-                    position: 'top center',
+                    position: 'top right',
                     className: r.success ? "success" : "error"
                 });
             },

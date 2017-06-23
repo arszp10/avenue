@@ -297,12 +297,19 @@
 
             elems = this.nodes();
             elems.forEach(function(v, i, a){
-                var item = {};
                 if(! v.isNode()){
                     return
                 }
-                item = v.data();
-                item.edges = edges[v.data('id')];
+                var item = JSON.parse(JSON.stringify(v.data()));
+                delete item.tag;
+                delete item.color;
+                delete item.constantIntensity;
+                delete item.icon;
+                delete item.greenOffset1;
+                delete item.greenOffset2;
+                if (item.type != 'crossroad') {
+                    item.edges = edges[v.data('id')];
+                }
                 map.push(item);
             });
             return map;

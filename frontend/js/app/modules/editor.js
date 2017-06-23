@@ -93,7 +93,13 @@
         },
 
         initTopPanelEvents: function(){
-            var cookie = JSON.parse($.cookie('_avenue').substr(2));
+
+            try {
+                var cookie = JSON.parse($.cookie('_avenue').substr(2));
+            } catch (e) {
+                window.location = '/sign-out';
+                return;
+            }
             controls.labels.labelMyAccountUsername.text(cookie.fullName);
             controls.inputs.inputApiKey.val(cookie.apiKey);
             controls.inputs.inputApiSecret.val(cookie.apiSecret);
@@ -153,7 +159,7 @@
                 if (routeName.length  == 0) {
                     $.notify(
                         "Please enter a route name",
-                        { position: 'top center', className: "error" }
+                        { position: 'top right', className: "error" }
                     );
                     return;
                 }
@@ -161,7 +167,7 @@
                 if (!(selected.length == 2 || selected.length == 4)){
                     $.notify(
                         "The number of selected stop lines should be equal 2 or 4",
-                        { position: 'top center', className: "error" }
+                        { position: 'top right', className: "error" }
                     );
                     return;
                 }
@@ -173,7 +179,7 @@
                 if (unique.length != 2) {
                     $.notify(
                         "The number of selected crossroads should be equal 2",
-                        { position: 'top center', className: "error" }
+                        { position: 'top right', className: "error" }
                     );
                     return;
                 }

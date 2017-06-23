@@ -1,7 +1,19 @@
 var express = require('express');
 
 function authenticateWeb(req, res, next) {
-    if (req.session.user_id) {
+    if (req.session.user) {
+        var user = req.session.user;
+        var c = {
+            userId:    user.id,
+            fullName:  user.fullName,
+            email:     user.email,
+            apiKey:    user.apiKey,
+            apiSecret: user.apiSecret
+        };
+        res.cookie('_avenue', c, {
+            expires: new Date(req.session.cookie._expires),
+            maxAge : req.session.cookie.originalMaxAge
+        });
         next();
         return;
     };
@@ -30,7 +42,7 @@ module.exports = function(app) {
 
 
     app.use('/sign-in', function (req, res) {
-        if (req.session.user_id) {
+        if (req.session.user) {
             res.redirect('/models');
             return;
         }
@@ -38,11 +50,9 @@ module.exports = function(app) {
     });
 
     app.use('/sign-out', function (req, res) {
-        if (req.session.user_id) {
-            res.clearCookie('connect.sid', {path: '/'});
-            req.session.destroy(function () {
-            });
-        }
+        res.clearCookie('connect.sid', {path: '/'});
+        res.clearCookie('_avenue', {path: '/'});
+        req.session.destroy(function () {});
         res.redirect('/sign-in');
     });
 };

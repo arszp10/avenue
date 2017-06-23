@@ -22,12 +22,10 @@ module.exports = function(app, config) {
      *
      * @apiParam  {String} id Уникальный идентификатор точки.
      * @apiParam  {String} type тип объекта  `stopline` - для объекта(точки) типа стоп-линия. так же (crossRoad, carriageway, bottleneck, concurrent, concurrentMerge, point)
-     * @apiParam  {String} [tag] Ярлык пользователя для данного объекта
      * @apiParam  {String} [parent] Идентификатор объекта типа `crossroad` -  перекресток, к которому относится данная стоп-линия.
      * @apiParam  {Number} cycleTime Длительность цикла (сек)
      * @apiParam  {Number} capacity Пропускная способность (авт/ч)
      * @apiParam  {Number} avgIntensity Приведенная интенсивность (авт/ч) 
-     * @apiParam  {Number} constantIntensity Приведенная интенсивность постоянного потока (авт/ч)
      *
      * @apiParam  {Boolean[]} [greenPhases] Если ключ `parent` присутствует то данный масив указывает цвета фаз, в которых разрешено движение, индекс занчения равен индексу фазы
      * @apiParam  {Number[]} [additionalGreens] Массив времен добавленного зеленого для фаз, так же как и предыдущий параметр длинна массива равна длине массива фаз у соответсвующего объекта `crossroad`
@@ -39,7 +37,7 @@ module.exports = function(app, config) {
      * @apiParam  (Edge){String} source Идентификатор точки, из которой проведена данная связь.
      * @apiParam  (Edge){String} target Идентификатор точки, в которую проведена данная связь.
      * @apiParam  (Edge){Number} portion  Приведенная интенсивность (авт/ч), которая перераспределяется из точки  `source` в `target`
-     * @apiParam  (Edge){Boolean} [secondary] Признак второстепенного потока(связи). Обонзачает то, что данная по данной связи перераспределяется трафик с соседней точки типа `concurrent`.
+     * @apiParam  (Edge){Boolean} [secondary] Признак второстепенного потока(связи). Обонзачает то, что по данной связи перераспределяется трафик с соседней точки типа `concurrent`.
      *
      * @apiParamExample {json} StopLine node example:
      * Content-Type:application/json;
@@ -51,7 +49,6 @@ module.exports = function(app, config) {
      *      cycleTime: 100,
      *      avgIntensity: 900,
      *      capacity: 1800,
-     *      constantIntensity: 0,
      *      greenPhases: [true,false],
      *      additionalGreens: [0,0],
      *      intervals: [[0, 20], [40, 55]],
@@ -81,8 +78,8 @@ module.exports = function(app, config) {
      * @apiSuccess (Stopline response object) {Boolean} isCongestion Является ли данная точка заторной
      * @apiSuccess (Stopline response object) {Number[]} inFlow Кривая интенсивности ТП в течении цикла входящая в данную точку, интервал дискретизации = 1 сек, значения (авт/с)
      * @apiSuccess (Stopline response object) {Number[]} outFlow Кривая интенсивности ТП в течении цикла исходящая из данной точки
-     * @apiSuccess (Stopline response object) {Number} sumInFlow Сумма входящего потока (авт)
-     * @apiSuccess (Stopline response object) {Number} sumOutFlow Сумма исходящего потока (авт)
+     * @apiSuccess (Stopline response object) {Number} sumInFlow Число автомобилей входящего потока в течении одного цикла регулирования (авт)
+     * @apiSuccess (Stopline response object) {Number} sumOutFlow Число автомобилей исходящего потока в течении одного цикла регулирования (авт)
      *
      *  @apiSuccessExample StopLine node response example:
      *     HTTP/1.1 200 OK
@@ -140,7 +137,6 @@ module.exports = function(app, config) {
      *
      * @apiParam  {String} id Уникальный идентификатор точки.
      * @apiParam  {String} type тип объекта  `carriageway` - для объекта(точки) типа перегон.
-     * @apiParam  {String} [tag] Ярлык пользователя для данного объекта
      * @apiParam  {String} [parent] Идентификатор объекта типа `crossroad` -  перекресток, к которому относится данная перегон,
      * для перегона это не влияет на рассчета параметров, просто указывает на группировку в редакторе.
      * @apiParam  {Number} cycleTime Длительность цикла (сек)
@@ -161,10 +157,8 @@ module.exports = function(app, config) {
      *     id: "1yjpdnra9a76dut2",
      *     parent: "uxbjeic5f2ar8m2i",
      *     type: "carriageway",
-     *     tag: "",
      *     cycleTime: 100,
      *     avgIntensity: 900,
-     *     constantIntensity: 0,
      *     capacity: 1800,
      *     routeTime: 20,
      *     length: 300,
@@ -217,7 +211,6 @@ module.exports = function(app, config) {
      *
      * @apiParam  {String} id Уникальный идентификатор точки.
      * @apiParam  {String} type тип объекта  `bottleneck` - для объекта(точки) типа "бутылочное горлышко".
-     * @apiParam  {String} [tag] Ярлык пользователя для данного объекта
      * @apiParam  {String} [parent] Идентификатор объекта типа `crossroad` -  перекресток, к которому относится данная точка,
      * это не влияет на рассчет параметров, просто указывает на группировку в редакторе.
      * @apiParam  {Number} cycleTime Длительность цикла (сек)
@@ -235,10 +228,8 @@ module.exports = function(app, config) {
      *     id: "1yjpdnra9a76dut2",
      *     parent: "uxbjeic5f2ar8m2i",
      *     type: "bottleneck",
-     *     tag: "",
      *     cycleTime: 100,
      *     avgIntensity: 900,
-     *     constantIntensity: 0,
      *     capacity: 1800,
      *     edges: [{
      *         id: "ele2",
@@ -291,10 +282,8 @@ module.exports = function(app, config) {
      * {
      *     id: "1yjpdnra9a76dut2",
      *     type: "point",
-     *     tag: "",
      *     cycleTime: 100,
      *     avgIntensity: 900,
-     *     constantIntensity: 0,
      *     capacity: 1800,
      *     edges: [{
      *         id: "ele2",
@@ -346,7 +335,6 @@ module.exports = function(app, config) {
      *
      * @apiParam  {String} id Уникальный идентификатор точки.
      * @apiParam  {String} type тип объекта  `concurrent` - для объекта(точки) типа "нерегулируемое пересечение".
-     * @apiParam  {String} [tag] Ярлык пользователя для данного объекта
      * @apiParam  {String} [parent] Идентификатор объекта типа `crossroad` -  перекресток, к которому относится данная точка,
      * это не влияет на рассчет параметров, просто указывает на группировку в редакторе.
      * @apiParam  {Number} cycleTime Длительность цикла (сек)
@@ -371,10 +359,8 @@ module.exports = function(app, config) {
      *     id: "1yjpdnra9a76dut2",
      *     parent: "uxbjeic5f2ar8m2i",
      *     type: "concurrent",
-     *     tag: "",
      *     cycleTime: 100,
      *     avgIntensity: 900,
-     *     constantIntensity: 0,
      *     capacity: 1800,
      *     secondaryFlowCapacity: 1800,
      *     edges: [
@@ -434,7 +420,6 @@ module.exports = function(app, config) {
      *
      * @apiParam  {String} id Уникальный идентификатор точки.
      * @apiParam  {String} type тип объекта  `concurrentMerge` - для объекта(точки) типа "нерегулируемое слияние".
-     * @apiParam  {String} [tag] Ярлык пользователя для данного объекта
      * @apiParam  {String} [parent] Идентификатор объекта типа `crossroad` -  перекресток, к которому относится данная точка,
      * это не влияет на рассчет параметров, просто указывает на группировку в редакторе.
      * @apiParam  {Number} cycleTime Длительность цикла (сек)
@@ -455,10 +440,8 @@ module.exports = function(app, config) {
      *     id: "1yjpdnra9a76dut2",
      *     parent: "uxbjeic5f2ar8m2i",
      *     type: "concurrentMerge",
-     *     tag: "",
      *     cycleTime: 100,
      *     avgIntensity: 900,
-     *     constantIntensity: 0,
      *     capacity: 1800,
      *     secondaryFlowCapacity: 1800,
      *     edges: [

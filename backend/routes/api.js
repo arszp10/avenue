@@ -20,7 +20,7 @@ function coerce(str) {
 
 
 function authenticateApi(req, res, next) {
-    if (req.session.user_id) {
+    if (req.session.user) {
         next();
         return;
     };
@@ -85,9 +85,16 @@ module.exports = function(app, config) {
     app.post('/api/user/sign-in', function (req, res) {
         User.findOne({email: req.body.email, active:true}, function (err, user) {
             if (user && user.authenticate(req.body.password)) {
-                req.session.user_id = user.id;
-                req.session.user_name = user.fullName;
-                req.session.user_email = user.email;
+                var userData = JSON.parse(JSON.stringify(user));
+                req.session.user = userData;
+                userData.id = userData._id;
+                delete userData.passwordHash;
+                delete userData.activationKey;
+                delete userData.password;
+                delete userData.__v;
+                delete userData.models;
+                delete userData._id;
+
                 var c = {
                     userId:    user.id,
                     fullName:  user.fullName,
@@ -95,7 +102,10 @@ module.exports = function(app, config) {
                     apiKey:    user.apiKey,
                     apiSecret: user.apiSecret
                 };
-                res.cookie('_avenue', c);
+                res.cookie('_avenue', c, {
+                    expires: new Date(req.session.cookie._expires),
+                    maxAge : req.session.cookie.originalMaxAge
+                });
                 res.json(responses.userLoginSuccessfully());
                 return;
             }
@@ -229,7 +239,7 @@ module.exports = function(app, config) {
     });
 
     app.post('/api/model/create', function (req, res) {
-        var userId = req.session.user_id;
+        var userId = req.session.user.id;
         var data = {
             name: 'New coordination plan',
             content: [],
@@ -246,7 +256,7 @@ module.exports = function(app, config) {
     });
     app.post('/api/model/update/:modelId', function (req, res) {
         var modelId = req.params.modelId;
-        var userId = req.session.user_id;
+        var userId = req.session.user.id;
         Model.findOne({_id: modelId, _creator:userId}, function (err, model) {
             if (err || !model) {
                 res.status(404);
@@ -271,7 +281,7 @@ module.exports = function(app, config) {
     });
     app.get('/api/model/get/:modelId', function (req, res) {
         var modelId = req.params.modelId;
-        var userId = req.session.user_id;
+        var userId = req.session.user.id;
         Model.findOne({_id: modelId, _creator:userId}, function (err, model) {
             if (err || !model) {
                 res.status(404);
@@ -287,7 +297,7 @@ module.exports = function(app, config) {
     });
     app.get('/api/model/list', function (req, res) {
         var params = _.cloneDeepWith(req.query, coerce);
-            params.userId = req.session.user_id;
+            params.userId = req.session.user.id;
 
 
         Model.findWithPages(params, function(err, data){
@@ -304,7 +314,7 @@ module.exports = function(app, config) {
     });
     app.get('/api/model/remove/:modelId', function (req, res) {
         var modelId = req.params.modelId;
-        var userId = req.session.user_id;
+        var userId = req.session.user.id;
 
         Model.remove({_id: modelId, _creator:userId}, function (err, model) {
             if (err || !model) {

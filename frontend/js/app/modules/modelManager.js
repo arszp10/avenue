@@ -20,8 +20,12 @@
             }
 
             that = this;
-            var cookie = JSON.parse($.cookie('_avenue').substr(2));
-
+            try {
+                var cookie = JSON.parse($.cookie('_avenue').substr(2));
+            } catch (e) {
+                window.location = '/sign-out';
+                return;
+            }
             controls.labels.labelWelcomeUsername.text(cookie.fullName);
             controls.buttons.btnCreateNewModel.click(function(){
                 api.createModel();
