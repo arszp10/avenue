@@ -104,7 +104,9 @@
             capacity: 1800,
             intervals: [[0,20], [40,55]],
             greenPhases: [true, false],
-            additionalGreens: [0, 0]
+            additionalGreens: [0, 0],
+            weight: 1,
+            queueLimit: 0
 
         },
         carriageway:{
@@ -116,7 +118,9 @@
             capacity: 1800,
             routeTime: 20,
             length: 300,
-            dispersion: 0.5
+            dispersion: 0.5,
+            weight: 1,
+            queueLimit: 0
         },
         point: {
             icon: '\uf22d',
@@ -124,7 +128,9 @@
             tag: '',
             cycleTime: 100,
             avgIntensity: 900,
-            capacity: 1800
+            capacity: 1800,
+            weight: 1,
+            queueLimit: 0
         },
         bottleneck: {
             icon: '\uf0b0',
@@ -132,7 +138,9 @@
             tag: '',
             cycleTime: 100,
             avgIntensity: 900,
-            capacity: 2000
+            capacity: 2000,
+            weight: 1,
+            queueLimit: 0
         },
         concurrent: {
             icon: '\uf074',
@@ -141,7 +149,9 @@
             cycleTime: 100,
             avgIntensity: 900,
             capacity: 1800,
-            secondaryFlowCapacity: 1800
+            secondaryFlowCapacity: 1800,
+            weight: 1,
+            queueLimit: 0
         },
         concurrentMerge: {
             icon: '\uf126',
@@ -150,7 +160,9 @@
             cycleTime: 100,
             avgIntensity: 900,
             capacity: 1800,
-            secondaryFlowCapacity: 1800
+            secondaryFlowCapacity: 1800,
+            weight: 1,
+            queueLimit: 0
         },
 
         interPhaseDefaults:{

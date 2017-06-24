@@ -7,6 +7,11 @@
     var routes;
     var that;
 
+    var stopLineSort = function (a, b) {
+        if (a.data.tag > b.data.tag) {return 1;}
+        if (a.data.tag < b.data.tag) {return -1;}
+        return 0;
+    };
 
    App.Modules.editor = {
         injectDependencies: function(modules) {
@@ -540,6 +545,7 @@
         },
         showCrossroadModal: function(node){
             var stopLines = cy.aveGetCrossroadStoplines(node.id);
+            stopLines.sort(stopLineSort);
             var phasesCntButtons = controls.buttons.btnsCrossFormPhasesCount;
             controls.panels.crossRoadModal.data('id', node.id);
 
@@ -551,7 +557,7 @@
             controls.panels.tblPhasesBody.find('tr').remove();
             controls.panels.tblPhasesBody.append(templates.crossRoadTablePhaseRow(node.phases));
             $.each(stopLines, function(i,v){
-                controls.panels.tblPhasesBody.append(templates.crossRoadTableCheckRow(v.data()));
+                controls.panels.tblPhasesBody.append(templates.crossRoadTableCheckRow(v.data));
                 that.initCheckBoxes(controls.panels.tblPhasesBody);
             });
             controls.inputs.inputCrossroadName.val(node.name);
@@ -597,11 +603,12 @@
 
             if (node.type == 'crossRoad' && errors.length == 0) {
                 var stopLines = cy.aveGetCrossroadStoplines(node.id);
+                stopLines.sort(stopLineSort);
                 var dataBars = [];
                 $.each(stopLines, function(i,v){
                     dataBars.push({
-                        node: v.data(),
-                        signals: traffic.signalDiagramData(node, v.data())
+                        node: v.data,
+                        signals: traffic.signalDiagramData(node, v.data)
                     });
                 });
 

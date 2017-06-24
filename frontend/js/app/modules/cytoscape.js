@@ -325,7 +325,7 @@
             return this.$('edge[source="' + id + '"]');
         },
         aveGetCrossroadStoplines: function(id) {
-            return this.$('node[parent="' + id + '"][type="stopline"]');
+            return this.$('node[parent="' + id + '"][type="stopline"]').jsons();
         },
         aveConstantIntensity: function(node){
             var sum = 0;

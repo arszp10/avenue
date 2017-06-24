@@ -168,15 +168,19 @@
                 ? '<i class="fa fa-exclamation-circle text-danger"></i>'
                 : '<i class="fa fa-check-circle text-success"></i>';
 
+            var queueLimit = data.queueLimit
+                ? data.queueLimit.toFixed(2) + ' / '
+                : 'unlimited / ';
+
             var no = data.isCongestion ? '<span class="text-danger">C': '<span class="text-success">No c';
             return '<hr><h4>Modeling results</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
                 '    <tr>' +
                 '        <td>Delay</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">veh*sec</td>' +
                 '    </tr><tr>' +
-                '        <td>Max queue</td><td class="text-right">'+data.maxQueue.toFixed(2)+'</td><td class="measure-unit">vehicle</td>' +
-                '    </tr><tr>' +
                 '        <td>Green saturation</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td>' +
+                '    </tr><tr>' +
+                '        <td>Limit / Max. queue</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">vehicle</td>' +
                 '    </tr><tr>' +
                 '        <td>Sum I/O flow</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">vehicle</td>' +
                 '    </tr><tr>' +

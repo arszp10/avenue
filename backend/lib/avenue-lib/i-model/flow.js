@@ -14,7 +14,9 @@ function Flow(options, network)
         length: 300,
         dispersion: 0.5,
         intervals: [],
-        edges: []
+        edges: [],
+        weight: 1,
+        queueLimit: 0
     };
     var flow = Object.assign({}, defaults, options);
 
@@ -35,6 +37,8 @@ function Flow(options, network)
     this.length         = parseInt(flow.length);
     this.routeTime      = parseInt(flow.routeTime);
     this.dispersion     = parseFloat(flow.dispersion);
+    this.weight         = parseInt(flow.weight);
+    this.queueLimit     = parseInt(flow.queueLimit);
     this.intervals      = flow.intervals.map(function(v){
         return {
             s: parseInt(v[0]),
@@ -86,6 +90,7 @@ function Flow(options, network)
             outFlow: this.outFlow,
             isCongestion: this.isCongestion,
             maxQueue: this.maxQueueLength,
+            queueLimit: this.queueLimit,
             delay: this.delay,
             greenSaturation: this.greenSaturation,
             sumInFlow: this.sumInFlow,

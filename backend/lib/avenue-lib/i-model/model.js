@@ -10,8 +10,11 @@ var dynamicCapacityDelay = function dynamicCapacityDelay(cycleTime, dynCapacity,
     return (j+1) * value;
 };
 
-var checkCongestion = function checkCongestion(sumInFlow, sumOutFlow, queueTail){
-    return (sumInFlow - 1) > sumOutFlow && queueTail != undefined;
+var checkCongestion = function checkCongestion(sumInFlow, sumOutFlow, queueTail, queueLimit, maxQueueLength){
+    return (
+                   (sumInFlow - 1) > sumOutFlow // Incoming cars < Outcoming more than 1
+                || (queueLimit > 0 && queueLimit < maxQueueLength) // MaxQueue above than queue limit for this node
+           ) && queueTail != undefined; //second iteration
 };
 
 module.exports = {
@@ -90,7 +93,7 @@ module.exports = {
         flow.outFlow            = outFlow;
         flow.maxQueueLength     = maxQueueLength;
         flow.greenSaturation    = Math.round(100*sumGreenFlow/sumGreenCpacity);
-        flow.isCongestion       = checkCongestion(sumInFlow, sumOutFlow, queueTail);
+        flow.isCongestion       = checkCongestion(sumInFlow, sumOutFlow, queueTail, flow.queueLimit, maxQueueLength);
         return flow;
     },
 
@@ -156,7 +159,7 @@ module.exports = {
         flow.sumOutFlow     = sumOutFlow;
         flow.maxQueueLength = maxQueueLength;
         flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleTime));
-        flow.isCongestion = checkCongestion(sumInFlow, sumOutFlow, queueTail);
+        flow.isCongestion = checkCongestion(sumInFlow, sumOutFlow, queueTail, flow.queueLimit, maxQueueLength);
         return flow;
     },
 
@@ -174,8 +177,7 @@ module.exports = {
 
         var dynCapacity = [];
         var value = 0;
-
-        flow2.maxQueueLength = 0;
+        var maxQueueLength = 0;
 
         for (var j = 0; j < inFlow2.length; j++){
             dynCapacity[j] = capacityPerSecond2 * Math.pow(
@@ -197,8 +199,8 @@ module.exports = {
             queue -= outFlow2[i];
             sumInFlow += value;
             sumOutFlow += outFlow2[i];
-            if (queue > flow2.maxQueueLength) {
-                flow2.maxQueueLength = queue;
+            if (queue > maxQueueLength) {
+                maxQueueLength = queue;
             }
         }
 
@@ -210,8 +212,9 @@ module.exports = {
         flow2.sumOutFlow        = sumOutFlow;
         flow2.delay             = delay;
         flow2.outFlow           = outFlow2;
+        flow2.maxQueueLength    = maxQueueLength;
         flow2.greenSaturation   = Math.round(100 * sumOutFlow / (flow2.capacityPerSecond * flow2.cycleTime));
-        flow2.isCongestion      = checkCongestion(sumInFlow, sumOutFlow, queueTail);
+        flow2.isCongestion      = checkCongestion(sumInFlow, sumOutFlow, queueTail, flow2.queueLimit, maxQueueLength);
 
         return flow2;
     }

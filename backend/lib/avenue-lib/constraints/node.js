@@ -26,5 +26,19 @@ module.exports = {
             greaterThanOrEqualTo: 0,
             lessThanOrEqualTo: 100000
         }
+    },
+    queueLimit:{
+        numericality: {
+            onlyInteger: true,
+            greaterThanOrEqualTo: 0,
+            lessThanOrEqualTo: 100000
+        }
+    },
+    weight:{
+        numericality: {
+            onlyInteger: true,
+            greaterThanOrEqualTo: 1,
+            lessThanOrEqualTo: 100000000
+        }
     }
 };
