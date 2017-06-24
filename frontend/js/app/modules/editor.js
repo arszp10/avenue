@@ -108,27 +108,31 @@
                 cy.avePaste([], samples[$(this).data('key')]);
             });
 
-            controls.buttons.btnCalc.click(function () {
-                var data = cy.avePrepareCalcRequest();
-                var $icon = $(this).find('i.fa');
-                    $icon.addClass('fa-spin');
+
+            var prepareEditorViewBeforeCalc = function(){
+                var $icon = controls.buttons.btnCalc.find('i.fa');
+                $icon.addClass('fa-spin');
                 cy.nodes().removeClass('has-error');
+                cy.$(':selected').unselect();
+                cy.trigger('unselect');
+                return $icon;
+            };
+
+            controls.buttons.btnCalc.click(function () {
+                var $icon = prepareEditorViewBeforeCalc();
+                var data = cy.avePrepareCalcRequest();
                 api.modelExecute({data: data}, $icon);
             });
 
             controls.buttons.btnOffsetsOptimize.click(function () {
+                var $icon = prepareEditorViewBeforeCalc();
                 var data = cy.avePrepareCalcRequest();
-                var $icon = controls.buttons.btnCalc.find('i.fa');
-                $icon.addClass('fa-spin');
-                cy.nodes().removeClass('has-error');
                 api.offsetsOptimize({data: data}, $icon);
             });
 
             controls.buttons.btnPhasesOptimize.click(function () {
+                var $icon = prepareEditorViewBeforeCalc();
                 var data = cy.avePrepareCalcRequest();
-                var $icon = controls.buttons.btnCalc.find('i.fa');
-                $icon.addClass('fa-spin');
-                cy.nodes().removeClass('has-error');
                 api.phasesOptimize({data: data}, $icon);
             });
 
@@ -575,7 +579,7 @@
                 );
             }
 
-            if (node.type == 'crossRoad') {
+            if (node.type == 'crossRoad' && errors.length == 0) {
                 var stopLines = cy.aveGetCrossroadStoplines(node.id);
                 var dataBars = [];
                 $.each(stopLines, function(i,v){

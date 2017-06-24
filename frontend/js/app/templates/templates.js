@@ -172,7 +172,7 @@
             return '<hr><h4>Modeling results</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
                 '    <tr>' +
-                '        <td>Delay</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">v*h/h</td>' +
+                '        <td>Delay</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">veh*sec</td>' +
                 '    </tr><tr>' +
                 '        <td>Max queue</td><td class="text-right">'+data.maxQueue.toFixed(2)+'</td><td class="measure-unit">vehicle</td>' +
                 '    </tr><tr>' +
@@ -185,7 +185,7 @@
                 '</table>';
         },
         sumDelayStatus:         function(delay){
-            return '&sum; delay<sub><i>i</i></sub> = <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">v*h/h</span>';
+            return '&sum; delay<sub><i>i</i></sub> = <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">veh*sec</span>';
         },
 
 

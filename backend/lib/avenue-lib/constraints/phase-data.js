@@ -17,5 +17,13 @@ module.exports = {
             onlyInteger: true,
         },
         minLength: 8
+    },
+    intertact: {
+        //presence: true,
+        numericality: {
+            onlyInteger: true,
+            greaterThanOrEqualTo: 3,
+        },
+        lessThanField: 'minLength'
     }
 };
