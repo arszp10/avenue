@@ -121,6 +121,7 @@
 
 
     App.Modules.routes = {
+
         injectDependencies: function (modules) {
             cy      = modules.cytoscape;
             traffic = modules.traffic;
@@ -133,11 +134,20 @@
         createRoute:function(name, forwardOnly){
             var route = new Route(name, forwardOnly);
             App.State.currentModel.routes.push(route);
+            this.selectRoute(App.State.currentModel.routes.length - 1);
             return route;
         },
 
         getRoute: function(inx){
             return App.State.currentModel.routes[inx];
+        },
+
+        selectRoute: function(inx){
+            App.State.selectedRoute = inx;
+        },
+
+        getSelected: function(inx){
+            return App.State.selectedRoute;
         },
 
         filterNodes: function(cyRoutePath){
@@ -230,7 +240,11 @@
             return route;
         },
 
-        deleteRoute:function(){},
+        deleteRoute:function(inx){
+            App.State.currentModel.routes.splice(inx, 1);
+            this.selectRoute(false);
+            this.drawRoute(false);
+        },
 
         greenLine: function(cycleTime, route, direction, callback){
             if (route.forwardOnly && direction == 'back') {return;};
@@ -267,6 +281,10 @@
         },
 
         drawRoute:function(data){
+            d3.select("svg").remove();
+            if (!data) {
+                return;
+            }
             var route = this.expandRoute(data);
             var cycleTime = App.State.currentModel.cycleTime;
             var totalRouteLenght = route.points.reduce(function(sum, point){return sum + point.length;} ,0);

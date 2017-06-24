@@ -37,13 +37,13 @@
             inputCrossroadName:     '#input-crossroad-name',
             inputNodeSearch:        '#input-node-search',
             inputNodeSearchForm:    '#input-node-search-form',
-            inputModelSearch:        '#input-model-search',
-            inputModelSearchForm:    '#input-model-search-form',
-            inputRouteName:          '#input-route-name',
-            inputAddGreen:            '#input-add-green',
+            inputModelSearch:       '#input-model-search',
+            inputModelSearchForm:   '#input-model-search-form',
+            inputRouteName:         '#input-route-name',
+            inputAddGreen:          '#input-add-green',
             inputApiKey:            '#input-api-key',
-            inputApiSecret:         '#input-api-secret'
-
+            inputApiSecret:         '#input-api-secret',
+            formCreateRoute:        '#form-create-route'
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',
@@ -90,7 +90,8 @@
             btnModePageNext:            '#btn-model-page-next',
             btnAddRoute:                '#btn-add-route',
             btnCreateRoute:             '#btn-create-route',
-            btnDeleteRoute:             '#btn-delete-route'
+            btnDeleteRoute:             '#btn-delete-route',
+            btnBackToModel:             '#btn-back-to-model'
         }
     };
 })(AvenueApp);

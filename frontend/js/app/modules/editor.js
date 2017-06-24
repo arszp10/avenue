@@ -158,7 +158,10 @@
                 controls.inputs.inputRouteName.val('');
             });
 
-            controls.buttons.btnCreateRoute.click(function () {
+            controls.inputs.formCreateRoute.submit(function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+
                 var routeName = controls.inputs.inputRouteName.val();
                 if (routeName.length  == 0) {
                     $.notify(
@@ -202,6 +205,18 @@
 
                 that.renderRoutesDropDown();
                 routes.drawRoute(route);
+
+                return false;
+            });
+
+            controls.buttons.btnDeleteRoute.click(function () {
+                var inx = routes.getSelected();
+                routes.deleteRoute(inx);
+                that.renderRoutesDropDown();
+            });
+
+            controls.buttons.btnBackToModel.click(function(){
+                controls.buttons.btnShowNetwork.click();
             });
 
             $(document).on('click', 'a.choose-route-link', function(){
@@ -211,6 +226,7 @@
                var str2 = route.back != undefined && route.back.length > 0 ? ', #'+route.back.join(', #') : '';
                cy.aveBuildRoutes(cy.$(str1 + str2));
                routes.drawRoute(route);
+               routes.selectRoute(inx);
             });
 
         },

@@ -8,7 +8,8 @@ var AvenueApp = {
         nodeType: 'stopline',
         lastModelingResult: [],
         lastErrors: [],
-        currentModel: {}
+        currentModel: {},
+        selectedRoute: false
     },
     linkModules: function(){
         $.each(AvenueApp.Modules, function(i, v){
