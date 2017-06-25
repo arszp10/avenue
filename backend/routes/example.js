@@ -25,7 +25,9 @@ module.exports = function(app, config) {
      * @apiParam  {String} [parent] Идентификатор объекта типа `crossroad` -  перекресток, к которому относится данная стоп-линия.
      * @apiParam  {Number} cycleTime Длительность цикла (сек)
      * @apiParam  {Number} capacity Пропускная способность (авт/ч)
-     * @apiParam  {Number} avgIntensity Приведенная интенсивность (авт/ч) 
+     * @apiParam  {Number} avgIntensity Приведенная интенсивность (авт/ч)
+     * @apiParam  {Number{1..}} [weight] Вес вершины, при оптимизации на это значение умножается на задержку в этой вершине. Минимальное значение = 1.
+     * @apiParam  {Number} [queueLimit] Предельная длинна очереди(авт) в данной точке, если `maxQueue` превышает это значение, то точка считается заторной.
      *
      * @apiParam  {Boolean[]} [greenPhases] Если ключ `parent` присутствует то данный масив указывает цвета фаз, в которых разрешено движение, индекс занчения равен индексу фазы
      * @apiParam  {Number[]} [additionalGreens] Массив времен добавленного зеленого для фаз, так же как и предыдущий параметр длинна массива равна длине массива фаз у соответсвующего объекта `crossroad`
@@ -49,6 +51,8 @@ module.exports = function(app, config) {
      *      cycleTime: 100,
      *      avgIntensity: 900,
      *      capacity: 1800,
+     *      weight: 1,
+     *      queueLimit: 20,
      *      greenPhases: [true,false],
      *      additionalGreens: [0,0],
      *      intervals: [[0, 20], [40, 55]],
@@ -142,6 +146,8 @@ module.exports = function(app, config) {
      * @apiParam  {Number} cycleTime Длительность цикла (сек)
      * @apiParam  {Number} capacity Пропускная способность (авт/ч)
      * @apiParam  {Number} avgIntensity Приведенная интенсивность (авт/ч)
+     * @apiParam  {Number{1..}} [weight] Вес вершины, при оптимизации на это значение умножается на задержку в этой вершине. Минимальное значение = 1.
+     * @apiParam  {Number} [queueLimit] Предельная длинна очереди(авт) в данной точке, если `maxQueue` превышает это значение, то точка считается заторной.
      * @apiParam  {Number{0..1}} dispersion Дисперсия пачки
      * @apiParam  {Number} length Длинна перегона в метрах
      * @apiParam  {Number} routeTime Время проезда (с)
@@ -216,6 +222,9 @@ module.exports = function(app, config) {
      * @apiParam  {Number} cycleTime Длительность цикла (сек)
      * @apiParam  {Number} capacity Пропускная способность (авт/ч)
      * @apiParam  {Number} avgIntensity Приведенная интенсивность (авт/ч)
+     * @apiParam  {Number{1..}} [weight] Вес вершины, при оптимизации на это значение умножается на задержку в этой вершине. Минимальное значение = 1.
+     * @apiParam  {Number} [queueLimit] Предельная длинна очереди(авт) в данной точке, если `maxQueue` превышает это значение, то точка считается заторной.
+
      *
      * @apiParam  {Edge[]} [edges] Массив объектов типа `Edge`, свзяи *входящие* в данную точку.
      * Развернутое описание объекта Edge [см. Stopline](#api-Examples-StoplineExample).
@@ -341,7 +350,8 @@ module.exports = function(app, config) {
      * @apiParam  {Number} capacity Пропускная способность (авт/ч)
      * @apiParam  {Number} avgIntensity Приведенная интенсивность основного потока (авт/ч). Значение интенсивности второстепенного потока для рассчетов берется из связи (Edge), имеющей  признак `secondary: true`
      * @apiParam  {Number} secondaryFlowCapacity Пропускная способность второстепенного потока (авт/ч)
-     *
+     * @apiParam  {Number{1..}} [weight] Вес вершины, при оптимизации на это значение умножается на задержку в этой вершине. Минимальное значение = 1.
+     * @apiParam  {Number} [queueLimit] Предельная длинна очереди(авт) в данной точке, если `maxQueue` превышает это значение, то точка считается заторной.
      *
      * @apiParam  {Edge[]} [edges] Массив объектов типа `Edge`, свзяи *входящие* в данную точку, для точек данного типа допустимо иметь ровно две (2) входящиее свзи от других точек, при этом одна из них обязательно должна быть второстепенной
      *
@@ -426,7 +436,8 @@ module.exports = function(app, config) {
      * @apiParam  {Number} capacity Пропускная способность (авт/ч)
      * @apiParam  {Number} avgIntensity Приведенная интенсивность основного потока (авт/ч). Значение интенсивности второстепенного потока для рассчетов берется из связи (Edge), имеющей  признак `secondary: true`
      * @apiParam  {Number} secondaryFlowCapacity Пропускная способность второстепенного потока (авт/ч)
-     *
+     * @apiParam  {Number{1..}} [weight] Вес вершины, при оптимизации на это значение умножается на задержку в этой вершине. Минимальное значение = 1.
+     * @apiParam  {Number} [queueLimit] Предельная длинна очереди(авт) в данной точке, если `maxQueue` превышает это значение, то точка считается заторной.
      *
      * @apiParam  {Edge[]} [edges] Массив объектов типа `Edge`, свзяи *входящие* в данную точку, для точек данного типа
      * допустимо иметь ровно две (2) входящиее свзи от других точек, при этом одна из них обязательно должна быть второстепенной.

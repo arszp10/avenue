@@ -143,8 +143,9 @@ module.exports = function(app, config) {
      *
      * @apiParam  {Object[]} data Массив объектов типа `stopline`, `carriageway`, `crossroad` и т.д. см. [Примеры](#api-Examples)
      * @apiParamExample {json} Simulate request example:
-     * Content-Type:application/json;
-     * POST request body as JSON string:
+     * Content-Type: application/json;
+     * POST URL: "http://avenue-app.com/api/model/execute?api_key=3c3eed686e&api_secret=4042dcea13"
+     * POST BODY:
      * {
      *    data: [
      *      {
