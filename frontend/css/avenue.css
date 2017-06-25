@@ -134,8 +134,9 @@ body{
     -o-transition: all .3s ease-in-out;
     transition: all .3s ease-in-out;
     padding: 10px 0px 0px 0px;
-    overflow: hidden;
-    max-height: 700px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 720px;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 

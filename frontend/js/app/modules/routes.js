@@ -414,8 +414,7 @@
                 .attr("transform", function(d) { return "translate(0," + y(d.forwardGeoOffset) + ")"; })
                 .call(drag)
                 .on("mouseenter", function(){ d3.select(this).attr("cursor","pointer"); })
-                .on("mouseleave", function(){ d3.select(this).attr("cursor","default"); })
-                ;
+                .on("mouseleave", function(){ d3.select(this).attr("cursor","default"); });
 
             drawBarLine(route, bar, 'forward', x, cycleTime);
             drawBarLine(route, bar, 'back',  x, cycleTime);

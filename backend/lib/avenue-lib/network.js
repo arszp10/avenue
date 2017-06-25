@@ -19,6 +19,7 @@ function Network(request) {
     this.crIndexMap  = {};
     this.crStopLines = {};
     this.delay  = 0;
+    this.performanaceIndex  = 0;
 
     var network = this.network;
     var indexMap = this.indexMap;
@@ -26,7 +27,7 @@ function Network(request) {
 
     _.forEach(network, function(node, index){
         indexMap[node.id] = index;
-        node['weight'] = 0;
+        node['routeWeight'] = 0;
     });
 
     _.forEach(network, function(node){
@@ -48,7 +49,7 @@ function Network(request) {
     });
 
     this.weighNodes();
-    this.network.sort(function (a, b) { return a.weight - b.weight;});
+    this.network.sort(function (a, b) { return a.routeWeight - b.routeWeight;});
 
     _.forEach(network, function(node, i){
         indexMap[node.id] = i;
@@ -120,8 +121,8 @@ Network.prototype.traceRoute = function(nodes, w, trace){
             return;
         }
 
-        if (node.weight < nextWeight) {
-            that.setNodeProperty(id, 'weight', nextWeight);
+        if (node.routeWeight < nextWeight) {
+            that.setNodeProperty(id, 'routeWeight', nextWeight);
             if (node.hasOwnProperty('to')) {
                 var clone = trace.slice(0);
                 clone.push(id);
@@ -133,8 +134,11 @@ Network.prototype.traceRoute = function(nodes, w, trace){
 
 
 Network.prototype.simulate = function(numberOfIteration){
-    var sum = 0;
+    var sumDelay = 0;
+    var sumPI = 0;
     var that = this;
+    var delay = 0;
+    var weight = 1;
     for (var i = 0; i < numberOfIteration; i++) {
         _.forEach(this.network, function(node){
             if (that.outterNodes.indexOf(node.id) > -1 && i > 0) {
@@ -142,13 +146,15 @@ Network.prototype.simulate = function(numberOfIteration){
             }
             node.calc();
             if (i == numberOfIteration - 1){
-                sum += node.hasOwnProperty('delay')
-                    ? parseFloat(node['delay'])
-                    : 0;
+                delay = node.hasOwnProperty('delay') ? parseFloat(node['delay']) : 0;
+                weight = node.hasOwnProperty('weight') ? parseFloat(node['weight']) : 1;
+                sumDelay += delay;
+                sumPI += delay * weight;
             }
         });
     }
-    this.delay = sum;
+    this.delay = sumDelay;
+    this.performanaceIndex = sumPI;
     return this;
 };
 
@@ -159,7 +165,7 @@ Network.prototype.optimizeOffsets = function(numberOfIteration){
     var that = this;
     var crossRoad;
     var offsets = [0, 0, 0];
-    var delays  = [0.0, 0.0, 0.0];
+    var performanaceIndexArray  = [0.0, 0.0, 0.0];
     var mi      = 0;
     var offset  = 0;
 
@@ -177,10 +183,10 @@ Network.prototype.optimizeOffsets = function(numberOfIteration){
             for(var i = 0; i < 3; i++) {
                 crossRoad.offset = offsets[i];
                 that.simulate(numberOfIteration);
-                delays[i] = that.delay;
+                performanaceIndexArray[i] = that.performanaceIndex;
 
             }
-            mi = delays.minIndex3();
+            mi = performanaceIndexArray.minIndex3();
             crossRoad.offset = offsets[mi];
         });
     });
