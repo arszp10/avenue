@@ -867,3 +867,14 @@ a.btn-edit-add-green span.add-green-value {
     font-size: 12px;
     font-weight:bold;
 }
+
+.input-multi-edit {
+    width: 90px;
+    height: 24px;
+    padding: 3px 5px;
+    font-size: 12px;
+    float: right;
+}
+.table-multi-edit {
+    margin-bottom: 10px;
+}

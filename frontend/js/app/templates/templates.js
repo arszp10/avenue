@@ -140,7 +140,7 @@
                 '    <td>Capacity</td>' +
                 '    <td class="text-right">' + data.capacity + '</td><td class="measure-unit">v/h</td>' +
                 '</tr><tr>' +
-                '    <td>Average Intensity</td>' +
+                '    <td>Intensity</td>' +
                 '    <td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">v/h</td>' +
                 '</tr><tr>' +
                 '    <td>Constant comp. of intensity</td>' +
@@ -232,6 +232,33 @@
             return data.map(function(route, inx){
                 return '<li><a type="button" href="#" class="choose-route-link" data-inx="'+inx+'">'+route.routeName+'</a></li>';
             }).join('');
+        },
+
+        multiNodeEditForm: function(totalSelected){
+
+            return '<h4>Edit selected nodes ('+totalSelected+')</h4>' +
+            '<form class="form-horizontal">' +
+                '<table class="table table-condensed table-striped table-multi-edit">' +
+                '<tbody><tr>' +
+                '    <td>Capacity</td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-capacity-multi" placeholder="Exm. 1800"></td>' +
+                '    <td class="measure-unit">v/h</td>' +
+                '</tr><tr>' +
+                '    <td>Intensity</td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-intensity-multi" placeholder="Exm. 900"></td>' +
+                '    <td class="measure-unit">v/h</td>' +
+                '</tr><tr>' +
+                '    <td>Queue limit</td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-queue-limit-multi" placeholder="Exm. 10"></td>' +
+                '    <td class="measure-unit">veh</td>' +
+                '</tr><tr>' +
+                '    <td>Weight</td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-weight-limit-multi" placeholder="Exm. 10"></td>' +
+                '    <td class="measure-unit">unit</td>' +
+                '</tr></tbody>' +
+                '</table>' +
+                '<button class="btn btn-primary btn-multi-edit-update" type="submit"><i class="fa fa-check"></i> Update</button>' +
+            '</form>';
         }
 
 

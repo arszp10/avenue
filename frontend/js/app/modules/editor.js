@@ -239,7 +239,15 @@
         initBottomPanelEvents: function(){
             controls.buttons.btnShowNetwork.on('click', that.bottomTabSwitch);
             controls.buttons.btnShowResults.on('click', that.bottomTabSwitch);
-            controls.buttons.btnShowRoutes.on('click', that.bottomTabSwitch);
+            controls.buttons.btnShowRoutes.on('click', function(){
+                that.bottomTabSwitch.call(this);
+                var inx = routes.getSelected();
+                if (inx === false) {
+                    return;
+                }
+                var route = routes.getRoute(inx);
+                routes.drawRoute(route);
+            });
         },
 
         initRightPanelEvents: function(){
@@ -564,6 +572,14 @@
             controls.inputs.inputCrossroadOffset.slider('setAttribute', 'max', node.cycleTime - 1);
             controls.inputs.inputCrossroadOffset.slider('setValue', node.offset);
             controls.panels.crossRoadModal.modal('show');
+        },
+        showSideMultiNodeEditor: function(totalSelected){
+            controls.panels.nodeSearchResultlist.empty();
+            controls.panels.nodeSearchInfo.empty();
+            controls.panels.body.addClass('show-right-panel');
+            controls.panels.nodeSearchInfo.append(
+                templates.multiNodeEditForm(totalSelected)
+            );
         },
         showSideNodeInfo: function(node) {
             controls.panels.nodeSearchResultlist.empty();

@@ -55,7 +55,10 @@
 
         cy.on('select', 'node', null, function (d, a) {
             var s = cy.$('node:selected');
-            if (s.length > 1) return;
+            if (s.length > 1) {
+                editor.showSideMultiNodeEditor(s.length);
+                return;
+            }
             s = s[0];
             $.each(s.connectedEdges(), function (i, v) {
                 if (v.source() == s) { v.addClass('edge-out-flow'); }
