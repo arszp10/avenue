@@ -31,5 +31,5 @@ require('./routes/example.js')(app);
 require('./routes/web.js')(app);
 require('./routes/api.js')(app, config);
 require('./routes/errors.js')(app);
-var port = process.env.PORT || 9000;
+var port = process.env.PORT || 80;
 app.listen(port);
