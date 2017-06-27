@@ -271,7 +271,9 @@
             });
 
             $(document).on('click', '.node-list-item', function(event){
-                that.showSideNodeInfo(cy.getElementById($(this).data('id')).data());
+                that.showSideNodeInfo(cy.getElementById(
+                    $(this).data('id')).data()
+                );
             });
 
             controls.buttons.btnCloseRightPanel.click(function () {
@@ -304,6 +306,25 @@
                 }
                 return false;
             });
+
+            $(document).on('submit', 'form#form-update-common-props', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                $('.input-multi-edit').each(function(i, obj){
+                    var $th = $(obj);
+                    var val = parseInt($th.val()) | 0;
+                        if (val != 0) {
+                        $.each(cy.$('node:selected'), function (inx, node) {
+                            if (node.data['type'] == 'crossRoad') { return; }
+                            node.data($th.data('key'), val);
+                        });
+                    }
+                });
+                cy.$(':selected').unselect();
+                cy.trigger('unselect');
+                return false
+            });
+
         },
 
         initWidgetsEvents: function() {

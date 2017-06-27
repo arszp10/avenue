@@ -1,9 +1,27 @@
 Надо:
 
-Редактирование общих свойств у нескольких точек в правой панели (рез-тат поиска)
+Доделать Редактирование общих свойств у нескольких точек в правой панели (рез-тат поиска)
 
-Свой хостинг и нормальный домен
-Cluster? Логи сервера нормальные Environments
+Сделать новую главную страницу со сылками на все другие материалы
+    Стрелочки))) https://buttons.github.io/
+
+Почтовые сервисы с помощью апишки
+    mailgun
+    google mail from my domain
+
+Скрипт билда
+Nginx proxy/loadbalancer
+    https://serversforhackers.com/using-nginx-as-a-load-balancer
+    https://www.nginx.com/resources/deployment-guides/load-balance-node-js/
+    http://nginx.org/en/docs/http/load_balancing.html
+
+Мультиязычность интерфейса?
+
+%  Sum <= 100 или Абсолютные Sum <= Intensity значения на связях
+
+
+Логи сервера нормальные Environments
+
 API запрос на рассчет/оптимизацию сохранненной модели с новыми числовыми параметрами (extend)
 Мои расчеты, мои шаблоны, дефолтные настройки
 

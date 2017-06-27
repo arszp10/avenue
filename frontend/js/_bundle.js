@@ -31,4 +31,7 @@
 //= app/modules/traffic.js
 
 
+//= app/modules/locale.js
+
+
 

@@ -130,23 +130,18 @@
                 '</table>';
         },
         nodeCommonProps:        function(data){
+            var weight = data.weight == undefined ? 1 : data.weight ;
             var sign = data.constantIntensity > 0 ? '+' : '';
             var className = 'text-default';
             if (data.constantIntensity > 0) { className = 'text-success';}
             if (data.constantIntensity < 0) { className = 'text-danger';}
 
-            return '<table class="table table-condensed table-striped">' +
-                '<tbody><tr>' +
-                '    <td>Capacity</td>' +
-                '    <td class="text-right">' + data.capacity + '</td><td class="measure-unit">v/h</td>' +
-                '</tr><tr>' +
-                '    <td>Intensity</td>' +
-                '    <td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">v/h</td>' +
-                '</tr><tr>' +
-                '    <td>Constant comp. of intensity</td>' +
-                '    <td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">v/h</td>' +
-                '</tr></tbody>' +
-                '</table>';
+            return '<table class="table table-condensed table-striped"><tbody>' +
+                '<tr><td>Capacity</td><td class="text-right">' + data.capacity + '</td><td class="measure-unit">v/h</td></tr>' +
+                '<tr><td>Intensity</td><td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">v/h</td></tr>' +
+                '<tr><td>Constant comp. of intensity</td><td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">v/h</td></tr>' +
+                '<tr><td>Weight</td><td class="text-right">' + weight + '</td><td class="measure-unit">unit</td></tr>' +
+                '</tbody></table>';
         },
         locateEditButtons:      function(data) {
             var cls = (data.type !== 'crossRoad') ? 'btn-edit-node' : 'btn-edit-cross-road';
@@ -175,18 +170,12 @@
             var no = data.isCongestion ? '<span class="text-danger">C': '<span class="text-success">No c';
             return '<hr><h4>Modeling results</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
-                '    <tr>' +
-                '        <td>Delay</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">veh*sec</td>' +
-                '    </tr><tr>' +
-                '        <td>Green saturation</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td>' +
-                '    </tr><tr>' +
-                '        <td>Limit / Max. queue</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">vehicle</td>' +
-                '    </tr><tr>' +
-                '        <td>Sum I/O flow</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">vehicle</td>' +
-                '    </tr><tr>' +
-                '        <td>' + no + 'ongestion</span></td><td class="text-right">'+con+'</td><td class="measure-unit"></td>' +
-                '    </tr></tbody>' +
-                '</table>';
+                '    <tr><td>Delay</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">veh*sec</td></tr>' +
+                '    <tr><td>Green saturation</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td></tr>' +
+                '    <tr><td>Limit / Max. queue</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">vehicle</td></tr>' +
+                '    <tr><td>Sum I/O flow</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">vehicle</td></tr>' +
+                '    <tr><td>' + no + 'ongestion</span></td><td class="text-right">'+con+'</td><td class="measure-unit"></td></tr>' +
+                '</tbody></table>';
         },
         sumDelayStatus:         function(delay){
             return '&sum; delay<sub><i>i</i></sub> = <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">veh*sec</span>';
@@ -237,23 +226,23 @@
         multiNodeEditForm: function(totalSelected){
 
             return '<h4>Edit selected nodes ('+totalSelected+')</h4>' +
-            '<form class="form-horizontal">' +
+            '<form class="form-horizontal" id="form-update-common-props">' +
                 '<table class="table table-condensed table-striped table-multi-edit">' +
                 '<tbody><tr>' +
                 '    <td>Capacity</td>' +
-                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-capacity-multi" placeholder="Exm. 1800"></td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-capacity-multi" data-key="capacity" placeholder="Exm. 1800"></td>' +
                 '    <td class="measure-unit">v/h</td>' +
                 '</tr><tr>' +
                 '    <td>Intensity</td>' +
-                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-intensity-multi" placeholder="Exm. 900"></td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-intensity-multi" data-key="avgIntensity" placeholder="Exm. 900"></td>' +
                 '    <td class="measure-unit">v/h</td>' +
                 '</tr><tr>' +
                 '    <td>Queue limit</td>' +
-                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-queue-limit-multi" placeholder="Exm. 10"></td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-queue-limit-multi" data-key="queueLimit" placeholder="Exm. 10"></td>' +
                 '    <td class="measure-unit">veh</td>' +
                 '</tr><tr>' +
                 '    <td>Weight</td>' +
-                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-weight-limit-multi" placeholder="Exm. 10"></td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-weight-limit-multi" data-key="weight" placeholder="Exm. 10"></td>' +
                 '    <td class="measure-unit">unit</td>' +
                 '</tr></tbody>' +
                 '</table>' +
