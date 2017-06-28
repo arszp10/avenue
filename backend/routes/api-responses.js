@@ -13,6 +13,14 @@ module.exports = {
         return errObj(true, 'Pong', []);
     },
 
+    passwordResetSuccess: function(){
+        return errObj(true, 'Password recovery instructions sent successfully!', []);
+    },
+
+    passwordResetFailed: function(){
+        return errObj(false, 'User invalid credentials!', [{path: 'email', message: 'Sorry, but we doesn\'t have such email'}]);
+    },
+
 
     fieldsErrorsList: function(err, data){
         var errors = [];

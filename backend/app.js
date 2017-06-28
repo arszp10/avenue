@@ -1,16 +1,14 @@
-var env = 'dev';
-var _ = require('lodash');
-var express = require('express');
-var mongoose = require('mongoose');
-var validate = require('validate.js');
-var connect = require('connect');
-var connectTimeout = require('connect-timeout');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var MongoDBStore = require('connect-mongodb-session')(session);
+var _ =             require('lodash');
+var express =       require('express');
+var mongoose =      require('mongoose');
+var validate =      require('validate.js');
+var bodyParser =    require('body-parser');
+var cookieParser =  require('cookie-parser');
+var session =       require('express-session');
+var MongoDBStore =  require('connect-mongodb-session')(session);
+                    require('dotenv').config();
 
-var config =  require('./config/config-' + env + '.js');
+var config =        require('./config/config.js');
 
 var store = new MongoDBStore({
     uri: config.database,
@@ -18,18 +16,22 @@ var store = new MongoDBStore({
 });
 
 var db   = mongoose.connect(config.database);
-var app = express();
+var app  = express();
 
 app.set('views', __dirname + '/views');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+app.use(bodyParser.urlencoded(config.urlEncodedMiddlewareOptions));
 app.use(cookieParser());
 
-app.use(require('express-session')(config.session(store)));
+app.use(session(config.session(store)));
 
 require('./routes/example.js')(app);
-require('./routes/web.js')(app);
+require('./routes/web.js')(app, config);
 require('./routes/api.js')(app, config);
 require('./routes/errors.js')(app);
-var port = process.env.PORT || 80;
+
+var port = process.argv[2];
 app.listen(port);
+
+//var connect =       require('connect');
+//var connectTimeout = require('connect-timeout');

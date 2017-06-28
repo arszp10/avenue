@@ -4,30 +4,31 @@
   "description": "The Avenue2.0 traffic model",
   "main": "js/app.js",
   "scripts": {
-    "apidoc-generate" : "node_modules/apidoc/bin/apidoc -i backend/routes/ -o backend/public/api/doc/",
+    "apidoc-generate": "node_modules/apidoc/bin/apidoc -i backend/routes/ -o backend/public/api/doc/",
     "start": "npm run apidoc-generate && gulp build && node backend/app"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/kuzinmv/avenue.git"
   },
   "dependencies": {
+    "apidoc": "*",
     "body-parser": "^1.15.0",
     "connect": "^3.4.1",
     "connect-mongo": "^1.1.0",
     "connect-mongodb-session": "^1.1.1",
     "connect-timeout": "^1.7.0",
     "cookie-parser": "^1.4.1",
+    "dotenv": "^4.0.0",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "lodash": "4.1.0",
     "mailer": "^0.6.7",
+    "mailgun-js": "^0.11.2",
     "mongoose": "^4.4.7",
     "mongoose-unique-validator": "^1.0.2",
-    "nodemailer": "^2.4.1",
-    "validate.js": "^0.9.0",
-    "apidoc": "*"
+    "twig": "^1.10.5",
+    "validate.js": "^0.9.0"
   },
   "devDependencies": {
     "browser-sync": "*",

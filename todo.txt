@@ -1,13 +1,13 @@
 Надо:
 
-Доделать Редактирование общих свойств у нескольких точек в правой панели (рез-тат поиска)
+* Мультиязычность интерфейса?
+
+* %  Sum <= 100 или Абсолютные Sum <= Intensity значения на связях
+
 
 Сделать новую главную страницу со сылками на все другие материалы
     Стрелочки))) https://buttons.github.io/
 
-Почтовые сервисы с помощью апишки
-    mailgun
-    google mail from my domain
 
 Скрипт билда
 Nginx proxy/loadbalancer
@@ -15,12 +15,9 @@ Nginx proxy/loadbalancer
     https://www.nginx.com/resources/deployment-guides/load-balance-node-js/
     http://nginx.org/en/docs/http/load_balancing.html
 
-Мультиязычность интерфейса?
-
-%  Sum <= 100 или Абсолютные Sum <= Intensity значения на связях
 
 
-Логи сервера нормальные Environments
+Логи сервера
 
 API запрос на рассчет/оптимизацию сохранненной модели с новыми числовыми параметрами (extend)
 Мои расчеты, мои шаблоны, дефолтные настройки

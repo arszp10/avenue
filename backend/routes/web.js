@@ -1,4 +1,6 @@
 var express = require('express');
+var User = require('../models/user');
+var mailer = require('./mailer');
 
 function authenticateWeb(req, res, next) {
     if (req.session.user) {
@@ -20,7 +22,7 @@ function authenticateWeb(req, res, next) {
     res.redirect('/sign-in');
 }
 
-module.exports = function(app) {
+module.exports = function(app, config) {
 
     app.use('/', express.static(__dirname + '/../public'));
 
@@ -33,11 +35,43 @@ module.exports = function(app) {
     });
 
     app.use('/user/activate/:key', function (req, res) {
-        if (true) {
-            res.redirect('/sign-in#activation-success');
-            return;
-        }
-        res.redirect('/sign-in#activation-failed');
+        var key = req.params.key;
+        User.findOne({activationKey: key}, function (err, user) {
+            if (user) {
+                user.active = true;
+                user.activationKey = '';
+                user.save();
+                res.redirect('/sign-in#activation-success');
+                return;
+            }
+            res.redirect('/sign-in#activation-failed');
+        });
+    });
+
+
+    app.use('/user/reset-password/:key', function (req, res) {
+
+        var key = req.params.key;
+        User.findOne({activationKey: key}, function (err, user) {
+            if (user) {
+                var password = Math.random().toString(36).substr(2, 8);
+
+                user.password = password;
+                user.passwordHash  = user.encryptPassword(password);
+                user.activationKey = '';
+                user.save();
+
+                var data = {
+                    password: password,
+                    fullName: user.fullName
+                };
+                mailer.sendMail('newPasswordEmail', user.email, data);
+
+                res.redirect('/sign-in#reset-password-success');
+                return;
+            }
+            res.redirect('/sign-in#reset-password-failed');
+        });
     });
 
 

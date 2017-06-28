@@ -35,7 +35,7 @@ userSchema.pre('validate', function(next) {
         var apisec = this.genSalt();
         this.salt = this.genSalt();
         this.active = true;
-        this.activationKey =  this.encryptPassword(apikey + apisec);
+        this.activationKey =  this.genActivationKey();
         this.createdAt = currentDate;
         this.passwordHash  = this.encryptPassword(this.password);
         this.apiKey    = this.encryptPassword(apikey).substr(0, 10);
@@ -50,6 +50,12 @@ userSchema.pre('save', function(next) {
     }
     next();
 });
+
+userSchema.methods.genActivationKey = function() {
+    var apikey = this.email;
+    var apisec = this.genSalt();
+    return this.encryptPassword(apikey + apisec);
+};
 
 
 userSchema.methods.genSalt = function() {

@@ -81,5 +81,38 @@ $(document).ready(function(event){
     $('#sign-in-form').submit(function(){
         return formSubmit($(this), 'signIn', '/models');
     });
+
+    var hash = window.location.hash;
+    if (hash == '#activation-success') {
+        $.notify(
+            $('#sign-in-form'),
+            'Your account has been activated. Go in!', 
+             {className: 'success', elementPosition: 'top center', autoHide: false}
+        );
+    }
+    if (hash == '#activation-failed') {
+        $.notify(
+            $('#sign-in-form'),
+            'Your account activation failed, please ask support about.',
+            {className: 'error', elementPosition: 'top center', autoHide: false}
+        );
+    }
+    if (hash == '#reset-password-success') {
+        $.notify(
+            $('#sign-in-form'),
+            'The new password sent to your email. Please check it and sign in.', 
+            {className: 'success', elementPosition: 'top center', autoHide: false}
+        );
+    }
+    if (hash == '#reset-password-failed') {
+        $.notify(
+            $('#sign-in-form'),
+            'Your password reset failed, please ask support about.', 
+            {className: 'error', elementPosition: 'top center', autoHide: false}
+        );
+    }
+
+
+
 });
 

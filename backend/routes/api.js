@@ -1,10 +1,12 @@
 var _ = require('lodash');
-var nodemailer = require('nodemailer');
+var Twig = require('twig');
+var Mailgun = require('mailgun-js');
 
 var User = require('../models/user');
 var Model = require('../models/model');
 var avenueLib = require('../lib/avenue-lib');
 var responses = require('./api-responses');
+var mailer = require('./mailer');
 
 var isint = /^[0-9]+$/;
 var isfloat = /^([0-9]+)?\.[0-9]+$/;
@@ -59,7 +61,6 @@ function validateModel(req, res, next) {
 
 module.exports = function(app, config) {
 
-    var transporter = nodemailer.createTransport(config.mailTransportOptions);
 
     app.get('/api/ping', authenticateApi, function (req, res) {
         res.json(responses.pong());
@@ -73,15 +74,16 @@ module.exports = function(app, config) {
                 return;
             }
 
-            var mail = Object.assign({}, config.emailTemplates.activation);
-            var link = config.baseUrl + '/user/activate/' + newUser.activationKey;
-            mail.to = newUser.email;
-            mail.html = mail.html.split('{link}').join(link);
-           // transporter.sendMail(mail, function(error, info){});
+            var data = {
+                link: config.baseUrl + '/user/activate/' + newUser.activationKey,
+                fullName: newUser.fullName
+            };
+            mailer.sendMail('activationEmail', newUser.email, data);
 
             res.json(responses.entityCreatedSuccessfully('User', []));
         });
     });
+
     app.post('/api/user/sign-in', function (req, res) {
         User.findOne({email: req.body.email, active:true}, function (err, user) {
             if (user && user.authenticate(req.body.password)) {
@@ -115,18 +117,18 @@ module.exports = function(app, config) {
     app.post('/api/user/reset-password', function (req, res) {
         User.findOne({email: req.body.email}, function (err, user) {
             if (user) {
-                res.json({
-                    result: true,
-                    message: 'Password recovery instructions sent successfully!',
-                    data: []
+                user.activationKey = user.genActivationKey();
+                user.save(function(){
+                    var data = {
+                        link: config.baseUrl + '/user/reset-password/' + user.activationKey,
+                        fullName: user.fullName
+                    };
+                    mailer.sendMail('passResetEmail', user.email, data);
+                    res.json(responses.passwordResetSuccess());
                 });
-            } else {
-                res.json({
-                    result: false,
-                    message: 'User invalid credentials!',
-                    data: [{path: 'email', message: 'Sorry, but we doesn\'t have such email'}]
-                });
+                return;
             }
+            res.json(responses.passwordResetFailed());
         });
     });
 
@@ -255,6 +257,7 @@ module.exports = function(app, config) {
             res.json(responses.entityCreatedSuccessfully('Model', {id: newAveModel._id}));
         });
     });
+
     app.post('/api/model/update/:modelId', function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user.id;
@@ -280,6 +283,7 @@ module.exports = function(app, config) {
             });
         });
     });
+
     app.get('/api/model/get/:modelId', function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user.id;
@@ -296,6 +300,7 @@ module.exports = function(app, config) {
             res.json(responses.entityFound('Model', modelId, result));
         });
     });
+
     app.get('/api/model/list', function (req, res) {
         var params = _.cloneDeepWith(req.query, coerce);
             params.userId = req.session.user.id;
@@ -313,6 +318,7 @@ module.exports = function(app, config) {
         );
 
     });
+
     app.get('/api/model/remove/:modelId', function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user.id;
@@ -325,7 +331,5 @@ module.exports = function(app, config) {
             }
             res.json(responses.entityRemoved('Model', modelId, {id:modelId}));
         });
-
-
     });
 };

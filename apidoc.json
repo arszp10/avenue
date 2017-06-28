@@ -5,11 +5,11 @@
   "url" : "http://avenue-app.com/api",
   "header": {
     "title": "Начало",
-    "filename": "backend/resources/header.md"
+    "filename": "backend/resources/apidoc/header.md"
   },
   "footer": {
     "title": "Примечания",
-    "filename": "backend/resources/footer.md"
+    "filename": "backend/resources/apidoc/footer.md"
   },
   "order": [
     "StopLineExample",
