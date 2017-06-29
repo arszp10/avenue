@@ -5,9 +5,8 @@
 
 ## Demo
 
-[Работающий проект](http://avenue-app.com/) на heroku (возможно придется подождать или обновить еще раз)
-
-[API docs](http://avenue-app.com/api/doc)
+* Application homepage [avenue-app.com](http://avenue-app.com/)
+* [API docs](http://avenue-app.com/api/doc)
 
 вход: [http://avenue-app.com/sign-in](http://avenue-app.com/sign-in)
 ```
