@@ -2,28 +2,11 @@
 
 * Мультиязычность интерфейса?
 
-* %  Sum <= 100 или Абсолютные Sum <= Intensity значения на связях
-
-
+%  Sum <= 100 или Абсолютные Sum <= Intensity значения на связях
 Сделать новую главную страницу со сылками на все другие материалы
-    Стрелочки))) https://buttons.github.io/
-
-
 Скрипт билда
-Nginx proxy/loadbalancer
-    https://serversforhackers.com/using-nginx-as-a-load-balancer
-    https://www.nginx.com/resources/deployment-guides/load-balance-node-js/
-    http://nginx.org/en/docs/http/load_balancing.html
-
-
-
 Логи сервера
 
 API запрос на рассчет/оптимизацию сохранненной модели с новыми числовыми параметрами (extend)
 Мои расчеты, мои шаблоны, дефолтные настройки
-
-
-
-
-
 

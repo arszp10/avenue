@@ -5,11 +5,11 @@
 
 ## Demo
 
-[Работающий проект](http://avenue-2p0.herokuapp.com/) на heroku (возможно придется подождать или обновить еще раз)
+[Работающий проект](http://avenue-app.com/) на heroku (возможно придется подождать или обновить еще раз)
 
-[API docs](http://avenue-2p0.herokuapp.com/api/v1/doc)
+[API docs](http://avenue-app.com/api/doc)
 
-вход: [http://avenue-2p0.herokuapp.com/sign-in](http://avenue-2p0.herokuapp.com/sign-in)
+вход: [http://avenue-app.com/sign-in](http://avenue-app.com/sign-in)
 ```
 логин: test@user.com
 пароль: 123
@@ -42,10 +42,18 @@ $ sudo npm install gulp -g
 $ gulp build
 ```
 
+Создайте в корне проекта .env файл, примерно следующего содержания
+
+```
+APP_PATH=/home/username/avenue               # Absolute path to your project folder
+BASE_URL=http://localhost:9000               # baseUrl where app will works
+MONGODB_PATH=mongodb://localhost/avenue-dev  # dbname
+MAILGUN_API_KEY=key-....                     # your mailgun credentials,
+```
 
 Убедитесь что сервер MongoDB запущен и запустите сервер
 ```bash
-$ node backend/app
+$ node backend/app 9000
 ```
 
 Отройте в браузере
@@ -53,10 +61,3 @@ $ node backend/app
 http://localhost:9000
 ```
 
-
-## Connections
-По умолчанию программа будет использовать следующие  параметры для соединения  
-```js 
-baseUrl:  'http://localhost:9000',
-database: 'mongodb://localhost/avenue-dev',
-```
