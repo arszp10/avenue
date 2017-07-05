@@ -358,6 +358,10 @@ body.show-edge-input #input-edge-label {
     margin-top: 5px;
     font-size: 13px;
 }
+.add-green-property .form-horizontal .control-label,
+.panel-point-property .form-horizontal .control-label {
+    padding-right:0px;
+}
 
 @media (min-width: 768px){
     .modal-dialog {
@@ -701,7 +705,7 @@ body.show-edge-input #input-edge-label {
     font-size: 12px;
     color: #999;
     vertical-align: bottom!important;
-    width: 1%;
+    /*width: 14%;*/
 }
 
 .form-control.input-file-search {
@@ -878,3 +882,4 @@ a.btn-edit-add-green span.add-green-value {
 .table-multi-edit {
     margin-bottom: 10px;
 }
+

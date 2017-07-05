@@ -2,13 +2,13 @@
     <div class="panel-body">
         <form class="form-horizontal">
             <div class="form-group">
-                <label class="col-sm-6 control-label"><b>Node type</b>:</label>
+                <label class="col-sm-6 control-label"><b locale="node-type">Node type</b>:</label>
                 <div class="col-sm-6">
                     <strong id="input-node-type"></strong>
                 </div>
             </div>
             <div class="form-group">
-                <label for="input-node-tag" class="col-sm-6 control-label"><b>Node tag</b>:</label>
+                <label for="input-node-tag" class="col-sm-6 control-label"><b locale="node-tag">Node tag</b>:</label>
                 <div class="col-sm-6">
                     <div class="input-group">
                         <input type="text" class="form-control input-sm node-property" id="input-node-tag" data-key="tag"  value="" placeholder="node-1.1">
@@ -32,65 +32,65 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="input-node-intensity" class="col-sm-6 control-label"><b>Intensity</b> (v/h):</label>
+                <label for="input-node-intensity" class="col-sm-6 control-label"><b locale="intensity">Intensity</b> (<span locale="v_h">v/h</span>):</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm node-property" id="input-node-intensity" data-key="avgIntensity" placeholder="Intensity (1800)">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-intensity" data-key="avgIntensity" placeholder="1800">
                 </div>
             </div>
             <div class="form-group">
-                <label for="input-node-capacity" class="col-sm-6 control-label"><b>Capacity</b> (v/h):</label>
+                <label for="input-node-capacity" class="col-sm-6 control-label"><b locale="capacity">Capacity</b> (<span locale="v_h">v/h</span>):</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm node-property" id="input-node-capacity"  data-key="capacity" value="" placeholder="Capacity (3600)">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-capacity"  data-key="capacity" value="" placeholder="3600">
                 </div>
             </div>
             <div class="form-group is-concurrent">
-                <label for="input-node-secondary-flow-capacity" class="col-sm-6 control-label"><b>s.f. capacity</b> (v/h):</label>
+                <label for="input-node-secondary-flow-capacity" class="col-sm-6 control-label"><b locale="secondary-flow-capacity">s.f. capacity</b> (<span locale="v_h">v/h</span>):</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm node-property" id="input-node-secondary-flow-capacity"  data-key="secondaryFlowCapacity" value="" placeholder="Capacity (1800)">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-secondary-flow-capacity"  data-key="secondaryFlowCapacity" value="" placeholder="1800">
                 </div>
             </div>
             <div class="form-group is-carriageway">
-                <label for="input-node-length" class="col-sm-6 control-label"><b>Length</b> (m):</label>
+                <label for="input-node-length" class="col-sm-6 control-label"><b locale="length">Length</b> (<span locale="m">m</span>):</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm node-property" id="input-node-length"  data-key="length" value="" placeholder="Length (200)">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-length"  data-key="length" value="" placeholder="200">
                 </div>
             </div>
             <div class="form-group is-carriageway">
-                <label for="input-node-length" class="col-sm-6 control-label"><b>Route time</b> (sec):</label>
+                <label for="input-node-length" class="col-sm-6 control-label"><b locale="route-time">Route time</b> (<span locale="sec">sec</span>):</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm node-property" id="input-node-route-time"  data-key="routeTime" value="" placeholder="Route time (50)">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-route-time"  data-key="routeTime" value="" placeholder="50">
                 </div>
             </div>
             <div class="form-group is-carriageway">
-                <label for="input-node-length" class="col-sm-6 control-label"><b>Dispersion</b> (m):</label>
+                <label for="input-node-length" class="col-sm-6 control-label"><b locale="dispersion">Dispersion</b>:</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm node-property" id="input-node-dispersion"  data-key="dispersion" value="" placeholder="Dispersion (0.5)">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-dispersion"  data-key="dispersion" value="" placeholder="0.5">
                 </div>
             </div>
             <div class="form-group">
-                <label for="input-node-intensity" class="col-sm-6 control-label"><b>Weight</b>:</label>
+                <label for="input-node-intensity" class="col-sm-6 control-label"><b locale="weight">Weight</b>:</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm node-property" id="input-node-weight" data-key="weight" placeholder="Weight (1)">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-weight" data-key="weight" placeholder="1">
                 </div>
             </div>
             <div class="form-group">
-                <label for="input-node-intensity" class="col-sm-6 control-label"><b>Queue limit</b> (v):</label>
+                <label for="input-node-intensity" class="col-sm-6 control-label"><b locale="queue-limit">Queue limit</b> (<span locale="v">v</span>):</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control input-sm node-property" id="input-node-queue-limit" data-key="queueLimit" placeholder="Queue limit (10)">
+                    <input type="text" class="form-control input-sm node-property" id="input-node-queue-limit" data-key="queueLimit" placeholder="10">
                 </div>
             </div>
             <div class="form-group is-stopLine out-crossroad">
-                <label for="input-node-intensity" class="col-sm-6 control-label"><b>Red intervals</b> (sec):</label>
+                <label for="input-node-intensity" class="col-sm-6 control-label"><b locale="red-intervals">Red intervals</b> (<span locale="sec">sec</span>):</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control input-sm node-property" id="input-node-red-intervals" data-key="intervals" placeholder="[0, 10], [30, 54]">
                 </div>
             </div>
             <div class="form-group is-stopLine">
-                <label class="col-sm-6 control-label"><b>Direction icon</b> :</label>
+                <label class="col-sm-6 control-label"><b locale="direction-icon">Direction icon</b> :</label>
                 <div class="col-sm-6">
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm  btn-default dropdown-toggle" id="btn-node-icon"  data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">choose icon <span class="caret"></span></button>
+                                aria-haspopup="true" aria-expanded="false"><span locale="choose-icon">choose icon</span> <span class="caret"></span></button>
                         <div class="dropdown-menu menu-directions">
                             <button type="button" class="btn btn-default btn-sm"><i class="av-north-forward"></i></button>
                             <button type="button" class="btn btn-default btn-sm"><i class="av-north-forward-left"></i></button>
@@ -128,7 +128,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <button type="button" class="btn btn-primary btn-sm pull-right" id="btn-point-property-done"><i class="fa fa-check"></i> Done</button>
+                <button type="button" class="btn btn-primary btn-sm pull-right" id="btn-point-property-done"><i class="fa fa-check"></i> <span locale="done">Done</span></button>
             </div>
         </form>
     </div>

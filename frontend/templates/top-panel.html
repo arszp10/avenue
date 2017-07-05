@@ -15,14 +15,14 @@
                         </a>
                     </li>
                     <li class="dropdown hidden-files hidden-api-doc hidden-routes">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> Samples
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span locale="samples">Samples</span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#" data-key="sample1" class="add-sample-item">Concurrent</a></li>
-                            <li><a href="#" data-key="sample2" class="add-sample-item">Crossroad & Carriageway</a></li>
-                            <li><a href="#" data-key="sample3" class="add-sample-item">4 Crossroads in line</a></li>
-                            <li><a href="#" data-key="sample4" class="add-sample-item">Ilinskoe highway - morning (212)</a></li>
+                            <li><a href="#" data-key="sample1" class="add-sample-item" locale="conflict-point">Conflict point</a></li>
+                            <li><a href="#" data-key="sample2" class="add-sample-item" locale="crossroad-and-carriageway" >Crossroad & Carriageway</a></li>
+                            <li><a href="#" data-key="sample3" class="add-sample-item" locale="four-cross-in-line" >4 Crossroads in line</a></li>
+                            <li><a href="#" data-key="sample4" class="add-sample-item" locale="ilinskoe-highway-212" >Ilinskoe highway - morning (212)</a></li>
                             <!--<li role="separator" class="divider"></li>-->
                             <!--<li><a href="#">All samples...</a></li>-->
                         </ul>
@@ -47,28 +47,28 @@
                 <form class="visible-network visible-routes navbar-form navbar-left" role="search">
                     <button type="button" class="btn btn-inverse" id="btn-model-save"><i class="fa fa-save"></i></button>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-rocket"></i> &nbsp;&nbsp;Launch</button>
+                        <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-rocket"></i> &nbsp;&nbsp;<span locale="launch">Launch</span></button>
                         <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu nav-btn-group-dropdown">
-                            <li><a type="button" href="#" id="btn-phases-optimize"><i class="fa fa-server "></i> &nbsp;Phases</a></li>
-                            <li><a type="button" href="#" id="btn-offsets-optimize"><i class="fa fa-sliders "></i> &nbsp;Offsets</a></li>
+                            <li><a type="button" href="#" id="btn-phases-optimize"><i class="fa fa-server "></i> &nbsp;<span locale="phases">Phases</span></a></li>
+                            <li><a type="button" href="#" id="btn-offsets-optimize"><i class="fa fa-sliders "></i> &nbsp;<span locale="offsets">Offsets</span></a></li>
                         </ul>
                     </div>
                 </form>
                 <form class="visible-network visible-routes navbar-form navbar-left" role="search" id="form-create-route">
                     <div class="btn-group pull-left hidden" id="routes-list-button-panel">
-                        <button type="button" class="btn btn-inverse dropdown-toggle" id="" data-toggle="dropdown"><i class="fa fa-map-marker"></i> &nbsp;Choose a route</button>
+                        <button type="button" class="btn btn-inverse dropdown-toggle" id="" data-toggle="dropdown"><i class="fa fa-map-marker"></i> &nbsp;<span locale="choose-route">Choose a route</span></button>
                         <ul class="dropdown-menu nav-btn-group-dropdown" id="routes-dropdown-list">
                         </ul>
                     </div>
                     <div class="btn-group pull-left">
-                        <button type="button" class="btn btn-inverse hidden-routes dropdown-toggle" data-toggle="dropdown" id="btn-add-route"><i class="fa fa-plus"></i> Route</button>
+                        <button type="button" class="btn btn-inverse hidden-routes dropdown-toggle" data-toggle="dropdown" id="btn-add-route"><i class="fa fa-plus"></i> <span locale="add-route">Route</button>
                         <ul class="dropdown-menu nav-btn-group-dropdown">
                             <li class="li-route-name-dropdown">
                                 <input type="text" class="form-control input-route-name" id="input-route-name" placeholder="Enter a route name">
-                                <button type="submit" class="btn btn-sm btn-info" id="btn-create-route">Create</button>
+                                <button type="submit" class="btn btn-sm btn-info" id="btn-create-route" locale="create">Create</button>
                             </li>
                         </ul>
                     </div>
@@ -78,13 +78,13 @@
                     <!--<li><a href="#">Link</a></li>-->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-user"></i> <span id="label-my-account-username">My account</span>
+                            <i class="fa fa-user"></i> <span id="label-my-account-username" locale="my-account">My account</span>
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <!--<li><a href="#"><i class="fa fa-lock fa-fw"></i> Account</a></li>-->
                             <!--<li><a href="#"><i class="fa fa-cog fa-fw"></i> Settings</a></li>-->
                             <!--<li role="separator" class="divider"></li>-->
-                            <li><a href="/sign-out"><i class="fa fa-sign-out fa-fw"></i> Log out</a></li>
+                            <li><a href="/sign-out"><i class="fa fa-sign-out fa-fw"></i> <span locale="log-out">Log out</span></a></li>
                         </ul>
                     </li>
                 </ul>

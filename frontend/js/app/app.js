@@ -17,6 +17,10 @@ var AvenueApp = {
                 v.injectDependencies(AvenueApp.Modules);
             }
         });
+        var v = AvenueApp.Templates;
+        if (v.hasOwnProperty('injectDependencies')) {
+            v.injectDependencies(AvenueApp.Modules);
+        }
     },
     initModules: function(){
         $.each(AvenueApp.Modules, function(i, v){

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>avenue</title>
+    <title locale="app-title">AvenueApp</title>
     <link href="/css/_bundle.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="show-files">
@@ -12,13 +12,10 @@
         <div class="container files-container">
             <div class="row">
                 <div id="model-list-panel" class="col-sm-12 hidden">
-                    <div class="text-center hidden">
-                        <h4>Search results for <span class="label label-default">Coordination</span> showed</h4>
-                    </div>
-                    <a class="btn btn-lg btn-primary btn-create-new-model" href="#" role="button"><i class="fa fa-plus-circle"></i> &nbsp;Create new model</a>
+                    <a class="btn btn-lg btn-primary btn-create-new-model" href="#" role="button"><i class="fa fa-plus-circle"></i> &nbsp;<span locale="create-new-model">Create new model</span></a>
                     <div class="order-by-label pull-right">
-                        <a href="#" id="btn-model-order-down" class="btn-model-order" role="button" data-order="updatedAt">Newest first &nbsp; <i class="fa fa-angle-down"></i></a>
-                        <a href="#" id="btn-model-order-up" class="btn-model-order hidden" role="button" data-order="-updatedAt">Oldest first &nbsp; <i class="fa fa-angle-up"></i></a>
+                        <a href="#" id="btn-model-order-down" class="btn-model-order" role="button" data-order="updatedAt"><span locale="newest-first">Newest first</span> &nbsp; <i class="fa fa-angle-down"></i></a>
+                        <a href="#" id="btn-model-order-up" class="btn-model-order hidden" role="button" data-order="-updatedAt"><span locale="oldest-first">Oldest first</span> &nbsp; <i class="fa fa-angle-up"></i></a>
                     </div>
 
                     <table id="model-list-result" class="table table-files">
@@ -29,18 +26,18 @@
                         <button type="button" id="btn-model-page-next"  class="btn btn-model-page btn-default"><i class="fa fa-angle-right"></i></button>
                     </div>
                     <div id="model-pages-stat" class="hidden pull-right pages-info">
-                        <strong id="label-model-pages-start">1</strong>&nbsp;...&nbsp;<strong id="label-model-pages-finish"></strong> &nbsp;<span class="text-muted">from</span> &nbsp;<strong id="label-model-pages-total">1</strong>
+                        <strong id="label-model-pages-start">1</strong>&nbsp;...&nbsp;<strong id="label-model-pages-finish"></strong> &nbsp;<span class="text-muted" locale="from">from</span> &nbsp;<strong id="label-model-pages-total">1</strong>
                     </div>
                 </div>
 
                 <div id="welcome-panel" class="col-sm-12 hidden">
                     <div class="jumbotron col-sm-10">
-                        <h1>Welcome, <span id="label-welcome-username">{username}</span>!</h1>
+                        <h1><span locale="welcome">Welcome</span>, <span id="label-welcome-username">{username}</span>!</h1>
                         <br>
-                        <p>You do not have any models, click the button to create your first model.</p>
+                        <p locale="you-do-not-have-any-models">You do not have any models, click the button to create your first model.</p>
                         <br>
                         <p><a class="btn btn-primary btn-lg btn-create-new-model" id="btn-create-new-model" role="button">
-                            <i class="fa fa-plus-circle"></i> Create new model</a></p>
+                            <i class="fa fa-plus-circle"></i> <span locale="create-new-model">Create new model</span></a></p>
                     </div>
                 </div>
             </div>

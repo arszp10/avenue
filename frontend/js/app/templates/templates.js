@@ -1,5 +1,12 @@
 (function(App){
+    var locale;
+    var __ ;
     App.Templates = {
+        injectDependencies: function(modules) {
+            locale  = modules.locale;
+            __ = locale.localize;
+            console.log(__);
+        },
         crossRoadTablePhaseRow: function(data){
             var disAttr = '';
             var row0 = '', row1 = '', row2 = '', row3 = '';
@@ -21,10 +28,10 @@
                 row3 = row3 + '<td class="ph-td ph-col-' + i + '"><input type="text" id="ph-intertact-' + i + '" class="form-control input-sm" '+disAttr+' value="'+l3+'"></td>';
             }
             var s =
-                '<tr><td class="col-sm-2 text-right"><label>Tag:</label></td>' + row0 + '</tr>' +
-                '<tr><td class="col-sm-2 text-right"><label>Length:</label></td>' + row1 + '</tr>' +
-                '<tr><td class="col-sm-2 text-right"><label>Minimal:</label></td>' +  row2 + '</tr>' +
-                '<tr><td class="col-sm-2 text-right"><label>Intertact:</label></td>' +  row3 + '</tr>';
+                '<tr><td class="col-sm-2 text-right"><label>' + __('interval-tag') + '</label></td>' + row0 + '</tr>' +
+                '<tr><td class="col-sm-2 text-right"><label>' + __('interval-length') + '</label></td>' + row1 + '</tr>' +
+                '<tr><td class="col-sm-2 text-right"><label>' + __('interval-minimal') + '</label></td>' +  row2 + '</tr>' +
+                '<tr><td class="col-sm-2 text-right"><label>' + __('interval-intertact') + '</label></td>' +  row3 + '</tr>';
             return s;
         },
         crossRoadTableCheckRow: function(data){
@@ -66,7 +73,7 @@
                 s += '<td>'+ this.signalBar(v, 'signals-bulk clearfix')+'</td></tr>';
 
             }, this);
-            return '<h4>Diagrams</h4>' +
+            return '<h4>' + __('crossroad-diagrams') + '</h4>' +
                 '<table><tbody>' + s + '</tbody></table><hr>';
         },
         signalBar :             function(data, cls){
@@ -121,11 +128,11 @@
         nodeCrossRoadProps:     function(data){
             return '<table class="table table-condensed">' +
                 '<tbody><tr>' +
-                '    <td>Phases count</td>' +
+                '    <td>' + __('intervals-count') + '</td>' +
                 '    <td class="text-right">' + data.phases.length + '</td><td class="measure-unit"></td>' +
                 '</tr><tr>' +
-                '    <td>Offset</td>' +
-                '    <td class="text-right">' + data.offset + '</td><td class="measure-unit">sec</td>' +
+                '    <td>' + __('offset') + '</td>' +
+                '    <td class="text-right">' + data.offset + '</td><td class="measure-unit">' + __('sec') + '</td>' +
                 '</tr></tbody>' +
                 '</table>';
         },
@@ -137,17 +144,17 @@
             if (data.constantIntensity < 0) { className = 'text-danger';}
 
             return '<table class="table table-condensed table-striped"><tbody>' +
-                '<tr><td>Capacity</td><td class="text-right">' + data.capacity + '</td><td class="measure-unit">v/h</td></tr>' +
-                '<tr><td>Intensity</td><td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">v/h</td></tr>' +
-                '<tr><td>Constant comp. of intensity</td><td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">v/h</td></tr>' +
-                '<tr><td>Weight</td><td class="text-right">' + weight + '</td><td class="measure-unit">unit</td></tr>' +
+                '<tr><td>' + __('full-capacity') + '</td><td class="text-right">' + data.capacity + '</td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
+                '<tr><td>' + __('full-intensity') + '</td><td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
+                '<tr><td>' + __('constant-comp-intensity') + '</td><td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
+                '<tr><td>' + __('weight') + '</td><td class="text-right">' + weight + '</td><td class="measure-unit">' + __('unit') + '</td></tr>' +
                 '</tbody></table>';
         },
         locateEditButtons:      function(data) {
             var cls = (data.type !== 'crossRoad') ? 'btn-edit-node' : 'btn-edit-cross-road';
             return '<table><tr data-id="' + data.id + '"><td>' +
-                '<button class="btn btn-default btn-pan-tonode"><i class="fa fa-crosshairs"></i> Locate</button>&nbsp;&nbsp;' +
-                '<button class="btn btn-default ' + cls + '"><i class="fa fa-edit"></i> Edit <span class="caret"></span></button>' +
+                '<button class="btn btn-default btn-pan-tonode"><i class="fa fa-crosshairs"></i> '+__('locate')+'</button>&nbsp;&nbsp;' +
+                '<button class="btn btn-default ' + cls + '"><i class="fa fa-edit"></i> '+__('edit')+' <span class="caret"></span></button>' +
                 '</td></tr></table>';
         },
         validationErrors:       function(data){
@@ -155,7 +162,7 @@
             data.map(function(v){
                 str += '<li><i class="fa fa-warning"></i> &nbsp;' + v + '</li>';
             });
-            return '<hr><h4>Validation errors</h4>' +
+            return '<hr><h4>' + __('validation-errors') + '</h4>' +
                 '<ul class="node-error-list">' + str + '</ul>';
         },
         nodeModelingResults:    function(data){
@@ -165,20 +172,20 @@
 
             var queueLimit = data.queueLimit
                 ? data.queueLimit.toFixed(2) + ' / '
-                : 'unlimited / ';
+                : '- / ';
 
-            var no = data.isCongestion ? '<span class="text-danger">C': '<span class="text-success">No c';
-            return '<hr><h4>Modeling results</h4>' +
+            var no = data.isCongestion ? '<span class="text-danger">' + __('congestion') : '<span class="text-success">' + __('no-congestion');
+            return '<hr><h4>' + __('modeling-results') + '</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
-                '    <tr><td>Delay</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">veh*sec</td></tr>' +
-                '    <tr><td>Green saturation</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td></tr>' +
-                '    <tr><td>Limit / Max. queue</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">vehicle</td></tr>' +
-                '    <tr><td>Sum I/O flow</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">vehicle</td></tr>' +
-                '    <tr><td>' + no + 'ongestion</span></td><td class="text-right">'+con+'</td><td class="measure-unit"></td></tr>' +
+                '    <tr><td>' + __('delay') + '</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">' + __('veh_sec') + '</td></tr>' +
+                '    <tr><td>' + __('green-saturation') + '</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td></tr>' +
+                '    <tr><td>' + __('limit-max-queue') + '</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">' + __('vehicle') + '</td></tr>' +
+                '    <tr><td>' + __('sum-io-flow') + '</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">' + __('vehicle') + '</td></tr>' +
+                '    <tr><td>' + no + '</span></td><td class="text-right">'+con+'</td><td class="measure-unit"></td></tr>' +
                 '</tbody></table>';
         },
         sumDelayStatus:         function(delay){
-            return '&sum; delay<sub><i>i</i></sub> = <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">veh*sec</span>';
+            return '&sum; ' + __('delay') + '<sub><i>i</i></sub> = <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">' + __('veh_sec') + '</span>';
         },
 
 
@@ -188,9 +195,9 @@
                 '    <i class="fa fa-cog"></i>' +
                 '</a>' +
                 '<ul class="dropdown-menu">' +
-                '<li><a href="/app/'+data._id+'"><i class="fa fa-folder-open-o fa-fw"></i> &nbsp;Open</a></li>' +
-                '<li><a href="/app/'+data._id+'" target="_blank"><i class="fa fa-folder-open fa-fw"></i> &nbsp;Open in new Tab</a></li>' +
-                '<li><a href="#" class="btn-model-remove"><i class="fa fa-trash-o fa-fw"></i> &nbsp;Remove</a></li>' +
+                '<li><a href="/app/'+data._id+'"><i class="fa fa-folder-open-o fa-fw"></i> &nbsp;'+__('open')+'</a></li>' +
+                '<li><a href="/app/'+data._id+'" target="_blank"><i class="fa fa-folder-open fa-fw"></i> &nbsp;'+__('open-in-new-tab')+'</a></li>' +
+                '<li><a href="#" class="btn-model-remove"><i class="fa fa-trash-o fa-fw"></i> &nbsp;'+__('remove')+'</a></li>' +
                 //'<li><a href="#"><i class="fa fa-copy fa-fw"></i> &nbsp;Copy</a></li>' +
                 //'<li><a href="#"><i class="fa fa-info fa-fw"></i> &nbsp;Model info</a></li>' +
                 '</ul>' +
@@ -225,28 +232,28 @@
 
         multiNodeEditForm: function(totalSelected){
 
-            return '<h4>Edit selected nodes ('+totalSelected+')</h4>' +
+            return '<h4>'+__('edit-selected-nodes')+' ('+totalSelected+')</h4>' +
             '<form class="form-horizontal" id="form-update-common-props">' +
                 '<table class="table table-condensed table-striped table-multi-edit">' +
                 '<tbody><tr>' +
-                '    <td>Capacity</td>' +
-                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-capacity-multi" data-key="capacity" placeholder="Exm. 1800"></td>' +
-                '    <td class="measure-unit">v/h</td>' +
+                '    <td>'+__('full-capacity')+'</td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-capacity-multi" data-key="capacity" placeholder="1800"></td>' +
+                '    <td class="measure-unit">'+__('v_h')+'</td>' +
                 '</tr><tr>' +
-                '    <td>Intensity</td>' +
-                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-intensity-multi" data-key="avgIntensity" placeholder="Exm. 900"></td>' +
-                '    <td class="measure-unit">v/h</td>' +
+                '    <td>'+__('full-intensity')+'</td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-intensity-multi" data-key="avgIntensity" placeholder="900"></td>' +
+                '    <td class="measure-unit">'+__('v_h')+'</td>' +
                 '</tr><tr>' +
-                '    <td>Queue limit</td>' +
-                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-queue-limit-multi" data-key="queueLimit" placeholder="Exm. 10"></td>' +
-                '    <td class="measure-unit">veh</td>' +
+                '    <td>'+__('queue-limit')+'</td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-queue-limit-multi" data-key="queueLimit" placeholder="10"></td>' +
+                '    <td class="measure-unit">'+__('vehicle')+'</td>' +
                 '</tr><tr>' +
-                '    <td>Weight</td>' +
-                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-weight-limit-multi" data-key="weight" placeholder="Exm. 10"></td>' +
-                '    <td class="measure-unit">unit</td>' +
+                '    <td>'+__('weight')+'</td>' +
+                '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-weight-limit-multi" data-key="weight" placeholder="10"></td>' +
+                '    <td class="measure-unit">'+__('unit')+'</td>' +
                 '</tr></tbody>' +
                 '</table>' +
-                '<button class="btn btn-primary btn-multi-edit-update" type="submit"><i class="fa fa-check"></i> Update</button>' +
+                '<button class="btn btn-primary btn-multi-edit-update" type="submit"><i class="fa fa-check"></i> '+__('update')+'</button>' +
             '</form>';
         }
 
