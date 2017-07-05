@@ -136,7 +136,8 @@ body{
     padding: 10px 0px 0px 0px;
     overflow-x: hidden;
     overflow-y: auto;
-    max-height: 720px;
+    /*max-height: 720px;*/
+    bottom: 65px;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
@@ -705,7 +706,6 @@ body.show-edge-input #input-edge-label {
     font-size: 12px;
     color: #999;
     vertical-align: bottom!important;
-    /*width: 14%;*/
 }
 
 .form-control.input-file-search {

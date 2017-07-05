@@ -1,28 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=1,initial-scale=1,user-scalable=1" />
-    <title>Avenue 2.0</title>
-    <link href="./css/_bundle.css" rel="stylesheet" type="text/css" />
+	<meta charset="utf-8">
+	<meta name="viewport"    content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Моделирование транспортных потоков и оптимизация координированных режимов управления">
+	<title>Avenue 2.0 Моделирование транспортных потоков и оптимизация координированных режимов управления</title>
+	<link rel="stylesheet" href="./css/_bundle.css">
 
 </head>
-<body class="signup">
-<section class="container">
-    <section class="login-form presenatation">
-        <form id="" method="" action="" role="login">
-            <img src="./img/logo2.png" class="img-responsive" alt="" />
-            <div>
-                <iframe width="720" height="415" src="https://www.youtube.com/embed/J7MdxSTPrDQ" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <br>
-            <a class="btn btn-lg btn-primary btn-block" href="/register/">Try now!</a>
-        </form>
-        <div class="form-links">
-            <a href="#">Terms of Use</a> & <a href="#">Privacy Policy</a>
-        </div>
-    </section>
-</section>
+
+<body>
+
+<!-- Header -->
+<header class="header">
+	<div class="container">
+		<div class="row header-section" >
+			<div class="col-lg-8 col-lg-push-2 text-center">
+                <h1><img src="./img/logo2.png" alt="" /></h1>
+				<p class="lead">
+                    Сервис моделированя транспортных потоков<br> и оптимизации координированных режимов управления.
+				</p>
+				
+				<p>Для того, чтобы узнать все возможност сервиса вам необходимо  <a href="/register">зарегистрироваться</a><br>
+                    Это абсолютно <b>бесплатно</b>!	Если у вас уже есть аккаунт можете воспользоваться формой ниже
+                    или перейти на форму <a href="/sign-in">логина</a></p>
+					<br>
+				
+				<form class="form-inline" id="sign-in-form" method="post" action="" role="lo gin">
+					<div class="form-group"><input type="email" name="email" placeholder="Email" class="form-control input-lg"></div>
+					<div class="form-group"><input type="password" name="password" placeholder="Пароль" class="form-control input-lg"></div>
+                    <div class="form-group"><button type="submit" name="go"  class="btn btn-lg btn-default">Вход</button></div>
+				</form>
+				<p class="small text-muted">Демо вход: <code>test@user.com</code>  пароль <code>123</code>. Если забыли, то можно <a href="/reset-password">восстановить пароль</a></p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div id="illustration">
+					<img src="./img/landing/ap-screenshot1.png" alt="Главное окно редактора AvenueApp" >
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- /Header -->
+	
+
+<!-- Content -->
+<main class="content">
+
+	<!-- Lead -->
+	<section class="container space-before space-after">
+		<div class="row">
+			<div class="col-sm-10 col-sm-push-1">
+				<h1 class="text-center">Что это, для чего?</h1>
+				<p class="lead text-center">
+					AvenueApp 2.0 - это простой, доступный для всех сервис, моделирования транспортных потоков и оптимизации планов координаций.
+                    В основе лежит TRANSYT-подобная модель, с некоторыми упрощениями и усовершенствованиями.
+				</p> 
+			</div>
+		</div>
+	</section>
+	<!-- /Lead -->
+
+
+
+	<!-- Features -->
+	<section class="container space-before">
+		
+		<div class="row featurelist space-after">
+			<div class="col-md-5 col-sm-6 col-md-push-1 ">
+				<img class="img-feature img-responsive" src="./img/landing/screen-editor1.png" alt="Редактор модели">
+			</div>
+			<div class="col-md-5 col-md-push-1 col-sm-6">
+				<h2 class="space-before">Редактируйте модель в браузере! <span class="text-muted"></span></h2>
+				<p>
+                    Вам не нужно устанавливать сложное и дорогое программное обеспечение.
+                    Редактор моделй работает на любой операционной системе в современной версии любого браузера.
+                    Все модели сохраняются на сервере и доступны вам из любой точки земли.
+                </p>
+                <p>
+                    Удобный редактор позволяет вам работать одновременно с несколькими моделями, копировать части одних моделей в другие.
+                    Результаты моделирования привязываются каждый к своей точке, в виде графических и цифровых характеристик.
+                </p>
+			</div>
+		</div>
+
+		<div class="row featurelist space-after">
+			<div class="col-md-5 col-sm-6 col-sm-push-6">
+				<img class="img-feature img-responsive" src="./img/landing/screen-routes1.png" alt="Диаграммы время путь">
+			</div>
+			<div class="col-md-5 col-sm-6 col-md-pull-4 col-sm-pull-6">
+				<h2 class="space-before">Маршруты и диграммы. <span class="text-muted"></span></h2><br>
+				<p>Вы можете сгруппировать часть точек сети в один или несколько маршрутов, по которому автоматически строится диаграмма время-путь и лента времени безостановочного проезда.</p>
+				<p>Результаты автоматической оптимизации плана координации можно редактировать непосредственно на диаграмме, перетаскивая график сигнализации на том или ином перекрестке, с помощью мыши.</p>
+                <p><a class="feature-button" href="https://www.youtube.com/watch?v=_9GvXzJykNg" target="_blank"><i class="fa fa-youtube"></i> Смотреть видео </a></p>
+			</div>
+		</div>
+
+		<div class="row featurelist space-after">
+			<div class="col-md-5 col-sm-6 col-md-push-1 col-sm-6">
+				<img class="img-feature img-responsive" src="./img/landing/screen-api2.png" alt="API">
+			</div>
+			<div class="col-md-5 col-md-push-1 col-sm-6">
+				<h2 class="space-before">HTTP API для интеграции с внешними системами</span></h2>
+				<p>
+                    Выполнять запросы на расчет или оптимизацию любой модели вы можете не только из браузера, но и из вашего программного обеспечения с помощью Avenue-2.0 HTTP API.
+                    <p>
+                        <a class="feature-button" href="/api/doc" target="_blank"><i class="fa fa-question"></i> Смотреть документацию API </a>
+                        <a class="feature-button" href="https://github.com/kuzinmv/avenue/blob/master/backend/bin/curl-exmpl.txt#L1c" target="_blank">Пример CURL запроса </a>
+                    </p>
+                </p>
+			</div>
+		</div>
+	</section>
+	<!-- /Features -->
+
+</main>
+
+
+<footer id="footer" class="jumbotron">
+	<section class="container">
+		<div class="row">
+				<div class="col-md-5 col-md-push-1">
+					<h3>Нужна помощь?</h3>
+					<p>Если у вас возникли какие либо вопросы, пожелания или комментарии, пожалуйста пишите по адресу:</p>
+                    <p><code>mikhail@avenue-app.com</code></p>
+					<p>Если вы нашли ошибку или хотите реализацию новой возможности, пожалуйста создайте issue на <a href="https://github.com/kuzinmv/avenue/issues">GitHub</a> </p>
+                    <p><a class="feature-button" href="https://github.com/kuzinmv/avenue" target="_blank"><i class="fa fa-github-alt"></i> Source code </a></p>
+				</div>
+                <div class="col-md-5 col-md-push-1">
+                    <iframe class="iframe-border" width="450" height="320" src="https://www.youtube.com/embed/J7MdxSTPrDQ" frameborder="0" allowfullscreen></iframe>
+                </div>
+		</div>	
+	</section>
+</footer>
+
+<p class="small text-muted text-center">Copyright &copy; 2017, AvenueApp </p>
+<br>
+
+<script src="./js/_signup.js"></script>
+<script>
+    jQuery(document).ready(function($) {
+        $('#illustration').hover( function(){
+            $(this).addClass('expand');
+        }, function(){
+            $(this).removeClass('expand');
+        } );
+    });
+</script>
+
 </body>
 </html>
-

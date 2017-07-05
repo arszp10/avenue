@@ -5,7 +5,6 @@
         injectDependencies: function(modules) {
             locale  = modules.locale;
             __ = locale.localize;
-            console.log(__);
         },
         crossRoadTablePhaseRow: function(data){
             var disAttr = '';
