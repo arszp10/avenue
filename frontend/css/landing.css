@@ -1,7 +1,7 @@
 /********************************************************/
 /*                 Page background                      */
 /********************************************************/
-body, .content { 
+body.landing-page, .content {
 	background: #fff; 
 	color:#333;
     overflow: auto;
