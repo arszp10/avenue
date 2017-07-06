@@ -51,7 +51,7 @@ module.exports = {
 
     optimizeSplits: function(request){
         if (this.isEmptyRequest(request)) return [];
-
+        this.replacePercentPortionToAbs(request);
         var network = new Network(request);
         return network
             .simulate(3)
@@ -62,7 +62,7 @@ module.exports = {
 
     optimizeOffsets: function(request){
         if (this.isEmptyRequest(request)) return [];
-
+        this.replacePercentPortionToAbs(request);
         var network = new Network(request);
         return network.optimizeOffsets(1).json();
 
@@ -70,7 +70,7 @@ module.exports = {
 
     simulate: function(request){
         if (this.isEmptyRequest(request)) return [];
-
+        this.replacePercentPortionToAbs(request);
         var network = new Network(request);
         return network.simulate(5).json();
 
@@ -115,20 +115,23 @@ module.exports = {
                     this.checkConstraint(node, nodeConstraints);
             }
             if (node.hasOwnProperty('edges') && node.edges.length > 0) {
-                node.edges.map(function(node) {
+                node.edges.map(function(edge) {
 
-                    if (! this.checkConstraint(node, edgeConstraints, {type:'edge'})) {
+                    var portion = this.portionPercentToAbs(edge, data);
+                    edge.portion = portion;
+
+                    if (! this.checkConstraint(edge, edgeConstraints, {type:'edge'})) {
                         return;
                     }
 
-                    if (node.hasOwnProperty('secondary')) {
+                    if (edge.hasOwnProperty('secondary')) {
                         return;
                     }
 
-                    if (!sourcesPortionSum.hasOwnProperty(node.source)) {
-                        sourcesPortionSum[node.source] = parseInt(node.portion);
+                    if (!sourcesPortionSum.hasOwnProperty(edge.source)) {
+                        sourcesPortionSum[edge.source] = parseInt(edge.portion);
                     } else {
-                        sourcesPortionSum[node.source] += parseInt(node.portion);
+                        sourcesPortionSum[edge.source] += parseInt(edge.portion);
                     }
 
                 }, this);
@@ -164,6 +167,42 @@ module.exports = {
 
 
         return  this.errors;
+    },
+
+    replacePercentPortionToAbs: function(request){
+        var that = this;
+        request.map(function(node, inx){
+            if (node.hasOwnProperty('edges') && node.edges.length > 0) {
+                node.edges.map(function(edge) {
+                    edge.portion = that.portionPercentToAbs(edge, request);
+                })
+            }
+        });
+    },
+
+    portionPercentToAbs: function portionPercentToAbs(edge, data){
+        if (!edge.hasOwnProperty('source') || !edge.hasOwnProperty('portion')) {
+            return 0;
+        }
+
+        var lastChar = (edge.portion + '').slice(-1);
+        if (lastChar !== '%') {
+            return edge.portion;
+        }
+
+        var percent = edge.portion.substring(0, edge.portion.length - 1);
+        var source = edge.source;
+
+        percent = parseInt(percent);
+        percent = isNaN(percent) ? 0 : percent;
+
+        var node = _.find(data, {id: source});
+        if (!node || !node.hasOwnProperty('avgIntensity')) { return 0;}
+
+        var result = parseInt(parseInt(node.avgIntensity) * percent / 100);
+        var result = isNaN(result) ? 0 : result;
+
+        return result;
     }
 
 };

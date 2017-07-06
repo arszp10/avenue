@@ -35,17 +35,30 @@
     };
 
     var setEdgePortion = function(edge, source){
-        if (edge.data('portion')!== undefined && edge.data('portion') > 0) {
+        if (edge.data('portion')!== undefined && edge.data('portion')) {
             return;
         }
         var sourceEdges = cy.aveGetSourceEdges(edge.data('source'));
-        var sum = 0, p = 0;
+        var sum = 0, p = '';
+        var avgIntensity = source.data('avgIntensity');
+
         sourceEdges.map(function(e){
             if (e.hasClass('edgehandles-ghost-edge')) {return;}
-            p = e.data('portion');
-            sum += p== undefined ? 0 : p;
+            p = e.data('portion') + '';
+
+            var lastChar = p.slice(-1);
+            if (lastChar === '%') {
+                p = parseInt(p.substring(0, p.length - 1));
+                p = isNaN(p) ? 0 : p;
+                p = parseInt(avgIntensity * p / 100)
+            } else {
+                p = parseInt(p);
+                p = isNaN(p) ? 0 : p;
+            }
+            sum += p;
+
         });
-        var avgIntensity = source.data('avgIntensity');
+
         sum = sum >= avgIntensity ? 0 : avgIntensity - sum;
         edge.data('portion', sum);
     };
@@ -331,9 +344,22 @@
             return this.$('node[parent="' + id + '"][type="stopline"]').jsons();
         },
         aveConstantIntensity: function(node){
+
             var sum = 0;
+            var that = this;
             $.each(this.$('edge[target="' + node.id + '"]'), function(inx, n){
-                sum += parseInt(n.data('portion'));
+                var avgIntensity = that.$('#' + n.data('source')).data('avgIntensity');
+                var p = n.data('portion') + '';
+                var lastChar = p.slice(-1);
+                if (lastChar === '%') {
+                    p = parseInt(p.substring(0, p.length - 1));
+                    p = isNaN(p) ? 0 : p;
+                    p = parseInt(avgIntensity * p / 100)
+                } else {
+                    p = parseInt(p);
+                    p = isNaN(p) ? 0 : p;
+                }
+                sum += p;
             });
             return node.avgIntensity - sum;
         },

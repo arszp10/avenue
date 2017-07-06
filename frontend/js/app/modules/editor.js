@@ -336,7 +336,23 @@
             });
             controls.inputs.inputEdgeLabel.change(function () {
                 var id = $(this).data('edge');
-                cy.getElementById(id).data('portion', parseInt($(this).val()))
+                var value = $(this).val();
+                var lastChar = value.slice(-1);
+
+                if (lastChar === '%') {
+                    value = value.substring(0, value.length - 1);
+                }
+                value = parseInt(value);
+                value = isNaN(value) ? 0 : value;
+
+                if (lastChar === '%') {
+                    if (value > 100) {
+                        value = 100;
+                    }
+                    value = value + '%';
+                }
+
+                cy.getElementById(id).data('portion', value);
             });
             controls.inputs.inputEdgeLabel.on('keyup', function (event) {
                 if (event.which == 13) {
