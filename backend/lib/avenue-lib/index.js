@@ -195,6 +195,8 @@ module.exports = {
 
         percent = parseInt(percent);
         percent = isNaN(percent) ? 0 : percent;
+        percent = percent > 100 ? 100 : percent;
+        percent = percent < 0 ? 0 : percent;
 
         var node = _.find(data, {id: source});
         if (!node || !node.hasOwnProperty('avgIntensity')) { return 0;}
