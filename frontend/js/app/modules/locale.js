@@ -97,7 +97,7 @@
 
         },
         en: {
-            'api-doc' : 'API DOC',
+            'api-doc' : 'API Doc',
             'app-title': 'Avenue 2.0 - Service and API for mesoscopic modeling of traffic and optimization of coordinated control modes.',
             'create-new-model' : 'Create new model',
             'newest-first' : 'Newest first',

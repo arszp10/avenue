@@ -22,6 +22,8 @@ body.landing-page, .content {
 	color: white;
 	margin-bottom: 0;
 	padding-bottom: 0px;
+    border-bottom: 5px solid rgba(255,255,255, .8);
+    overflow: hidden;
 }
 .header h1 {
 	font-family: "Open sans", Arial;

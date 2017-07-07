@@ -1,7 +1,9 @@
 # Avenue 2.0
 
 Система моделирования транспортных потоков и оптимизации координированных режимов управления. 
-[Краткое описание принципов работы модели](https://docs.google.com/document/d/1mdmcT0b6X0agkceEUA5OEeeyhi6zV6zl3avihBE69j4/edit?usp=sharing)
+
+![Avenue-2.0.intro](https://github.com/kuzinmv/avenue/raw/master/frontend/img/landing/avenue-prev.gif "")
+
 
 ## Demo
 
