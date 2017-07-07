@@ -2,8 +2,6 @@
 
 Система моделирования транспортных потоков и оптимизации координированных режимов управления. 
 
-![Avenue-2.0.intro](https://github.com/kuzinmv/avenue/raw/master/frontend/img/landing/avenue-prev.gif "")
-
 
 ## Demo
 
@@ -62,3 +60,5 @@ $ node backend/app 9000
 http://localhost:9000
 ```
 
+
+<img src="https://github.com/kuzinmv/avenue/raw/master/frontend/img/landing/avenue-prev.gif" alt="Avenue-2.0.intro" style="width: 800px;">
