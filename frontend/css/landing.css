@@ -193,7 +193,7 @@ body.landing-page, .content {
 /********************************************************/
 
 .header {
-	background: #005363 url(../img/bg.jpg) bottom center;
+	background: #cbada1 url(../img/bg.jpg) bottom center;
 	-webkit-background-size: cover;
 	   -moz-background-size: cover;
 	     -o-background-size: cover;
@@ -264,4 +264,3 @@ a.feature-button:hover {
     color: #F7F1F1;
     background: #DA706E;
 }
-
