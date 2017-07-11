@@ -19,7 +19,7 @@ var db   = mongoose.connect(config.database);
 var app  = express();
 
 app.set('views', __dirname + '/views');
-app.use(bodyParser.json());
+app.use(bodyParser.json(config.urlEncodedMiddlewareOptions));
 app.use(bodyParser.urlencoded(config.urlEncodedMiddlewareOptions));
 app.use(cookieParser());
 

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-curl 'http://localhost:9000/api/model/update/'$1 -H 'Cookie: connect.sid=s%3AeHgXudb2NrHQSDmcSL0VdMoGv767aiyc.VrExW%2FL%2BwdkZr6zPdu8QwtEWmtlU%2F%2FMxRZKyEomsFEg; _avenue=j%3A%7B%22userId%22%3A%2257763c4577e973d013e3e91d%22%2C%22fullName%22%3A%22Test%20User%22%2C%22email%22%3A%22test%40user.com%22%2C%22apiKey%22%3A%223c3eed686e%22%2C%22apiSecret%22%3A%224042dcea13%22%7D' -H 'Content-Type: application/json; charset=UTF-8' --data-binary '{"data":{"content":'$2',"name":"New coordination plan","routes":[],"nodeCount":5,"crossCount":0,"cycleTime":100}}'
+curl 'http://localhost:9000/api/model/update/'$1'?api_key=3c3eed686e&api_secret=4042dcea13' -H 'Content-Type: application/json; charset=UTF-8' --data-binary @-

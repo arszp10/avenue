@@ -46,6 +46,7 @@ function authenticateApi(req, res, next) {
     };
     User.findOne(cond, function (err, user) {
         if (user) {
+            req.session.user = user;
             next(); return;
         }
         res.status(401);
@@ -249,7 +250,7 @@ module.exports = function(app, config) {
             ));
     });
 
-    app.post('/api/model/create', function (req, res) {
+    app.post('/api/model/create', authenticateApi, function (req, res) {
         var userId = req.session.user.id;
         var data = {
             name: 'New coordination plan',
@@ -266,9 +267,10 @@ module.exports = function(app, config) {
         });
     });
 
-    app.post('/api/model/update/:modelId', function (req, res) {
+    app.post('/api/model/update/:modelId', authenticateApi, function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user.id;
+
         Model.findOne({_id: modelId, _creator:userId}, function (err, model) {
             if (err || !model) {
                 res.status(404);
@@ -293,7 +295,7 @@ module.exports = function(app, config) {
         });
     });
 
-    app.get('/api/model/get/:modelId', function (req, res) {
+    app.get('/api/model/get/:modelId', authenticateApi, function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user.id;
         Model.findOne({_id: modelId, _creator:userId}, function (err, model) {
@@ -310,7 +312,7 @@ module.exports = function(app, config) {
         });
     });
 
-    app.get('/api/model/list', function (req, res) {
+    app.get('/api/model/list', authenticateApi, function (req, res) {
         var params = _.cloneDeepWith(req.query, coerce);
             params.userId = req.session.user.id;
 
@@ -328,7 +330,7 @@ module.exports = function(app, config) {
 
     });
 
-    app.get('/api/model/remove/:modelId', function (req, res) {
+    app.get('/api/model/remove/:modelId', authenticateApi, function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user.id;
 
@@ -343,7 +345,7 @@ module.exports = function(app, config) {
     });
 
 
-    app.post('/api/model/import', upload.single('inputImportFile'), function (req, res, next) {
+    app.post('/api/model/import', authenticateApi, upload.single('inputImportFile'), function (req, res, next) {
         console.log(req.file);
         // req.body will hold the text fields, if there were any
     });

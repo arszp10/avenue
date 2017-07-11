@@ -3,15 +3,14 @@ var _  = require('lodash');
 var xml2js = require('xml2js');
 var parser = new xml2js.Parser({mergeAttrs:true, explicitArray:false});
 
-
-
-
-
 var data = [];
 
 var defaults  = require('../lib/avenue-lib/settings.js');
 
-var xml = fs.readFileSync('../resources/import/sumo-samples/hello.net.xml');
+var xml = fs.readFileSync('../resources/import/sumo-samples/cross3ltl.net.xml');
+//var xml = fs.readFileSync('../resources/import/sumo-samples/buses.net.xml');
+//var xml = fs.readFileSync('../resources/import/sumo-samples/quickstart.net.xml');
+//var xml = fs.readFileSync('../resources/import/sumo-samples/omsk.net.xml');
 
 
 var nextId = function(){
@@ -26,7 +25,9 @@ parser.parseString(xml, function (err, result) {
     var bound = result.net.location.convBoundary.split(',');
     var yMax = parseInt(bound[bound.length - 1]);
     var edges = result.net.edge;
-    var edgesIndex = {};
+    var connections = result.net.connection;
+    var nodesIndexStart = {};
+    var nodesIndexEnd = {};
     var junctionsIndex = {};
     var data = [];
 
@@ -39,20 +40,21 @@ parser.parseString(xml, function (err, result) {
                 junctions[index].parentId = paretnId;
 
                 var jx = parseInt(junction.x);
-                var jy = parseInt(junction.y);
+                var jy = yMax - parseInt(junction.y);
 
                 var node = JSON.parse(JSON.stringify(defaults.cyNodeProps));
                 node.position.x = jx;
-                node.position.y = yMax - jy;
+                node.position.y = jy;
                 node.data = JSON.parse(JSON.stringify(defaults.crossRoad));
                 node.data.id = paretnId;
                 node.data.name = junction.id;
 
                 data.push(JSON.parse(JSON.stringify(node)));
-
-            }
             junctionsIndex[junction.id] = junction;
+            }
+
         //}
+
     });
 
     var addStopLines = function(edge){
@@ -61,12 +63,15 @@ parser.parseString(xml, function (err, result) {
             var end = shape[shape.length - 1];
             var coord = end.split(',');
             var junction = junctionsIndex[edge.to];
-            var jx = junction.x;
-            var jy = junction.y;
+            var jx = parseInt(junction.x);
+            var jy = yMax - parseInt(junction.y);
 
             var node = JSON.parse(JSON.stringify(defaults.cyNodeProps));
             node.position.x = parseInt(coord[0]);
-            node.position.y =parseInt(coord[1]);
+            node.position.y = yMax - parseInt(coord[1]);
+
+            node.position.x = (node.position.x - jx)*10 +jx ;
+            node.position.y = (node.position.y - jy)*10 +jy ;
             node.data = JSON.parse(JSON.stringify(defaults.stopline));
             node.data.id = nextId();
             if (junction.hasOwnProperty('parentId')) {
@@ -74,24 +79,27 @@ parser.parseString(xml, function (err, result) {
             }
             node.data.tag = lane.id;
             data.push(JSON.parse(JSON.stringify(node)));
-
+            nodesIndexStart[lane.id] = node.data.id;
             return node.data.id;
         })
 
     };
 
     var addBottleneck = function(edge){
-        var lane = edge.lane[0];
+        var lane = edge.lane[edge.lane.length - 1 ];
         var shape = lane.shape.split(' ');
         var end = shape[0];
         var coord = end.split(',');
         var junction = junctionsIndex[edge.from];
-        var jx = junction.x;
-        var jy = junction.y;
+        var jx = parseInt(junction.x);
+        var jy = yMax - parseInt(junction.y);
 
         var node = JSON.parse(JSON.stringify(defaults.cyNodeProps));
         node.position.x = parseInt(coord[0]);
-        node.position.y =parseInt(coord[1]);
+        node.position.y = yMax - parseInt(coord[1]);
+        node.position.x = (node.position.x - jx)*10 +jx ;
+        node.position.y = (node.position.y - jy)*10 +jy ;
+
         node.data = JSON.parse(JSON.stringify(defaults.bottleneck));
         node.data.id = nextId();
 
@@ -100,28 +108,47 @@ parser.parseString(xml, function (err, result) {
         }
         node.data.tag = lane.id;
         data.push(JSON.parse(JSON.stringify(node)));
-
+        nodesIndexEnd[lane.id] = node.data.id;
         return node.data.id;
 
     };
 
     var addCrriageway = function(edge){
-        var lane = edge.lane[0];
+        var lane = edge.lane[edge.lane.length - 1];
         var shape = lane.shape.split(' ');
         var start = shape[0];
         var end = shape[shape.length - 1];
         var coord0 = start.split(',');
         var coord1 = end.split(',');
+
+        var junctionFrom = junctionsIndex[edge.from];
+        var jxf = parseInt(junctionFrom.x);
+        var jyf = yMax - parseInt(junctionFrom.y);
+
+        var junctionTo = junctionsIndex[edge.to];
+        var jxt = parseInt(junctionTo.x);
+        var jyt = yMax - parseInt(junctionTo.y);
+
+        coord0[0] = parseInt(coord0[0]);
+        coord0[1] = yMax - parseInt(coord0[1]);
+        coord0[0] = (coord0[0] - jxf)*10 +jxf ;
+        coord0[1] = (coord0[1] - jyf)*10 +jyf ;
+
+        coord1[0] = parseInt(coord1[0]);
+        coord1[1] = yMax - parseInt(coord1[1]);
+        coord1[0] = (coord1[0] - jxt)*10 +jxt ;
+        coord1[1] = (coord1[1] - jyt)*10 +jyt ;
+
+
         var coord = [
-            parseInt((parseInt(coord0[0])+parseInt(coord1[0]))/2),
-            parseInt((parseInt(coord0[1])+parseInt(coord1[1]))/2)
+            parseInt(((coord0[0])+(coord1[0]))/2),
+            parseInt(((coord0[1])+(coord1[1]))/2)
         ];
 
-
-        console.log(coord0, coord1, coord);
         var node = JSON.parse(JSON.stringify(defaults.cyNodeProps));
-        node.position.x = parseInt((coord[0]) ) | 0;
-        node.position.y = yMax - parseInt((coord[1])) | 0;
+        node.position.x = ((coord[0]) ) | 0;
+        node.position.y = ((coord[1])) | 0;
+
         node.data = JSON.parse(JSON.stringify(defaults.carriageway));
         node.data.id = nextId();
         node.data.tag = edge.id;
@@ -132,6 +159,14 @@ parser.parseString(xml, function (err, result) {
 
 
     var convertSumoEdge = function (edge){
+
+        //var type = edge.type;
+        //var allowed = [ 'highway.primary', 'highway.primary_link', 'highway.residential', 'highway.secondary', 'highway.tertiary', 'highway.tertiary_link'];
+        //
+        //if (allowed.indexOf(edge.type) < 0) {
+        //    return;
+        //}
+
         if(!Array.isArray(edge.lane)) {
             edge.lane = [edge.lane];
         }
@@ -163,7 +198,16 @@ parser.parseString(xml, function (err, result) {
         }
     });
 
-    require('child_process')
-        .spawn('sh', ['save-curl.sh', '59644bd22894d905233d488f', JSON.stringify(data)], {stdio: 'inherit'});
+    _.forEach(connections, function(conn, index){
+        var from = conn.from + '_' + conn.fromLane;
+        var to = conn.to + '_' + conn.toLane;
+
+        if (nodesIndexStart.hasOwnProperty(from) && nodesIndexEnd.hasOwnProperty(to)){
+            adCyEdge(nodesIndexStart[from], nodesIndexEnd[to], '100%');
+        };
+
+    });
+
+    console.log('{"data":{"content":'+JSON.stringify(data)+',"name":"New coordination plan","routes":[],"nodeCount":5,"crossCount":0,"cycleTime":100}}');
 
 });
