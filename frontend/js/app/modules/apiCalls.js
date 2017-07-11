@@ -55,9 +55,17 @@
         },
         removeModel: function(id, options) {
             return action('GET:/api/model/remove/'+id, {}, handlers.removeModel, options);
+        },
+        uploadImportFile: function($form){
+            var jqxhr = $.ajax({
+                method: 'POST',
+                url: '/api/model/import',
+                data: new FormData($form[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+            });
         }
-
-
     };
 
 })(AvenueApp);

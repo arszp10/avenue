@@ -1,0 +1,46 @@
+<div id="import-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-upload"></i> <span locale="import-properties">Import form</span></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="import-file-form">
+                    <div class="form-group">
+                        <label for="inputModelType" class="col-sm-3 control-label"><span locale="import-model-type">Type</span>:</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" id="inputModelType">
+                                <option value="sumo">SUMO</option>
+                                <option value="yo">YoEditor</option>
+                                <option value="osm">OpenStreetMap</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputImportFile" class="col-sm-3 control-label"><span locale="file">File</span>:</label>
+                        <div class="col-sm-9">
+                            <div style="position:relative;">
+                                <button class='btn btn-primary'>
+                                    <span locale="choose-file">Choose file </span>
+                                    <input type="file" id="inputImportFile" class="input-file-upload"
+                                           name="inputImportFile" size="40">
+                                </button>
+                                &nbsp;
+                                <span class="text-muted" id="upload-file-info"></span>
+                            </div>
+                            <!--<input type="file" class="form-control" id="inputImportFile">-->
+                        </div>
+
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-go-import-model"><i class="fa fa-check"></i> <span locale="import">Import</span></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" locale="cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

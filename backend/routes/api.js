@@ -8,6 +8,14 @@ var avenueLib = require('../lib/avenue-lib');
 var responses = require('./api-responses');
 var mailer = require('./mailer');
 
+var multer = require('multer');
+var upload = multer({
+    dest: 'backend/public/uploads/',
+    limits : {
+
+    }
+});
+
 var isint = /^[0-9]+$/;
 var isfloat = /^([0-9]+)?\.[0-9]+$/;
 
@@ -267,6 +275,7 @@ module.exports = function(app, config) {
                 res.json(responses.entityNotFound('Model', modelId));
                 return;
             }
+
             var bodyData = _.cloneDeepWith(req.body.data, coerce);
             model.name          = bodyData.name;
             model.nodeCount     = bodyData.nodeCount;
@@ -332,4 +341,12 @@ module.exports = function(app, config) {
             res.json(responses.entityRemoved('Model', modelId, {id:modelId}));
         });
     });
+
+
+    app.post('/api/model/import', upload.single('inputImportFile'), function (req, res, next) {
+        console.log(req.file);
+        // req.body will hold the text fields, if there were any
+    });
+
+
 };

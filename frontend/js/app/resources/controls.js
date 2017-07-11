@@ -17,7 +17,8 @@
             modelListTable:         '#model-list-result > tbody',
             modelPagesStat:         '#model-pages-stat',
             routesDropDownButton:   '#routes-list-button-panel',
-            routesDropDownList:     '#routes-dropdown-list'
+            routesDropDownList:     '#routes-dropdown-list',
+            importModal:            '#import-modal'
         },
         labels: {
             labelMyAccountUsername: '#label-my-account-username',
@@ -43,7 +44,9 @@
             inputAddGreen:          '#input-add-green',
             inputApiKey:            '#input-api-key',
             inputApiSecret:         '#input-api-secret',
-            formCreateRoute:        '#form-create-route'
+            formCreateRoute:        '#form-create-route',
+            formImportFile:         '#import-file-form',
+            inputImportFile:        '#inputImportFile'
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',
@@ -91,7 +94,8 @@
             btnAddRoute:                '#btn-add-route',
             btnCreateRoute:             '#btn-create-route',
             btnDeleteRoute:             '#btn-delete-route',
-            btnBackToModel:             '#btn-back-to-model'
+            btnBackToModel:             '#btn-back-to-model',
+            btnGoImportModel:           '#btn-go-import-model'
         }
     };
 })(AvenueApp);

@@ -12,7 +12,12 @@
         <div class="container files-container">
             <div class="row">
                 <div id="model-list-panel" class="col-sm-12 hidden">
-                    <a class="btn btn-lg btn-primary btn-create-new-model" href="#" role="button"><i class="fa fa-plus-circle"></i> &nbsp;<span locale="create-new-model">Create new model</span></a>
+                    <a class="btn btn-primary btn-create-new-model" href="#" role="button">
+                        <i class="fa fa-plus-circle"></i> &nbsp;<span locale="create-new-model">Create new model</span>
+                    </a>&nbsp;
+                    <a class="btn btn-default btn-import-model-modal" href="#" role="button" data-toggle="modal" data-target="#import-modal">
+                        <i class="fa fa-upload"></i> &nbsp;<span locale="import-model">Import</span>
+                    </a>
                     <div class="order-by-label pull-right">
                         <a href="#" id="btn-model-order-down" class="btn-model-order" role="button" data-order="updatedAt"><span locale="newest-first">Newest first</span> &nbsp; <i class="fa fa-angle-down"></i></a>
                         <a href="#" id="btn-model-order-up" class="btn-model-order hidden" role="button" data-order="-updatedAt"><span locale="oldest-first">Oldest first</span> &nbsp; <i class="fa fa-angle-up"></i></a>
@@ -44,6 +49,8 @@
         </div>
     </div>
 </div>
+
+//= templates/import-modal.html
 </body>
 <script src="/js/_bundle.js"></script>
 </html>

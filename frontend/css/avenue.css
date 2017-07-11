@@ -883,3 +883,15 @@ a.btn-edit-add-green span.add-green-value {
     margin-bottom: 10px;
 }
 
+
+.input-file-upload {
+    position:absolute;
+    z-index:2;
+    top:0;
+    left:0;
+    filter: alpha(opacity=0);
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    opacity:0;
+    background-color:transparent;
+    color:transparent;
+}
