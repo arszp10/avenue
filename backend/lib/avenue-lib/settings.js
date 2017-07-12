@@ -42,12 +42,14 @@ module.exports = {
             {
                 tag: 'ph-1',
                 length: 50,
-                minLength: 15
+                minLength: 15,
+                intertact: 6
             },
             {
                 tag: 'ph-2',
                 length: 50,
-                minLength: 15
+                minLength: 15,
+                intertact: 6
             }
         ]
     },

@@ -378,11 +378,6 @@ module.exports = function(app, config) {
                 res.json(responses.entityCreatedSuccessfully('Model', {id: newAveModel._id}));
             });
         });
-
-        //console.log(req.file);
-        //console.log(req.body);
-        //upload.array()
-        // req.body will hold the text fields, if there were any
     });
 
 
