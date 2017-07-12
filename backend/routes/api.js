@@ -1,3 +1,4 @@
+var fs = require('fs');
 var _ = require('lodash');
 var Twig = require('twig');
 var Mailgun = require('mailgun-js');
@@ -15,6 +16,8 @@ var upload = multer({
 
     }
 });
+
+var sumoImport = require('../lib/avenue-lib/import/sumo');
 
 var isint = /^[0-9]+$/;
 var isfloat = /^([0-9]+)?\.[0-9]+$/;
@@ -346,7 +349,39 @@ module.exports = function(app, config) {
 
 
     app.post('/api/model/import', authenticateApi, upload.single('inputImportFile'), function (req, res, next) {
-        console.log(req.file);
+        var allowedMimeTypes = ['text/xml'];
+        var maxFileSize      = 20000000;
+        var zoomMap          = req.body.inputZoomMap;
+        var zoomIntersection = req.body.inputZoomIntersection;
+
+        sumoImport.convert(req.file.path, zoomMap, zoomIntersection, function(err, result){
+
+            fs.unlinkSync(req.file.path);
+            if (err) {
+                console.log(err);
+                res.status(404);
+                res.json(responses.entityNotFound('Model', ''));
+            }
+
+            var userId = req.session.user.id;
+            var data = {
+                name: req.file.originalname,
+                content: result,
+                _creator: userId
+            };
+            var newAveModel = Model(data);
+            newAveModel.save(function (err) {
+                if (err) {
+                    res.json(responses.fieldsErrorsList(err));
+                    return;
+                }
+                res.json(responses.entityCreatedSuccessfully('Model', {id: newAveModel._id}));
+            });
+        });
+
+        //console.log(req.file);
+        //console.log(req.body);
+        //upload.array()
         // req.body will hold the text fields, if there were any
     });
 

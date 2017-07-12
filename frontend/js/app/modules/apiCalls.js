@@ -56,15 +56,18 @@
         removeModel: function(id, options) {
             return action('GET:/api/model/remove/'+id, {}, handlers.removeModel, options);
         },
-        uploadImportFile: function($form){
+        uploadImportFile: function($form, options){
             var jqxhr = $.ajax({
                 method: 'POST',
                 url: '/api/model/import',
                 data: new FormData($form[0]),
                 cache: false,
                 contentType: false,
-                processData: false,
+                processData: false
             });
+
+            jqxhr.done(function(r){handlers.importModel.done(r, options)});
+            jqxhr.fail(function(r){handlers.importModel.fail(r, options)});
         }
     };
 

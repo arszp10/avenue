@@ -158,6 +158,15 @@
             done: function(r,ready){ if (r.success) { ready(); } },
             fail: nop,
             always: nop
+        },
+        importModel: {
+            done: function(r, ready){
+                if (r.success) {
+                    ready();
+                    window.location = '/app/' + r.data.id;
+                }
+            },
+            fail: nop
         }
 
     };

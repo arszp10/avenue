@@ -10,7 +10,7 @@
             userPanningEnabled:false,
             elements: [],
             showOverlay: false,
-            minZoom: 0.1,
+            minZoom: 0.05,
             maxZoom: 4.0,
             layout: {
                 name: 'preset',

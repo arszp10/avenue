@@ -61,12 +61,13 @@
                 $(this).parent().next().html($(this).val().replace('C:\\fakepath\\', ''));
             });
 
-            controls.buttons.btnGoImportModel.click(function(){
-                api.uploadImportFile(controls.inputs.formImportFile);
-                controls.panels.importModal.modal('hide');
+            controls.buttons.btnGoImportModel.click(function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                api.uploadImportFile(controls.inputs.formImportFile, function(){
+                    controls.panels.importModal.modal('hide');
+                });
             });
-
-
 
             $(document).on('click', 'a.btn-model-remove', function(){
                 var id = $(this).closest('tr').data('id');

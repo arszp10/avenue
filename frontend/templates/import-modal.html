@@ -6,35 +6,47 @@
                 <h4 class="modal-title"><i class="fa fa-upload"></i> <span locale="import-properties">Import form</span></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="import-file-form">
+                <form class="form-horizontal" id="import-file-form" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="inputModelType" class="col-sm-3 control-label"><span locale="import-model-type">Type</span>:</label>
                         <div class="col-sm-6">
-                            <select class="form-control" id="inputModelType">
+                            <select class="form-control" name="inputModelType" id="inputModelType">
                                 <option value="sumo">SUMO</option>
                                 <option value="yo">YoEditor</option>
                                 <option value="osm">OpenStreetMap</option>
                             </select>
                         </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="inputImportFile" class="col-sm-3 control-label"><span locale="file">File</span>:</label>
-                        <div class="col-sm-9">
-                            <div style="position:relative;">
-                                <button class='btn btn-primary'>
-                                    <span locale="choose-file">Choose file </span>
-                                    <input type="file" id="inputImportFile" class="input-file-upload"
-                                           name="inputImportFile" size="40">
-                                </button>
-                                &nbsp;
-                                <span class="text-muted" id="upload-file-info"></span>
-                            </div>
-                            <!--<input type="file" class="form-control" id="inputImportFile">-->
+                        <label for="inputModelType" class="col-sm-3 control-label"><span locale="import-zoom-map">Zoom map</span>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="inputZoomMap" class="form-control"  name="inputZoomMap" size="10" value="1">
                         </div>
-
-
                     </div>
 
+                    <div class="form-group">
+                        <label for="inputModelType" class="col-sm-3 control-label"><span locale="import-zoom-intersection">Zoom intersection</span>:</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="inputZoomIntersection" class="form-control"  name="inputZoomIntersection" size="10" value="10">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputImportFile" class="col-sm-3 control-label"><span locale="file">File</span>:</label>
+                        <div class="col-sm-6">
+                            <!--<div style="position:relative;">-->
+                                <!--<button class='btn btn-primary'>-->
+                                    <!--<span locale="choose-file">Choose file </span>-->
+                                    <!--<input type="file" id="inputImportFile" class="input-file-upload"  name="inputImportFile" size="40">-->
+<!---->
+                                <!--</button>-->
+                                <!--&nbsp;-->
+                                <!--<span class="text-muted" id="upload-file-info"></span>-->
+                            <!--</div>-->
+                            <input type="file" class="form-control" id="inputImportFile" name="inputImportFile" size="20">
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

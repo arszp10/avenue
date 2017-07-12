@@ -46,7 +46,9 @@
             inputApiSecret:         '#input-api-secret',
             formCreateRoute:        '#form-create-route',
             formImportFile:         '#import-file-form',
-            inputImportFile:        '#inputImportFile'
+            inputImportFile:        '#inputImportFile',
+            inputZoomIntersection:  '#inputZoomIntersection',
+            inputZoomMap:           '#inputZoomMap'
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',
