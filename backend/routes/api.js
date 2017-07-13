@@ -351,8 +351,8 @@ module.exports = function(app, config) {
     app.post('/api/model/import', authenticateApi, upload.single('inputImportFile'), function (req, res, next) {
         var allowedMimeTypes = ['text/xml'];
         var maxFileSize      = 20000000;
-        var zoomMap          = req.body.inputZoomMap;
-        var zoomIntersection = req.body.inputZoomIntersection;
+        var zoomMap          = parseInt(req.body.inputZoomMap) | 1;
+        var zoomIntersection = parseInt(req.body.inputZoomIntersection) | 1;
 
         if (allowedMimeTypes.indexOf(req.file.mimetype) < 0) {
             fs.unlinkSync(req.file.path);

@@ -64,8 +64,10 @@
             controls.buttons.btnGoImportModel.click(function(e){
                 e.stopPropagation();
                 e.preventDefault();
+                $(this).find('i').attr("class","fa fa-spinner fa-spin");
                 api.uploadImportFile(controls.inputs.formImportFile, function(){
                     controls.panels.importModal.modal('hide');
+                    $(this).find('i').attr("class","fa fa-check");
                 });
             });
 

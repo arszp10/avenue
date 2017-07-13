@@ -95,6 +95,14 @@
             'locate': 'Найти',
             'edit': 'Редактировать',
 
+            'import-properties': 'Форма импорта моделей',
+            'import-model-type': 'Тип',
+            'import-zoom-map': 'Масштаб карты',
+            'import-zoom-intersection' : 'Масшт. перекр.',
+            'file': 'Файл',
+            'import': 'Импорт',
+            'import-model': 'Импорт модели'
+
         },
         en: {
             'api-doc' : 'API Doc',
@@ -189,7 +197,13 @@
             'edit-selected-nodes': 'Edit selected nodes',
             'locate': 'Locate',
             'edit': 'Edit',
-
+            'import-properties': 'Import form',
+            'import-model-type': 'Type',
+            'import-zoom-map': 'Zoom map',
+            'import-zoom-intersection' : 'Zoom intersection',
+            'file': 'File',
+            'import': 'Import',
+            'import-model': 'Import model'
 
         }
     };
