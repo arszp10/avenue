@@ -354,13 +354,21 @@ module.exports = function(app, config) {
         var zoomMap          = req.body.inputZoomMap;
         var zoomIntersection = req.body.inputZoomIntersection;
 
+        if (allowedMimeTypes.indexOf(req.file.mimetype) < 0) {
+            fs.unlinkSync(req.file.path);
+            res.json(responses.importWrongMime());
+        }
+
+        if (req.file.size > maxFileSize) {
+            fs.unlinkSync(req.file.path);
+            res.json(responses.importWrongSize());
+        }
+
         sumoImport.convert(req.file.path, zoomMap, zoomIntersection, function(err, result){
 
             fs.unlinkSync(req.file.path);
             if (err) {
-                console.log(err);
-                res.status(404);
-                res.json(responses.entityNotFound('Model', ''));
+                res.json(responses.importConvertError(err));
             }
 
             var userId = req.session.user.id;

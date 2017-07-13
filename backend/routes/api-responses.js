@@ -73,8 +73,16 @@ module.exports = {
     },
     modelSimulationSuccess: function(d){
         return errObj(true, 'Simulation was successful!', d);
+    },
+
+    importWrongMime: function(){
+        return errObj(false, 'Invalid mime file type', {'code': 400 });
+    },
+
+    importWrongSize: function(){
+        return errObj(false, 'The file is too big', {'code': 400 });
+    },
+    importConvertError: function(err){
+        return errObj(false, 'Cannot convert the file', {'code': 400 , data: err});
     }
-
-
-
 };

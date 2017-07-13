@@ -164,9 +164,14 @@
                 if (r.success) {
                     ready();
                     window.location = '/app/' + r.data.id;
+                } else {
+                    $.notify(r.message, {
+                        position: 'top center',
+                        className: 'error'
+                    });
                 }
             },
-            fail: nop
+            fail: failCalcHandler
         }
 
     };

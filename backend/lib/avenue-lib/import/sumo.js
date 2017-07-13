@@ -52,6 +52,7 @@ module.exports = {
 
             var nodesIndexStart = {};
             var nodesIndexEnd   = {};
+            var usedParentsIndex = {};
             var junctionsIndex  = {};
             var nodesIndexStartOutEdges = {};
             var data = [];
@@ -84,6 +85,7 @@ module.exports = {
                     node.data.id = nextId();
                     if (junction.hasOwnProperty('parentId')) {
                         node.data.parent = junction.parentId;
+                        usedParentsIndex[junction.parentId] = true;
                     }
 
                     if (junction.type !== 'traffic_light') {
@@ -93,6 +95,7 @@ module.exports = {
                     node.data.tag = lane.id;
                     node.data.capacity = 1800;
                     node.data.avgIntensity = Math.floor(900/edge.lane.length);
+                    node.data.intervals = [[0,1]];
                     data.push(node);
 
                     nodesIndexStart[lane.id] = node.data.id;
@@ -111,6 +114,7 @@ module.exports = {
                 node.data.id = nextId();
                 if (junction.hasOwnProperty('parentId')) {
                     node.data.parent = junction.parentId;
+                    usedParentsIndex[junction.parentId] = true;
                 }
                 node.data.tag = lane.id;
                 node.data.capacity = 1800 * edge.lane.length;
@@ -198,8 +202,6 @@ module.exports = {
                 }
             });
 
-
-
             _.forEach(connections, function(conn){
                 var from = conn.from + '_' + conn.fromLane;
                 var to = conn.to + '_' + conn.toLane;
@@ -212,6 +214,13 @@ module.exports = {
                     );
                 }
 
+            });
+
+
+            data = data.filter(function(node){
+                if (node.group == 'edges') return true;
+                if (node.data.type !== 'crossRoad') return true;
+                return usedParentsIndex.hasOwnProperty(node.data.id);
             });
 
             ready(err, data);
