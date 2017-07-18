@@ -32,6 +32,7 @@
                 'font-weight':'normal',
                 'min-zoomed-font-size':'8px'
 
+
             }
         },
         {
@@ -73,7 +74,7 @@
         {
             selector: '$node > node',
             css: {
-                'shape':'roundrectangle',
+                //'shape':'roundrectangle',
                 'padding-top': '15px',
                 'padding-left': '15px',
                 'padding-bottom': '15px',
@@ -84,7 +85,10 @@
                 'border-color': '#777777',
                 'border-width': 0,
                 'background-color': '#ffffff',
-                'font-family': 'Arial'
+                'font-family': 'Arial',
+                'shape': 'roundrectangle',
+                'background-opacity': 0.6
+                //'shape-polygon-points': '-1 -1 1 -1 1 1 0.5 0.5 -1 1 -0.5 0.5'
                 //'background-image':'http://road.perm.ru/images/2945.jpg',
                 //'background-fit':'none',
                 //'background-image-opacity': 0.6

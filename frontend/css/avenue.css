@@ -13,7 +13,17 @@ body{
     bottom: 50px;
     left: 0px;
     right: 0px;
-    background-color: #eeeeee;
+    z-index: 2;
+}
+
+
+.screen-0  {
+    overflow: hidden;
+    position:absolute;
+    top: 50px;
+    bottom: 50px;
+    left: 0px;
+    right: 0px;
     z-index: 1;
 }
 

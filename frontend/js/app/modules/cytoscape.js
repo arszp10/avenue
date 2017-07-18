@@ -185,12 +185,80 @@
 
             cy.edgehandles({ });
             cy.panzoom({});
+
+
+            cy.on('viewport', function(e){
+
+                var cybe = cy.cyBaseExtent;
+                var arcbe = cy.arcExtent;
+
+                if (!cybe || !arcbe) {
+                    return;
+                }
+                var cye = cy.extent();
+
+                var cyxC = (cybe.x2 - cybe.x1)/(cye.x2 - cye.x1);
+                var cyyC = (cybe.y2 - cybe.y1)/(cye.y2 - cye.y1);
+
+                //console.log(cybe, cye, cyxC, cyyC);
+
+                var dx = {
+                    lx: (arcbe.xmax - arcbe.xmin)/cyxC/2,
+                    ly: (arcbe.ymax - arcbe.ymin)/cyyC/2
+                };
+
+                //console.log(dx);
+
+                var cyBaseCenter = {
+                        x: (cybe.x2 + cybe.x1)/2,
+                        y: (cybe.y2 + cybe.y1)/2,
+                };
+
+                var arcBaseCenter = {
+                    x: (arcbe.xmax + arcbe.xmin)/2,
+                    y: (arcbe.ymax + arcbe.ymin)/2
+                };
+
+                var cyCurrentCenter = {
+                    x: (cye.x2 + cye.x1)/2,
+                    y: (cye.y2 + cye.y1)/2
+                };
+
+                var arcCurrentCenter = {
+                    x: arcBaseCenter.x + (cyCurrentCenter.x - cyBaseCenter.x)*cy.xC,
+                    y: arcBaseCenter.y - (cyCurrentCenter.y - cyBaseCenter.y)*cy.yC
+                };
+
+                //console.log(arcCurrentCenter);
+
+                var arce = {
+                    xmin: arcCurrentCenter.x - dx.lx,
+                    ymin: arcCurrentCenter.y - dx.ly,
+                    xmax: arcCurrentCenter.x + dx.lx,
+                    ymax: arcCurrentCenter.y + dx.ly,
+                    spatialReference: {
+                        wkid: 102100
+                    }
+                };
+                //console.log(view111.extent, arce);
+
+                view111.extent = new Extent111(arce);
+                view111.scale = cy.arcScale/cyxC;
+                //console.log('scale2z', view111.scale, 564/cyxC);
+
+            });
             ready();
         };
         controls.panels.cytoscape.cytoscape(options);
     };
 
-
+    //<!--22, 141-->
+    //<!--21, 282-->
+    //<!--20, 564-->
+    //<!--19, 1128-->
+    //<!--18, 2256-->
+    //<!--17, 4513-->
+    //<!--16, 9027-->
 
     App.Modules.cytoscape =  {
         injectDependencies: function(modules) {

@@ -9,7 +9,8 @@ var AvenueApp = {
         lastModelingResult: [],
         lastErrors: [],
         currentModel: {},
-        selectedRoute: false
+        selectedRoute: false,
+        mapBefore:false
     },
     linkModules: function(){
         $.each(AvenueApp.Modules, function(i, v){

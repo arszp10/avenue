@@ -3,6 +3,7 @@
         panels: {
             body:                   'body',
             cytoscape:              '#cy',
+            mapBack:                '#mapBack',
             leftPanel:              'div.left-panel',
             pointProperty:          '#panel-point-property',
             addGreenProperty:        '#add-green-property',
@@ -48,7 +49,8 @@
             formImportFile:         '#import-file-form',
             inputImportFile:        '#inputImportFile',
             inputZoomIntersection:  '#inputZoomIntersection',
-            inputZoomMap:           '#inputZoomMap'
+            inputZoomMap:           '#inputZoomMap',
+            inputArcgisScale:       '#input-arcgis-scale'
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',
@@ -97,7 +99,9 @@
             btnCreateRoute:             '#btn-create-route',
             btnDeleteRoute:             '#btn-delete-route',
             btnBackToModel:             '#btn-back-to-model',
-            btnGoImportModel:           '#btn-go-import-model'
+            btnGoImportModel:           '#btn-go-import-model',
+            btnArcgisSetExtent:         '#btn-arcgis-set-extent',
+            btnArcgisSwitch:            '#btn-arcgis-switch'
         }
     };
 })(AvenueApp);

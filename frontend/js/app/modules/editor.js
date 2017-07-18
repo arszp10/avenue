@@ -14,6 +14,8 @@
     };
 
    App.Modules.editor = {
+        xC:0,
+        yC:0,
         injectDependencies: function(modules) {
             cy        = modules.cytoscape;
             traffic   = modules.traffic;
@@ -141,6 +143,35 @@
                 api.phasesOptimize({data: data}, $icon);
             });
 
+            controls.buttons.btnArcgisSetExtent.click(function () {
+                var  cye = cy.extent();
+                var  ve = view111.extent;
+
+                if (cy.cyBaseExtent) {
+                    cy.cyBaseExtent = false;
+                    return;
+                }
+                cy.cyBaseExtent = JSON.parse(JSON.stringify(cye));
+                cy.arcExtent    = JSON.parse(JSON.stringify(ve));
+                cy.arcScale    = view111.scale;
+                cy.xC = (ve.xmax - ve.xmin)/(cye.x2 - cye.x1);
+                cy.yC = (ve.ymax - ve.ymin)/(cye.y2 - cye.y1);
+            });
+
+
+            controls.buttons.btnArcgisSwitch.click(function () {
+                if (App.State.mapBefore) {
+                    controls.panels.mapBack.css({
+                        'z-index':2
+                    });
+                } else {
+                    controls.panels.mapBack.css({
+                        'z-index': 1
+                    });
+                }
+                App.State.mapBefore = !App.State.mapBefore;
+            });
+
 
             controls.buttons.btnModelSave.click(function () {
                 var $icon = $(this).find('i.fa');
@@ -233,6 +264,8 @@
                routes.drawRoute(route);
                routes.selectRoute(inx);
             });
+
+
 
         },
 

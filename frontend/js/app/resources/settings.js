@@ -10,8 +10,9 @@
             userPanningEnabled:false,
             elements: [],
             showOverlay: false,
-            minZoom: 0.05,
-            maxZoom: 4.0,
+            minZoom: 0.1,
+            maxZoom: 2.0,
+            //wheelSensitivity:20,
             layout: {
                 name: 'preset',
                 fit: true

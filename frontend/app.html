@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <title locale="app-title">AvenueApp</title>
     <link href="/css/_bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/4.4/esri/css/main.css">
+
 </head>
 <body class="show-network">
     <div>
         //= templates/top-panel.html
         //= templates/left-panel.html
         //= templates/right-panel.html
-        <div id="cy"   class="screen visible-network" data-tab="btn-show-network"></div>
+
+        <div id="cy" class="screen visible-network" data-tab="btn-show-network"></div>
+        <div id="mapBack" class="screen-0"></div>
         //= templates/routes-panel.html
         //= templates/bottom-panel.html
     </div>
@@ -23,4 +27,53 @@
 <!-- hidden elemetns section-->
 </body>
 <script src="/js/_bundle.js"></script>
+<script src="https://js.arcgis.com/4.4/"></script>
+<script>
+    var map111;
+    var view111;
+    var Extent111;
+    $(document).ready(function(){
+
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/geometry/Extent",
+            "esri/geometry/SpatialReference",
+            "esri/widgets/Search"
+        ], function(Map, MapView, Extent, SpatialReference, Search){
+            Extent111 = Extent;
+            map111 = new Map({
+                basemap: "hybrid"
+            });
+            view111 = new MapView({
+                container: "mapBack",  // Reference to the scene div created in step 5
+                map: map111,  // Reference to the map object created before the scene
+//                zoom: 20,  // Sets zoom level based on level of detail (LOD)
+                center: [30.318474, 59.908733],
+                scale: 564,
+                constraints: {
+                    minScale: 140,
+                    maxScale: 9028
+                },
+                resizeAlign: 'top-left'
+            });
+
+            var search = new Search({
+                view: view111
+            });
+
+            view111.ui.add(search, "bottom-right");
+
+        });
+    });
+
+</script>
 </html>
+
+<!--22, 141-->
+<!--21, 282-->
+<!--20, 564-->
+<!--19, 1128-->
+<!--18, 2256-->
+<!--17, 4513-->
+<!--16, 9027-->
