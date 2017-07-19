@@ -71,6 +71,7 @@
             btnShowNetwork:             '#btn-show-network',
             btnShowResults:             '#btn-show-results',
             btnShowRoutes:              '#btn-show-routes',
+            btnShowMap:                 '#btn-show-map',
             btnToggleMap:               '#btn-toggle-map',
             btnGroupNodes:              '#btn-group-nodes',
             btnUngroupNodes:            '#btn-ungroup-nodes',
@@ -101,7 +102,7 @@
             btnBackToModel:             '#btn-back-to-model',
             btnGoImportModel:           '#btn-go-import-model',
             btnArcgisSetExtent:         '#btn-arcgis-set-extent',
-            btnArcgisSwitch:            '#btn-arcgis-switch'
+            btnArcgisSwitch:            '#btn-arcgis-switch',
         }
     };
 })(AvenueApp);

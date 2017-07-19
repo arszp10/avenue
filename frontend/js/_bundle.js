@@ -23,6 +23,7 @@
 
 //= app/modules/controls.js
 //= app/modules/cytoscape.js
+//= app/modules/map.js
 //= app/modules/editor.js
 //= app/modules/routes.js
 //= app/modules/modelManager.js

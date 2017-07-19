@@ -2,7 +2,7 @@
 
     var controls  = App.Controls;
     var settings  = App.Resources.Settings;
-    var cy;
+    var cy,map;
     var routes;
     var traffic;
     var editor;
@@ -186,7 +186,6 @@
             cy.edgehandles({ });
             cy.panzoom({});
 
-
             cy.on('viewport', function(e){
 
                 var cybe = cy.cyBaseExtent;
@@ -196,7 +195,6 @@
                     return;
                 }
                 var cye = cy.extent();
-
                 var cyxC = (cybe.x2 - cybe.x1)/(cye.x2 - cye.x1);
                 var cyyC = (cybe.y2 - cybe.y1)/(cye.y2 - cye.y1);
 
@@ -242,8 +240,8 @@
                 };
                 //console.log(view111.extent, arce);
 
-                view111.extent = new Extent111(arce);
-                view111.scale = cy.arcScale/cyxC;
+                map.MapView.extent = new map.Classes.Extent(arce);
+                map.MapView.scale = cy.arcScale/cyxC;
                 //console.log('scale2z', view111.scale, 564/cyxC);
 
             });
@@ -266,6 +264,7 @@
             api     = modules.apiCalls;
             routes  = modules.routes;
             traffic = modules.traffic;
+            map = modules.map;
         },
         initModule: function(){
             if (! controls.panels.cytoscape.length) {

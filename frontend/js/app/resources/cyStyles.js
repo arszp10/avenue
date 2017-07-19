@@ -15,6 +15,9 @@
                 'font-weight':'normal',
                 'min-zoomed-font-size':'8px'
 
+
+
+
             }
         },
         {
@@ -23,16 +26,15 @@
                 'content': 'data(icon)',
                 'text-valign': 'center',
                 'text-halign': 'center',
-                'background-color': '#ffffff',
-                'border-color': '#777777',
-                'color': '#2e6da4',
-                'border-width': 0.5,
+                'background-color': '#4665b7',//'#eee',
+                'border-color': '#fff',
+                'color': '#fff',// '#2e6da4',
+                'border-width': 1.5,
                 'font-family': 'Avenue',
                 'font-size': '20px',
                 'font-weight':'normal',
-                'min-zoomed-font-size':'8px'
-
-
+                'min-zoomed-font-size':'8px',
+                'shape': 'roundrectangle'
             }
         },
         {
@@ -47,12 +49,12 @@
                 'color': '#5cb85c'
             }
         },
-        {
-            selector: 'node[color="info"]',
-            css: {
-                'color': '#5bc0de'
-            }
-        },
+        //{
+        //    selector: 'node[color="info"]',
+        //    css: {
+        //        'color': '#5bc0de'
+        //    }
+        //},
         {
             selector: 'node[color="default"]',
             css: {
@@ -65,16 +67,15 @@
                 'color': '#f0ad4e'
             }
         },
-        {
-            selector: 'node[color="primary"]',
-            css: {
-                'color': '#337ab7'
-            }
-        },
+        //{
+        //    selector: 'node[color="primary"]',
+        //    css: {
+        //        'color': '#337ab7'
+        //    }
+        //},
         {
             selector: '$node > node',
             css: {
-                //'shape':'roundrectangle',
                 'padding-top': '15px',
                 'padding-left': '15px',
                 'padding-bottom': '15px',
@@ -99,6 +100,7 @@
             css: {
                 'border-color': '#d9534f',
                 'color': '#d9534f',
+                'background-color': '#fff',
                 'border-width': 2.5
             }
         },
@@ -106,7 +108,7 @@
             selector: 'node:selected',
             css: {
                 'content': 'data(icon)',
-                'background-color': '#2e6da4',
+                'background-color': '#cddc39',
                 'border-color': '#ffffff',
                 'color': '#ffffff',
                 'border-width': 2
@@ -129,6 +131,16 @@
                 'font-size': '14px'
             }
         },
+
+        {
+            selector: 'node[type="crossRoad"]:selected',
+            css: {
+                'background-color': '#2e6da4',
+                'border-color': '#ffffff',
+                'color': '#ffffff',
+                'border-width': 2
+            }
+        },
         {
             selector: 'edge',
             css: {
@@ -144,40 +156,41 @@
                 'min-zoomed-font-size':'8px'
             }
         },
+
         {
             selector: 'edge.edge-in-crossroad',
             css: {
                 'line-style': 'dotted',
-                'text-outline-color': '#cccccc',
-                'line-color': '#cccccc',
-                'target-arrow-color': '#cccccc'
+                'text-outline-color': '#999999',
+                'line-color': '#999999',
+                'target-arrow-color': '#999999'
             }
         },
         {
             selector: 'edge[secondary="true"]',
             css: {
                 'line-style': 'dashed',
-                'text-outline-color': '#cccccc',
-                'line-color': '#cccccc',
-                'target-arrow-color': '#cccccc'
+                'text-outline-color': '#999999',
+                'line-color': '#999999',
+                'target-arrow-color': '#999999'
             }
         },
         {
             selector: 'edge:selected',
             css: {
                 'width': 2,
-                'line-color': '#2e6da4',
-                'target-arrow-color': '#2e6da4',
-                'color': '#ffffff',
-                'text-outline-color': '#2e6da4'
+                'line-color': '#999', //'#2e6da4',
+                'target-arrow-color': '#999', //'#2e6da4',
+                'color': '#eee',
+                'text-outline-color': '#999', //'#2e6da4'
             }
         },
         {
             selector: 'edge.edge-in-flow',
             css: {
-                'line-color': '#444444',
-                'target-arrow-color': '#444444',
-                'text-outline-color': '#444444'
+                'line-color': '#333333',
+                'target-arrow-color': '#333333',
+                'text-outline-color': '#333333'
             }
         },
         {

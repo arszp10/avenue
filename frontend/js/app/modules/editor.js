@@ -3,7 +3,7 @@
     var templates = App.Templates;
     var settings  = App.Resources.Settings;
     var samples   = App.Resources.Samples;
-    var cy, traffic, api;
+    var cy, traffic, api, map;
     var routes;
     var that;
 
@@ -21,6 +21,7 @@
             traffic   = modules.traffic;
             api       = modules.apiCalls;
             routes    = modules.routes;
+            map       = modules.map;
         },
         initModule: function(){
             that = this;
@@ -143,33 +144,45 @@
                 api.phasesOptimize({data: data}, $icon);
             });
 
-            controls.buttons.btnArcgisSetExtent.click(function () {
-                var  cye = cy.extent();
-                var  ve = view111.extent;
 
-                if (cy.cyBaseExtent) {
+            controls.buttons.btnArcgisSetExtent.click(function () {
+                var button = $(this);
+                var icon = button.find('i');
+                button.toggleClass('active');
+                icon.toggleClass('fa-rotate-90');
+                if (button.hasClass('active')){
+                    var  cye = cy.extent();
+                    var  ve = map.MapView.extent;
+
+                    cy.cyBaseExtent = JSON.parse(JSON.stringify(cye));
+                    cy.arcExtent    = JSON.parse(JSON.stringify(ve));
+                    cy.arcScale     = map.MapView.scale;
+                    cy.xC = (ve.xmax - ve.xmin)/(cye.x2 - cye.x1);
+                    cy.yC = (ve.ymax - ve.ymin)/(cye.y2 - cye.y1);
+
+                } else {
                     cy.cyBaseExtent = false;
-                    return;
                 }
-                cy.cyBaseExtent = JSON.parse(JSON.stringify(cye));
-                cy.arcExtent    = JSON.parse(JSON.stringify(ve));
-                cy.arcScale    = view111.scale;
-                cy.xC = (ve.xmax - ve.xmin)/(cye.x2 - cye.x1);
-                cy.yC = (ve.ymax - ve.ymin)/(cye.y2 - cye.y1);
+
             });
 
 
             controls.buttons.btnArcgisSwitch.click(function () {
-                if (App.State.mapBefore) {
-                    controls.panels.mapBack.css({
-                        'z-index':2
-                    });
+                var button = $(this);
+                var icon = button.find('i.fa-ban');
+                button.toggleClass('active');
+
+                if (button.hasClass('active')){
+                    icon.addClass('hidden');
+                    controls.panels.cytoscape.addClass('screen-1');
+                    controls.panels.mapBack.removeClass('visible-map');
+                    App.State.showMapInBackground = true;
                 } else {
-                    controls.panels.mapBack.css({
-                        'z-index': 1
-                    });
+                    icon.removeClass('hidden');
+                    controls.panels.cytoscape.removeClass('screen-1');
+                    controls.panels.mapBack.addClass('visible-map');
+                    App.State.showMapInBackground = false;
                 }
-                App.State.mapBefore = !App.State.mapBefore;
             });
 
 
@@ -271,7 +284,10 @@
 
         initBottomPanelEvents: function(){
             controls.buttons.btnShowNetwork.on('click', that.bottomTabSwitch);
-            controls.buttons.btnShowResults.on('click', that.bottomTabSwitch);
+            controls.buttons.btnShowMap.on('click', function(){
+                that.bottomTabSwitch.call(this);
+                map.showWidgets();
+            });
             controls.buttons.btnShowRoutes.on('click', function(){
                 that.bottomTabSwitch.call(this);
                 var inx = routes.getSelected();
@@ -776,9 +792,12 @@
             tab.parent().siblings().removeClass('active');
             tab.parent().addClass('active');
             controls.panels.body
-                .removeClass('show-files show-network show-routes show-results show-source')
+                .removeClass('show-files show-network show-routes show-results show-source show-map')
                 .addClass(tab.data('rel'));
             window.dispatchEvent(new Event('resize'));
+            map.hideWidgets();
+            //условно!!! добавить условие не забыть
+            cy.trigger('viewport');
         }
     }
 

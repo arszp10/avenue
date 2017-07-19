@@ -8,28 +8,8 @@
                 </button>
                 <a class="navbar-brand" href="/"><img src="/img/logo0.png" height="30"></a></div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown hidden-files visible-api-doc">
-                        <a href="/models" title="Back to the model list">
-                            <i class="fa fa-bars fa-lg "></i>
-                        </a>
-                    </li>
-                    <li class="dropdown hidden-files hidden-api-doc hidden-routes">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span locale="samples">Samples</span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" data-key="sample1" class="add-sample-item" locale="conflict-point">Conflict point</a></li>
-                            <li><a href="#" data-key="sample2" class="add-sample-item" locale="crossroad-and-carriageway" >Crossroad & Carriageway</a></li>
-                            <li><a href="#" data-key="sample3" class="add-sample-item" locale="four-cross-in-line" >4 Crossroads in line</a></li>
-                            <li><a href="#" data-key="sample4" class="add-sample-item" locale="ilinskoe-highway-212" >Ilinskoe highway - morning (212)</a></li>
-                            <!--<li role="separator" class="divider"></li>-->
-                            <!--<li><a href="#">All samples...</a></li>-->
-                        </ul>
-                    </li>
-                </ul>
 
-                <form id="api-credentials" class="visible-files hidden-api-doc hidden-network hidden-routes navbar-form navbar-left" role="search">
+                <form id="api-credentials" class=" hidden-api-doc hidden-network hidden-routes hidden-map navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">Key</span>
@@ -44,10 +24,11 @@
                         <a class="btn btn-primary" href="/api/doc/" locale="api-doc">API Docs</a>
                     </div>
                 </form>
+                <form class="visible-network visible-routes visible-map navbar-form navbar-left" role="search">
+                    <a type="button" href="/models" class="btn btn-inverse" ><i class="fa fa-bars fa-lg"></i> &nbsp;Модели</a>
+                </form>
                 <form class="visible-network visible-routes navbar-form navbar-left" role="search">
-                    <button type="button" class="btn btn-inverse" id="btn-model-save"><i class="fa fa-save"></i></button>
-                    <button type="button" class="btn btn-inverse" id="btn-arcgis-switch"><i class="fa fa-map"></i></button>
-                    <button type="button" class="btn btn-inverse" id="btn-arcgis-set-extent"><i class="fa fa-map-pin"></i></button>
+                    <button type="button" class="btn btn-inverse" id="btn-model-save"><i class="fa fa-save"></i> </button>
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-rocket"></i> &nbsp;&nbsp;<span locale="launch">Launch</span></button>
@@ -76,6 +57,18 @@
                         </ul>
                     </div>
                 </form>
+                <form class="visible-network navbar-form navbar-left" role="search">
+                    <button type="button" class="btn btn-inverse" id="btn-arcgis-switch">
+                            <span class="fa-stack fa-sm">
+                              <i class="fa fa-map"></i>
+                              <i class="fa fa-ban fa-stack-1x text-danger"></i>
+                            </span>
+
+                    </button>
+                    <button type="button" class="btn btn-inverse" id="btn-arcgis-set-extent"><i class="fa fa-map-pin fa-rotate-90"></i> </button>
+                </form>
+
+
 
                 <ul class="nav navbar-nav navbar-right ">
                     <!--<li><a href="#">Link</a></li>-->
@@ -91,6 +84,23 @@
                         </ul>
                     </li>
                 </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown visible-network hidden-files hidden-api-doc hidden-routes hidden-map ">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span locale="samples">Samples</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" data-key="sample1" class="add-sample-item" locale="conflict-point">Conflict point</a></li>
+                            <li><a href="#" data-key="sample2" class="add-sample-item" locale="crossroad-and-carriageway" >Crossroad & Carriageway</a></li>
+                            <li><a href="#" data-key="sample3" class="add-sample-item" locale="four-cross-in-line" >4 Crossroads in line</a></li>
+                            <li><a href="#" data-key="sample4" class="add-sample-item" locale="ilinskoe-highway-212" >Ilinskoe highway - morning (212)</a></li>
+                            <!--<li role="separator" class="divider"></li>-->
+                            <!--<li><a href="#">All samples...</a></li>-->
+                        </ul>
+                    </li>
+                </ul>
+
                 <form id="input-model-search-form" class="visible-files navbar-form navbar-right " role="search">
                     <div class="form-group">
                         <input type="text" id="input-model-search" class="form-control input-file-search" placeholder="Search model">

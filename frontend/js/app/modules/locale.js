@@ -101,7 +101,8 @@
             'import-zoom-intersection' : 'Масшт. перекр.',
             'file': 'Файл',
             'import': 'Импорт',
-            'import-model': 'Импорт модели'
+            'import-model': 'Импорт модели',
+            'map': 'Карта'
 
         },
         en: {
@@ -203,7 +204,8 @@
             'import-zoom-intersection' : 'Zoom intersection',
             'file': 'File',
             'import': 'Import',
-            'import-model': 'Import model'
+            'import-model': 'Import model',
+            'map': 'Map'
 
         }
     };

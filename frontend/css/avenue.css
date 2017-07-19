@@ -14,10 +14,14 @@ body{
     left: 0px;
     right: 0px;
     z-index: 2;
+    background-color: #777;
+    background-image: url("https://www.transparenttextures.com/patterns/project-paper.png");
+    /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 }
 
 
 .screen-0  {
+    /*color: #dfedff;*/
     overflow: hidden;
     position:absolute;
     top: 50px;
@@ -25,6 +29,19 @@ body{
     left: 0px;
     right: 0px;
     z-index: 1;
+}
+
+
+.screen-1  {
+    overflow: hidden;
+    position:absolute;
+    top: 50px;
+    bottom: 50px;
+    left: 0px;
+    right: 0px;
+    z-index: 2;
+    background-color: transparent;
+    background-image: none;
 }
 
 .screen-scroll {
@@ -38,15 +55,17 @@ body{
 .visible-files,
 .visible-network,
 .visible-routes,
+.visible-map,
 .visible-results,
 .visible-source {
     display:none;
 }
 
-.hidden-api-doc
+.hidden-api-doc,
 .hidden-files,
 .hidden-network,
 .hidden-routes,
+.hidden-map,
 .hidden-results,
 .hidden-source {
     display:block;
@@ -56,6 +75,7 @@ body{
 .show-files .visible-files,
 .show-network .visible-network,
 .show-routes .visible-routes,
+.show-map .visible-map,
 .show-results .visible-results,
 .show-source .visible-source
 {
@@ -66,6 +86,7 @@ body{
 .show-files .hidden-files,
 .show-network .hidden-network,
 .show-routes .hidden-routes,
+.show-map .hidden-map,
 .show-results .hidden-results,
 .show-source .hidden-source
 {
@@ -134,7 +155,7 @@ body{
     border-radius: 5px;
     border :1px solid #e1e1e1;
     padding: 10px;
-    top: 140px;
+    top: 115px;
     right: -350px;
     z-index: 10;
     position:absolute;
@@ -281,7 +302,7 @@ body.show-edge-input #input-edge-label {
 
 .btn-inverse {
     color:#eeeeee;
-    border-color:#eeeeee;
+    border-color:#666666;
     background-color: transparent ;
 }
 
@@ -289,6 +310,19 @@ body.show-edge-input #input-edge-label {
     color:#ffffff;
     border-color:#ffffff;
     background-color: rgba(255,255,255,0.1) ;
+}
+
+.btn-inverse:active,
+.btn-inverse.active {
+    box-shadow: inset 3px 3px 3px rgba(0,0,0,.2);
+    background: rgba(230,230,230,.4);
+}
+
+.btn-inverse .fa-stack {
+     width: inherit;
+     height: inherit;
+     line-height: inherit;
+     vertical-align: baseline;
 }
 
 .add-green-property,
@@ -577,12 +611,12 @@ body.show-edge-input #input-edge-label {
 .input-node-search-form {
     position:absolute;
     border-radius: 5px;
-    padding:10px;
+    /*padding:10px;*/
     top: 70px;
-    right: 15px;
+    right: 5px;
     z-index: 10;
-    background: rgba(0,0,0, 0.7);
-    width:350px;
+    /*background: rgba(0,0,0, 0.7);*/
+    width:360px;
     -webkit-transition: all .3s ease-in-out;
     -o-transition: all .3s ease-in-out;
     transition: all .3s ease-in-out;
@@ -595,8 +629,8 @@ body.show-edge-input #input-edge-label {
     color: #e3e3e3;
     font-family: FontAwesome;
     font-size: 16px;
-    top: 15px;
-    left: 19px;
+    top: 7px;
+    left: 10px;
     z-index: 2;
 }
 
@@ -830,6 +864,13 @@ td.model-name-col .label {
     margin: 0px 5px;
 }
 
+.navbar-form {
+    padding: 0px 5px;
+}
+
+.navbar-header {
+    margin-right:10px!important;
+}
 .container-api {
     background: #fff;
     padding: 20px 40px;
