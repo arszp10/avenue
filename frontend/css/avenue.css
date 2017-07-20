@@ -20,6 +20,11 @@ body{
 }
 
 
+.screen.white {
+    background-color: #eee;
+    background-image: none;
+}
+
 .screen-0  {
     /*color: #dfedff;*/
     overflow: hidden;
@@ -753,7 +758,7 @@ body.show-edge-input #input-edge-label {
 }
 
 .form-control.input-file-search {
-    width: 250px;
+    width: 150px;
     color: #f0f0f0;
     background: rgba(255,255,255, 0.1);
 }
@@ -764,7 +769,7 @@ body.show-edge-input #input-edge-label {
 
 #api-credentials .input-group-addon {
     color: #999;
-    border-color: #eee;
+    border-color: #555;
     background-color: transparent;
 }
 
@@ -840,7 +845,7 @@ td.model-name-col .label {
 
 .order-by-label {
     padding: 0px 10px;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 .order-by-label a {
     text-decoration: none;
@@ -945,4 +950,8 @@ a.btn-edit-add-green span.add-green-value {
     opacity:0;
     background-color:transparent;
     color:transparent;
+}
+
+.navbar-inverse input[type="text"] {
+    border: 1px solid #555;
 }

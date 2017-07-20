@@ -24,6 +24,9 @@
         },
         initModule: function(){
             var that = this;
+            if (typeof require == 'undefined') {
+                return;
+            }
             $(document).ready(function(){
                 require([
                     "esri/Map",

@@ -319,7 +319,6 @@ module.exports = function(app, config) {
         var params = _.cloneDeepWith(req.query, coerce);
             params.userId = req.session.user.id;
 
-
         Model.findWithPages(params, function(err, data){
                 if (err) {
                     res.status(404);

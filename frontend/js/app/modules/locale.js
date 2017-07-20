@@ -86,7 +86,6 @@
 
             'veh_sec': 'авт*с',
             'vehicle': 'авт',
-            'delay': 'задержка',
             'open-in-new-tab': 'Открыть в новой вкладке',
             'open':'Открыть',
             'remove': 'Удалить',
@@ -102,7 +101,8 @@
             'file': 'Файл',
             'import': 'Импорт',
             'import-model': 'Импорт модели',
-            'map': 'Карта'
+            'map': 'Карта',
+            'model-list':'Модели'
 
         },
         en: {
@@ -190,7 +190,6 @@
 
             'veh_sec': 'veh*sec',
             'vehicle': 'vehicle',
-            'delay': 'delay',
             'open-in-new-tab': 'Open in new tab',
             'open':'Open',
             'remove': 'Remove',
@@ -205,7 +204,8 @@
             'file': 'File',
             'import': 'Import',
             'import-model': 'Import model',
-            'map': 'Map'
+            'map': 'Map',
+            'model-list':'Model list'
 
         }
     };

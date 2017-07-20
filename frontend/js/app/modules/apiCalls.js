@@ -3,14 +3,27 @@
 
     var action = function(url, data, handler, handlerOptions){
         var path = url.split(':');
-        var jqxhr = $.ajax({
-            method: path[0],
-            url: path[1],
-            data: data,
-            dataType: 'json',
-            data: JSON.stringify(data),
-            contentType: 'application/json; charset=UTF-8'
-        });
+        var method = path[0];
+        var jqxhr;
+
+        if (method !== 'GET') {
+           jqxhr = $.ajax({
+                method: path[0],
+                url: path[1],
+                data: data,
+                dataType: 'json',
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=UTF-8'
+            });
+        } else {
+           jqxhr = $.ajax({
+                method: path[0],
+                url: path[1],
+                data: data,
+                dataType: 'json'
+            });
+        }
+
 
 
         if (handler.hasOwnProperty('done')) {
