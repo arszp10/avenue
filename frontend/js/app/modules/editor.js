@@ -151,17 +151,9 @@
                 button.toggleClass('active');
                 icon.toggleClass('fa-rotate-90');
                 if (button.hasClass('active')){
-                    var  cye = cy.extent();
-                    var  ve = map.MapView.extent;
-
-                    cy.cyBaseExtent = JSON.parse(JSON.stringify(cye));
-                    cy.arcExtent    = JSON.parse(JSON.stringify(ve));
-                    cy.arcScale     = map.MapView.scale;
-                    cy.xC = (ve.xmax - ve.xmin)/(cye.x2 - cye.x1);
-                    cy.yC = (ve.ymax - ve.ymin)/(cye.y2 - cye.y1);
-
+                   cy.aveSetBaseExtent();
                 } else {
-                    cy.cyBaseExtent = false;
+                    cy.aveClearBaseExtent();
                 }
 
             });

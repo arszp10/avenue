@@ -175,6 +175,10 @@
             setEdgePortion(e.cyTarget, source);
 
         });
+
+        cy.on('viewport', function(e){
+            cy.aveScaleCyToArcGis();
+        });
     };
 
     var initParent = function (ready){
@@ -186,65 +190,7 @@
             cy.edgehandles({ });
             cy.panzoom({});
 
-            cy.on('viewport', function(e){
 
-                var cybe = cy.cyBaseExtent;
-                var arcbe = cy.arcExtent;
-
-                if (!cybe || !arcbe) {
-                    return;
-                }
-                var cye = cy.extent();
-                var cyxC = (cybe.x2 - cybe.x1)/(cye.x2 - cye.x1);
-                var cyyC = (cybe.y2 - cybe.y1)/(cye.y2 - cye.y1);
-
-                //console.log(cybe, cye, cyxC, cyyC);
-
-                var dx = {
-                    lx: (arcbe.xmax - arcbe.xmin)/cyxC/2,
-                    ly: (arcbe.ymax - arcbe.ymin)/cyyC/2
-                };
-
-                //console.log(dx);
-
-                var cyBaseCenter = {
-                        x: (cybe.x2 + cybe.x1)/2,
-                        y: (cybe.y2 + cybe.y1)/2,
-                };
-
-                var arcBaseCenter = {
-                    x: (arcbe.xmax + arcbe.xmin)/2,
-                    y: (arcbe.ymax + arcbe.ymin)/2
-                };
-
-                var cyCurrentCenter = {
-                    x: (cye.x2 + cye.x1)/2,
-                    y: (cye.y2 + cye.y1)/2
-                };
-
-                var arcCurrentCenter = {
-                    x: arcBaseCenter.x + (cyCurrentCenter.x - cyBaseCenter.x)*cy.xC,
-                    y: arcBaseCenter.y - (cyCurrentCenter.y - cyBaseCenter.y)*cy.yC
-                };
-
-                //console.log(arcCurrentCenter);
-
-                var arce = {
-                    xmin: arcCurrentCenter.x - dx.lx,
-                    ymin: arcCurrentCenter.y - dx.ly,
-                    xmax: arcCurrentCenter.x + dx.lx,
-                    ymax: arcCurrentCenter.y + dx.ly,
-                    spatialReference: {
-                        wkid: 102100
-                    }
-                };
-                //console.log(view111.extent, arce);
-
-                map.MapView.extent = new map.Classes.Extent(arce);
-                map.MapView.scale = cy.arcScale/cyxC;
-                //console.log('scale2z', view111.scale, 564/cyxC);
-
-            });
             ready();
         };
         controls.panels.cytoscape.cytoscape(options);
@@ -430,7 +376,6 @@
             });
             return node.avgIntensity - sum;
         },
-
         aveBuildRoutes: function(selectedNodes){
             var cyRoutes = [];
             selectedNodes.forEach(function(node1){
@@ -460,7 +405,83 @@
             result.forEach(function(r){  r.select(); });
             return result;
 
+        },
+        aveScaleCyToArcGis:function(){
+            var cybe = cy.cyBaseExtent;
+            var arcbe = cy.arcExtent;
+
+            if (!cybe || !arcbe) {
+                return;
+            }
+            var cye = cy.extent();
+            var cyxC = (cybe.x2 - cybe.x1)/(cye.x2 - cye.x1);
+            var cyyC = (cybe.y2 - cybe.y1)/(cye.y2 - cye.y1);
+
+            //console.log(cybe, cye, cyxC, cyyC);
+
+            var dx = {
+                lx: (arcbe.xmax - arcbe.xmin)/cyxC/2,
+                ly: (arcbe.ymax - arcbe.ymin)/cyyC/2
+            };
+
+            //console.log(dx);
+
+            var cyBaseCenter = {
+                x: (cybe.x2 + cybe.x1)/2,
+                y: (cybe.y2 + cybe.y1)/2,
+            };
+
+            var arcBaseCenter = {
+                x: (arcbe.xmax + arcbe.xmin)/2,
+                y: (arcbe.ymax + arcbe.ymin)/2
+            };
+
+            var cyCurrentCenter = {
+                x: (cye.x2 + cye.x1)/2,
+                y: (cye.y2 + cye.y1)/2
+            };
+
+            var arcCurrentCenter = {
+                x: arcBaseCenter.x + (cyCurrentCenter.x - cyBaseCenter.x)*cy.xC,
+                y: arcBaseCenter.y - (cyCurrentCenter.y - cyBaseCenter.y)*cy.yC
+            };
+
+            //console.log(arcCurrentCenter);
+
+            var arce = {
+                xmin: arcCurrentCenter.x - dx.lx,
+                ymin: arcCurrentCenter.y - dx.ly,
+                xmax: arcCurrentCenter.x + dx.lx,
+                ymax: arcCurrentCenter.y + dx.ly,
+                spatialReference: {
+                    wkid: 102100
+                }
+            };
+            //console.log(view111.extent, arce);
+
+            map.MapView.extent = new map.Classes.Extent(arce);
+            map.MapView.scale = cy.arcScale/cyxC;
+            //console.log('scale2z', view111.scale, 564/cyxC);
+
+        },
+        aveSetBaseExtent:function(){
+            var  cye = cy.extent();
+            var  ve = map.MapView.extent;
+
+            cy.cyBaseExtent = JSON.parse(JSON.stringify(cye));
+            cy.arcExtent    = JSON.parse(JSON.stringify(ve));
+            cy.arcScale     = map.MapView.scale;
+            cy.xC = (ve.xmax - ve.xmin)/(cye.x2 - cye.x1);
+            cy.yC = (ve.ymax - ve.ymin)/(cye.y2 - cye.y1);
+        },
+        aveClearBaseExtent:function(){
+            cy.cyBaseExtent = null;
+            cy.arcExtent    = null;
+            cy.arcScale     = null;
+            cy.xC = 1;
+            cy.yC = 1;
         }
+
     };
 
 

@@ -49,7 +49,7 @@
                         container: "mapBack",
                         map: map,
                         center: [30.318474, 59.908733],
-                        scale: 564,
+                        scale: 1128,
                         constraints: {
                             minScale: 140,
                             maxScale: 9028
@@ -60,16 +60,11 @@
                     that.hideWidgets();
                     view.on('resize', function(e){
                         setTimeout(function() {
-                            var cye = cy.extent();
-                            var ve = view.extent;
+
                             if (!cy.cyBaseExtent) {
                                 return;
                             }
-                            cy.cyBaseExtent = JSON.parse(JSON.stringify(cye));
-                            cy.arcExtent = JSON.parse(JSON.stringify(ve));
-                            cy.arcScale = view.scale;
-                            cy.xC = (ve.xmax - ve.xmin) / (cye.x2 - cye.x1);
-                            cy.yC = (ve.ymax - ve.ymin) / (cye.y2 - cye.y1);
+                            cy.aveSetBaseExtent();
                             cy.trigger('viewport');
                         }, 1000);
                     });
