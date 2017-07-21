@@ -1,7 +1,7 @@
 (function(App){
     var controls  = App.Controls;
     var templates = App.Templates;
-    var cy, editor, modelManager;
+    var cy, editor, modelManager, map;
 
     var nop = function(r,o){ };
 
@@ -47,6 +47,7 @@
             cy      = modules.cytoscape;
             editor  = modules.editor;
             modelManager = modules.modelManager;
+            map = modules.map;
         },
         initModule: nop,
 
@@ -115,7 +116,40 @@
                         App.State.currentModel.routes = [];
                     }
                     var content = r.data.content === undefined ? [] : r.data.content;
+                    App.State.currentModel.anchored = r.data.anchored  === undefined ? false : r.data.anchored;
+                    App.State.currentModel.showMapInBackground = r.data.showMapInBackground  === undefined ? false : r.data.showMapInBackground;
+
+                    var zoom = r.data.hasOwnProperty('position') ? r.data.position.cyZoom : 1;
+                    var extent = r.data.hasOwnProperty('position')
+                        ? $.extend({x1: 0, y1:0}, r.data.position.cyExtent)
+                        : {x1: 0, y1:0};
+
                     cy.add(content);
+                    cy.viewport({
+                        zoom: zoom, pan : { x:-1*extent.x1*zoom, y:-1*extent.y1*zoom }
+                    });
+
+                    if(App.State.currentModel.anchored) {
+                        cy.cyZoom = r.data.position.cyZoom;
+                        cy.cyBaseExtent = r.data.position.cyExtent;
+                        cy.mapExtent = r.data.position.mapExtent;
+                        cy.mapScale = r.data.position.mapScale;
+                        cy.xC = r.data.position.xC;
+                        cy.yC = r.data.position.yC;
+
+                        if (map.Classes.Extent) {
+                            cy.aveScaleCyToArcGis();
+                        }
+
+                        var button = controls.buttons.btnArcgisSetExtent;
+                        var icon = button.find('i');
+                            button.toggleClass('active');
+                            icon.toggleClass('fa-rotate-90');
+                    }
+                    if (App.State.currentModel.showMapInBackground) {
+                        controls.buttons.btnArcgisSwitch.click();
+                    }
+
                     delete App.State.currentModel.content;
                     editor.renderRoutesDropDown();
                 }

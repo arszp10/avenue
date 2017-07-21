@@ -152,8 +152,10 @@
                 icon.toggleClass('fa-rotate-90');
                 if (button.hasClass('active')){
                    cy.aveSetBaseExtent();
+                    App.State.currentModel.anchored = true;
                 } else {
                     cy.aveClearBaseExtent();
+                    App.State.currentModel.anchored = false;
                 }
 
             });
@@ -168,12 +170,12 @@
                     icon.addClass('hidden');
                     controls.panels.cytoscape.addClass('screen-1');
                     controls.panels.mapBack.removeClass('visible-map');
-                    App.State.showMapInBackground = true;
+                    App.State.currentModel.showMapInBackground = true;
                 } else {
                     icon.removeClass('hidden');
                     controls.panels.cytoscape.removeClass('screen-1');
                     controls.panels.mapBack.addClass('visible-map');
-                    App.State.showMapInBackground = false;
+                    App.State.currentModel.showMapInBackground = false;
                 }
             });
 
@@ -182,6 +184,8 @@
                 var $icon = $(this).find('i.fa');
                 $icon.addClass('fa-spinner fa-spin');
                 $icon.removeClass('fa-save');
+
+                cy.aveSetBaseExtent();
                 api.saveModel(App.State.modelId, {
                     data: {
                         content: cy.elements().jsons(),
@@ -190,7 +194,10 @@
                         notes: App.State.currentModel.notes,
                         nodeCount: cy.nodes().length,
                         crossCount: cy.$('[type="crossRoad"]').length,
-                        cycleTime: App.State.currentModel.cycleTime
+                        cycleTime: App.State.currentModel.cycleTime,
+                        position: cy.aveGetExtents(),
+                        anchored: App.State.currentModel.anchored,
+                        showMapInBackground: App.State.currentModel.showMapInBackground
                     }
                 }, $icon);
             });

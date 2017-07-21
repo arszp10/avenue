@@ -289,6 +289,9 @@ module.exports = function(app, config) {
             model.notes         = bodyData.notes;
             model.content       = bodyData.content;
             model.routes        = bodyData.routes;
+            model.position      = bodyData.position;
+            model.anchored      = bodyData.anchored;
+            model.showMapInBackground      = bodyData.showMapInBackground;
             model.save(function(err){
                 if (err) {
                     throw err;

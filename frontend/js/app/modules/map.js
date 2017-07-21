@@ -11,12 +11,21 @@
     //<!--17, 4513-->
     //<!--16, 9027-->
 
+    var defaultExtent = {
+        xmax:4187606.8252613014,
+        xmin:4186931.432456595,
+        ymax:7510382.427749333,
+        ymin:7509888.572886829,
+        spatialReference: {
+            wkid: 102100
+        }
+    };
 
     App.Modules.map = {
         Map: map,
         MapView: view,
         Classes: {
-            Extent: {}
+            Extent: null
         },
 
         injectDependencies: function(modules) {
@@ -27,7 +36,7 @@
             if (typeof require == 'undefined') {
                 return;
             }
-            $(document).ready(function(){
+            //$(document).ready(function(){
                 require([
                     "esri/Map",
                     "esri/views/MapView",
@@ -36,7 +45,7 @@
                     "esri/widgets/Search",
                     "esri/widgets/Compass",
                     "esri/widgets/Zoom",
-                    "esri/widgets/Locate",
+                    "esri/widgets/Locate"
                 ], function(Map, MapView, Extent, SpatialReference, Search, Compass, Zoom, Locate){
                     that.Classes.Extent = Extent;
                     that.Classes.Compass = Compass;
@@ -44,12 +53,17 @@
                     that.Classes.Search = Search;
                     that.Classes.Locate = Locate;
 
+                    var pos = cy.aveScaleCyToArcGis(true);
+                    var scale = cy.mapScale ? pos.mapScale : 1128;
+                    var extent = cy.mapExtent ? pos.mapExtent : defaultExtent;
+
                     map  = new Map({basemap: "hybrid"});
                     view = new MapView({
                         container: "mapBack",
                         map: map,
-                        center: [30.318474, 59.908733],
-                        scale: 1128,
+                        //center: [30.318474, 59.908733],
+                        extent: new Extent(extent),
+                        scale: scale,
                         constraints: {
                             minScale: 140,
                             maxScale: 9028
@@ -73,7 +87,7 @@
                     that.MapView = view;
 
                 });
-            });
+            //});
         },
 
         hideWidgets:function() {

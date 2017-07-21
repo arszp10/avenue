@@ -16,6 +16,9 @@ var modelSchema = new Schema({
     nodeCount:  { type: Number, required: required},
     createdAt:          Date,
     updatedAt:          Date,
+    position:      Object,
+    anchored:      { type: Boolean },
+    showMapInBackground:{ type: Boolean },
     _creator :  { type: Schema.Types.ObjectId, ref: 'User' }
 });
 

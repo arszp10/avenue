@@ -406,9 +406,9 @@
             return result;
 
         },
-        aveScaleCyToArcGis:function(){
+        aveScaleCyToArcGis:function(justReturn){
             var cybe = cy.cyBaseExtent;
-            var arcbe = cy.arcExtent;
+            var arcbe = cy.mapExtent;
 
             if (!cybe || !arcbe) {
                 return;
@@ -459,30 +459,54 @@
             };
             //console.log(view111.extent, arce);
 
-            map.MapView.extent = new map.Classes.Extent(arce);
-            map.MapView.scale = cy.arcScale/cyxC;
+            if (justReturn) {
+                return {
+                    mapExtent : arce,
+                    mapScale : cy.mapScale/cyxC
+                };
+
+            } else {
+                map.MapView.extent = new map.Classes.Extent(arce);
+                map.MapView.scale = cy.mapScale/cyxC;
+            }
+
             //console.log('scale2z', view111.scale, 564/cyxC);
 
+        },
+        aveGetExtents: function(){
+            return {
+                cyZoom: cy.cyZoom,
+                cyExtent: cy.cyBaseExtent,
+                mapExtent: cy.mapExtent,
+                mapScale: cy.mapScale,
+                xC: cy.xC,
+                yC: cy.yC
+            }
         },
         aveSetBaseExtent:function(){
             var  cye = cy.extent();
             var  ve = map.MapView.extent;
-
             cy.cyBaseExtent = JSON.parse(JSON.stringify(cye));
-            cy.arcExtent    = JSON.parse(JSON.stringify(ve));
-            cy.arcScale     = map.MapView.scale;
+            cy.cyZoom = cy.zoom();
+            cy.mapScale     = map.MapView.scale;
+            if (!ve) {
+                return
+            }
+            cy.mapExtent    = JSON.parse(JSON.stringify(ve));
             cy.xC = (ve.xmax - ve.xmin)/(cye.x2 - cye.x1);
             cy.yC = (ve.ymax - ve.ymin)/(cye.y2 - cye.y1);
         },
         aveClearBaseExtent:function(){
+            cy.cyZoom = 1;
             cy.cyBaseExtent = null;
-            cy.arcExtent    = null;
-            cy.arcScale     = null;
+            cy.mapExtent    = null;
+            cy.mapScale     = 1128;
             cy.xC = 1;
             cy.yC = 1;
         }
 
     };
+
 
 
 
