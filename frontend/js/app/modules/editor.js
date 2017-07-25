@@ -3,15 +3,9 @@
     var templates = App.Templates;
     var settings  = App.Resources.Settings;
     var samples   = App.Resources.Samples;
-    var cy, traffic, api, map;
+    var cy, traffic, api, map, intersectionEditor;
     var routes;
     var that;
-
-    var stopLineSort = function (a, b) {
-        if (a.data.tag > b.data.tag) {return 1;}
-        if (a.data.tag < b.data.tag) {return -1;}
-        return 0;
-    };
 
    App.Modules.editor = {
         xC:0,
@@ -22,6 +16,7 @@
             api       = modules.apiCalls;
             routes    = modules.routes;
             map       = modules.map;
+            intersectionEditor = modules.intersectionEditor;
         },
         initModule: function(){
             that = this;
@@ -35,7 +30,7 @@
         },
 
         initDocumentEvents: function(){
-            this.initCheckBoxes(controls.panels.body);
+            //this.initCheckBoxes(controls.panels.body);
             controls.panels.body.on('mouseup', function(){
                 that.toggleNodePopupPanel(false);
                 that.toggleAddGreenPanel(false);
@@ -308,7 +303,7 @@
             $(document).on('click', 'button.btn-edit-cross-road', function(e){
                 var nodeId = $(this).closest('tr').data('id');
                 var target = cy.getElementById(nodeId).data();
-                that.showCrossroadModal(target);
+                intersectionEditor.showCrossroadModal(target);
             });
 
             $(document).on('click', 'button.btn-pan-tonode', function(e){
@@ -489,80 +484,12 @@
                 controls.panels.coPlanModal.modal('hide');
             });
 
-            /**
-             *  Crossroad modal events
-             */
-            controls.inputs.inputCrossroadOffset = $('#inputCrossroadOffset').slider({
-                max: 100,
-                value: 0,
-                tooltip: 'always'
-            });
-            controls.panels.crossRoadModal.on('shown.bs.modal', function () {
-                controls.inputs.inputCrossroadOffset.slider('relayout');
-            });
-            controls.buttons.btnsCrossFormPhasesCount.click(function () {
-                var cols = $(this).data('cols');
-                controls.buttons.btnsCrossFormPhasesCount.removeClass('ph-selected');
-                $(this).addClass('ph-selected');
-                controls.panels.tblPhasesBody.find('input[type="text"]').prop('disabled', true);
-                controls.panels.tblPhasesBody.find('input[type="checkbox"]').iCheck('disable');
-                cols.map(function (v) {
-                    controls.panels.tblPhasesBody.find('.ph-col-' + v + ' input[type="text"]').prop('disabled', false);
-                    controls.panels.tblPhasesBody.find('.ph-col-' + v + ' a.btn-edit-add-green').attr('disabled', false);
-                    controls.panels.tblPhasesBody.find('.ph-col-' + v + ' input[type="checkbox"]').iCheck('enable');
-                });
-            });
-            controls.buttons.btnSaveCrossroadData.click(function () {
-                var nodeId = controls.panels.crossRoadModal.data('id');
-
-                var tblPhasesBody = controls.panels.tblPhasesBody;
-                var phasesCount = controls.panels.crossRoadModal.find('.ph-selected').data('count');
-                var phases = [];
-                var tag = 0;
-                var pLength = 0;
-                var maxLength = 0;
-                var intertact = 0;
-                for (var i = 1; i <= phasesCount; i++) {
-                    tag = tblPhasesBody.find('input#ph-tag-' + i).val();
-                    pLength = tblPhasesBody.find('input#ph-length-' + i).val();
-                    maxLength = tblPhasesBody.find('input#ph-max-length-' + i).val();
-                    intertact = tblPhasesBody.find('input#ph-intertact-' + i).val();
-                    phases.push({
-                        tag: tag,
-                        length: pLength ? parseInt(pLength) : 0,
-                        minLength: maxLength ? parseInt(maxLength) : 0,
-                        intertact: intertact ? parseInt(intertact) : 0
-                    });
-                }
-                cy.getElementById(nodeId).data('name', controls.inputs.inputCrossroadName.val());
-                cy.getElementById(nodeId).data('offset', controls.inputs.inputCrossroadOffset.slider('getValue'));
-                cy.getElementById(nodeId).data('phases', phases);
-
-                tblPhasesBody.find('tr.stop-line-row').each(function () {
-                    var $tr = $(this);
-                    var greenPhases = [];
-                    var additionalGreens = [];
-
-                    var inputs = $tr.find('td.ph-td:lt(' + phases.length + ') input[type="checkbox"]');
-                    var addGreen = $tr.find('td.ph-td:lt(' + phases.length + ') a.btn-edit-add-green span.add-green-value');
-                    for (var i = 0; i < phases.length; i++) {
-                        greenPhases.push(inputs[i].checked);
-                        additionalGreens.push($(addGreen[i]).data('value'));
-                    }
-                    cy.getElementById($tr.data('id'))
-                        .data('greenPhases', greenPhases)
-                        .data('additionalGreens', additionalGreens);
-                    ;
-                });
-                controls.panels.crossRoadModal.modal('hide');
-            });
-
         },
 
 
-        initCheckBoxes: function($el) {
-            $el.find('input[type="checkbox"]').iCheck({ checkboxClass: 'icheckbox_minimal-blue' });
-        },
+        //initCheckBoxes: function($el) {
+        //    $el.find('input[type="checkbox"]').iCheck({ checkboxClass: 'icheckbox_minimal-blue' });
+        //},
 
         toggleNodePopupPanel: function(show){
             controls.panels.body.toggleClass('show-panel-point-property', show);
@@ -636,28 +563,7 @@
             }
 
         },
-        showCrossroadModal: function(node){
-            var stopLines = cy.aveGetCrossroadStoplines(node.id);
-            stopLines.sort(stopLineSort);
-            var phasesCntButtons = controls.buttons.btnsCrossFormPhasesCount;
-            controls.panels.crossRoadModal.data('id', node.id);
 
-            phasesCntButtons.removeClass('ph-selected');
-            controls.panels.crossRoadModal
-                .find('[data-count='+node.phases.length+']')
-                .addClass('ph-selected');
-
-            controls.panels.tblPhasesBody.find('tr').remove();
-            controls.panels.tblPhasesBody.append(templates.crossRoadTablePhaseRow(node.phases));
-            $.each(stopLines, function(i,v){
-                controls.panels.tblPhasesBody.append(templates.crossRoadTableCheckRow(v.data));
-                that.initCheckBoxes(controls.panels.tblPhasesBody);
-            });
-            controls.inputs.inputCrossroadName.val(node.name);
-            controls.inputs.inputCrossroadOffset.slider('setAttribute', 'max', node.cycleTime - 1);
-            controls.inputs.inputCrossroadOffset.slider('setValue', node.offset);
-            controls.panels.crossRoadModal.modal('show');
-        },
         showSideMultiNodeEditor: function(totalSelected){
             controls.panels.nodeSearchResultlist.empty();
             controls.panels.nodeSearchInfo.empty();
@@ -704,7 +610,7 @@
 
             if (node.type == 'crossRoad' && errors.length == 0) {
                 var stopLines = cy.aveGetCrossroadStoplines(node.id);
-                stopLines.sort(stopLineSort);
+                stopLines.sort(intersectionEditor.stopLineSort);
                 var dataBars = [];
                 $.each(stopLines, function(i,v){
                     dataBars.push({
@@ -713,12 +619,12 @@
                     });
                 });
 
-                controls.panels.nodeSearchInfo.append(
-                    templates.crossRoadSignalBars({
-                        cycleTime: node.cycleTime,
-                        bars: dataBars
-                    })
-                );
+                //controls.panels.nodeSearchInfo.append(
+                //    templates.crossRoadSignalBars({
+                //        cycleTime: node.cycleTime,
+                //        bars: dataBars
+                //    })
+                //);
 
                 controls.panels.nodeSearchInfo.append(
                     templates.locateEditButtons(node)

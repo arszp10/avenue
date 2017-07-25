@@ -19,7 +19,8 @@
             modelPagesStat:         '#model-pages-stat',
             routesDropDownButton:   '#routes-list-button-panel',
             routesDropDownList:     '#routes-dropdown-list',
-            importModal:            '#import-modal'
+            importModal:            '#import-modal',
+            cyCrossroadCopy:        '#cy-crossroad-copy'
         },
         labels: {
             labelMyAccountUsername: '#label-my-account-username',
@@ -50,7 +51,9 @@
             inputImportFile:        '#inputImportFile',
             inputZoomIntersection:  '#inputZoomIntersection',
             inputZoomMap:           '#inputZoomMap',
-            inputArcgisScale:       '#input-arcgis-scale'
+            inputArcgisScale:       '#input-arcgis-scale',
+            inputCrossroadCycleLength: '#inputCrossroadCycleLength',
+            inputCrossroadOffsetText: '#inputCrossroadOffsetText'
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',

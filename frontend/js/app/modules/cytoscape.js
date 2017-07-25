@@ -5,7 +5,7 @@
     var cy,map;
     var routes;
     var traffic;
-    var editor;
+    var editor, intersectionEditor;
     var api;
     var that;
 
@@ -109,7 +109,7 @@
             }
 
             if (type == 'crossRoad') {
-                editor.showCrossroadModal(e.cyTarget.data());
+                intersectionEditor.showCrossroadModal(e.cyTarget.data());
                 return;
             }
 
@@ -211,6 +211,7 @@
             routes  = modules.routes;
             traffic = modules.traffic;
             map = modules.map;
+            intersectionEditor = modules.intersectionEditor;
         },
         initModule: function(){
             if (! controls.panels.cytoscape.length) {
@@ -239,6 +240,9 @@
                 renderedPosition: pos
             }]);
             return d.id;
+        },
+        aveSelectedCrossroadNodes: function(id){
+            return this.$('node[parent="' + id + '"], node[id="' + id + '"] > edge').jsons();
         },
         aveCopy:function(){
             var jsons = this.$(':selected').jsons();
@@ -406,48 +410,37 @@
             return result;
 
         },
+
         aveScaleCyToArcGis:function(justReturn){
             var cybe = cy.cyBaseExtent;
             var arcbe = cy.mapExtent;
-
             if (!cybe || !arcbe) {
                 return;
             }
+
             var cye = cy.extent();
             var cyxC = (cybe.x2 - cybe.x1)/(cye.x2 - cye.x1);
             var cyyC = (cybe.y2 - cybe.y1)/(cye.y2 - cye.y1);
-
-            //console.log(cybe, cye, cyxC, cyyC);
-
             var dx = {
                 lx: (arcbe.xmax - arcbe.xmin)/cyxC/2,
                 ly: (arcbe.ymax - arcbe.ymin)/cyyC/2
             };
-
-            //console.log(dx);
-
             var cyBaseCenter = {
                 x: (cybe.x2 + cybe.x1)/2,
                 y: (cybe.y2 + cybe.y1)/2,
             };
-
             var arcBaseCenter = {
                 x: (arcbe.xmax + arcbe.xmin)/2,
                 y: (arcbe.ymax + arcbe.ymin)/2
             };
-
             var cyCurrentCenter = {
                 x: (cye.x2 + cye.x1)/2,
                 y: (cye.y2 + cye.y1)/2
             };
-
             var arcCurrentCenter = {
                 x: arcBaseCenter.x + (cyCurrentCenter.x - cyBaseCenter.x)*cy.xC,
                 y: arcBaseCenter.y - (cyCurrentCenter.y - cyBaseCenter.y)*cy.yC
             };
-
-            //console.log(arcCurrentCenter);
-
             var arce = {
                 xmin: arcCurrentCenter.x - dx.lx,
                 ymin: arcCurrentCenter.y - dx.ly,
@@ -457,21 +450,15 @@
                     wkid: 102100
                 }
             };
-            //console.log(view111.extent, arce);
-
             if (justReturn) {
                 return {
                     mapExtent : arce,
                     mapScale : cy.mapScale/cyxC
                 };
-
             } else {
                 map.MapView.extent = new map.Classes.Extent(arce);
                 map.MapView.scale = cy.mapScale/cyxC;
             }
-
-            //console.log('scale2z', view111.scale, 564/cyxC);
-
         },
         aveGetExtents: function(){
             return {

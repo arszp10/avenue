@@ -238,6 +238,10 @@ body{
     border-top-color: transparent;
 }
 
+.nav-tabs.bottom-tabs.white > li.active > a {
+    background-color: #fff;
+}
+
 .nav-tabs.bottom-tabs > li > a {
     border-radius: 0 0 4px 4px;
 }
@@ -415,13 +419,9 @@ body.show-edge-input #input-edge-label {
 
 @media (min-width: 768px){
     .modal-dialog {
-        width: 700px;
+        width: 1100px;
         margin: 30px auto;
     }
-}
-
-#crossroad-modal .modal-body {
-    /*height:400px;*/
 }
 
 .btn-x-sm {
@@ -435,56 +435,63 @@ body.show-edge-input #input-edge-label {
     width: 290px;
     padding: 7px 0;
     clear: both;
-    opacity: .6;
+    opacity: 1;
     margin-left: 26px;
     margin-top: -50px;
     margin-bottom: 40px;
 }
 
 .signal-bar.signals-bulk {
-    width: 265px;
-    padding: 5px 0;
+    width: 100%;
+    padding: 0px 0;
     clear: both;
-    opacity: .6;
+    opacity: 1;
     margin: 0px;
 }
 
 .signal-bar:hover{
-    opacity: 0.9;
+    opacity: 1;
     box-shadow: 4px;
 }
 
 .signal {
-    height: 10px;
-    padding:0px;
-    margin:0px;
-    float:left;
-    display:block;
-    border:1px solid #555;
-    border-right:0px;
-    border-left:0px;
+    color: #fff;
+    height: 15px;
+    padding: 0px 0;
+    margin: 0;
+    float: left;
+    display: block;
+    /* border: 1px solid #fff; */
+    border-right: 0;
+    border-left: 1px solid #ffffff;
+    font-weight: 400;
+    font-size: 10px;
+    vertical-align: middle;
 }
 
 .signal-red {
-    background-color: red;
+    background-color: #fd5149;
 }
 .signal-green {
-    background-color: green;
+    background-color: #4caf50;
 }
 .signal-yellow {
     background-color: yellow;
+    color:#333;
 }
 
 .signal-amber {
-    background: linear-gradient( red 50%, transparent 50%);
-    background-size: 2px 8px;
+    background: linear-gradient( #fd5149 50%, transparent 50%);
+    /*background-size: 2px 8px;*/
     background-color: yellow;
+    color: transparent;
 }
 
 .signal-blink {
     background: linear-gradient(90deg, darkgreen 50%, transparent 50%);
     background-size: 4px 4px;
     background-color: yellowgreen;
+    color: transparent;
 }
 
 
@@ -493,14 +500,15 @@ body.show-edge-input #input-edge-label {
     opacity: 0.1;
 }
 
-.ph-selected {
-    background-color: #337AB7;
-    color: #fff;
-    border-radius: 5px;
-}
+/*.ph-selected {*/
+    /*background-color: #337AB7;*/
+    /*color: #fff;*/
+    /*border-radius: 5px;*/
+/*}*/
 
 .table-phases{
-     margin-bottom: 5px;
+     margin-bottom: 0px;
+     margin-top: 0px;
 }
 
 .table-phases>tbody>tr>td,
@@ -509,16 +517,35 @@ body.show-edge-input #input-edge-label {
 .table-phases>tfoot>tr>th,
 .table-phases>thead>tr>td,
 .table-phases>thead>tr>th {
-    padding: 4px;
-    line-height: 1.42857143;
+    padding: 0px 1px 1px 1px;
     vertical-align: middle;
     border-top: 0px solid #ddd;
     text-align: center;
 }
 
+.table-phases>tbody>tr>td.ph-col-0 {
+    /*text-align: right;*/
+    padding-right:10px;
+    width:90px;
+}
+
+.table-phases>tbody>tr>td[disabled] {
+    background: #eee;
+}
+
+td.ph-col-0 label{
+    font-weight: normal;
+}
+
+.ph-col-stop-line-label {
+    font-size:11px;
+}
 .table-phases>thead>tr>th {
     vertical-align: bottom;
     border-bottom: 0px solid #ddd;
+    font-weight:normal;
+    font-size: 11px;
+    padding-bottom: 4px;
 }
 
 .table-phases th {
@@ -533,6 +560,21 @@ body.show-edge-input #input-edge-label {
 
 .table-phases>tbody>tr>td.ph-col-checkbox {
     text-align: left;
+}
+
+
+
+.table-phases .input-sm {
+    padding: 0px 7px;
+    border-radius: 0;
+    font-size: 12px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    height: 25px;
+}
+
+.table-phases .td-hr {
+    height:14px;
 }
 
 .menu-directions {
@@ -574,7 +616,58 @@ body.show-edge-input #input-edge-label {
 #input-crossroad-name {
     border: 0px solid white;
     font-size: 18px;
-    width: 500px;
+    width: 610px;
+    margin-right: 20px;
+}
+
+#label-crossroad-opti-off {
+    float: right;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+
+#inputCrossroadCycleLength {
+    width:100px;
+}
+
+#inputCrossroadProgram,
+#inputCrossroadPhasesOrder{
+    /*height: 90px;*/
+    width: 78%;
+    margin-right: 4px;
+    display: inline-block;
+}
+
+#inputCrossroadProgram {
+    width: 67%;
+}
+
+.btn-action {
+    display: inline-block;
+    /*vertical-align: top;*/
+    /*margin-left: 7px;*/
+}
+
+.btn-danger-light {
+    color:#cc0000;
+}
+
+.add-phases-order-container {
+    padding-top:7px;
+}
+.add-phases-order-container input {
+    display: inline-block;
+    margin-right: 5px;
+    width: 141px;
+}
+
+.add-phases-order-container button {
+    display: inline-block;
+}
+
+
+.font-weight-normal {
+    font-weight:normal;
 }
 
 .stop-line-icon {
@@ -584,7 +677,7 @@ body.show-edge-input #input-edge-label {
 
 .btn-stop-line {
     padding: 0px 6px;
-    font-size: 13px;
+    font-size: 11px;
 }
 
 .stop-line-td-label {
@@ -955,3 +1048,11 @@ a.btn-edit-add-green span.add-green-value {
 .navbar-inverse input[type="text"] {
     border: 1px solid #555;
 }
+
+
+#cy-crossroad-copy {
+    height: 250px;
+    width: 100%;
+    /*background: #f0f0f0;*/
+}
+

@@ -14,10 +14,6 @@
                 'font-size': '14px',
                 'font-weight':'normal',
                 'min-zoomed-font-size':'8px'
-
-
-
-
             }
         },
         {

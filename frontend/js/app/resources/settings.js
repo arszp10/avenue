@@ -18,6 +18,23 @@
                 fit: true
             }
         },
+        cyCrossroadCopy: {
+            hideEdgesOnViewport: true,
+            hideLabelsOnViewport: true,
+            textureOnViewport: true,
+            pixelRatio: 1,
+            motionBlur: true,
+            boxSelectionEnabled:false,
+            userPanningEnabled:true,
+            //elements: [],
+            showOverlay: false,
+            minZoom: 0.1,
+            maxZoom: 2.0,
+            layout: {
+                name: 'preset',
+                fit: true,
+            }
+        },
 
         chart: {
             common: {

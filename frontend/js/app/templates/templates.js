@@ -1,6 +1,7 @@
 (function(App){
     var locale;
     var __ ;
+    var maxCountPhases = 12;
     App.Templates = {
         injectDependencies: function(modules) {
             locale  = modules.locale;
@@ -10,7 +11,7 @@
             var disAttr = '';
             var row0 = '', row1 = '', row2 = '', row3 = '';
             var l0, l1,l2, l3;
-            for (var i = 1; i<= 8; i++){
+            for (var i = 1; i<= maxCountPhases; i++){
                 disAttr = '';
                 if (data[i-1] === undefined) {
                     disAttr = 'disabled';
@@ -27,20 +28,24 @@
                 row3 = row3 + '<td class="ph-td ph-col-' + i + '"><input type="text" id="ph-intertact-' + i + '" class="form-control input-sm" '+disAttr+' value="'+l3+'"></td>';
             }
             var s =
-                '<tr><td class="col-sm-2 text-right"><label>' + __('interval-tag') + '</label></td>' + row0 + '</tr>' +
-                '<tr><td class="col-sm-2 text-right"><label>' + __('interval-length') + '</label></td>' + row1 + '</tr>' +
-                '<tr><td class="col-sm-2 text-right"><label>' + __('interval-minimal') + '</label></td>' +  row2 + '</tr>' +
-                '<tr><td class="col-sm-2 text-right"><label>' + __('interval-intertact') + '</label></td>' +  row3 + '</tr>';
+                '<tr><td class="ph-col-0"><label>' + __('interval-tag') + '</label></td>' + row0 + '</tr>' +
+                '<tr><td class="ph-col-0"><label>' + __('interval-length') + '</label></td>' + row1 + '</tr>' +
+                '<tr><td class="ph-col-0"><label>' + __('interval-minimal') + '</label></td>' +  row2 + '</tr>' +
+                '<tr><td class="ph-col-0"><label>' + __('interval-intertact') + '</label></td>' +  row3 + '</tr>'
+               ;
             return s;
         },
+
+
         crossRoadTableCheckRow: function(data){
             var checkboxAttr = '';
             var link = '';
             var addGreen = '';
             var s = '<tr class="stop-line-row" data-id="' + data.id + '">' +
-                '<td class="col-sm-2 text-right">' +
-                '<button type="button" class="btn btn-sm btn-stop-line btn-' + data.color + '"><span class="stop-line-icon">' + data.icon + '</span>&nbsp;' + data.tag + '</button></td>';
-            for (var i = 1; i<= 8; i++){
+                '<td class="ph-col-0">' + '<button type="button" class="btn btn-sm btn-stop-line btn-default"><span class="stop-line-icon">' + data.icon + '</span>&nbsp;' + data.tag + '</button></td>';
+                //'<td class="ph-col-0">' + '<span class="stop-line-icon text-'+ data.color + '">' + data.icon + '</span>&nbsp;' + data.tag + '</td>';
+
+            for (var i = 1; i<= maxCountPhases; i++){
                 checkboxAttr = '';
 
                 if (data.greenPhases[i-1] === true) {
@@ -58,11 +63,29 @@
                 }
 
                 link = '&nbsp;<a href="#" class="btn-edit-add-green" '+checkboxAttr+'>'+addGreen+'&nbsp;<span class="caret"></span></a>';
-                s = s + '<td class="ph-td ph-col-' + i + ' ph-col-checkbox"><input type="checkbox" '+checkboxAttr+'>' + link + '</td>';
+                s = s + '<td class="ph-td ph-col-' + i + ' ph-col-checkbox" '+checkboxAttr+'><input type="checkbox" '+checkboxAttr+'>' + link + '</td>';
             }
             s = s + '</tr>';
             return s;
         },
+
+
+        crossRoadTableDiagramRow: function(data, diagram){
+            var checkboxAttr = '';
+            var link = '';
+            var addGreen = '';
+            var s = '<tr class="" data-id="' + data.id + '">' +
+                //'<td class="ph-col-0">' + '<button type="button" class="btn btn-sm btn-stop-line btn-' + data.color + '"><span class="stop-line-icon">' + data.icon + '</span>&nbsp;' + data.tag + '</button></td>' +
+                '<td class="ph-col-0 ph-col-stop-line-label">' + '<span class="stop-line-icon text-'+ data.color + '">' + data.icon + '</span>&nbsp;' + data.tag + '</td>' +
+                '<td colspan="12">' +  this.signalBar(diagram, 'signals-bulk clearfix') + '</td></tr>';
+            return s;
+        },
+
+
+        crossRoadTableTabRow: function(data) {
+            return  '<tr><td colspan="13" class="td-hr"></td></tr>';
+        },
+
         crossRoadSignalBars:    function(data){
             var cycleTime = data.cycleTime;
             var s = '';
@@ -75,17 +98,20 @@
             return '<h4>' + __('crossroad-diagrams') + '</h4>' +
                 '<table><tbody>' + s + '</tbody></table><hr>';
         },
+
         signalBar :             function(data, cls){
+            console.log(data);
             var w = 0.5;
             var className = cls == undefined ? '' : cls;
             var s = '<div class="signal-bar ' + className + '">';
             data.signals.forEach(function(v){
-                w = 100* v.length/data.cycleTime;
-                s +='<div class="signal signal-' + v.color + '" style="width:'+ w +'%"></div>';
+                w = 99.7 * v.length/data.cycleTime;
+                s +='<div class="signal signal-' + v.color + '" style="width:'+ w +'%"> '+v.length+' </div>';
             });
             s += '</div>';
             return s;
         },
+
         chartPanel:             function(id){
             return '<canvas id="chart-panel" width="320" height="200"></canvas>';
         },

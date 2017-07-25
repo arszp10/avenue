@@ -102,7 +102,9 @@
             'import': 'Импорт',
             'import-model': 'Импорт модели',
             'map': 'Карта',
-            'model-list':'Модели'
+            'model-list':'Модели',
+            'cycle-length': 'Длительность цикла',
+            'phases-order': 'Порядок фаз'
 
         },
         en: {
@@ -205,7 +207,9 @@
             'import': 'Import',
             'import-model': 'Import model',
             'map': 'Map',
-            'model-list':'Model list'
+            'model-list':'Model list',
+            'cycle-length': 'Cycle lenght',
+            'phases-order': 'Phases order'
 
         }
     };

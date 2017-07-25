@@ -19,12 +19,14 @@
 //= app/resources/settings.js
 //= app/resources/samples.js
 //= app/resources/cyStyles.js
+//= app/resources/cyCrossroadStyles.js
 //= app/templates/templates.js
 
 //= app/modules/controls.js
 //= app/modules/cytoscape.js
 //= app/modules/map.js
 //= app/modules/editor.js
+//= app/modules/intersectionEditor.js
 //= app/modules/routes.js
 //= app/modules/modelManager.js
 //= app/modules/apiCalls.js
