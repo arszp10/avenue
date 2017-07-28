@@ -4,26 +4,58 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <input type="text"  id="input-crossroad-name" placeholder="..."/>
-                <label id="label-crossroad-opti-off"><input type="checkbox" id="input-crossroad-opti-off"/> Исключить из оптимизации</label>
+                <label id="label-crossroad-opti-off"><input type="checkbox" id="inputCrossroadOptiOff"/> Исключить из оптимизации</label>
             </div>
             <div class="modal-body">
 
                     <div class="row">
                         <div class="col-sm-4">
-                            <form>
+
                                 <div class="form-group">
                                     <label for="inputCrossroadCycleLength"><span locale="crossroad-program">Программа</span></label>
-                                    <div>
-                                        <select type="text" class="form-control input-sm" id="inputCrossroadProgram">
-                                            <option>Программа  №1 (212)</option>
-                                            <option>Программа  №2 (90)</option>
-                                        </select>
-                                        <button class="btn btn-default btn-sm btn-action" id="btnAddProgram" ><i class="fa fa-plus"></i></button>
-                                        <button class="btn btn-default btn-sm btn-action" id="btnEditProgram" ><i class="fa fa-edit"></i></button>
-                                        <button class="btn btn-default btn-danger-light btn-sm btn-action" id="btnRemoveProgram" ><i class="fa fa-trash"></i></button>
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <select type="text" class="form-control input-sm" id="inputCrossroadProgram">
+                                                <option>Программа  №1 (212)</option>
+                                                <option>Программа  №2 (90)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4 no-left-padding no-right-padding">
+                                            <div class="btn-group"  role="group">
+                                                <div class="btn-group" role="group">
+                                                    <button class="btn btn-default btn-sm dropdown-toggle" id="btnAddProgram" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li class="li-route-name-dropdown">
+                                                            <form id="formCreateProgram">
+                                                                <input type="text" class="form-control input-route-name" id="inputProgramName" placeholder="Name">
+                                                                <button type="submit" class="btn btn-sm btn-primary" id="btnCreateProgram" locale="create">Create</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="btn-group" role="group">
+                                                    <button class="btn btn-default btn-sm dropdown-toggle" id="btnEditProgram" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li class="li-route-name-dropdown">
+                                                            <form id="formUpdateProgram">
+                                                                <input type="text" class="form-control input-route-name" id="inputUpdateProgramName" placeholder="Name">
+                                                                <button type="submit" class="btn btn-sm btn-primary" id="btnUpdateProgram" locale="rename">Rename</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-danger-light btn-sm" id="btnRemoveProgram" ><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
+
+                                <form>
                                 <div class="form-group">
                                     <label for="inputCrossroadCycleLength"><span locale="cycle-length">Cycle lenght</span></label>
                                     <input type="text" class="form-control input-sm" id="inputCrossroadCycleLength">
@@ -36,26 +68,45 @@
                                         <div class="col-sm-9"><input type="text" class="form-control" id="inputCrossroadOffset"></div>
                                     </div>
                                 </div>
+                                </form>
 
                                 <div class="form-group">
                                     <label for="inputCrossroadPhasesOrder"><span locale="phases-order">Phases order</span></label>
-                                    <div>
-                                        <select class="form-control input-sm" id="inputCrossroadPhasesOrder">
-                                            <option value="master" selected >master: 1, 2, 3</option>
-                                            <option value="reserve">reserve: 2, 3, 1</option>
-                                            <option value="morning">morning: 5, 6, 4</option>
-                                        </select>
-                                        <button class="btn btn-default btn-sm btn-action" id="btnAddPhasesOrder" ><i class="fa fa-plus"></i></button>
-                                        <button class="btn btn-default btn-danger-light btn-sm btn-action" id="btnRemovePhasesOrder" ><i class="fa fa-trash"></i></button>
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <select class="form-control input-sm" id="inputCrossroadPhasesOrder">
+                                                <option value="master" selected >master: 1, 2, 3</option>
+                                                <option value="reserve">reserve: 2, 3, 1</option>
+                                                <option value="morning">morning: 5, 6, 4</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3 no-left-padding no-right-padding">
+                                            <div class="btn-group"  role="group">
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="btnAddPhasesOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li class="li-route-name-dropdown">
+                                                            <form id="formCreatePhaseOrder">
+                                                                <input type="text" class="form-control input-route-name" id="inputPhaseOrderName" name="inputPhaseOrderName" placeholder="Name">
+                                                                <input type="text" class="form-control input-route-name" id="inputPhaseOrderOrder" name="inputPhaseOrderOrder" placeholder="Phase order">
+                                                                <button type="submit" class="btn btn-sm btn-primary" id="btnCreatePhaseOrder" locale="create">Create</button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <button type="button" class="btn btn-default btn-danger-light btn-sm" id="btnRemovePhasesOrder" ><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <br>
                                 <div id="cy-crossroad-copy">
                                 </div>
-                            </form>
                         </div>
                         <div class="col-sm-8">
-                            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table table-phases">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table table-phases" id="table-phases">
                                 <thead>
                                 <tr>
                                     <th class="ph-col-0"></th>
@@ -77,6 +128,9 @@
                                 <tbody>
 
                                 </tbody>
+                            </table>
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table table-phases" id="crossroad-table-diagrams">
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>

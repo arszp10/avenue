@@ -35,24 +35,46 @@ module.exports = {
     crossRoad: {
         icon: '',
         type: 'crossRoad',
-        name: '',
+        name: 'Default intersection',
+        optimizeOff: false,
+        programs: [],
+        currentProgram: null
+    },
+
+    programDefaults:{
+        name: 'Morning #1',
         cycleTime: 100,
-        offset: 10,
+        offset: 0,
         phases: [
             {
-                tag: 'ph-1',
+                tag: 'ph1',
                 length: 50,
-                minLength: 15,
+                minLength: 12,
                 intertact: 6
             },
             {
-                tag: 'ph-2',
+                tag: 'ph2',
                 length: 50,
-                minLength: 15,
+                minLength: 12,
                 intertact: 6
             }
-        ]
+        ],
+        phasesOrders: [
+            {
+                name: 'master',
+                order: [1, 2]
+            }
+        ],
+        currentOrder: 0
     },
+
+    emptyPhase: {
+        tag: '',
+        length: 0,
+        minLength: 12,
+        intertact: 6
+    },
+
     stopline: {
         icon: '\u0051',
         type: 'stopline',
@@ -62,8 +84,8 @@ module.exports = {
         avgIntensity: 900,
         capacity: 1800,
         intervals: [[0,20], [40,55]],
-        greenPhases: [true, false],
-        additionalGreens: [0, 0],
+        greenPhases: [[false, false]],
+        additionalGreens: [[0, 0]],
         weight: 1,
         queueLimit: 0
 
@@ -132,9 +154,8 @@ module.exports = {
     },
 
     offsetOptimizationSteps: function(Tc) {
-        var c = [0.4, 0.3, 0.2, 0.1, 0.05, 0.3, 0.2, 0.1, 0.05]; // + 2, 1
-        var r = c.map(function(v){ return Math.round(Tc * v);});
-            r.push(2); r.push(1);
-        return r;
+        return [0.4, 0.3, 0.2, 0.1, 0.05, 0.3, 0.2, 0.1, 0.05, 0.02, 0.01]; // + 2, 1
+        //var r = c.map(function(v){ return Math.round(Tc * v);});
+        //    r.push(2); r.push(1);
     }
 };

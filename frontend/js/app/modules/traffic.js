@@ -66,6 +66,97 @@
             }
         },
 
+        signalDiagramPhases:  function(crossroad, program, order){
+            var diagram = [];
+            var j = 0, icolor = 'clean', inext = 0;
+            var cpi = crossroad.currentProgram;
+            var phCurrentOrder = order !== undefined ? order : program.currentOrder;
+            if (phCurrentOrder < 0 || phCurrentOrder == null) {
+                return diagram;
+            }
+            var phOrder = program.phasesOrders[phCurrentOrder];
+            var phCount = phOrder.order.length;
+            for (j = 0; j < phCount; j++) {
+                var i = phOrder.order[j] - 1;
+                var interPhaseLength = program.phases[i].hasOwnProperty('intertact')
+                    ? program.phases[i].intertact : 6;
+
+                var calcLength = program.phases[i].length - interPhaseLength;
+                if (calcLength <= 0) {
+                    diagram.push({
+                        label: '#error',
+                        color : 'error',
+                        length : interPhaseLength
+                    });
+                    continue;
+                }
+
+                diagram.push({
+                    label : '<b>'+phOrder.order[j] + '</b>: &nbsp;' + program.phases[i].length ,
+                    color : icolor,
+                    length : program.phases[i].length
+                });
+            }
+            return diagram;
+        },
+
+        signalDiagramData1:  function(crossroad, program, node, order, noOffset){
+            var stopLine = node;
+            var j = 0, icolor = '', inext = 0;
+            var diagram = [];
+            var cpi = crossroad.currentProgram;
+            var phCurrentOrder = order !== undefined ? order : program.currentOrder;
+            if (phCurrentOrder < 0 || phCurrentOrder == null) {
+                return diagram;
+            }
+            var phOrder = program.phasesOrders[phCurrentOrder];
+            var phCount = phOrder.order.length;
+            var interTact ;
+
+
+            for (j = 0; j < phCount; j++){
+                var i = phOrder.order[j] - 1;
+                icolor = stopLine.greenPhases[cpi][i] ? 'green' : 'red';
+                inext = phOrder.order[(j + 1) % phCount] - 1;
+
+                var addGreen = stopLine.hasOwnProperty('additionalGreens')
+                    ? stopLine.additionalGreens[cpi][i] : 0;
+                var interPhaseLength = program.phases[i].hasOwnProperty('intertact')
+                    ? program.phases[i].intertact : 6;
+
+                var calcLength = program.phases[i].length - interPhaseLength;
+                if (calcLength <= 0) {
+                    diagram.push({
+                        label : '#error',
+                        color : 'error',
+                        length : interPhaseLength
+                    });
+                    continue;
+                }
+
+                if (stopLine.greenPhases[cpi][i] === stopLine.greenPhases[cpi][inext]) {
+                    diagram.push({
+                        color : icolor,
+                        length : program.phases[i].length
+                    });
+                    continue;
+                }
+
+                interTact = stopLine.greenPhases[cpi][i]
+                    ? this.greenToRedInterPhase(interPhaseLength, addGreen)
+                    : this.readToGreenInterPhase(interPhaseLength, addGreen);
+
+                diagram.push({
+                    color : icolor,
+                    length : program.phases[i].length - interTact.length
+                });
+                diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
+            }
+            return noOffset
+                ? diagram
+                : this.offsetDiagram(diagram, program.offset, program.cycleTime);
+        },
+
         signalDiagramData:  function(crossRoad, node){
             var stopLine = node;
             var i = 0, icolor = '', inext = 0;

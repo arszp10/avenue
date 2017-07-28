@@ -160,24 +160,26 @@ Network.prototype.simulate = function(numberOfIteration){
 
 
 Network.prototype.optimizeOffsets = function(numberOfIteration){
-    var cycleTime = this.network[0].cycleTime;
-    var steps = settings.offsetOptimizationSteps(cycleTime);
+    var steps = settings.offsetOptimizationSteps();
     var that = this;
     var crossRoad;
     var offsets = [0, 0, 0];
     var performanaceIndexArray  = [0.0, 0.0, 0.0];
     var mi      = 0;
     var offset  = 0;
+    var cycleTime;
+    var stepInSeconds =  1;
 
     _.forEach(steps, function(step){
         _.forEach(that.crIndexMap, function(inx){
-
             crossRoad = that.network[inx];
+            cycleTime = crossRoad.cycleTime;
             offset = crossRoad.offset;
+            stepInSeconds =  Math.round(cycleTime * step);
             offsets = [
                 offset,
-                (offset + step) % cycleTime,
-                (offset + cycleTime - step) % cycleTime
+                (offset + stepInSeconds) % cycleTime,
+                (offset + cycleTime - stepInSeconds) % cycleTime
             ];
 
             for(var i = 0; i < 3; i++) {

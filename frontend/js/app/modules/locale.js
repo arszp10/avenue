@@ -104,7 +104,8 @@
             'map': 'Карта',
             'model-list':'Модели',
             'cycle-length': 'Длительность цикла',
-            'phases-order': 'Порядок фаз'
+            'phases-order': 'Порядок фаз',
+            'rename': 'Переименовать',
 
         },
         en: {
@@ -209,8 +210,8 @@
             'map': 'Map',
             'model-list':'Model list',
             'cycle-length': 'Cycle lenght',
-            'phases-order': 'Phases order'
-
+            'phases-order': 'Phases order',
+            'rename': 'Rename',
         }
     };
 

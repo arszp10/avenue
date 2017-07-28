@@ -64,7 +64,9 @@
                 }
                 r.data.map(function(v){
                     if (v.type == 'crossRoad') {
-                        cy.getElementById(v.id).data('offset', parseInt(v.offset));
+                        var crossroad = cy.getElementById(v.id).data();
+                        var program = crossroad.programs[crossroad.currentProgram];
+                        program.offset = parseInt(v.offset);
                     }
                 });
             },

@@ -21,7 +21,7 @@
             x: e.originalEvent.pageX - offset.left,
             y: e.originalEvent.pageY - offset.top
         };
-        cy.aveAddNode(settings[App.State.nodeType], position);
+        cy.aveAddNode(JSON.parse(JSON.stringify(settings[App.State.nodeType])), position);
     };
 
     var markInnerCrossEdge = function(edge){
@@ -73,6 +73,7 @@
                 return;
             }
             s = s[0];
+            //console.log(s.data('cycleTime'));
             $.each(s.connectedEdges(), function (i, v) {
                 if (v.source() == s) { v.addClass('edge-out-flow'); }
                 if (v.target() == s) { v.addClass('edge-in-flow'); }
@@ -281,7 +282,11 @@
             if (selected.length == 0) {
                 return;
             }
-            var parentId = this.aveAddNode(settings.crossRoad);
+            var crossRoadData = JSON.parse(JSON.stringify(settings.crossRoad));
+                crossRoadData.programs.push(JSON.parse(JSON.stringify(settings.programDefaults)));
+                crossRoadData.currentProgram = 0;
+
+            var parentId = this.aveAddNode(crossRoadData);
             var nodes = selected.jsons();
             var edges = selected.neighborhood('edge').jsons();
 
@@ -313,7 +318,44 @@
             this.add(nodes);
             this.add(edges);
         },
+
+        aveGetCurrentProgramPhases: function(node){
+            var crossRoad = node.data();
+            if (crossRoad.type != 'crossRoad') {
+                return false;
+            }
+            var program = crossRoad.programs[crossRoad.currentProgram];
+            var phases = program.phases;
+            var currentOrder = program.currentOrder;
+            var order = program.phasesOrders[currentOrder].order;
+            return {
+                offset:program.offset,
+                cycleTime: program.cycleTime,
+                phases: order.map(function(phNum){
+                    return phases[phNum-1];
+                })
+            }
+        },
+
+        aveSetCycleTimeToAllNodes: function (){
+            function setToOrphanNeighborhood(node, cycleTime){
+                $.each(node.neighborhood('node[^parent]'), function(i, v){
+                    if (v.data('cycleTime') == cycleTime) return;
+                    v.data('cycleTime', cycleTime);
+                    setToOrphanNeighborhood(v, cycleTime);
+                });
+            };
+            this.nodes().data('cycleTime', App.State.currentModel.cycleTime);
+            $.each(this.$("node[type='crossRoad']"),function(inx, node){
+                var cycleTime = node.data().programs[node.data().currentProgram].cycleTime;
+                $.each(node.children(), function(i, child){
+                    setToOrphanNeighborhood(child, cycleTime);
+                });
+                node.children().data('cycleTime', cycleTime);
+            });
+        },
         avePrepareCalcRequest: function (){
+            this.aveSetCycleTimeToAllNodes();
             var map = [];
             var edges = {};
             var elems = this.edges();
@@ -340,8 +382,20 @@
                 delete item.icon;
                 delete item.greenOffset1;
                 delete item.greenOffset2;
-                if (item.type != 'crossroad') {
+                if (item.type != 'crossRoad') {
                     item.edges = edges[v.data('id')];
+                    if (item.type == 'stopline' && item.parent) {
+                        var programInx = cy.getElementById(item.parent).data('currentProgram');
+                        item.greenPhases = item.greenPhases[programInx];
+                        item.additionalGreens = item.additionalGreens[programInx];
+                    }
+                } else {
+                    var program = JSON.parse(JSON.stringify(cy.aveGetCurrentProgramPhases(v)));
+                    item.offset = program.offset;
+                    item.cycleTime = program.cycleTime;
+                    item.phases = program.phases;
+                    delete item.programs;
+                    delete item.currentProgram;
                 }
                 map.push(item);
             });

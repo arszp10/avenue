@@ -59,14 +59,17 @@ module.exports = {
 
 
             var addCrossRoad = function(junction){
-                if (allowedJunctionType.indexOf(junction.type) < 0) {
-                    return;
-                }
+                //if (allowedJunctionType.indexOf(junction.type) < 0) {
+                //    return;
+                //}
                 var paretnId =  nextId();
                 junction.parentId = paretnId;
 
                 var node  = deepClone(defaults.cyNodeProps);
-                node.data = deepClone(defaults.crossRoad);
+                var crossRoadData = defaults.crossRoad;
+                crossRoadData.programs.push(defaults.programDefaults);
+                crossRoadData.currentProgram = 0;
+                node.data = deepClone(crossRoadData);
                 node.position.x = parseInt(junction.x) * zoomMap;
                 node.position.y = yMax - parseInt(junction.y) * zoomMap;
                 node.data.id = paretnId;
@@ -143,7 +146,7 @@ module.exports = {
                 node.data.tag = edge.id;
                 node.data.capacity = 1800 * edge.lane.length;
                 node.data.routeTime = Math.floor(parseFloat(lane.length)/parseFloat(lane.speed));
-                node.data.length = parseInt(lane.length),
+                node.data.length = parseInt(lane.length);
                 data.push(node);
 
                 return node.data.id;
@@ -154,9 +157,9 @@ module.exports = {
                     edge.lane = [edge.lane];
                 }
 
-                if (allowedEdgeType.indexOf(edge.type) < 0) {
-                    return;
-                }
+                //if (allowedEdgeType.indexOf(edge.type) < 0) {
+                //    return;
+                //}
 
                 var sl = addStopLines(edge);
                 var bn = addBottleneck(edge);

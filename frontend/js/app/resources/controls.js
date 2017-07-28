@@ -9,7 +9,8 @@
             addGreenProperty:        '#add-green-property',
             crossRoadModal:         '#crossroad-modal',
             coPlanModal:            '#co-plan-modal',
-            tblPhasesBody:          '#crossroad-modal table.table-phases tbody',
+            tblPhasesBody:          '#crossroad-modal #table-phases tbody',
+            tblDiagramsBody:        '#crossroad-modal #crossroad-table-diagrams tbody',
             statusBar:              '#status-bar',
             nodeSearchResultlist:   '#node-search-result-list',
             nodeSearchInfo:         '#node-search-info',
@@ -48,12 +49,23 @@
             inputApiSecret:         '#input-api-secret',
             formCreateRoute:        '#form-create-route',
             formImportFile:         '#import-file-form',
+            formCreatePhaseOrder:   '#formCreatePhaseOrder',
+            formCreateProgram:      '#formCreateProgram',
+            formUpdateProgram:      '#formUpdateProgram',
+            inputPhaseOrderName:    '#inputPhaseOrderName',
+            inputPhaseOrderOrder:   '#inputPhaseOrderOrder',
             inputImportFile:        '#inputImportFile',
             inputZoomIntersection:  '#inputZoomIntersection',
             inputZoomMap:           '#inputZoomMap',
             inputArcgisScale:       '#input-arcgis-scale',
+            inputCrossroadProgram:  '#inputCrossroadProgram',
+            inputCrossroadPhasesOrder: '#inputCrossroadPhasesOrder',
             inputCrossroadCycleLength: '#inputCrossroadCycleLength',
-            inputCrossroadOffsetText: '#inputCrossroadOffsetText'
+            inputCrossroadOffsetText: '#inputCrossroadOffsetText',
+            inputProgramName:       '#inputProgramName',
+            inputUpdateProgramName: '#inputUpdateProgramName',
+            inputCrossroadOptiOff:  '#inputCrossroadOptiOff',
+
         },
         buttons: {
             btnPanMode:                 '#btn-now-pan-mode',
@@ -106,6 +118,11 @@
             btnGoImportModel:           '#btn-go-import-model',
             btnArcgisSetExtent:         '#btn-arcgis-set-extent',
             btnArcgisSwitch:            '#btn-arcgis-switch',
+            btnRemovePhasesOrder:       '#btnRemovePhasesOrder',
+            btnCreatePhaseOrder:        '#btnCreatePhaseOrder',
+            btnCreateProgram:           '#btnCreateProgram',
+            btnRemoveProgram:           '#btnRemoveProgram',
+            btnEditProgram:             '#btnEditProgram'
         }
     };
 })(AvenueApp);

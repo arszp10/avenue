@@ -96,22 +96,66 @@
         crossRoad: {
             icon: '',
             type: 'crossRoad',
-            name: '',
+            name: 'Default intersection',
+            optimizeOff: false,
+            //cycleTime: 100,
+            //offset: 10,
+            //phases: [
+            //    {
+            //        tag: 'ph-1',
+            //        length: 50,
+            //        minLength: 15
+            //    },
+            //    {
+            //        tag: 'ph-2',
+            //        length: 50,
+            //        minLength: 15
+            //    }
+            //]
+            programs: [],
+            currentProgram: null
+        },
+
+        emptyProgram:{
+            name: 'Morning #1',
             cycleTime: 100,
-            offset: 10,
+            offset: 0,
+            phases: [],
+            phasesOrders: [],
+            currentOrder: -1
+        },
+
+        programDefaults:{
+            name: 'Morning #1',
+            cycleTime: 100,
+            offset: 0,
             phases: [
                 {
-                    tag: 'ph-1',
+                    tag: 'ph1',
                     length: 50,
-                    minLength: 15
+                    minLength: 12,
+                    intertact: 6
                 },
                 {
-                    tag: 'ph-2',
+                    tag: 'ph2',
                     length: 50,
-                    minLength: 15
+                    minLength: 12,
+                    intertact: 6
                 }
-            ]
+            ],
+            phasesOrders: [
+                {
+                    name: 'master',
+                    order: [1, 2]
+                },
+                {
+                    name: 'reserve',
+                    order: [3, 4]
+                }
+            ],
+            currentOrder: 0
         },
+
         stopline: {
             icon: '\u0051',
             type: 'stopline',
@@ -121,8 +165,8 @@
             avgIntensity: 900,
             capacity: 1800,
             intervals: [[0,20], [40,55]],
-            greenPhases: [true, false],
-            additionalGreens: [0, 0],
+            greenPhases: [[false, false]],
+            additionalGreens: [[0, 0]],
             weight: 1,
             queueLimit: 0
 
@@ -188,6 +232,15 @@
             blink: 3,
             yellow: 3,
             totalLength: 6
+        },
+
+        emptyPhase: {
+            tag: '',
+            length: 0,
+            minLength: 12,
+            intertact: 6
         }
+
+
     };
 })(AvenueApp.Resources);

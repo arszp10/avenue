@@ -72,19 +72,21 @@
         {
             selector: '$node > node',
             css: {
+                'label': 'data(label)',
                 'padding-top': '15px',
                 'padding-left': '15px',
                 'padding-bottom': '15px',
                 'padding-right': '15px',
                 'border-radius': '5px',
-                'text-valign': 'center',
+                'text-valign': 'top',
                 'text-halign': 'center',
                 'border-color': '#777777',
                 'border-width': 0,
                 'background-color': '#ffffff',
                 'font-family': 'Arial',
                 'shape': 'roundrectangle',
-                'background-opacity': 0.6
+                'background-opacity': 0.6,
+                'color': '#ffffff'
                 //'shape-polygon-points': '-1 -1 1 -1 1 1 0.5 0.5 -1 1 -0.5 0.5'
                 //'background-image':'http://road.perm.ru/images/2945.jpg',
                 //'background-fit':'none',
@@ -118,6 +120,13 @@
                 'border-color': '#ffffff',
                 'color': '#ffffff',
                 'border-width': 2
+            }
+        },
+        {
+            selector: '$node:selected > node',
+            css: {
+                'label': 'data(label)',
+                'color': '#ffffff'
             }
         },
         {

@@ -33,7 +33,6 @@
             //this.initCheckBoxes(controls.panels.body);
             controls.panels.body.on('mouseup', function(){
                 that.toggleNodePopupPanel(false);
-                that.toggleAddGreenPanel(false);
             });
 
             $(document).on('keyup', function(event){
@@ -403,36 +402,6 @@
                 }
             });
 
-            /**
-             *  Node popup properies block related events
-             */
-            controls.panels.addGreenProperty.mouseup(function(e){ e.stopPropagation(); });
-
-            $(document).on('click', 'a.btn-edit-add-green', function(e){
-                e.preventDefault();
-                if ($(this).attr('disabled')) {
-                    return;
-                }
-                controls.panels.addGreenProperty
-                    .css({ top: e.clientY + 17, left: e.clientX - 145});
-                that.toggleAddGreenPanel(true);
-                var $displayElement = $(this).find('span.add-green-value');
-                var value = $displayElement.data('value');
-                var id = $displayElement.attr('id');
-
-                controls.panels.addGreenProperty.data('object', id);
-                controls.inputs.inputAddGreen.val(value);
-            });
-
-            controls.buttons.btnAddGreenDone.click(function(){
-
-                var id = controls.panels.addGreenProperty.data('object');
-                var value =  +parseInt(controls.inputs.inputAddGreen.val()) || 0;
-                var text = value == 0 ? '' : '+' + value;
-                $('#'+id).data('value', value).text(text);
-                that.toggleAddGreenPanel(false);
-            });
-
 
             /**
              *  Node popup properies block related events
@@ -493,10 +462,6 @@
 
         toggleNodePopupPanel: function(show){
             controls.panels.body.toggleClass('show-panel-point-property', show);
-        },
-
-        toggleAddGreenPanel: function(show){
-           controls.panels.body.toggleClass('show-panel-add-green', show);
         },
 
         renderRoutesDropDown: function(){
@@ -587,7 +552,7 @@
 
             if (node.type == 'crossRoad') {
                 controls.panels.nodeSearchInfo.append(
-                    templates.nodeCrossRoadProps(node)
+                    //templates.nodeCrossRoadProps(node)
                 );
             } else {
                 controls.panels.nodeSearchInfo.append(
@@ -612,12 +577,12 @@
                 var stopLines = cy.aveGetCrossroadStoplines(node.id);
                 stopLines.sort(intersectionEditor.stopLineSort);
                 var dataBars = [];
-                $.each(stopLines, function(i,v){
-                    dataBars.push({
-                        node: v.data,
-                        signals: traffic.signalDiagramData(node, v.data)
-                    });
-                });
+                //$.each(stopLines, function(i,v){
+                //    dataBars.push({
+                //        node: v.data,
+                //        signals: traffic.signalDiagramData(node, v.data)
+                //    });
+                //});
 
                 //controls.panels.nodeSearchInfo.append(
                 //    templates.crossRoadSignalBars({
@@ -657,10 +622,14 @@
             var myLineChart = new Chart(ctx).Line(data, settings.chart.common);
 
             if (node.type == 'stopline' && node.hasOwnProperty('parent')){
+
+                var crossroad = cy.getElementById(node.parent).data();
+                var program = crossroad.programs[crossroad.currentProgram];
+                var stopline = node;
                 controls.panels.nodeSearchInfo.append(
                     templates.signalBar({
                         cycleTime: node.cycleTime,
-                        signals: traffic.signalDiagramData(cy.getElementById(node.parent).data(), node)
+                        signals: traffic.signalDiagramData1(crossroad, program, stopline)
                     })
                 );
             }

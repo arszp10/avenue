@@ -82,7 +82,7 @@
                 'text-outline-color': '#fff',
                 'line-color': '#ccc',
                 'target-arrow-color': '#ccc',
-                'font-size': '12px',
+                'font-size': '14px',
                 'color': '#ffffff',
                 'text-outline-width': 0,
                 'edge-text-rotation': 'autorotate',
@@ -107,6 +107,8 @@
                 'target-arrow-color': '#4caf50', //'#2e6da4',
                 'color': '#fff',
                 'text-outline-color': '#4caf50', //'#2e6da4'
+                'min-zoomed-font-size':'8px',
+                'text-outline-width': 2,
                 'opacity':1
             }
         }
