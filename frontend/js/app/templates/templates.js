@@ -65,11 +65,7 @@
 
 
         crossRoadTableDiagramRow: function(data, diagram){
-            var checkboxAttr = '';
-            var link = '';
-            var addGreen = '';
             var s = '<tr class="stop-line-diagram-row" data-id="' + data.id + '">' +
-                //'<td class="ph-col-0">' + '<button type="button" class="btn btn-sm btn-stop-line btn-' + data.color + '"><span class="stop-line-icon">' + data.icon + '</span>&nbsp;' + data.tag + '</button></td>' +
                 '<td class="ph-col-0 ph-col-stop-line-label">' + '<span class="stop-line-icon text-'+ data.color + '">' + data.icon + '</span>&nbsp;' + data.tag + '</td>' +
                 '<td colspan="12">' +  this.signalBar(diagram, 'signals-bulk clearfix') + '</td></tr>';
             return s;
@@ -88,18 +84,17 @@
             return  '<tr><td class="ph-col-0"></td><td colspan="12"><div class="alert alert-warning" role="alert">Длительность цикла и сумма длительностей фаз не равны!</div></td></tr>';
         },
 
-        //crossRoadSignalBars:    function(data){
-        //    var cycleTime = data.cycleTime;
-        //    var s = '';
-        //    data.bars.forEach(function(v){
-        //        v.cycleTime = cycleTime;
-        //        s += '<tr><td class="stop-line-td-label text-'+ v.node.color +'"><span class="stop-line-icon">' + v.node.icon + '</span> '+v.node.tag +'&nbsp;</td>';
-        //        s += '<td>'+ this.signalBar(v, 'signals-bulk clearfix')+'</td></tr>';
-        //
-        //    }, this);
-        //    return '<h4>' + __('crossroad-diagrams') + '</h4>' +
-        //        '<table><tbody>' + s + '</tbody></table><hr>';
-        //},
+
+        crossRoadPropsDiagramRow: function(diagram){
+            return '<tr class="stop-line-diagram-row"><td>' +  this.signalBar(diagram, 'signals-bulk clearfix') + '</td></tr>';
+        },
+
+        crossRoadPropsSignalBars:    function(s){
+            return '<h4>' + __('crossroad-diagrams') + '</h4>' +
+                '<table width="100%" border="0" cellpadding="0" cellspacing="0" class="table table-phases" id="crossroad-props-table-diagrams">' +
+                '<tbody>'+s+'</tbody>' +
+                '</table>';
+        },
 
         signalBar : function(data, cls){
             var w = 0.5;
@@ -116,7 +111,7 @@
         },
 
         chartPanel:             function(id){
-            return '<canvas id="chart-panel" width="320" height="200"></canvas>';
+            return '<canvas id="chart-panel" width="300" height="200"></canvas>';
         },
         nodeSearchListNotFound: function(data){
             return '<div class="node-search-not-found">' +
@@ -154,15 +149,23 @@
                 '</div>';
         },
         nodeCrossRoadProps:     function(data){
-            return '<table class="table table-condensed">' +
-                '<tbody><tr>' +
-                '    <td>' + __('intervals-count') + '</td>' +
-                '    <td class="text-right">' + data.phases.length + '</td><td class="measure-unit"></td>' +
-                '</tr><tr>' +
-                '    <td>' + __('offset') + '</td>' +
-                '    <td class="text-right">' + data.offset + '</td><td class="measure-unit">' + __('sec') + '</td>' +
-                '</tr></tbody>' +
-                '</table>';
+            var program = data.programs[data.currentProgram];
+            var order = program.phasesOrders[program.currentOrder];
+            return '<h4>' + __('crossroad-props') + '</h4>'+
+                '<table class="table table-condensed  table-striped"><tbody>' +
+                '<tr><td>' + __('name') + '</td>' +
+                '    <td class="text-right">' + data.name + '</td><td class="measure-unit"></td></tr>' +
+
+                '<tr><td>' + __('program') + '</td>' +
+                '    <td class="text-right">' + program.name + '</td><td class="measure-unit"></td></tr>' +
+
+                '<tr><td>' + __('offset') + '</td>' +
+                '    <td class="text-right">' + program.offset + '</td><td class="measure-unit">' + __('sec') + '</td></tr>' +
+
+                '<tr><td>' + __('phases-order') + '</td>' +
+                '    <td class="text-right">' + order.name + ': ' + order.order.join(', ') + '</td><td class="measure-unit"></td></tr>' +
+
+                '</tbody></table>';
         },
         nodeCommonProps:        function(data){
             var weight = data.weight == undefined ? 1 : data.weight ;
@@ -171,7 +174,9 @@
             if (data.constantIntensity > 0) { className = 'text-success';}
             if (data.constantIntensity < 0) { className = 'text-danger';}
 
-            return '<table class="table table-condensed table-striped"><tbody>' +
+            return '<h4>' + __('node-props') + (data.tag ? (' ['+data.tag+']') : '') + '</h4>' +
+                '<table class="table table-condensed table-striped"><tbody>' +
+                '<tr><td>' + __('cycle-time') + '</td><td class="text-right">' + data.cycleTime + '</td><td class="measure-unit">' + __('sec') + '</td></tr>' +
                 '<tr><td>' + __('full-capacity') + '</td><td class="text-right">' + data.capacity + '</td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
                 '<tr><td>' + __('full-intensity') + '</td><td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
                 '<tr><td>' + __('constant-comp-intensity') + '</td><td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
@@ -180,7 +185,7 @@
         },
         locateEditButtons:      function(data) {
             var cls = (data.type !== 'crossRoad') ? 'btn-edit-node' : 'btn-edit-cross-road';
-            return '<table><tr data-id="' + data.id + '"><td>' +
+            return '<hr><table><tr data-id="' + data.id + '"><td>' +
                 '<button class="btn btn-default btn-pan-tonode"><i class="fa fa-crosshairs"></i> '+__('locate')+'</button>&nbsp;&nbsp;' +
                 '<button class="btn btn-default ' + cls + '"><i class="fa fa-edit"></i> '+__('edit')+' <span class="caret"></span></button>' +
                 '</td></tr></table>';
@@ -203,8 +208,9 @@
                 : '- / ';
 
             var no = data.isCongestion ? '<span class="text-danger">' + __('congestion') : '<span class="text-success">' + __('no-congestion');
-            return '<hr><h4>' + __('modeling-results') + '</h4>' +
+            return '<h4>' + __('modeling-results') + '</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
+                '    <tr><td>' + __('delay') + '</td><td class="text-right">'+(data.delay/data.cycleTime).toFixed(2)+'</td><td class="measure-unit">' + __('veh_h_h') + '</td></tr>' +
                 '    <tr><td>' + __('delay') + '</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">' + __('veh_sec') + '</td></tr>' +
                 '    <tr><td>' + __('green-saturation') + '</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td></tr>' +
                 '    <tr><td>' + __('limit-max-queue') + '</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">' + __('vehicle') + '</td></tr>' +

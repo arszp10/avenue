@@ -33,5 +33,15 @@ module.exports = {
                 inclusion:ids
             }
         };
+    },
+
+    nodesCycleTimeEqual: function (){
+        return {
+            'source.cycleTime': {
+                equality: 'target.cycleTime'
+            }
+        }
     }
+
+
 };

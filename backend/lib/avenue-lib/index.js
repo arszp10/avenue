@@ -37,6 +37,18 @@ module.exports = {
             none: node.id
         };
 
+
+        if (options.type == 'connected') {
+            this.errors.push({
+                node: node.source.id,
+                errors: err
+            });
+            this.errors.push({
+                node: node.target.id,
+                errors: err
+            });
+        }
+
         this.errors.push({
             node: nodeId[options.type],
             errors: err
@@ -154,12 +166,23 @@ module.exports = {
             if (node.type == 'stopline' && node.hasOwnProperty('parent')) {
                 var constr = extraConstraints.stoplineExtra(parentsIds, data[parents[node.parent]].phases.lenght);
                 this.checkConstraint(node, constr);
-                return;
             }
             if (node.hasOwnProperty('edges') && node.edges.length > 0) {
                 node.edges.map(function(edge) {
-                    var constr = extraConstraints.edgeExtra(targetIds);
-                    this.checkConstraint(edge, constr, {type:'edge'});
+                    console.log(edge);
+                    var constr1 = extraConstraints.edgeExtra(targetIds);
+                    this.checkConstraint(edge, constr1, {type:'edge'});
+
+
+                    var node2 =_.find(data, {id:edge.source});
+                    var connectedNodes = {
+                        source: node2,
+                        target: node
+                    };
+
+                    var constr2 = extraConstraints.nodesCycleTimeEqual();
+                    this.checkConstraint(connectedNodes, constr2, {type:'connected'});
+
                 }, this);
                 return;
             }

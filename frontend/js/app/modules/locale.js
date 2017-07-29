@@ -40,6 +40,7 @@
             'length': 'Длина',
             'm': 'м',
             'v': 'авт',
+            'veh_h_h': 'авт*ч/ч',
             'route-time': 'Время проезд',
             'dispersion': 'Дисперсия',
             'weight': 'Вес',
@@ -106,6 +107,9 @@
             'cycle-length': 'Длительность цикла',
             'phases-order': 'Порядок фаз',
             'rename': 'Переименовать',
+            'node-props': 'Свойства точки',
+            'crossroad-props': 'Свойства перекрестка',
+            'program': 'Программа',
 
         },
         en: {
@@ -192,6 +196,7 @@
             'no-congestion': 'No congestion',
 
             'veh_sec': 'veh*sec',
+            'veh_h_h': 'veh*h/h',
             'vehicle': 'vehicle',
             'open-in-new-tab': 'Open in new tab',
             'open':'Open',
@@ -212,6 +217,9 @@
             'cycle-length': 'Cycle lenght',
             'phases-order': 'Phases order',
             'rename': 'Rename',
+            'node-props': 'Node properties',
+            'crossroad-props': 'Intersection properties',
+            'program': 'Program',
         }
     };
 

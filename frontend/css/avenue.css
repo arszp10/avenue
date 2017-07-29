@@ -438,7 +438,7 @@ body.show-edge-input #input-edge-label {
 }
 
 .signal-bar {
-    width: 290px;
+    width: 275px;
     padding: 16px 0;
     clear: both;
     opacity: 1;

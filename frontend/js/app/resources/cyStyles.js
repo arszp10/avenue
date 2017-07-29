@@ -184,10 +184,10 @@
             selector: 'edge:selected',
             css: {
                 'width': 2,
-                'line-color': '#999', //'#2e6da4',
-                'target-arrow-color': '#999', //'#2e6da4',
-                'color': '#eee',
-                'text-outline-color': '#999', //'#2e6da4'
+                'line-color': '#cddc39', //'#2e6da4',
+                'target-arrow-color': '#cddc39', //'#2e6da4',
+                'color': '#fff',
+                'text-outline-color': '#cddc39', //'#2e6da4'
             }
         },
         {

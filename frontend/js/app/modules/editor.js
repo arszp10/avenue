@@ -546,21 +546,21 @@
                 node.name =  cy.getElementById(node.parent).data('name');
             }
             node.constantIntensity =  cy.aveConstantIntensity(node);
-            controls.panels.nodeSearchResultlist.append(
-                templates.nodeSearchListItem(node, 'single')
-            );
+            //controls.panels.nodeSearchResultlist.append(
+            //    templates.nodeSearchListItem(node, 'single')
+            //);
 
             if (node.type == 'crossRoad') {
                 controls.panels.nodeSearchInfo.append(
-                    //templates.nodeCrossRoadProps(node)
+                    templates.nodeCrossRoadProps(node)
                 );
             } else {
                 controls.panels.nodeSearchInfo.append(
                     templates.nodeCommonProps(node)
                 );
-                controls.panels.nodeSearchInfo.append(
-                    templates.locateEditButtons(node)
-                );
+                //controls.panels.nodeSearchInfo.append(
+                //    templates.locateEditButtons(node)
+                //);
             }
 
             var errors = App.State.lastErrors.filter(function(val){
@@ -576,20 +576,20 @@
             if (node.type == 'crossRoad' && errors.length == 0) {
                 var stopLines = cy.aveGetCrossroadStoplines(node.id);
                 stopLines.sort(intersectionEditor.stopLineSort);
-                var dataBars = [];
-                //$.each(stopLines, function(i,v){
-                //    dataBars.push({
-                //        node: v.data,
-                //        signals: traffic.signalDiagramData(node, v.data)
-                //    });
-                //});
 
-                //controls.panels.nodeSearchInfo.append(
-                //    templates.crossRoadSignalBars({
-                //        cycleTime: node.cycleTime,
-                //        bars: dataBars
-                //    })
-                //);
+                var program = node.programs[node.currentProgram];
+                var order = program.phasesOrders[program.currentOrder];
+                var rows = templates.crossRoadPropsDiagramRow({
+                    cycleTime: program.cycleTime,
+                    signals: traffic.signalDiagramPhases(node, program, undefined)
+                });
+                $.each(stopLines, function(i, stopline){
+                    rows += templates.crossRoadPropsDiagramRow({
+                        cycleTime: program.cycleTime,
+                        signals: traffic.signalDiagramData1(node, program, stopline.data, undefined, true)
+                    });
+                });
+                controls.panels.nodeSearchInfo.append(templates.crossRoadPropsSignalBars(rows));
 
                 controls.panels.nodeSearchInfo.append(
                     templates.locateEditButtons(node)
