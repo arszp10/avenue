@@ -104,9 +104,11 @@
     };
     var drawBarLine = function(route, bar, direction, x, cycleTime){
         if (route.forwardOnly && direction == 'back') {return;};
-        bar.selectAll("rect." + direction)
+        var line = bar.selectAll("rect." + direction)
             .data(function(d) { return d[direction].signals; }).enter()
-            .append("rect")
+            .append("g")
+
+            line.append("rect")
             .attr('class',direction)
             .attr("height", 11)
             .attr("x",      function(d) { return x(d.offset - 3*cycleTime); })
@@ -117,6 +119,30 @@
                 if (d.color == 'amber') return 'url(#amber)';
                 return d.color;
             });
+
+            line.append("rect")
+            .attr('class',direction)
+            .attr("height", 11)
+            .attr("x",      function(d) { return x(d.offset - 3*cycleTime); })
+            .attr("y",     direction == 'forward'? 1 : -13)
+            .attr("width",  function(d) { return 1 })
+            .style("fill",  "#cccccc");
+
+            line.append("text")
+            .style('fill', function(d){
+                    if (x(d.length) < 10) return "transparent";
+                    if (d.color == 'blink') return '#333333';
+                    if (d.color == 'amber') return 'transparent';
+                    if (d.color == 'yellow') return '#333333';
+                    return '#ffffff';
+                })
+            .attr("x",      function(d) { return x(d.offset - 3*cycleTime +d.length/2 - 1); })
+            .attr("y",     direction == 'forward'? 10 : -4)
+            .text(function(d) { return d.length +''; })
+
+
+
+        ;
     };
 
 
@@ -196,6 +222,9 @@
 
                     var stopline  = cy.getElementById(point[direction].id).data();
                     var crossroad = cy.getElementById(point.id).data();
+                    var program = crossroad.programs[crossroad.currentProgram];
+
+
                     point.name = crossroad.name;
                     point[direction].tag = stopline.tag;
                     point[direction].routeTime =  point[direction].hasOwnProperty('carriages')
@@ -204,7 +233,8 @@
                             }, 0)
                         : 0;
 
-                    point[direction].signals = traffic.signalDiagramData(crossroad, stopline);
+                    point[direction].signals = traffic.signalDiagramData1(crossroad, program, stopline, undefined);
+                    //signalDiagramData(crossroad, stopline);
                     var signalsString = JSON.stringify(point[direction].signals);
                     var a1 = JSON.parse(signalsString);
                     var a2 = JSON.parse(signalsString);
@@ -400,7 +430,11 @@
                     var pointId = b.data()[0].id;
                     var o = cy.getElementById(pointId).data('offset');
                     var newOffset = (o + Math.round(cycleTime*(stop-start)/ x(cycleTime)) + cycleTime) % cycleTime;
-                    cy.getElementById(pointId).data('offset', newOffset);
+
+                    var crossroad = cy.getElementById(pointId).data();
+                    var program = crossroad.programs[crossroad.currentProgram];
+                    program.offset = newOffset;
+                    //cy.getElementById(pointId).data('offset', newOffset);
 
                     // redraw graphic on dragend event
                     that.drawRoute(data);
