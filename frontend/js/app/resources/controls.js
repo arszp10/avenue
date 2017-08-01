@@ -122,7 +122,9 @@
             btnCreatePhaseOrder:        '#btnCreatePhaseOrder',
             btnCreateProgram:           '#btnCreateProgram',
             btnRemoveProgram:           '#btnRemoveProgram',
-            btnEditProgram:             '#btnEditProgram'
+            btnEditProgram:             '#btnEditProgram',
+            btnPlusZoomRoute:           '#btnPlusZoomRoute',
+            btnMinusZoomRoute:          '#btnMinusZoomRoute'
         }
     };
 })(AvenueApp);

@@ -1,17 +1,22 @@
 (function(App){
+    var controls  = App.Controls;
     var cy, traffic;
     var that;
 
     var svgMargin = {top: 50, right: 200, bottom: 50, left: 50};
     var routeDirections = ['forward', 'back'];
+    var minScale = 0.2;
+    var maxScale = 2;
 
     function Route(name, forwardOnly){
+        this.scale = 1;
         this.routeName = name || 'testRoute';
         this.forwardOnly = forwardOnly;
         this.points = [];
         this.forward = [];
         this.back = [];
     };
+
 
     Route.prototype.select = function() {
 
@@ -73,7 +78,7 @@
 
         amber.append("stop")
             .attr("offset", "0%")
-            .attr("stop-color", "#f00")
+            .attr("stop-color", "#fd5149")
             .attr("stop-opacity", 1);
 
         amber.append("stop")
@@ -107,6 +112,7 @@
         var line = bar.selectAll("rect." + direction)
             .data(function(d) { return d[direction].signals; }).enter()
             .append("g")
+            .style("text-anchor", "middle");
 
             line.append("rect")
             .attr('class',direction)
@@ -117,6 +123,10 @@
             .style("fill",  function(d) {
                 if (d.color == 'blink') return 'url(#blink)';
                 if (d.color == 'amber') return 'url(#amber)';
+                if (d.color == 'green') return '#4caf50';
+                if (d.color == 'red') return '#fd5149';
+
+
                 return d.color;
             });
 
@@ -136,12 +146,9 @@
                     if (d.color == 'yellow') return '#333333';
                     return '#ffffff';
                 })
-            .attr("x",      function(d) { return x(d.offset - 3*cycleTime +d.length/2 - 1); })
-            .attr("y",     direction == 'forward'? 10 : -4)
+            .attr("x",   function(d) { return x(d.offset - 3*cycleTime) + x(d.length/2); })
+            .attr("y",   direction == 'forward'? 10 : -4)
             .text(function(d) { return d.length +''; })
-
-
-
         ;
     };
 
@@ -155,6 +162,23 @@
 
         initModule: function () {
             that = this;
+
+            controls.buttons.btnPlusZoomRoute.click(function(){
+                var route = that.getRoute();
+                var scale = route.scale * 1.05;
+                if (scale > maxScale) this.scale = maxScale;
+                if (scale < minScale) this.scale = minScale;
+                route.scale = scale;
+                that.drawRoute(route);
+            });
+            controls.buttons.btnMinusZoomRoute.click(function(){
+                var route = that.getRoute();
+                var scale = route.scale * 0.95;
+                if (scale > maxScale) this.scale = maxScale;
+                if (scale < minScale) this.scale = minScale;
+                route.scale = scale;
+                that.drawRoute(route);
+            });
         },
 
         createRoute:function(name, forwardOnly){
@@ -165,6 +189,9 @@
         },
 
         getRoute: function(inx){
+            if (inx == undefined) {
+                inx = this.getSelected();
+            }
             return App.State.currentModel.routes[inx];
         },
 
@@ -208,7 +235,6 @@
 
         expandRoute: function(data){
             var route = JSON.parse(JSON.stringify(data));
-
             route.points.forEach(function(point) {
 
                 point.length = point.forward.hasOwnProperty('carriages')
@@ -283,8 +309,8 @@
                 var sl2 = route.points[i + 1];
                 var state = 'end-block';
                 var tpr = direction == 'forward' ? sl2[direction].routeTime : - sl1[direction].routeTime;
-                var y1 = sl1.geoOffset;
-                var y2 = sl2.geoOffset;
+                var y1 = sl1.geoOffset ;
+                var y2 = sl2.geoOffset ;
 
                 var points = [{x:0,y:y1},{x:0,y:y2},{x:0,y:y2},{x:0,y:y1}];
                 for(var j=0; j< cycleTime * 5; j++){
@@ -316,11 +342,19 @@
                 return;
             }
             var route = this.expandRoute(data);
-            var cycleTime = App.State.currentModel.cycleTime;
+            if(route.points.length == 0) {
+                return;
+            }
+            var firstPointId = route.points[0].id;
+            var crossroad = cy.getElementById(firstPointId).data();
+            var program = crossroad.programs[crossroad.currentProgram];
+            var cycleTime = program.cycleTime;
+
+            //var cycleTime = App.State.currentModel.cycleTime;
             var totalRouteLenght = route.points.reduce(function(sum, point){return sum + point.length;} ,0);
 
             var width  = window.innerWidth - 150 - svgMargin.left - svgMargin.right;
-            var height = totalRouteLenght - svgMargin.top - svgMargin.bottom;
+            var height = totalRouteLenght * route.scale - svgMargin.top - svgMargin.bottom;
 
             var x = d3.scale.linear().rangeRound([0, width]);
             var y = d3.scale.linear().rangeRound([height, 0]);
@@ -333,7 +367,7 @@
 
             var rrange = route.points.map(function(v){return y(v.geoOffset)});
             var rlabels = route.points.map(function(v){return v.name});
-            rrange.unshift(totalRouteLenght - 100);
+            rrange.unshift(totalRouteLenght* route.scale - 100);
             rrange.push(0);
             rlabels.unshift('');
             rlabels.push('');
@@ -350,7 +384,7 @@
                 llabels.push(v.back.tag);
             });
 
-            lrange.unshift(totalRouteLenght - 100);
+            lrange.unshift(totalRouteLenght * route.scale  - 100);
             lrange.push(0);
             llabels.unshift('');
             llabels.push('');
@@ -420,7 +454,7 @@
                 .on("drag", function(){
                     var stop = d3.event.sourceEvent.clientX;
                     d3.select(this).attr("transform", function(d) {
-                        return "translate("+(stop-start)+"," + y(d.forwardGeoOffset) + ")";
+                        return "translate("+(stop-start)+"," + y(d.forwardGeoOffset ) + ")";
                     })
                 })
                 .on("dragend", function() {
@@ -428,11 +462,14 @@
                     var stop = d3.event.sourceEvent.clientX;
                     var b = d3.select(this).attr("opacity","0.5");
                     var pointId = b.data()[0].id;
-                    var o = cy.getElementById(pointId).data('offset');
-                    var newOffset = (o + Math.round(cycleTime*(stop-start)/ x(cycleTime)) + cycleTime) % cycleTime;
 
                     var crossroad = cy.getElementById(pointId).data();
                     var program = crossroad.programs[crossroad.currentProgram];
+                    var o = program.offset;
+                    var cycleTime = program.cycleTime;
+                    //var newOffset = (o + x(stop-start) + cycleTime) % cycleTime;
+                    //console.log(o, x(stop-start), cycleTime);
+                    var newOffset = (o + Math.round(cycleTime*(stop-start)/ x(cycleTime)) + cycleTime) % cycleTime;
                     program.offset = newOffset;
                     //cy.getElementById(pointId).data('offset', newOffset);
 
@@ -445,7 +482,7 @@
                 .data(route.points).enter().append("g")
                 .attr("class", function(d) { return 'bar ' + 'bar-' + d.id})
                 .attr("x", 0)
-                .attr("transform", function(d) { return "translate(0," + y(d.forwardGeoOffset) + ")"; })
+                .attr("transform", function(d) { return "translate(0," + y(d.forwardGeoOffset ) + ")"; })
                 .call(drag)
                 .on("mouseenter", function(){ d3.select(this).attr("cursor","pointer"); })
                 .on("mouseleave", function(){ d3.select(this).attr("cursor","default"); });

@@ -244,7 +244,7 @@
                     .addLines(forward, 'forward')
                     .addLines(back , 'back')
                 ;
-
+                console.log(route);
                 that.renderRoutesDropDown();
                 routes.drawRoute(route);
 
