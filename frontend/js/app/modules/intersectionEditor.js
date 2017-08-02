@@ -112,42 +112,29 @@
 
             controls.panels.crossRoadModal.on('click', '.ph-td input[type="checkbox"]', function(e){
                 var inp = $(this);
-                var phase = inp.data('phase') - 1;
+                var phase = inp.data('phase');
                 var stoplineId = inp.data('stopline');
                 var value = inp.prop('checked');
                 var cpi = crossroad.currentProgram;
 
                 $.each(stopLines, function(inx, stopline){
                     if (stopline.data.id !== stoplineId) return;
-                    stopLines[inx].data.greenPhases[cpi][phase] = value;
+                    stopLines[inx].data.greenPhases[cpi][phase-1] = value;
                 });
 
                 that.renderDiagramTable(program);
+                that.drawGreenFlows(phase);
             });
 
 
-            controls.panels.crossRoadModal.on('focus', '.ph-td input[type="text"]', function(e){
+            controls.panels.crossRoadModal.on('blur', '.ph-td input[type="text"]', function(e){
+                cyCrossroad.$().removeClass('green');
+            });
 
+            controls.panels.crossRoadModal.on('focus', '.ph-td input[type="text"]', function(e){
                 var inp = $(this);
                 var phase = inp.data('phase');
-                var stoplineIds = that.getGreenStoplines(phase);
-
-                cyCrossroad.$().removeClass('green');
-                stoplineIds.map(function(slId){
-                    cyCrossroad.$('#'+slId).addClass('green')
-                        .outgoers('node[type!="stopline"], edge').addClass('green')
-                        .outgoers('node[type!="stopline"], edge').addClass('green')
-                        .outgoers('node[type!="stopline"], edge').addClass('green')
-                })
-
-                $.each(cyCrossroad.$('node[type="concurrent"]'), function(inx, concurent){
-                    var inSecondary = concurent.incomers('edge[^secondary].green');
-                    if (inSecondary.length == 0) {
-                        concurent.outgoers('edge[^secondary].green').removeClass('green')
-                            .outgoers('node[type!="stopline"], edge').addClass('green')
-                            .outgoers('node[type!="stopline"], edge').addClass('green');
-                    }
-                });
+                that.drawGreenFlows(phase);
 
             });
 
@@ -467,6 +454,28 @@
 
         },
 
+
+        drawGreenFlows:function(phase){
+            cyCrossroad.$().removeClass('green');
+            var stoplineIds = that.getGreenStoplines(phase);
+
+            stoplineIds.map(function(slId){
+                cyCrossroad.$('#'+slId).addClass('green')
+                    .outgoers('node[type!="stopline"], edge').addClass('green')
+                    .outgoers('node[type!="stopline"], edge').addClass('green')
+                    .outgoers('node[type!="stopline"], edge').addClass('green')
+            });
+
+            $.each(cyCrossroad.$('node[type="concurrent"]'), function(inx, concurent){
+                var inSecondary = concurent.incomers('edge[^secondary].green');
+                if (inSecondary.length == 0) {
+                    concurent.outgoers('edge[^secondary].green').removeClass('green')
+                        .outgoers('node[type!="stopline"], edge').addClass('green')
+                        .outgoers('node[type!="stopline"], edge').addClass('green');
+                }
+            });
+        },
+
         addDefaultsToPhasesList: function(program){
             var emptyPhase = JSON.parse(JSON.stringify(settings.emptyPhase));
             for (var i = 1; i<= maxCountPhases; i++){
@@ -543,6 +552,8 @@
             });
 
         },
+
+
 
 
     };
