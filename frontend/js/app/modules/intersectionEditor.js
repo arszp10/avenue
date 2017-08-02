@@ -467,9 +467,16 @@
             });
 
             $.each(cyCrossroad.$('node[type="concurrent"]'), function(inx, concurent){
-                var inSecondary = concurent.incomers('edge[^secondary].green');
-                if (inSecondary.length == 0) {
+                var inPrimary = concurent.incomers('edge[^secondary].green');
+                if (inPrimary.length == 0) {
                     concurent.outgoers('edge[^secondary].green').removeClass('green')
+                        .outgoers('node[type!="stopline"], edge').addClass('green')
+                        .outgoers('node[type!="stopline"], edge').addClass('green');
+                }
+
+                var inSecondary = concurent.incomers('edge[secondary].green');
+                if (inSecondary.length == 0) {
+                    concurent.outgoers('edge[secondary].green').removeClass('green')
                         .outgoers('node[type!="stopline"], edge').addClass('green')
                         .outgoers('node[type!="stopline"], edge').addClass('green');
                 }
