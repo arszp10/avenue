@@ -37,34 +37,9 @@
                 'height':'30px'
             }
         },
-        {
-            selector: 'node[color="danger"]',
-            css: {
-                'color': '#d9534f'
-            }
-        },
-        {
-            selector: 'node[color="success"]',
-            css: {
-                'color': '#5cb85c'
-            }
-        },
 
         {
-            selector: 'node[color="default"]',
-            css: {
-                'color': '#777'
-            }
-        },
-        {
-            selector: 'node[color="warning"]',
-            css: {
-                'color': '#f0ad4e'
-            }
-        },
-
-        {
-            selector: 'node:selected',
+            selector: 'node.green',
             css: {
                 'content': 'data(icon)',
                 'background-color': '#4caf50',
@@ -78,7 +53,7 @@
             selector: 'edge',
             css: {
                 'line-style': 'dotted',
-                //'target-arrow-shape': 'triangle',
+                'target-arrow-shape': 'triangle',
                 'text-outline-color': '#fff',
                 'line-color': '#ccc',
                 'target-arrow-color': '#ccc',
@@ -99,7 +74,7 @@
 
 
         {
-            selector: 'edge:selected',
+            selector: 'edge.green',
             css: {
                 'line-style': 'solid',
                 'width': 8,

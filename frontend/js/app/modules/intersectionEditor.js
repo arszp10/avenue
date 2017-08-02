@@ -1,6 +1,6 @@
 (function(App){
 
-    var cy, editor, traffic, that;
+    var cy, editor, traffic, routes, that;
     var crossroad, program, stopLines;
     var cyCrossroad;
     var controls  = App.Controls;
@@ -16,6 +16,7 @@
             cy        = modules.cytoscape;
             editor    = modules.editor;
             traffic   = modules.traffic;
+            routes    = modules.routes;
             that = this;
         },
 
@@ -77,6 +78,7 @@
                 controls.inputs.inputAddGreen.val($addGreenEditableElement.data('value'));
             });
 
+
             controls.buttons.btnAddGreenDone.click(function(){
                 var value =  +parseInt(controls.inputs.inputAddGreen.val()) || 0;
                 var text = value == 0 ? '' : '+' + value;
@@ -121,6 +123,32 @@
                 });
 
                 that.renderDiagramTable(program);
+            });
+
+
+            controls.panels.crossRoadModal.on('focus', '.ph-td input[type="text"]', function(e){
+
+                var inp = $(this);
+                var phase = inp.data('phase');
+                var stoplineIds = that.getGreenStoplines(phase);
+
+                cyCrossroad.$().removeClass('green');
+                stoplineIds.map(function(slId){
+                    cyCrossroad.$('#'+slId).addClass('green')
+                        .outgoers('node[type!="stopline"], edge').addClass('green')
+                        .outgoers('node[type!="stopline"], edge').addClass('green')
+                        .outgoers('node[type!="stopline"], edge').addClass('green')
+                })
+
+                $.each(cyCrossroad.$('node[type="concurrent"]'), function(inx, concurent){
+                    var inSecondary = concurent.incomers('edge[^secondary].green');
+                    if (inSecondary.length == 0) {
+                        concurent.outgoers('edge[^secondary].green').removeClass('green')
+                            .outgoers('node[type!="stopline"], edge').addClass('green')
+                            .outgoers('node[type!="stopline"], edge').addClass('green');
+                    }
+                });
+
             });
 
 
@@ -259,6 +287,14 @@
                     cy.getElementById(stopline.data.id).data(stopline.data);
                 });
                 controls.panels.crossRoadModal.modal('hide');
+
+                var currentRouteInx = routes.getSelected();
+                if (currentRouteInx === false) {
+                    return;
+                }
+                var route = routes.getRoute(currentRouteInx);
+                    routes.drawRoute(route);
+
             });
 
             controls.inputs.inputCrossroadCycleLength.change(function(){
@@ -421,7 +457,13 @@
             controls.panels.crossRoadModal.modal('show');
         },
 
-        convertOldCrossroadData: function(){
+        getGreenStoplines:function(phaseNum){
+            return stopLines.filter(function(stopline){
+                return stopline.data.greenPhases[crossroad.currentProgram][phaseNum - 1] && true;
+
+            }).map(function(stopline){
+                return stopline.data.id
+            })
 
         },
 

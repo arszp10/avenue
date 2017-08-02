@@ -1,6 +1,6 @@
 (function(App){
     var controls  = App.Controls;
-    var cy, traffic;
+    var cy, traffic, intersectionEditor;
     var that;
 
     var svgMargin = {top: 50, right: 200, bottom: 50, left: 50};
@@ -152,12 +152,37 @@
         ;
     };
 
+    function wrap(text, width) {
+        text.each(function() {
+            var text = d3.select(this),
+                words = text.text().split(/\s+/).reverse(),
+                word,
+                line = [],
+                lineNumber = 0,
+                lineHeight = 1.1, // ems
+                y = text.attr("y") - 7,
+                dy = parseFloat(text.attr("dy")),
+                tspan = text.text(null).append("tspan").attr("x", 10).attr("y", y).attr("dy", dy + "em");
+            while (word = words.pop()) {
+                line.push(word);
+                tspan.text(line.join(" "));
+                if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    tspan.text(line.join(" "));
+                    line = [word];
+                    tspan = text.append("tspan").attr("x", 10).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                }
+            }
+        });
+    }
+
 
     App.Modules.routes = {
 
         injectDependencies: function (modules) {
             cy      = modules.cytoscape;
             traffic = modules.traffic;
+            intersectionEditor = modules.intersectionEditor;
         },
 
         initModule: function () {
@@ -239,7 +264,8 @@
 
                 point.length = point.forward.hasOwnProperty('carriages')
                     ? point.forward.carriages.reduce(function (sum, cwId) {
-                        return sum + cy.getElementById(cwId).data('length');
+                        var carriageWayNode = cy.getElementById(cwId);
+                        return sum + carriageWayNode.data('length') | 0;
                       }, 0)
                     : 0;
 
@@ -248,6 +274,11 @@
 
                     var stopline  = cy.getElementById(point[direction].id).data();
                     var crossroad = cy.getElementById(point.id).data();
+
+                    if (!stopline || !crossroad) {
+                        return;
+                    }
+
                     var program = crossroad.programs[crossroad.currentProgram];
 
 
@@ -255,7 +286,7 @@
                     point[direction].tag = stopline.tag;
                     point[direction].routeTime =  point[direction].hasOwnProperty('carriages')
                         ? point[direction].carriages.reduce(function (sum, cwId) {
-                                return sum + cy.getElementById(cwId).data('routeTime');
+                                return sum + cy.getElementById(cwId).data('routeTime')|0;
                             }, 0)
                         : 0;
 
@@ -347,6 +378,9 @@
             }
             var firstPointId = route.points[0].id;
             var crossroad = cy.getElementById(firstPointId).data();
+            if (! crossroad) {
+                return;
+            }
             var program = crossroad.programs[crossroad.currentProgram];
             var cycleTime = program.cycleTime;
 
@@ -366,7 +400,10 @@
 
 
             var rrange = route.points.map(function(v){return y(v.geoOffset)});
-            var rlabels = route.points.map(function(v){return v.name});
+            var rlabels = route.points.map(function(v){return JSON.stringify({
+                id: v.id,
+                name: v.name
+            })});
             rrange.unshift(totalRouteLenght* route.scale - 100);
             rrange.push(0);
             rlabels.unshift('');
@@ -411,8 +448,9 @@
                 .append("text").style("text-anchor", "end").attr("x", width).attr("y", 40).text("Time (s)");
 
             svg.append("g").attr("class", "y axis").call(yAxis);
-            svg.append("g") .attr("class", "y2 axis")
-                .attr("transform", "translate(" + (width) + ",0)").call(yAxis0);
+            svg.append("g").attr("class", "y0 axis")
+                .attr("transform", "translate(" + (width) + ",0)")
+                .call(yAxis0);
 
             svg.append("g").attr("class", "y1 axis")
                 .attr("transform", "translate(" + x(cycleTime) + ",0)").call(yAxis1);
@@ -489,7 +527,6 @@
 
             drawBarLine(route, bar, 'forward', x, cycleTime);
             drawBarLine(route, bar, 'back',  x, cycleTime);
-
             // clearing border effects & additional labeled axis
             svg.append("rect")
                 .attr("x", -50)
@@ -506,10 +543,24 @@
                 .style("fill","#eee");
 
             svg.append("g") .attr("class", "y2 axis")
-                .attr("transform", "translate(" + (width) + ",0)").call(yAxis2);
+                .attr("transform", "translate(" + (width) + ",0)")
+                .call(yAxis2);
 
             svg.append("g") .attr("class", "y3 axis").call(yAxis3);
 
+            svg.selectAll('.y2.axis .tick')
+                .select('text').text(function(d){
+                    if (d.length == 0 ) return '';
+                    return JSON.parse(d).name;
+                }).call(wrap, 100)
+                .style("cursor", "pointer")
+                .on('click', function(d){
+                    if (d.length == 0 ) return '';
+                    var crossroadId = JSON.parse(d).id;
+                    var crossroad = cy.getElementById(crossroadId).data();
+                    intersectionEditor.showCrossroadModal(crossroad);
+
+                });
         }
 
     }
