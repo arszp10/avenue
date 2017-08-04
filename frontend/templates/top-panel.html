@@ -9,7 +9,7 @@
                 <a class="navbar-brand" href="/"><img src="/img/logo0.png" height="30"></a></div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                <form id="api-credentials" class=" hidden-api-doc hidden-network hidden-routes hidden-map navbar-form navbar-left" role="search">
+                <form id="api-credentials" class=" hidden-api-doc hidden-network hidden-routes hidden-map hidden-crossroad navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">Key</span>
@@ -24,10 +24,10 @@
                         <a class="btn btn-primary" href="/api/doc/" locale="api-doc">API Docs</a>
                     </div>
                 </form>
-                <form class="visible-network visible-routes visible-map navbar-form navbar-left" role="search">
+                <form class="visible-network visible-routes visible-map visible-crossroad navbar-form navbar-left" role="search">
                     <a type="button" href="/models" class="btn btn-inverse" ><i class="fa fa-th-list"></i> &nbsp;<span locale="model-list">Model list</span></a>
                 </form>
-                <form class="visible-network visible-routes navbar-form navbar-left" role="search">
+                <form class="visible-network visible-routes visible-crossroad navbar-form navbar-left" role="search">
                     <button type="button" class="btn btn-inverse" id="btn-model-save"><i class="fa fa-save"></i> </button>
 
                     <div class="btn-group">
@@ -69,6 +69,17 @@
 
                 </form>
 
+
+                <form class="visible-crossroad navbar-form navbar-left" role="search">
+                    &nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-inverse" id="btn-cycle-time-calc">
+                        <i class="fa fa-clock-o"></i> <span locale="">Оптимальный цикл</span>
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-save-crossroad-data">
+                        <i class="fa fa-check"></i> <span locale="apply">Apply</span>
+                    </button>
+                </form>
+
                 <ul class="nav navbar-nav navbar-right ">
                     <!--<li><a href="#">Link</a></li>-->
                     <li class="dropdown">
@@ -85,7 +96,7 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown visible-network hidden-files hidden-api-doc hidden-routes hidden-map ">
+                    <li class="dropdown visible-network hidden-files hidden-crossroad hidden-api-doc hidden-routes hidden-map ">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span locale="samples">Samples</span>
                             <span class="caret"></span>
                         </a>

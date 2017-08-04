@@ -62,6 +62,7 @@ body{
 .visible-routes,
 .visible-map,
 .visible-results,
+.visible-crossroad,
 .visible-source {
     display:none;
 }
@@ -72,6 +73,7 @@ body{
 .hidden-routes,
 .hidden-map,
 .hidden-results,
+.hidden-crossroad,
 .hidden-source {
     display:block;
 }
@@ -82,6 +84,7 @@ body{
 .show-routes .visible-routes,
 .show-map .visible-map,
 .show-results .visible-results,
+.show-crossroad .visible-crossroad,
 .show-source .visible-source
 {
     display:block;
@@ -93,6 +96,7 @@ body{
 .show-routes .hidden-routes,
 .show-map .hidden-map,
 .show-results .hidden-results,
+.show-crossroad .hidden-crossroad,
 .show-source .hidden-source
 {
     display:none;
@@ -181,6 +185,10 @@ body{
     right: 15px;
 }
 
+.show-crossroad .right-panel {
+    top: 65px;
+}
+
 /*.chart-panel{*/
     /*height: 200px;*/
     /*width: 320px;*/
@@ -255,13 +263,29 @@ body{
 
 .status-bar{
     float: right;
-    margin-top: -30px;
+    margin-top: -27px;
     width: 75%;
-    color: #333;
+
     height: 30px;
     text-align: right;
     padding-right: 15px;
-    font-size: 17px;
+}
+
+#crossRoadDelayBar {
+    margin-right: 350px;
+    position: absolute;
+    left: 15%;
+    width: 400px;
+    bottom: 24px;
+}
+
+.summary-delay-info {
+    font-size: 13px;
+    color: #999;
+}
+
+.summary-delay-info .text-muted {
+    font-size: 11px;
 }
 
 #input-edge-label {
@@ -638,23 +662,20 @@ td.ph-col-0 label{
     margin-right: 15px;
 }
 
-#input-crossroad-name {
-    border: 0px solid white;
-    font-size: 18px;
-    width: 610px;
-    margin-right: 20px;
-}
+/*#input-crossroad-name {*/
+    /*border: 0px solid white;*/
+    /*font-size: 18px;*/
+    /*width: 610px;*/
+    /*margin-right: 20px;*/
+/*}*/
 
 #label-crossroad-opti-off {
     float: right;
-    margin-right: 20px;
-    margin-top: 5px;
+    /*margin-right: 20px;*/
+    /*margin-top: 5px;*/
+    font-weight: normal;
+    font-size:12px;
 }
-
-#inputCrossroadCycleLength {
-    width:100px;
-}
-
 
 .btn-danger-light {
     color:#cc0000;
@@ -1082,4 +1103,16 @@ a.btn-edit-add-green[disabled] span.add-green-value {
 
 .no-left-margin {
     margin-left:0px;
+}
+
+
+#crossroad-panel {
+    background: #fff;
+    padding:20px 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#crossroad-panel .row {
+    max-width: 1200px;
 }

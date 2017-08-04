@@ -277,6 +277,7 @@
 
         initBottomPanelEvents: function(){
             controls.buttons.btnShowNetwork.on('click', that.bottomTabSwitch);
+            controls.buttons.btnShowCrossroad.on('click', that.bottomTabSwitch);
             controls.buttons.btnShowMap.on('click', function(){
                 that.bottomTabSwitch.call(this);
                 map.showWidgets();
@@ -454,7 +455,6 @@
             });
 
         },
-
 
         //initCheckBoxes: function($el) {
         //    $el.find('input[type="checkbox"]').iCheck({ checkboxClass: 'icheckbox_minimal-blue' });
@@ -666,7 +666,7 @@
             tab.parent().siblings().removeClass('active');
             tab.parent().addClass('active');
             controls.panels.body
-                .removeClass('show-files show-network show-routes show-results show-source show-map')
+                .removeClass('show-files show-network show-routes show-results show-source show-map show-crossroad')
                 .addClass(tab.data('rel'));
             window.dispatchEvent(new Event('resize'));
             map.hideWidgets();

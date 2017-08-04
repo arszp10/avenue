@@ -85,7 +85,7 @@
             'congestion': 'Затор',
             'no-congestion': 'Свободно',
 
-            'veh_sec': 'авт*с',
+            'veh_sec': 'авт*с/ц',
             'vehicle': 'авт',
             'open-in-new-tab': 'Открыть в новой вкладке',
             'open':'Открыть',
@@ -110,6 +110,8 @@
             'node-props': 'Свойства точки',
             'crossroad-props': 'Свойства перекрестка',
             'program': 'Программа',
+            'apply': 'Применить',
+            'crossroad' : 'Перекресток'
 
         },
         en: {
@@ -195,7 +197,7 @@
             'congestion': 'Congestion',
             'no-congestion': 'No congestion',
 
-            'veh_sec': 'veh*sec',
+            'veh_sec': 'veh*sec/c',
             'veh_h_h': 'veh*h/h',
             'vehicle': 'vehicle',
             'open-in-new-tab': 'Open in new tab',
@@ -220,6 +222,8 @@
             'node-props': 'Node properties',
             'crossroad-props': 'Intersection properties',
             'program': 'Program',
+            'apply': 'Apply',
+            'crossroad' : 'Crossroad'
         }
     };
 

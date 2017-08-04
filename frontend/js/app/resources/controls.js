@@ -7,10 +7,11 @@
             leftPanel:              'div.left-panel',
             pointProperty:          '#panel-point-property',
             addGreenProperty:        '#add-green-property',
-            crossRoadModal:         '#crossroad-modal',
+            crossRoadPanel:         '#crossroad-panel',
             coPlanModal:            '#co-plan-modal',
-            tblPhasesBody:          '#crossroad-modal #table-phases tbody',
-            tblDiagramsBody:        '#crossroad-modal #crossroad-table-diagrams tbody',
+            tblPhasesBody:          '#crossroad-panel #table-phases tbody',
+            tblDiagramsBody:        '#crossroad-panel #crossroad-table-diagrams tbody',
+            tblDiagrams:            '#crossroad-table-diagrams',
             statusBar:              '#status-bar',
             nodeSearchResultlist:   '#node-search-result-list',
             nodeSearchInfo:         '#node-search-info',
@@ -21,7 +22,8 @@
             routesDropDownButton:   '#routes-list-button-panel',
             routesDropDownList:     '#routes-dropdown-list',
             importModal:            '#import-modal',
-            cyCrossroadCopy:        '#cy-crossroad-copy'
+            cyCrossroadCopy:        '#cy-crossroad-copy',
+            crossRoadDelayBar:      '#crossRoadDelayBar'
         },
         labels: {
             labelMyAccountUsername: '#label-my-account-username',
@@ -86,6 +88,7 @@
             btnShowNetwork:             '#btn-show-network',
             btnShowResults:             '#btn-show-results',
             btnShowRoutes:              '#btn-show-routes',
+            btnShowCrossroad:           '#btn-show-crossroad',
             btnShowMap:                 '#btn-show-map',
             btnToggleMap:               '#btn-toggle-map',
             btnGroupNodes:              '#btn-group-nodes',

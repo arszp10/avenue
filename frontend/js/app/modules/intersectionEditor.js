@@ -31,7 +31,26 @@
             options.ready = function() { };
             options.container = controls.panels.cyCrossroadCopy[0];
             cyCrossroad = cytoscape(options);
-           // cyCrossroad.on('tap', function(e){});
+
+            cyCrossroad.on('select', 'node', null, function (d, a) {
+                var s = cyCrossroad.$('node:selected');
+                s = s[0];
+                var original = cy.getElementById(s.data('id'));
+                editor.showSideNodeInfo(original.data());
+            });
+
+            cyCrossroad.on('unselect', function () {
+                controls.panels.body.removeClass('show-right-panel');
+            });
+
+            //cyCrossroad.on('unselect', 'node', null, function (d, a) {
+            //});
+
+            cyCrossroad.on('click', 'node:selected', null, function (e) {
+                var type = e.cyTarget.data('type');
+                //e.originalEvent.stopPropagation();
+            });
+
         },
 
         stopLineSort: function (a, b) {
@@ -98,7 +117,7 @@
             });
 
 
-            controls.panels.crossRoadModal.on('change', '.ph-td input[type="text"]', function(e){
+            controls.panels.crossRoadPanel.on('change', '.ph-td input[type="text"]', function(e){
                 var inp = $(this);
                 var phase = inp.data('phase') - 1;
                 var field = inp.data('field');
@@ -110,7 +129,16 @@
             });
 
 
-            controls.panels.crossRoadModal.on('click', '.ph-td input[type="checkbox"]', function(e){
+            controls.panels.crossRoadPanel.on('click', function(e){
+                cyCrossroad.$().unselect();
+            });
+
+            controls.panels.cyCrossroadCopy.on('click', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+            });
+
+            controls.panels.crossRoadPanel.on('click', '.ph-td input[type="checkbox"]', function(e){
                 var inp = $(this);
                 var phase = inp.data('phase');
                 var stoplineId = inp.data('stopline');
@@ -127,11 +155,11 @@
             });
 
 
-            controls.panels.crossRoadModal.on('blur', '.ph-td input[type="text"]', function(e){
+            controls.panels.crossRoadPanel.on('blur', '.ph-td input[type="text"]', function(e){
                 cyCrossroad.$().removeClass('green');
             });
 
-            controls.panels.crossRoadModal.on('focus', '.ph-td input[type="text"]', function(e){
+            controls.panels.crossRoadPanel.on('focus', '.ph-td input[type="text"]', function(e){
                 var inp = $(this);
                 var phase = inp.data('phase');
                 that.drawGreenFlows(phase);
@@ -149,14 +177,6 @@
                 program.offset = val;
             });
 
-            controls.panels.crossRoadModal.on('shown.bs.modal', function () {
-                controls.inputs.inputCrossroadOffset.slider('relayout');
-                var data = cy.aveSelectedCrossroadNodes(crossroad.id);
-                that.initCyCrossroadCopy();
-                cyCrossroad.$().remove();
-                cyCrossroad.add(data);
-                cyCrossroad.fit(0);
-            });
 
             controls.inputs.inputCrossroadPhasesOrder.change(function(){
                 program.currentOrder = $(this).val();
@@ -273,7 +293,6 @@
                 $.each(stopLines, function(i, stopline){
                     cy.getElementById(stopline.data.id).data(stopline.data);
                 });
-                controls.panels.crossRoadModal.modal('hide');
 
                 var currentRouteInx = routes.getSelected();
                 if (currentRouteInx === false) {
@@ -441,7 +460,16 @@
             }
 
             this.fillCrossroadFormData(crossroad);
-            controls.panels.crossRoadModal.modal('show');
+            controls.panels.body.removeClass('show-right-panel');
+            controls.buttons.btnShowCrossroad.click();
+
+            controls.inputs.inputCrossroadOffset.slider('relayout');
+            var data = cy.aveSelectedCrossroadNodes(crossroad.id);
+            that.initCyCrossroadCopy();
+            cyCrossroad.$().remove();
+            cyCrossroad.add(data).unselect();
+            cyCrossroad.fit(0);
+
         },
 
         getGreenStoplines:function(phaseNum){
@@ -560,6 +588,61 @@
 
         },
 
+        showCrossRoadNodeInfo: function(node, step) {
+            controls.panels.crossroadNodeInfoPanel.empty();
+
+            node.constantIntensity =  cy.aveConstantIntensity(node);
+
+            controls.panels.crossroadNodeInfoPanel.append(
+                templates.nodeCommonProps(node)
+            );
+
+            var errors = App.State.lastErrors.filter(function(val){
+                return val.node ==  node.id;
+            });
+
+            if (errors.length > 0) {
+                controls.panels.crossroadNodeInfoPanel.append(
+                    templates.validationErrors(editor.flattenErrors(errors))
+                );
+            }
+
+            var results = App.State.lastModelingResult.filter(function(val){
+                return val.id == node.id;
+            });
+
+            if (results.length == 0) {
+                return;
+            }
+
+            console.log(results, node);
+
+            controls.panels.crossroadNodeInfoPanel.append(
+                templates.nodeModelingResults(results[0])
+            );
+
+            controls.panels.crossroadNodeInfoPanel.append(templates.chartPanel());
+
+            var ctx = document.getElementById("chart-panel").getContext("2d");
+            var data = {
+                labels: settings.chart.labels(node.cycleTime),
+                datasets: [
+                    settings.chart.flowIn(results[0].inFlow),
+                    settings.chart.flowOut(results[0].outFlow)
+                ]
+            };
+            var myLineChart = new Chart(ctx).Line(data, settings.chart.common);
+
+            if (node.type == 'stopline' && node.hasOwnProperty('parent')){
+                var stopline = node;
+                controls.panels.crossroadNodeInfoPanel.append(
+                    templates.signalBar({
+                        cycleTime: node.cycleTime,
+                        signals: traffic.signalDiagramData1(crossroad, program, stopline)
+                    })
+                );
+            }
+        },
 
 
 

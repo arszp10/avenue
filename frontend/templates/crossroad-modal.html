@@ -1,4 +1,4 @@
-<div id="crossroad-modal" class="modal" role="dialog">
+<div id="crossroad-modal-111" class="modal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -57,16 +57,21 @@
 
                                 <form>
                                 <div class="form-group">
-                                    <label for="inputCrossroadCycleLength"><span locale="cycle-length">Cycle lenght</span></label>
-                                    <input type="text" class="form-control input-sm" id="inputCrossroadCycleLength">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label for="inputCrossroadCycleLength"><span locale="cycle-length">Cycle lenght</span></label>
+                                            <input type="text" class="form-control input-sm" id="inputCrossroadCycleLength">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="inputCrossroadOffset"><span locale="offset">Offset</span></label>
+                                            <input type="text" class="form-control input-sm" id="inputCrossroadOffsetText">
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="inputCrossroadOffset"><span locale="offset">Offset</span></label>
-                                    <div class="row">
-                                        <div class="col-sm-3"><input type="text" class="form-control input-sm" id="inputCrossroadOffsetText"></div>
-                                        <div class="col-sm-9"><input type="text" class="form-control" id="inputCrossroadOffset"></div>
-                                    </div>
+                                    <input type="text" class="form-control" id="inputCrossroadOffset">
                                 </div>
                                 </form>
 
@@ -101,6 +106,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="inputCrossroadLinkWith"><span locale="">Связан по смещению с ...</span></label>
+                                     <select type="text" class="form-control input-sm" id="inputCrossroadLinkWith">
+                                        <option> (нет) </option>
+                                        <option>Перекресток №1</option>
+                                        <option>Перекресток №2</option>
+                                     </select>
+                                </div>
+
                                 <br>
                                 <div id="cy-crossroad-copy">
                                 </div>
@@ -132,6 +146,9 @@
                             <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table table-phases" id="crossroad-table-diagrams">
                                 <tbody></tbody>
                             </table>
+                            <div id="crossroad-node-info-panel">
+                                ой вэй
+                            </div>
                         </div>
                     </div>
 
@@ -140,6 +157,15 @@
 
             </div>
             <div class="modal-footer">
+                <div class="pull-left">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <i class="fa fa-rocket"></i> &nbsp;&nbsp;<span locale="launch">Launch</span>
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <i class="fa fa-clock-o"></i> &nbsp;&nbsp;<span>Webster</span>
+                    </button>
+                </div>
+                <div id="crossRoadDelayBar"></div>
                 <button type="button" class="btn btn-primary" id="btn-save-crossroad-data"><i class="fa fa-check"></i> <span locale="save">Save</span></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"  locale="cancel">Cancel</button>
             </div>

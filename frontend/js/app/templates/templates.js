@@ -218,8 +218,18 @@
                 '    <tr><td>' + no + '</span></td><td class="text-right">'+con+'</td><td class="measure-unit"></td></tr>' +
                 '</tbody></table>';
         },
+
         sumDelayStatus:         function(delay){
-            return '&sum; ' + __('delay') + '<sub><i>i</i></sub> = <strong class="text-primary">'+delay.toFixed(2)+'</strong>&nbsp;<span class="text-muted">' + __('veh_sec') + '</span>';
+            return '<div class="summary-delay-info">' +
+            '<sub>&sum;</sub>&nbsp;<i class="fa fa-car"></i><i class="fa fa-signal"></i>' +
+            '    <strong class="text-primary">56715</strong>' +
+            '    <span class="text-muted">' + __('vehicle') + '</span>&nbsp;&nbsp;&nbsp;&nbsp;' +
+            '<sub>&sum;</sub>&nbsp;<i class="fa fa-car"></i><i class="fa fa-hourglass-end"></i>' +
+            '    <strong class="text-primary">'+delay.toFixed(2)+'</strong>' +
+            '    <span class="text-muted">' + __('veh_h_h') + '</span> ' +
+            '    (<strong class="text-primary">'+delay.toFixed(2)+'</strong>' +
+            '    <span class="text-muted">' + __('veh_sec') + '</span>)' +
+            '</div>';
         },
 
 

@@ -50,6 +50,17 @@
         },
 
         {
+            selector: 'node[type="stopline"]:selected',
+            css: {
+                'border-color': '#333333',
+                'color': '#333333',
+                'background-color': '#eeeeee',
+                'border-width': 3
+            }
+        },
+
+
+        {
             selector: 'edge',
             css: {
                 'line-style': 'dotted',
