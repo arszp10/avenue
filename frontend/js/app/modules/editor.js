@@ -122,6 +122,11 @@
 
             controls.buttons.btnCalc.click(function () {
                 var $icon = prepareEditorViewBeforeCalc();
+
+                if (controls.panels.body.hasClass('show-crossroad')) {
+                    controls.buttons.btnSaveCrossroadData.click();
+                }
+
                 var data = cy.avePrepareCalcRequest();
                 api.modelExecute({data: data}, $icon);
             });
@@ -276,12 +281,20 @@
         },
 
         initBottomPanelEvents: function(){
-            controls.buttons.btnShowNetwork.on('click', that.bottomTabSwitch);
-            controls.buttons.btnShowCrossroad.on('click', that.bottomTabSwitch);
+            controls.buttons.btnShowNetwork.on('click', function(){
+                that.bottomTabSwitch.call(this);
+            });
+
+            controls.buttons.btnShowCrossroad.on('click', function(e){
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
             controls.buttons.btnShowMap.on('click', function(){
                 that.bottomTabSwitch.call(this);
                 map.showWidgets();
             });
+
             controls.buttons.btnShowRoutes.on('click', function(){
                 that.bottomTabSwitch.call(this);
                 var inx = routes.getSelected();
@@ -647,6 +660,7 @@
             App.State.nodeType = $this.data('type');
             App.State.clickMode = String($this.attr('id')).substring(8);
         },
+
         cySelectionMode:function(){
             var $this = $(this);
             $this.closest('.btn-group').find('.active').removeClass("active");
@@ -661,13 +675,20 @@
             }
             App.State.clickMode = String($this.attr('id')).substring(8);
         },
-        bottomTabSwitch: function(){
-            var tab = $(this);
+
+        bottomTabSwitch: function(tabLink){
+
+            var tab = tabLink !== undefined ? tabLink : $(this);
             tab.parent().siblings().removeClass('active');
             tab.parent().addClass('active');
+
+            var isCrossroadTab = controls.buttons.btnShowCrossroad == tab;
+            controls.buttons.btnShowCrossroad.parent().toggleClass('hidden', !isCrossroadTab);
+
             controls.panels.body
                 .removeClass('show-files show-network show-routes show-results show-source show-map show-crossroad')
                 .addClass(tab.data('rel'));
+
             window.dispatchEvent(new Event('resize'));
             map.hideWidgets();
             //условно!!! добавить условие не забыть

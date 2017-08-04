@@ -74,10 +74,11 @@
             'constant-comp-intensity': 'Пост. сост. интенсивности',
             'full-intensity': 'Интенсивность',
             'full-capacity': 'Поток насыщения',
+            'capacity-rate': 'Коэфф. насыщения',
             'unit': 'ед.',
             'validation-errors' : 'Ошибки валидации',
 
-            'modeling-results': 'Результаты моделирования',
+            'modeling-results': 'Результат моделирования',
             'delay': 'Задежка',
             'green-saturation': 'Насыщ. зеленого',
             'limit-max-queue': 'Предел/Max. очередь',
@@ -111,8 +112,8 @@
             'crossroad-props': 'Свойства перекрестка',
             'program': 'Программа',
             'apply': 'Применить',
-            'crossroad' : 'Перекресток'
-
+            'crossroad' : 'Перекресток',
+            'type': 'Тип'
         },
         en: {
             'api-doc' : 'API Doc',
@@ -149,6 +150,7 @@
             'intensity': 'Intensity',
             'v_h': 'v/h',
             'capacity': 'Capacity',
+            'capacity-rate': 'Flow rate',
             'secondary-flow-capacity': 's.f. capacity',
             'length': 'Length',
             'm': 'm',
@@ -223,7 +225,8 @@
             'crossroad-props': 'Intersection properties',
             'program': 'Program',
             'apply': 'Apply',
-            'crossroad' : 'Crossroad'
+            'crossroad' : 'Crossroad',
+            'type': 'Type'
         }
     };
 

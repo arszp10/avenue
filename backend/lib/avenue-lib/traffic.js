@@ -48,7 +48,7 @@ module.exports = {
         if (green > 0) {
             signals.push({ color: 'green', length: green });
         }
-        signals.push({ color: 'blink', length: blink });
+        //signals.push({ color: 'blink', length: blink });
         signals.push({ color: 'yellow', length: yellow });
 
         if (red > 0) {
@@ -80,7 +80,7 @@ module.exports = {
             var addGreen = stopLine.hasOwnProperty('additionalGreens')
                 ? stopLine.additionalGreens[i] : 0;
             var interPhaseLength = crossRoad.phases[i].hasOwnProperty('intertact')
-                ? crossRoad.phases[i].intertact : 6;
+                ? crossRoad.phases[i].intertact : 3;
 
             interTact = stopLine.greenPhases[i]
                 ? this.greenToRedInterPhase(interPhaseLength, addGreen)

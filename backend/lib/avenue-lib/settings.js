@@ -72,7 +72,7 @@ module.exports = {
         tag: '',
         length: 0,
         minLength: 12,
-        intertact: 6
+        intertact: 3
     },
 
     stopline: {
@@ -148,9 +148,9 @@ module.exports = {
 
     interPhaseDefaults:{
         amber: 3,
-        blink: 3,
+        blink: 0,
         yellow: 3,
-        totalLength: 6
+        totalLength: 3
     },
 
     offsetOptimizationSteps: function(Tc) {

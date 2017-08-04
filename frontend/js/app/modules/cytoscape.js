@@ -337,6 +337,18 @@
             }
         },
 
+        aveGetCurrentProgramGreens: function(array, parent){
+            var crossRoad = this.getElementById(parent).data();
+            var program = crossRoad.programs[crossRoad.currentProgram];
+            var currentOrder = program.currentOrder;
+            var order = program.phasesOrders[currentOrder].order;
+
+            return order.map(function(phNum){
+                return array[phNum-1];
+            })
+        },
+
+
         aveSetCycleTimeToAllNodes: function (){
             function setToOrphanNeighborhood(node, cycleTime){
                 $.each(node.neighborhood('node[^parent]'), function(i, v){
@@ -386,8 +398,8 @@
                     item.edges = edges[v.data('id')];
                     if (item.type == 'stopline' && item.parent) {
                         var programInx = cy.getElementById(item.parent).data('currentProgram');
-                        item.greenPhases = item.greenPhases[programInx];
-                        item.additionalGreens = item.additionalGreens[programInx];
+                        item.greenPhases = cy.aveGetCurrentProgramGreens(item.greenPhases[programInx], item.parent);
+                        item.additionalGreens = cy.aveGetCurrentProgramGreens(item.additionalGreens[programInx], item.parent);
                     }
                 } else {
                     var program = JSON.parse(JSON.stringify(cy.aveGetCurrentProgramPhases(v)));
@@ -398,6 +410,7 @@
                     delete item.currentProgram;
                 }
                 map.push(item);
+
             });
             return map;
         },

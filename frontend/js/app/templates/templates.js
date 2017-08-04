@@ -50,7 +50,7 @@
                     addGreen = '<span class="add-green-value" data-stopline="' + data.id + '" data-phase="' + i + '"  data-value="0"></span>';
                 } else {
                     var value = parseInt(data.additionalGreens[cpi][i-1]);
-                    addGreen = '<span class="add-green-value" data-stopline="' + data.id + '" data-phase="' + i + '"  data-value="'+value+'">'+value+'</span>';
+                    addGreen = '<span class="add-green-value" data-stopline="' + data.id + '" data-phase="' + i + '"  data-value="'+value+'">+'+value+'</span>';
                 }
 
                 link = '&nbsp;<a href="#" class="btn-edit-add-green" ' + checkboxAttr + '>' + addGreen + '&nbsp;<span class="caret"></span></a>';
@@ -176,9 +176,11 @@
 
             return '<h4>' + __('node-props') + (data.tag ? (' ['+data.tag+']') : '') + '</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
+                '<tr><td>' + __('type') + '</td><td class="text-right">' + data.type + '</td><td class="measure-unit"></td></tr>' +
                 '<tr><td>' + __('cycle-time') + '</td><td class="text-right">' + data.cycleTime + '</td><td class="measure-unit">' + __('sec') + '</td></tr>' +
                 '<tr><td>' + __('full-capacity') + '</td><td class="text-right">' + data.capacity + '</td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
                 '<tr><td>' + __('full-intensity') + '</td><td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
+                '<tr><td>' + __('capacity-rate') + '</td><td class="text-right">' + (100*data.avgIntensity/data.capacity).toFixed(2) + '</td><td class="measure-unit">%</td></tr>' +
                 '<tr><td>' + __('constant-comp-intensity') + '</td><td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
                 '<tr><td>' + __('weight') + '</td><td class="text-right">' + weight + '</td><td class="measure-unit">' + __('unit') + '</td></tr>' +
                 '</tbody></table>';

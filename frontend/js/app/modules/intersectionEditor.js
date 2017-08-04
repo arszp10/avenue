@@ -294,6 +294,8 @@
                     cy.getElementById(stopline.data.id).data(stopline.data);
                 });
 
+                cyCrossroad.$().unselect();
+
                 var currentRouteInx = routes.getSelected();
                 if (currentRouteInx === false) {
                     return;
@@ -460,8 +462,9 @@
             }
 
             this.fillCrossroadFormData(crossroad);
+
             controls.panels.body.removeClass('show-right-panel');
-            controls.buttons.btnShowCrossroad.click();
+            editor.bottomTabSwitch(controls.buttons.btnShowCrossroad);
 
             controls.inputs.inputCrossroadOffset.slider('relayout');
             var data = cy.aveSelectedCrossroadNodes(crossroad.id);

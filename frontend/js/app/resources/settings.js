@@ -134,13 +134,13 @@
                     tag: 'ph1',
                     length: 50,
                     minLength: 12,
-                    intertact: 6
+                    intertact: 3
                 },
                 {
                     tag: 'ph2',
                     length: 50,
                     minLength: 12,
-                    intertact: 6
+                    intertact: 3
                 }
             ],
             phasesOrders: [
@@ -229,16 +229,16 @@
 
         interPhaseDefaults:{
             amber: 3,
-            blink: 3,
+            blink: 0,
             yellow: 3,
-            totalLength: 6
+            totalLength: 3
         },
 
         emptyPhase: {
             tag: '',
             length: 0,
             minLength: 12,
-            intertact: 6
+            intertact: 3
         }
 
 

@@ -169,10 +169,8 @@ module.exports = {
             }
             if (node.hasOwnProperty('edges') && node.edges.length > 0) {
                 node.edges.map(function(edge) {
-                    console.log(edge);
                     var constr1 = extraConstraints.edgeExtra(targetIds);
                     this.checkConstraint(edge, constr1, {type:'edge'});
-
 
                     var node2 =_.find(data, {id:edge.source});
                     var connectedNodes = {

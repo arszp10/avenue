@@ -53,7 +53,7 @@
             if (green > 0) {
                 signals.push({ color: 'green', length: green });
             }
-            signals.push({ color: 'blink', length: blink });
+            //signals.push({ color: 'blink', length: blink });
             signals.push({ color: 'yellow', length: yellow });
 
             if (red > 0) {
@@ -79,7 +79,7 @@
             for (j = 0; j < phCount; j++) {
                 var i = phOrder.order[j] - 1;
                 var interPhaseLength = program.phases[i].hasOwnProperty('intertact')
-                    ? program.phases[i].intertact : 6;
+                    ? program.phases[i].intertact : 3;
 
                 var calcLength = program.phases[i].length - interPhaseLength;
                 if (calcLength <= 0) {

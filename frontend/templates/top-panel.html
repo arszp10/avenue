@@ -33,11 +33,11 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-rocket"></i> &nbsp;&nbsp;<span locale="launch">Launch</span></button>
                         <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
+                            <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu nav-btn-group-dropdown">
-                            <li><a type="button" href="#" id="btn-phases-optimize"><i class="fa fa-server "></i> &nbsp;<span locale="phases">Phases</span></a></li>
-                            <li><a type="button" href="#" id="btn-offsets-optimize"><i class="fa fa-sliders "></i> &nbsp;<span locale="offsets">Offsets</span></a></li>
+                            <li class="hidden-crossroad"><a type="button" href="#" id="btn-phases-optimize"><i class="fa fa-server "></i> &nbsp;<span locale="phases">Phases</span></a></li>
+                            <li class="hidden-crossroad"><a type="button" href="#" id="btn-offsets-optimize"><i class="fa fa-sliders "></i> &nbsp;<span locale="offsets">Offsets</span></a></li>
                         </ul>
                     </div>
                 </form>
@@ -73,7 +73,7 @@
                 <form class="visible-crossroad navbar-form navbar-left" role="search">
                     &nbsp;&nbsp;&nbsp;
                     <button type="button" class="btn btn-inverse" id="btn-cycle-time-calc">
-                        <i class="fa fa-clock-o"></i> <span locale="">Оптимальный цикл</span>
+                        <i class="fa fa-clock-o"></i> <span locale="">Цикл (Вебстер)</span>
                     </button>
                     <button type="button" class="btn btn-primary" id="btn-save-crossroad-data">
                         <i class="fa fa-check"></i> <span locale="apply">Apply</span>

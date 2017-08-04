@@ -127,7 +127,8 @@
             btnRemoveProgram:           '#btnRemoveProgram',
             btnEditProgram:             '#btnEditProgram',
             btnPlusZoomRoute:           '#btnPlusZoomRoute',
-            btnMinusZoomRoute:          '#btnMinusZoomRoute'
+            btnMinusZoomRoute:          '#btnMinusZoomRoute',
+            btnSsaveCrossroadData:      '#btnSsaveCrossroadData'
         }
     };
 })(AvenueApp);

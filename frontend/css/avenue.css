@@ -189,40 +189,14 @@ body{
     top: 65px;
 }
 
-/*.chart-panel{*/
-    /*height: 200px;*/
-    /*width: 320px;*/
-/*}*/
+.right-panel table.table {
+    font-size:12px;
+}
 
-/*.chart-panel-head {*/
-    /*color: #cccccc;*/
-    /*cursor: move;*/
-/*}*/
-/*.chart-panel-head a.btn-chart-close {*/
-    /*display: block;*/
-    /*float:right;*/
-    /*color: #cccccc;*/
-/*}*/
-
-/*.ct-chart{*/
-    /*width: 320px;*/
-    /*height: 200px;*/
-/*}*/
-
-
-/*.ct-series-a .ct-line {*/
-    /*stroke: red;*/
-    /*stroke-width: 2px;*/
-/*}*/
-
-/*.ct-series-b .ct-line {*/
-    /*stroke: #00B000;*/
-    /*stroke-width: 2px;*/
-/*}*/
-
-/*.ct-series-b .ct-area, .ct-series-b .ct-slice-pie {*/
-    /*fill: #A7EDA6;*/
-/*}*/
+.right-panel h4 {
+    font-size:15px;
+    color: #000;
+}
 
 .btn-group, .btn-group-vertical {
     display:block;
