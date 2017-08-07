@@ -1,4 +1,4 @@
-var Flow = require('./flow');
+    var Flow = require('./flow');
 var model = require('./model');
 
 function StopLine(options, network){
@@ -8,26 +8,32 @@ function StopLine(options, network){
 
 
     this.phaseSaturation = function () {
+        var that = this;
         var crossRoad = this.network.getNode(this.parent);
-        var cf = 0;
-        var j = 0;
-        var sat = 0;
-        var pi = parseInt(crossRoad.phases[cf].length) - 1;
-        for (var i = 0; i < this.outFlow.length; i++){
-            j = (i + crossRoad.offset) % this.cycleTime;
-            sat +=  this.outFlow[j];
-            if (pi == i) {
-                sat = sat / this.capacityPerSecond / parseInt(crossRoad.phases[cf].length);
-                if (sat > crossRoad.phases[cf].saturation) {
-                    crossRoad.phases[cf].saturation = sat;
-                }
-                sat = 0;
-                if (cf < crossRoad.phases.length -1) {
-                    cf++;
-                    pi+= parseInt(crossRoad.phases[cf].length) - 1;
-                }
+        var phaseOffset = 0;
+        crossRoad.phases.map(function(phase, inx){
+
+            if (!that.greenPhases[inx]) {
+                phaseOffset += phase.length;
+                return;
             }
-        }
+
+            var fq = (phaseOffset - 1 + crossRoad.offset + that.cycleTime) % that.cycleTime;
+            var queue = that.queueFunc[fq];
+            //console.log(fq, JSON.stringify(that.queueFunc));
+            var sumInPhase = 0;
+            var effectiveGreen = phase.length - phase.intertact;
+            for (var i=0; i < effectiveGreen; i++){
+                var iq = (phaseOffset + i + crossRoad.offset) % that.cycleTime;
+                sumInPhase += that.inFlow[iq];
+            }
+            var saturation = (queue + sumInPhase)/(effectiveGreen * that.capacityPerSecond);
+            //console.log(that.tag, fq, saturation , queue , sumInPhase,  effectiveGreen , that.capacityPerSecond);
+            if (saturation > phase.saturation) {
+                phase.saturation = saturation;
+            }
+            phaseOffset += phase.length;
+        });
     };
 
     this.calc = function (){

@@ -34,6 +34,7 @@ function Flow(options, network)
     this.capacityPerSecond      = this.capacity/3600;
     this.inFlow         = [].fillArray(this.cycleTime, 0);
     this.outFlow        = [].fillArray(this.cycleTime, 0);
+    this.queueFunc      = [].fillArray(this.cycleTime, 0);
     this.length         = parseInt(flow.length);
     this.routeTime      = parseInt(flow.routeTime);
     this.dispersion     = parseFloat(flow.dispersion);

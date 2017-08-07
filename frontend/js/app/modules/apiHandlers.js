@@ -88,6 +88,14 @@
             fail: failCalcHandler,
             always: alwaysCalcHandler
         },
+
+        singleCrossroadCycle:{
+            done: function(r, options){
+                console.log(r);
+            },
+            fail: failCalcHandler,
+            always: alwaysCalcHandler
+        },
         createModel: {
             done: function(r,o){
                 if (r.success) {

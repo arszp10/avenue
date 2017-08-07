@@ -54,6 +54,10 @@
             return action('POST:/api/model/optimize/phases', data, handlers.phasesOptimize, options);
         },
 
+        singleCrossroadCycle: function(data, options) {
+            return action('POST:/api/model/optimize/cycle-single', data, handlers.singleCrossroadCycle, options);
+        },
+
         createModel: function(data, options) {
             return action('POST:/api/model/create', data, handlers.createModel, options);
         },

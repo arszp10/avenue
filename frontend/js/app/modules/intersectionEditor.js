@@ -1,6 +1,6 @@
 (function(App){
 
-    var cy, editor, traffic, routes, that;
+    var cy, editor, traffic, routes, api, that;
     var crossroad, program, stopLines;
     var cyCrossroad;
     var controls  = App.Controls;
@@ -17,6 +17,7 @@
             editor    = modules.editor;
             traffic   = modules.traffic;
             routes    = modules.routes;
+            api       = modules.apiCalls;
             that = this;
         },
 
@@ -320,6 +321,23 @@
                 controls.inputs.inputCrossroadOffset
                     .slider('setAttribute', 'max', realValue - 1)
                     .slider('relayout');
+            });
+
+
+            var prepareEditorViewBeforeCalc = function(){
+                var $icon = controls.buttons.btnCycleAndPhaseRate.find('i.fa');
+                $icon.addClass('fa-spin');
+                cy.nodes().removeClass('has-error');
+                cy.$(':selected').unselect();
+                cy.trigger('unselect');
+                return $icon;
+            };
+
+            controls.buttons.btnCycleAndPhaseRate.click(function(){
+                var $icon = prepareEditorViewBeforeCalc();
+                controls.buttons.btnSaveCrossroadData.click();
+                var data = cy.avePrepareCalcRequestSingleCrossroad(crossroad.id);
+                api.singleCrossroadCycle({data: data}, $icon);
             });
 
 

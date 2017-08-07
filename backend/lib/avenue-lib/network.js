@@ -196,6 +196,115 @@ Network.prototype.optimizeOffsets = function(numberOfIteration){
 };
 
 
+Network.prototype.optimizeCycleSingleCrossroad = function(){
+        //return this;
+        var that = this;
+        var index;
+        _.forEach(this.crIndexMap, function(inx){
+            index = inx;
+        });
+
+        var crossRoad = that.network[index];
+            crossRoad.offset = 0;
+        var cycleTime = crossRoad.cycleTime;
+
+        var saturationStat = function(){
+            var notMinLenCtnr = 0;
+            var notMinLenSaturation = 0;
+
+            var maxSaturation = 0;
+            var minSaturation = 10000;
+            var maxSaturationPhase = -1;
+            var minSaturationPhase = -1;
+
+            crossRoad.phases.map(function(phase, inx){
+                if (phase.length != phase.minLength){
+                    notMinLenCtnr++;
+                    notMinLenSaturation += phase.saturation;
+                    if (phase.saturation > maxSaturation) {
+                        maxSaturation = phase.saturation;
+                        maxSaturationPhase = inx;
+                    }
+                    if (phase.saturation < minSaturation) {
+                        minSaturation = phase.saturation;
+                        minSaturationPhase = inx;
+                    }
+                }
+            });
+            return {
+                avg: notMinLenSaturation/notMinLenCtnr,
+                max: maxSaturation,
+                min: minSaturation,
+                maxPhase: maxSaturationPhase,
+                minPhase: minSaturationPhase
+            };
+        };
+
+        var phasesLengthAsString = function(field){
+            return  crossRoad.phases.reduce(function(sum, phase){
+                return sum  + phase[field] + ', ';
+            }, '');
+        };
+
+
+
+        for(var r=26; r<=200; r=r+crossRoad.phases.length) {
+
+            crossRoad.phases.map(function(phase){
+                phase.length = Math.round(r/crossRoad.phases.length);
+                phase.saturation = 0;
+            });
+            _.forEach(that.crStopLines[crossRoad.id], function(id){
+                var sl = that.getNode(id);
+                sl.resetIntervals(traffic.redIntervals(sl, crossRoad));
+            });
+
+            _.forEach(this.network, function(node){
+                node.cycleTime = r;
+            });
+            that.simulate(1);
+
+            var avgSaturationPrev = 0;
+
+            //console.log(r);
+            for (var t=0; t<=50; t++) {
+                var s = saturationStat();
+                //console.log(t,  crossRoad.phases,s);
+                //console.log("\t", t, s.maxPhase, s.minPhase, avgSaturationPrev, phasesLengthAsString('length'), phasesLengthAsString('saturation'));
+                crossRoad.phases[s.maxPhase].length++;
+                crossRoad.phases[s.minPhase].length--;
+                crossRoad.phases.map(function(phase){
+                    phase.saturation = 0;
+                });
+                _.forEach(that.crStopLines[crossRoad.id], function(id){
+                    var sl = that.getNode(id);
+                    sl.resetIntervals(traffic.redIntervals(sl, crossRoad));
+                });
+                that.simulate(1);
+                if (avgSaturationPrev == s.avg) {
+                    break;
+                }
+                avgSaturationPrev = s.avg;
+            }
+
+            var sumcongestion = 0;
+            var sumdelay = 0;
+            _.forEach(this.network, function(node){
+                var delay = node.delay|0 ;
+                sumcongestion += (node.isCongestion?1:0);
+                sumdelay += delay ;
+            });
+
+            console.log(r, avgSaturationPrev, sumdelay * (sumcongestion+1), sumdelay, sumcongestion, phasesLengthAsString('length'),  phasesLengthAsString('saturation'));//);
+
+        }
+
+
+    return this;
+};
+
+
+
 Network.prototype.optimizeSplits = function(){
     var that = this;
 

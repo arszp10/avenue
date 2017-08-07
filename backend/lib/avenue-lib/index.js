@@ -72,6 +72,17 @@ module.exports = {
             .json();
     },
 
+    optimizeCycleSingleCrossroad: function(request){
+        if (this.isEmptyRequest(request)) return [];
+        this.replacePercentPortionToAbs(request);
+        var network = new Network(request);
+        return network
+            //.simulate(1)
+            .optimizeCycleSingleCrossroad()
+            //.simulate(1)
+            .json();
+    },
+
     optimizeOffsets: function(request){
         if (this.isEmptyRequest(request)) return [];
         this.replacePercentPortionToAbs(request);

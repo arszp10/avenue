@@ -253,6 +253,16 @@ module.exports = function(app, config) {
             ));
     });
 
+    app.post('/api/model/optimize/cycle-single', authenticateApi, validateModel, function (req, res) {
+        var bodyData = requestBodyData(req);
+        res.json(
+            responses.modelSimulationSuccess(
+                avenueLib.optimizeCycleSingleCrossroad(bodyData)
+            ));
+    });
+
+
+
     app.post('/api/model/create', authenticateApi, function (req, res) {
         var userId = req.session.user.id;
         var data = {

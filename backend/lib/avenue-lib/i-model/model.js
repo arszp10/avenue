@@ -22,6 +22,7 @@ module.exports = {
     stopLine:function(flow, offset, queueTail){
         var cycleTime           = flow.cycleTime;
         var capacityPerSecond   = flow.capacityPerSecond;
+        var queueFunc           = flow.queueFunc;
         var inFlow              = flow.inFlow;
         var outFlow             = flow.outFlow;
         var queue               = queueTail == undefined ? 0 : queueTail;
@@ -57,6 +58,7 @@ module.exports = {
                 delay += (rTime - t + Math.floor(queue/capacityPerSecond))*value;
                 t++;
                 outFlow[(j + offset) % cycleTime] = 0;
+                queueFunc[(j + offset) % cycleTime] = queue;
                 if (j != currInterval.f) {
                     continue;
                 }
@@ -79,6 +81,7 @@ module.exports = {
             ;
             t = 0;
             outFlow[(j + offset) % cycleTime] = value;
+            queueFunc[(j + offset) % cycleTime] = queue;
             sumOutFlow += value;
             sumGreenFlow += value;
         }
@@ -91,6 +94,7 @@ module.exports = {
         flow.sumOutFlow         = sumOutFlow;
         flow.delay              = delay;
         flow.outFlow            = outFlow;
+        flow.queueFunc            = queueFunc;
         flow.maxQueueLength     = maxQueueLength;
         flow.greenSaturation    = Math.round(100*sumGreenFlow/sumGreenCpacity);
         flow.isCongestion       = checkCongestion(sumInFlow, sumOutFlow, queueTail, flow.queueLimit, maxQueueLength);

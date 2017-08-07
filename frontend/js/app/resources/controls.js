@@ -128,7 +128,8 @@
             btnEditProgram:             '#btnEditProgram',
             btnPlusZoomRoute:           '#btnPlusZoomRoute',
             btnMinusZoomRoute:          '#btnMinusZoomRoute',
-            btnSsaveCrossroadData:      '#btnSsaveCrossroadData'
+            btnSsaveCrossroadData:      '#btnSsaveCrossroadData',
+            btnCycleAndPhaseRate:       '#btn-cycle-and-phase-rate'
         }
     };
 })(AvenueApp);

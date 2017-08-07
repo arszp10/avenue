@@ -366,24 +366,32 @@
                 node.children().data('cycleTime', cycleTime);
             });
         },
+
+        avePrepareCalcRequestSingleCrossroad: function (id){
+            var nodes = this.$('node[parent="'+id+'"], #' + id);
+            var edges = nodes.edgesWith(nodes);
+            return this.avePrepareCalcRequestBase(edges, nodes);
+        },
+
         avePrepareCalcRequest: function (){
+            return this.avePrepareCalcRequestBase(this.edges(), this.nodes());
+        },
+
+        avePrepareCalcRequestBase: function (edges, nodes){
             this.aveSetCycleTimeToAllNodes();
             var map = [];
-            var edges = {};
-            var elems = this.edges();
-            elems.forEach(function(v, i, a){
+            var groupedEdges = {};
+            edges.forEach(function(v, i, a){
                 if(! v.isEdge()){
                     return
                 };
                 var target = v.data('target');
-                if (! edges.hasOwnProperty(target)) {
-                    edges[target] = [];
+                if (! groupedEdges.hasOwnProperty(target)) {
+                    groupedEdges[target] = [];
                 };
-                edges[target].push(v.data());
+                groupedEdges[target].push(v.data());
             });
-
-            elems = this.nodes();
-            elems.forEach(function(v, i, a){
+            nodes.forEach(function(v, i, a){
                 if(! v.isNode()){
                     return
                 }
@@ -395,7 +403,7 @@
                 delete item.greenOffset1;
                 delete item.greenOffset2;
                 if (item.type != 'crossRoad') {
-                    item.edges = edges[v.data('id')];
+                    item.edges = groupedEdges[v.data('id')];
                     if (item.type == 'stopline' && item.parent) {
                         var programInx = cy.getElementById(item.parent).data('currentProgram');
                         item.greenPhases = cy.aveGetCurrentProgramGreens(item.greenPhases[programInx], item.parent);
@@ -410,7 +418,6 @@
                     delete item.currentProgram;
                 }
                 map.push(item);
-
             });
             return map;
         },
