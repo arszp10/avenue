@@ -10,6 +10,13 @@
     var $addGreenEditableElement;
 
 
+
+    function heatMapColorforValue(value){
+        var h = (1.0 - value) * 240;
+        return "hsl(" + h + ", 100%, 50%)";
+    }
+
+
     App.Modules.intersectionEditor = {
 
         injectDependencies: function(modules) {
@@ -324,21 +331,182 @@
             });
 
 
-            var prepareEditorViewBeforeCalc = function(){
-                var $icon = controls.buttons.btnCycleAndPhaseRate.find('i.fa');
-                $icon.addClass('fa-spin');
-                cy.nodes().removeClass('has-error');
-                cy.$(':selected').unselect();
-                cy.trigger('unselect');
-                return $icon;
-            };
-
             controls.buttons.btnCycleAndPhaseRate.click(function(){
-                var $icon = prepareEditorViewBeforeCalc();
                 controls.buttons.btnSaveCrossroadData.click();
                 var data = cy.avePrepareCalcRequestSingleCrossroad(crossroad.id);
-                api.singleCrossroadCycle({data: data}, $icon);
+                api.singleCrossroadCycle({data: data});
+                that.showCycleGraphModal();
+
             });
+
+
+        },
+
+        showCycleGraphModal: function(){
+            controls.panels.cycleGraphModal.modal('show');
+            controls.panels.cycleGraphSvg.empty();
+            controls.panels.cycleDiagramLoader.removeClass('hidden');
+            controls.panels.cycleGraphSvg.add('hidden');
+
+        },
+
+        renderCycleGraphData: function(graphData){
+            var svgMargin = {top: 20 , right:20, bottom: 20, left: 30};
+            var step = graphData[0].phases.length;
+            var data = graphData.map(function(cycleData){
+                var start  = 0;
+                cycleData.phases.map(function(ph){
+                    ph.start = start;
+                    ph.cycleTime = cycleData.cycleTime;
+                    start += ph.length;
+                });
+                return cycleData;
+            });
+
+            var width = 870;
+            var height = 450;
+            var svg = d3.select("#cycle-diagram-svg").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", "translate(" + svgMargin.left + "," + svgMargin.top + ")");
+            var hpad = svgMargin.left + svgMargin.right;
+            var vpad = svgMargin.bottom + svgMargin.top;
+            var mpad = 150;
+            var x  = d3.scale.linear().rangeRound([0, width - hpad]);
+            var y  = d3.scale.linear().rangeRound([height - vpad-mpad, 0]);
+            var y1 = d3.scale.linear().rangeRound([height - vpad-mpad, 0]);
+            var y3 = d3.scale.linear().rangeRound([height - vpad-mpad, 0]);
+            var y2 = d3.scale.linear().rangeRound([height - mpad - vpad + 20, height - vpad ]);
+
+            var line = d3.svg.line()
+                .x(function(d) { return x(d.cycleTime); })
+                .y(function(d) { return y(d.avgCycleSaturation); });
+            var line1 = d3.svg.line()
+                .x(function(d) { return x(d.cycleTime); })
+                .y(function(d) { return y(1); });
+            var line3 = d3.svg.line()
+                .x(function(d) { return x(d.cycleTime); })
+                .y(function(d) { return y3(d.sumDelay); });
+
+            x.domain(d3.extent(data, function(d) { return d.cycleTime; }));
+            y.domain([0,3]);
+            y1.domain([0,10]);
+            y2.domain([0,100]);
+            y3.domain(d3.extent(data, function(d) { return d.sumDelay; }));
+
+            var yAxis   = d3.svg.axis().scale(y).orient("left");
+            var yAxis1   = d3.svg.axis().scale(y1).orient("right").innerTickSize(-width+hpad);
+            var yAxis3   = d3.svg.axis().scale(y3).orient("left");
+            var yAxis2   = d3.svg.axis().scale(y2)
+                .orient("left")
+                .ticks(10)
+                .tickFormat(function(d) { return d + "%"; });
+            var xAxis   = d3.svg.axis().scale(x).orient("bottom").innerTickSize(-height+vpad+mpad);
+
+
+            svg.append("g").attr("class", "y axis").call(yAxis)
+                .style("font-size","11px");
+
+            svg.append("g").attr("class", "y2 axis")
+                .attr("transform", "translate(0,0)")
+                .call(yAxis2)
+                .style("font-size","8px");
+
+
+            svg.selectAll(".bar")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("fill", "#ffeeee")
+                .attr('fill-opacity', 1)
+                .attr("x", function(d) { return x(d.cycleTime); })
+                .attr("y", function(d) { return y1(d.sumCongestion); })
+                .attr("width", Math.abs(x(step)-x(0)))
+                .attr("height", function(d) { return height - mpad - vpad - y1(d.sumCongestion); });
+
+
+            svg.append("path")
+                .datum(data)
+                .attr("fill", "none")
+                .attr("stroke", "steelblue")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 3)
+                .attr("d", line);
+
+            svg.append("path")
+                .datum(data)
+                .attr("fill", "none")
+                .attr("stroke", "red")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.0)
+                .attr("d", line1);
+
+            svg.append("path")
+                .datum(data)
+                .attr("fill", "none")
+                .attr("stroke", "#999999")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 2.0)
+                .attr("d", line3);
+
+
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0, " + (height - vpad - mpad) + ")")
+                .call(xAxis)
+                .style("font-size","11px");
+
+            svg.append("g").attr("class", "y1 axis")
+                .attr("transform", "translate(" + (width - hpad) + ",0)")
+                .call(yAxis1)
+                .style("font-size","11px");
+            svg.append("g").attr("class", "y3 axis")
+                .attr("transform", "translate(" + (width - hpad) + ",0)")
+                .call(yAxis3)
+                .style("font-size","11px");
+
+            data.pop();
+            var bar = svg.selectAll("rect.phases")
+                .data(data)
+                .enter()
+                .append("g")
+                .attr("class", "phases")
+                .style("text-anchor", "middle");
+
+            var bar1 = bar.selectAll(".phases-bars")
+                    .data(function(d) { return d.phases;}).enter()
+                    .append("g").attr("class", "phases-bars");
+
+            bar1.append("rect")
+                .style("stroke", "#ffffff")
+                //.attr('fill-opacity', 0.1)
+                .attr("fill", function(d) {
+                    return heatMapColorforValue(d.saturation/1.6);
+                })
+                .attr('fill-opacity', 1)
+                .style("stroke-width", 1)
+                .attr('class', 'phases')
+                .attr("height", function(d) {
+                    return y2((100*d.length/d.cycleTime)) - y2(0);
+                })
+                .attr("x", function(d) { return x(d.cycleTime); })
+                .attr("y", function(d) { return y2(100*d.start/d.cycleTime); })
+                .attr("width", Math.abs(x(step)-x(0)));
+
+            if (step >=3) {
+                bar1.append("text")
+                    .style('fill', function(d){
+                        if (y2((100*d.length/d.cycleTime)) - y2(0) < 10) return "transparent";
+                        return '#222222';
+                    })
+                    .attr("x",   function(d) { return x(d.cycleTime + step/2); })
+                    .attr("y",   function(d) { return y2(100*(d.start + d.length/2+2)/d.cycleTime); })
+                    .text(function(d) { return d.length +''; })
+            }
 
 
         },

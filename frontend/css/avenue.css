@@ -417,7 +417,7 @@ body.show-edge-input #input-edge-label {
 
 @media (min-width: 768px){
     .modal-dialog {
-        width: 1100px;
+        width: 900px;
         margin: 30px auto;
     }
 }
@@ -1089,4 +1089,29 @@ a.btn-edit-add-green[disabled] span.add-green-value {
 
 #crossroad-panel .row {
     max-width: 1200px;
+}
+
+#cycle-diagram-svg {
+    width: 870px;
+}
+
+.cycle-diagram-legend{
+    height:0px;
+}
+
+.phases-bars text {
+    font-size:8px;
+    color:#fff;
+    /*transform: rotate(90deg);*/
+}
+
+.tick line{
+    opacity: 0.1;
+}
+
+.loader {
+    height: 200px;
+    vertical-align: middle;
+    text-align: center;
+    padding: 25%;
 }

@@ -1,7 +1,7 @@
 (function(App){
     var controls  = App.Controls;
     var templates = App.Templates;
-    var cy, editor, modelManager, map;
+    var cy, editor, modelManager, map, intersectionEditor;
 
     var nop = function(r,o){ };
 
@@ -39,6 +39,9 @@
     };
 
     var alwaysCalcHandler = function(options){
+        if (!options) {
+            return;
+        }
         options.removeClass('fa-spin');
     };
 
@@ -48,6 +51,7 @@
             editor  = modules.editor;
             modelManager = modules.modelManager;
             map = modules.map;
+            intersectionEditor = modules.intersectionEditor;
         },
         initModule: nop,
 
@@ -91,7 +95,9 @@
 
         singleCrossroadCycle:{
             done: function(r, options){
-                console.log(r);
+                controls.panels.cycleDiagramLoader.addClass('hidden');
+                controls.panels.cycleGraphSvg.removeClass('hidden');
+                intersectionEditor.renderCycleGraphData(r.data);
             },
             fail: failCalcHandler,
             always: alwaysCalcHandler
