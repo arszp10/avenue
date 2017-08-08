@@ -293,7 +293,7 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
             _.forEach(this.network, function(node){
                 var x = node.avgIntensity/node.capacity;
                 var overSatDelay = 900/ct*(x + Math.sqrt((x-1)*(x-1) + 4*0.9/node.capacity/ct))|0;
-                var delay = node.delay/ct|0 + (node.isCongestion ? overSatDelay : 0) ;
+                var delay = node.delay/ct|0 + overSatDelay ;
                 sumcongestion += (node.isCongestion?1:0);
                 sumdelay += delay ;
             });
