@@ -276,7 +276,7 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
 
             var avgSaturationPrev = 0;
 
-            for (var t = 0; t <= 50; t++) {
+            for (var t = 0; t <= 25; t++) {
                 var s = that.phasesSaturationStat(crossRoad);
                 crossRoad.phases[s.maxPhase].length++;
                 crossRoad.phases[s.minPhase].length--;
