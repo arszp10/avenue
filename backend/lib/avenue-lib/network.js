@@ -290,7 +290,9 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
 
             var sumcongestion = 0;
             var sumdelay = 0;
-            _.forEach(this.network, function(node){
+
+            _.forEach(that.crStopLines[crossRoad.id], function(id){
+                var node = that.getNode(id);
                 var x = node.avgIntensity/node.capacity;
                 var overSatDelay = 300/ct*(x + Math.sqrt((x-1)*(x-1) + 4*0.9/node.capacity/ct))|0;
                 var delay = node.delay/ct|0 + overSatDelay ;
