@@ -12,6 +12,7 @@
             cycleGraphModal :       '#cycle-graph-modal',
             cycleGraphSvg:          "#cycle-diagram-svg",
             cycleDiagramLoader:     '#cycle-diagram-loader',
+            cycleDiagramLegend:     '#cycle-diagram-legend',
 
             tblPhasesBody:          '#crossroad-panel #table-phases tbody',
             tblDiagramsBody:        '#crossroad-panel #crossroad-table-diagrams tbody',
@@ -133,7 +134,9 @@
             btnPlusZoomRoute:           '#btnPlusZoomRoute',
             btnMinusZoomRoute:          '#btnMinusZoomRoute',
             btnSsaveCrossroadData:      '#btnSsaveCrossroadData',
-            btnCycleAndPhaseRate:       '#btn-cycle-and-phase-rate'
+            btnCycleAndPhaseRate:       '#btn-cycle-and-phase-rate',
+            btnCycleLenghtRecalc:       '#btn-cycle-lenght-recalc',
+            btnCycleLenghtApply:        '#btn-cycle-lenght-apply'
         }
     };
 })(AvenueApp);

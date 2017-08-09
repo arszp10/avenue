@@ -122,19 +122,32 @@
 
             controls.buttons.btnCalc.click(function () {
                 var $icon = prepareEditorViewBeforeCalc();
-
+                var data;
+                var singleCrossroad;
                 if (controls.panels.body.hasClass('show-crossroad')) {
                     controls.buttons.btnSaveCrossroadData.click();
+                    data = cy.avePrepareCalcRequestSingleCrossroad(
+                        intersectionEditor.getCrossroad().id
+                    );
+                    singleCrossroad = true;
+                } else {
+                    data = cy.avePrepareCalcRequest();
+                    singleCrossroad = false;
                 }
 
-                var data = cy.avePrepareCalcRequest();
-                api.modelExecute({data: data}, $icon);
+                api.modelExecute({data: data}, {
+                    icon: $icon,
+                    singleCrossroad: singleCrossroad
+                });
             });
 
             controls.buttons.btnOffsetsOptimize.click(function () {
                 var $icon = prepareEditorViewBeforeCalc();
                 var data = cy.avePrepareCalcRequest();
-                api.offsetsOptimize({data: data}, $icon);
+                api.offsetsOptimize({data: data}, {
+                    icon: $icon,
+                    singleCrossroad: false
+                });
             });
 
             controls.buttons.btnPhasesOptimize.click(function () {

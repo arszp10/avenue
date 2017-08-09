@@ -1,7 +1,7 @@
 (function(App){
 
     var cy, editor, traffic, routes, api, that;
-    var crossroad, program, stopLines;
+    var crossroad, program, stopLines, selectedOptimalCycleData;
     var cyCrossroad;
     var controls  = App.Controls;
     var templates = App.Templates;
@@ -332,25 +332,75 @@
 
 
             controls.buttons.btnCycleAndPhaseRate.click(function(){
-                controls.buttons.btnSaveCrossroadData.click();
-                var data = cy.avePrepareCalcRequestSingleCrossroad(crossroad.id);
-                api.singleCrossroadCycle({data: data});
-                that.showCycleGraphModal();
+                if (program.graphData) {
+                    that.showCycleGraphModal(true);
+                    return;
+                }
 
+                that.refreshCycleGraphRequest();
+                that.showCycleGraphModal(false);
+            });
+
+            controls.buttons.btnCycleLenghtRecalc.click(function(){
+                that.refreshCycleGraphRequest();
+                that.resetCycleGraphSvg();
             });
 
 
+            controls.buttons.btnCycleLenghtApply.click(function(){
+               if (!selectedOptimalCycleData)  return;
+               var data = selectedOptimalCycleData;
+               var orders = program.phasesOrders[program.currentOrder].order;
+
+                data.phases.map(function(phase, inx){
+                    var phaseNum = orders[inx];
+                    var phaseInx = phaseNum - 1;
+                        program.phases[phaseInx].length = phase.length;
+                });
+
+                controls.panels.cycleGraphModal.modal('hide');
+                program.cycleTime = data.cycleTime;
+                that.fillCrossroadFormData(crossroad);
+            });
+
         },
 
-        showCycleGraphModal: function(){
-            controls.panels.cycleGraphModal.modal('show');
+        refreshCycleGraphRequest:function(){
+            controls.buttons.btnSaveCrossroadData.click();
+            var data = cy.avePrepareCalcRequestSingleCrossroad(crossroad.id);
+            api.singleCrossroadCycle({data: data});
+        },
+
+        showCycleGraphModal: function(fromCache){
+            if (!fromCache) {
+                controls.panels.cycleGraphModal.modal('show');
+                this.resetCycleGraphSvg();
+                return;
+            }
+            if (program.graphData) {
+                controls.panels.cycleGraphModal.modal('show');
+                this.renderCycleGraphData(program.graphData);
+            }
+        },
+
+        resetCycleGraphSvg: function() {
             controls.panels.cycleGraphSvg.empty();
             controls.panels.cycleDiagramLoader.removeClass('hidden');
             controls.panels.cycleGraphSvg.add('hidden');
-
+            controls.panels.cycleDiagramLegend.empty();
+            controls.buttons.btnCycleLenghtApply.addClass('hidden');
+            selectedOptimalCycleData = null;
         },
 
         renderCycleGraphData: function(graphData){
+            program.graphData = graphData;
+            controls.panels.cycleGraphSvg.empty();
+            controls.panels.cycleDiagramLoader.addClass('hidden');
+            controls.panels.cycleGraphSvg.removeClass('hidden');
+            controls.panels.cycleDiagramLegend.empty();
+            controls.buttons.btnCycleLenghtApply.addClass('hidden');
+            selectedOptimalCycleData = null;
+
             var svgMargin = {top: 20 , right:20, bottom: 20, left: 30};
             var step = graphData[0].phases.length;
             var data = graphData.map(function(cycleData){
@@ -388,6 +438,10 @@
             var line3 = d3.svg.line()
                 .x(function(d) { return x(d.cycleTime); })
                 .y(function(d) { return y3(d.sumDelay); });
+
+            var line4 = d3.svg.line()
+                .x(function(d) { return x(d.x); })
+                .y(function(d) { return y(d.y); });
 
             x.domain(d3.extent(data, function(d) { return d.cycleTime; }));
             y.domain([0,3]);
@@ -475,11 +529,53 @@
                 .enter()
                 .append("g")
                 .attr("class", "phases")
+                .on("click", function(){
+                    var data = d3.select(this).data()[0];
+
+                    selectedOptimalCycleData = data;
+                    controls.panels.cycleDiagramLegend.html(templates.cycleGraphLegendTable(data))
+                    controls.buttons.btnCycleLenghtApply.removeClass('hidden');
+
+                    d3.select(this).selectAll('rect').style("stroke", "#000000");
+                    svg.selectAll('path.vertical-red-selected').remove();
+                    svg.append("path")
+                        .datum([{x:data.cycleTime, y:-1.75},{x:data.cycleTime,y:3}])
+                        .attr("class", "vertical-red-selected")
+                        .attr("fill", "none")
+                        .attr("stroke", "#800")
+                        .attr("stroke-linejoin", "round")
+                        .attr("stroke-linecap", "round")
+                        .attr("stroke-width", 1.0)
+                        .attr("d", line4);
+                })
+
+                .on("mouseenter", function(){
+                    var data = d3.select(this).data()[0];
+                    d3.select(this).selectAll('rect').style("stroke", "#000000");
+                    svg.selectAll('path.vertical-red').remove();
+                    svg.append("path")
+                        .datum([{x:data.cycleTime, y:-1.75},{x:data.cycleTime,y:3}])
+                        .attr("class", "vertical-red")
+                        .attr("fill", "none")
+                        .attr("stroke", "red")
+                        .attr("stroke-linejoin", "round")
+                        .attr("stroke-linecap", "round")
+                        .attr("stroke-width", 1.0)
+                        .attr("d", line4);
+                })
+                .on("mouseleave", function(){
+                    svg.selectAll('path.vertical-red').remove();
+                    d3.select(this).selectAll('rect').style("stroke", "#ffffff");
+                    //console.log('leave',d3.select(this).data());
+                })
+                .style("cursor", "pointer")
                 .style("text-anchor", "middle");
 
             var bar1 = bar.selectAll(".phases-bars")
                     .data(function(d) { return d.phases;}).enter()
-                    .append("g").attr("class", "phases-bars");
+                    .append("g")
+                    .attr("class", "phases-bars");
+
 
             bar1.append("rect")
                 .style("stroke", "#ffffff")
@@ -495,7 +591,7 @@
                 })
                 .attr("x", function(d) { return x(d.cycleTime); })
                 .attr("y", function(d) { return y2(100*d.start/d.cycleTime); })
-                .attr("width", Math.abs(x(step)-x(0)));
+                .attr("width", Math.abs(x(step-1)-x(0)));
 
             if (step >=3) {
                 bar1.append("text")
@@ -503,7 +599,7 @@
                         if (y2((100*d.length/d.cycleTime)) - y2(0) < 10) return "transparent";
                         return '#222222';
                     })
-                    .attr("x",   function(d) { return x(d.cycleTime + step/2); })
+                    .attr("x",   function(d) { return x(d.cycleTime + (step-1)/2); })
                     .attr("y",   function(d) { return y2(100*(d.start + d.length/2+2)/d.cycleTime); })
                     .text(function(d) { return d.length +''; })
             }
@@ -833,7 +929,9 @@
             }
         },
 
-
+        getCrossroad: function(){
+            return crossroad;
+        }
 
     };
 

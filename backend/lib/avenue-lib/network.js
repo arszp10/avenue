@@ -266,20 +266,24 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
         var leftCycleBound = minLengthSum + crossRoad.phases.length;
         var rightCycleBound = 300;
 
-        for(var ct = leftCycleBound; ct <=rightCycleBound; ct = ct + crossRoad.phases.length) {
+        crossRoad.phases.map(function(phase){
+            phase.length = Math.round(minLengthSum/crossRoad.phases.length);
+        });
 
+        for(var ct = leftCycleBound; ct <=rightCycleBound; ct = ct + crossRoad.phases.length) {
             crossRoad.phases.map(function(phase){
-                phase.length = Math.round(ct/crossRoad.phases.length);
+                phase.length++;
             });
             that.refreshPhasesLengthAndCycle(crossRoad, ct);
             that.simulate(1);
 
             var avgSaturationPrev = 0;
 
-            for (var t = 0; t <= 25; t++) {
+            for (var t = 0; t <= 50; t++) {
+                var deltaR = 1;
                 var s = that.phasesSaturationStat(crossRoad);
-                crossRoad.phases[s.maxPhase].length++;
-                crossRoad.phases[s.minPhase].length--;
+                crossRoad.phases[s.maxPhase].length+= deltaR;
+                crossRoad.phases[s.minPhase].length-= deltaR;
                 that.refreshPhasesLengthAndCycle(crossRoad);
                 that.simulate(1);
                 if (avgSaturationPrev == s.avg) {
@@ -293,9 +297,13 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
 
             _.forEach(that.crStopLines[crossRoad.id], function(id){
                 var node = that.getNode(id);
-                var x = node.avgIntensity/node.capacity;
-                var overSatDelay = 300/ct*(x + Math.sqrt((x-1)*(x-1) + 4*0.9/node.capacity/ct))|0;
-                var delay = node.delay/ct|0 + overSatDelay ;
+                var x = node.sumInFlow/node.sumOutFlow;
+                var overSatDelay = 0;
+                if ( x > 1 ) {
+                    var T = 10/ct;
+                    overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 8*0.5*0.9*x/(T*ct))|0;
+                }
+                var delay = node.delay/ct + overSatDelay;
                 sumcongestion += (node.isCongestion?1:0);
                 sumdelay += delay ;
             });
@@ -309,7 +317,7 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
             });
 
         }
-    //console.log(JSON.stringify(result));
+
     return result;
 };
 

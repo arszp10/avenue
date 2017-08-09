@@ -80,6 +80,9 @@
 
             'modeling-results': 'Результат моделирования',
             'delay': 'Задежка',
+            'delay-model': 'Задежка (модель)',
+            'delay-oversaturation': 'Задежка (перерузки)',
+
             'green-saturation': 'Насыщ. зеленого',
             'limit-max-queue': 'Предел/Max. очередь',
             'sum-io-flow': 'Сумма I/O потока',
@@ -193,6 +196,8 @@
 
             'modeling-results': 'Modeling results',
             'delay': 'Delay',
+            'delay-model': 'Delay (model)',
+            'delay-oversaturation': 'Oversatur. delay',
             'green-saturation': 'Green saturation',
             'limit-max-queue': 'Limit / Max. queue',
             'sum-io-flow': 'Sum I/O flow',

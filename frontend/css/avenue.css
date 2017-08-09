@@ -1096,7 +1096,7 @@ a.btn-edit-add-green[disabled] span.add-green-value {
 }
 
 .cycle-diagram-legend{
-    height:0px;
+    /*height:0px;*/
 }
 
 .phases-bars text {
@@ -1114,4 +1114,13 @@ a.btn-edit-add-green[disabled] span.add-green-value {
     vertical-align: middle;
     text-align: center;
     padding: 25%;
+}
+
+.table-cycle-graph-legend {
+    width:auto;
+    font-size:12px;
+}
+
+table.table-cycle-graph-legend td {
+    padding:2px;
 }

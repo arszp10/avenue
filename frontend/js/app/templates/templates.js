@@ -212,8 +212,9 @@
             var no = data.isCongestion ? '<span class="text-danger">' + __('congestion') : '<span class="text-success">' + __('no-congestion');
             return '<h4>' + __('modeling-results') + '</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
-                '    <tr><td>' + __('delay') + '</td><td class="text-right">'+(data.delay/data.cycleTime).toFixed(2)+'</td><td class="measure-unit">' + __('veh_h_h') + '</td></tr>' +
-                '    <tr><td>' + __('delay') + '</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">' + __('veh_sec') + '</td></tr>' +
+                '    <tr><td>' + __('delay-model') + '</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">' + __('veh_sec') + '</td></tr>' +
+                '    <tr><td>' + __('delay') + '</td><td class="text-right">'+data.delayPerHour.toFixed(2)+'</td><td class="measure-unit">' + __('veh_h_h') + '</td></tr>' +
+                '    <tr><td>' + __('delay-oversaturation') + '</td><td class="text-right">'+data.overSaturationDelay.toFixed(2)+'</td><td class="measure-unit">' + __('veh_h_h') + '</td></tr>' +
                 '    <tr><td>' + __('green-saturation') + '</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td></tr>' +
                 '    <tr><td>' + __('limit-max-queue') + '</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">' + __('vehicle') + '</td></tr>' +
                 '    <tr><td>' + __('sum-io-flow') + '</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">' + __('vehicle') + '</td></tr>' +
@@ -221,16 +222,19 @@
                 '</tbody></table>';
         },
 
-        sumDelayStatus:         function(delay){
+        sumDelayStatus:         function(data, singleCrossroad){
+            var descrSymbol = singleCrossroad ? '&#8983;' : '<sub>&sum;</sub>';
             return '<div class="summary-delay-info">' +
-            '<sub>&sum;</sub>&nbsp;<i class="fa fa-car"></i><i class="fa fa-signal"></i>' +
-            '    <strong class="text-primary">56715</strong>' +
+            ''+descrSymbol+'&nbsp;<i class="fa fa-car"></i><i class="fa fa-signal"></i>' +
+            '    <strong class="text-primary">' + data.sumQueue.toFixed(0) + '</strong>' +
             '    <span class="text-muted">' + __('vehicle') + '</span>&nbsp;&nbsp;&nbsp;&nbsp;' +
-            '<sub>&sum;</sub>&nbsp;<i class="fa fa-car"></i><i class="fa fa-hourglass-end"></i>' +
-            '    <strong class="text-primary">'+delay.toFixed(2)+'</strong>' +
+            ''+descrSymbol+'&nbsp;<i class="fa fa-car"></i><i class="fa fa-hourglass-end"></i>' +
+            '    <strong class="text-primary">'+data.sumDelay.toFixed(2)+'</strong>' +
+            '    <span class="text-muted">' + __('veh_sec') + '</span> ' +
+            '    / <strong class="text-primary">'+data.sumDelayPerHour.toFixed(2)+'</strong>' +
             '    <span class="text-muted">' + __('veh_h_h') + '</span> ' +
-            '    (<strong class="text-primary">'+delay.toFixed(2)+'</strong>' +
-            '    <span class="text-muted">' + __('veh_sec') + '</span>)' +
+            '    / <strong class="text-primary">'+data.overSaturationDelay.toFixed(2)+'</strong>' +
+            '    <span class="text-muted">' + __('veh_h_h') + '</span>' +
             '</div>';
         },
 
@@ -301,8 +305,28 @@
                 '</table>' +
                 '<button class="btn btn-primary btn-multi-edit-update" type="submit"><i class="fa fa-check"></i> '+__('update')+'</button>' +
             '</form>';
-        }
+        },
 
+        cycleGraphLegendTable: function(data){
+
+            var row1 = '<td>Цикл</td>';
+            var row2 = '<td>'+ data.cycleTime +'</td>';
+            var row3 = '<td>'+ data.avgCycleSaturation.toFixed(3) +'</td>';
+
+            data.phases.map(function(phase){
+                row1 += '<td>'+ phase.tag +'</td>';
+                row2 += '<td>'+ phase.length +'</td>';
+                row3 += '<td>'+ phase.saturation.toFixed(3) +'</td>';
+            });
+
+            return  '<table class="table table-condensed table-striped table-cycle-graph-legend">' +
+                '<tbody>' +
+                '<tr><th>Название</th>'+row1+'</tr>' +
+                '<tr><th>Длительность</th>'+row2+'</tr>' +
+                '<tr><th>Мах. насыщенность</th>'+row3+'</tr>' +
+                '</tbody>' +
+                '</table>';
+        }
 
     }
 })(AvenueApp);

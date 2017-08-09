@@ -83,6 +83,14 @@ function Flow(options, network)
     };
 
     this.json = function json() {
+        var x = this.sumInFlow/this.sumOutFlow;
+        var overSatDelay = 0;
+        if ( x > 1 ) {
+            var ct = this.cycleTime;
+            var T = 10/ct;
+            overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 8*0.5*0.9*x/(T*ct))|0;
+        }
+
         return {
             id: this.id,
             type: this.type,
@@ -93,6 +101,8 @@ function Flow(options, network)
             maxQueue: this.maxQueueLength,
             queueLimit: this.queueLimit,
             delay: this.delay,
+            delayPerHour: this.delay/this.cycleTime,
+            overSaturationDelay: overSatDelay,
             greenSaturation: this.greenSaturation,
             sumInFlow: this.sumInFlow,
             sumOutFlow: this.sumOutFlow

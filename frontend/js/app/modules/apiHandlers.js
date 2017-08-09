@@ -13,13 +13,18 @@
         }, 0);
     };
 
-    var doneCalcHandler = function (r){
+    var doneCalcHandler = function (r, options){
         if (r.success) {
             App.State.lastModelingResult = r.data;
             App.State.lastErrors = [];
-            var sumDelay = sum(r.data, 'delay');
+            var data = {
+                sumDelay            : sum(r.data, 'delay'),
+                sumDelayPerHour     : sum(r.data, 'delayPerHour'),
+                overSaturationDelay : sum(r.data, 'overSaturationDelay'),
+                sumQueue            : sum(r.data, 'maxQueue')
+            };
             controls.panels.statusBar.html(
-                templates.sumDelayStatus(sumDelay)
+                templates.sumDelayStatus(data, options.singleCrossroad)
             );
         } else {
             App.State.lastModelingResult = [];
@@ -42,7 +47,7 @@
         if (!options) {
             return;
         }
-        options.removeClass('fa-spin');
+        options.icon.removeClass('fa-spin');
     };
 
     App.Modules.apiHandlers = {
@@ -95,8 +100,6 @@
 
         singleCrossroadCycle:{
             done: function(r, options){
-                controls.panels.cycleDiagramLoader.addClass('hidden');
-                controls.panels.cycleGraphSvg.removeClass('hidden');
                 intersectionEditor.renderCycleGraphData(r.data);
             },
             fail: failCalcHandler,
