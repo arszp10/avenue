@@ -67,7 +67,7 @@
         },
         offsetsOptimize: {
             done: function(r, options){
-                doneCalcHandler(r);
+                doneCalcHandler(r, options);
                 if (!r.success) {
                     return;
                 }
@@ -84,7 +84,7 @@
         },
         phasesOptimize: {
             done: function(r, options){
-                doneCalcHandler(r);
+                doneCalcHandler(r,options);
                 if (!r.success) {
                     return;
                 }
