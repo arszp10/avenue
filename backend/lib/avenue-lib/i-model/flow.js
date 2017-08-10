@@ -87,8 +87,8 @@ function Flow(options, network)
         var overSatDelay = 0;
         if ( x > 1 ) {
             var ct = this.cycleTime;
-            var T = 10/ct;
-            overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 8*0.5*0.9*x/(T*ct))|0;
+            var T = 1;//ct/3600;
+            overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 4*x/(T*ct))|0;
         }
 
         return {

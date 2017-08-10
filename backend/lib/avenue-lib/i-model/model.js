@@ -96,7 +96,7 @@ module.exports = {
         flow.outFlow            = outFlow;
         flow.queueFunc            = queueFunc;
         flow.maxQueueLength     = maxQueueLength;
-        flow.greenSaturation    = Math.round(100*sumGreenFlow/sumGreenCpacity);
+        flow.greenSaturation    = Math.round(100*sumGreenFlow/sumGreenCpacity)|0;
         flow.isCongestion       = checkCongestion(sumInFlow, sumOutFlow, queueTail, flow.queueLimit, maxQueueLength);
         return flow;
     },
