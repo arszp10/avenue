@@ -502,7 +502,7 @@ body.show-edge-input #input-edge-label {
 }
 
 .signal-blink {
-    background: linear-gradient(90deg, darkgreen 50%, transparent 50%);
+    background: linear-gradient(90deg, #012701 50%, transparent 50%);
     background-size: 4px 4px;
     background-color: yellowgreen;
     color: transparent;

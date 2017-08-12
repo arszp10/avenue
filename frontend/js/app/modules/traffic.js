@@ -17,8 +17,12 @@
             if (addGreen + ipDefaults.amber > len) {
                 addGreen = len - ipDefaults.amber;
             }
+            if (addGreen < 0) { addGreen = 0 }
+            var green = addGreen;
 
             var red = len - addGreen - ipDefaults.amber;
+            if (red < 0) { red = 0 }
+
             var amber = ipDefaults.amber;
             var green = addGreen;
 
@@ -41,19 +45,29 @@
             if (len < ipDefaults.totalLength) {
                 len = ipDefaults.totalLength;
             }
+
             if (addGreen + ipDefaults.blink + ipDefaults.yellow > len) {
                 addGreen = len - (ipDefaults.blink + ipDefaults.yellow);
             }
-
+            if (addGreen < 0) { addGreen = 0 }
             var green = addGreen;
+
+
             var blink = ipDefaults.blink;
+            if (ipDefaults.blink + ipDefaults.yellow > len) {
+                blink = len - ipDefaults.yellow;
+            }
+
             var yellow = ipDefaults.yellow;
-            var red = len - (ipDefaults.blink + ipDefaults.yellow + addGreen);
+
+            var red = len - (blink + ipDefaults.yellow + addGreen);
+            if (red < 0) { red = 0 }
+
             var signals = [];
             if (green > 0) {
                 signals.push({ color: 'green', length: green });
             }
-            //signals.push({ color: 'blink', length: blink });
+            signals.push({ color: 'blink', length: blink });
             signals.push({ color: 'yellow', length: yellow });
 
             if (red > 0) {

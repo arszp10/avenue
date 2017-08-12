@@ -147,8 +147,8 @@ module.exports = {
     },
 
     interPhaseDefaults:{
-        amber: 3,
-        blink: 0,
+        amber: 2,
+        blink: 3,
         yellow: 3,
         totalLength: 3
     },

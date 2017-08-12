@@ -67,7 +67,8 @@
 
 
     var prepareD3SvgDefs = function(svg){
-        var amber = svg.append("defs")
+        var defs = svg.append("defs");
+        var amber = defs
             .append("linearGradient")
             .attr("id", "amber")
             .attr("x1", "0%")
@@ -86,25 +87,27 @@
             .attr("stop-color", "#ff0")
             .attr("stop-opacity", 1);
 
+        var blink1 = defs
+            .append("pattern")
+                .attr('id', 'blink')
+                .attr('width', '4')
+                .attr('height', '4')
+                .attr('patternUnits', 'userSpaceOnUse')
+                .attr('patternTransform', 'rotate(0)');
 
-        var blink = svg.append("defs")
-            .append("linearGradient")
-            .attr("id", "blink")
-            .attr("x1", "0%")
-            .attr("y1", "100%")
-            .attr("x2", "100%")
-            .attr("y2", "0%")
-            .attr("spreadMethod", "pad");
+            blink1.append('rect')
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 4)
+                .attr("height", "100%")
+                .style("fill", "#4caf50");
 
-        blink.append("stop")
-            .attr("offset", "0%")
-            .attr("stop-color", "#080")
-            .attr("stop-opacity", 1);
-
-        blink.append("stop")
-            .attr("offset", "100%")
-            .attr("stop-color", "#cfc")
-            .attr("stop-opacity", 1);
+            blink1.append('rect')
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", 1.5)
+                .attr("height", "100%")
+                .style("fill", "#444444");
 
     };
     var drawBarLine = function(route, bar, direction, x, cycleTime){
@@ -125,8 +128,6 @@
                 if (d.color == 'amber') return 'url(#amber)';
                 if (d.color == 'green') return '#4caf50';
                 if (d.color == 'red') return '#fd5149';
-
-
                 return d.color;
             });
 
@@ -141,7 +142,7 @@
             line.append("text")
             .style('fill', function(d){
                     if (x(d.length) < 10) return "transparent";
-                    if (d.color == 'blink') return '#333333';
+                    if (d.color == 'blink') return 'transparent';
                     if (d.color == 'amber') return 'transparent';
                     if (d.color == 'yellow') return '#333333';
                     return '#ffffff';
