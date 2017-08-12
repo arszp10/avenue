@@ -17,7 +17,7 @@
 
 //= app/resources/controls.js
 //= app/resources/settings.js
-//= app/resources/samples.js
+
 //= app/resources/cyStyles.js
 //= app/resources/cyCrossroadStyles.js
 //= app/templates/templates.js

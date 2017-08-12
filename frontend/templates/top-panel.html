@@ -2,13 +2,9 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false"><span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/"><img src="/img/logo0.png" height="30"></a></div>
+                <a class="navbar-brand" href="/"><img src="/img/logo0.png" height="30"></a>
+            </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
                 <form id="api-credentials" class=" hidden-api-doc hidden-network hidden-routes hidden-map hidden-crossroad navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <div class="input-group">
@@ -25,96 +21,106 @@
                     </div>
                 </form>
                 <form class="visible-network visible-routes visible-map visible-crossroad navbar-form navbar-left" role="search">
-                    <a type="button" href="/models" class="btn btn-inverse" ><i class="fa fa-th-list"></i> &nbsp;<span locale="model-list">Model list</span></a>
+                    <a type="button"
+                       title="back-to-model-list"
+                       href="/models"
+                       class="btn btn-inverse" ><i class="fa fa-th-list"></i> &nbsp;<span locale="model-list">Model list</span></a>
                 </form>
                 <form class="visible-network visible-routes visible-crossroad navbar-form navbar-left" role="search">
-                    <button type="button" class="btn btn-inverse" id="btn-model-save"><i class="fa fa-save"></i> </button>
+                    <button type="button"
+                            class="btn btn-inverse"
+                            title="save-model"
+                            id="btn-model-save"><i class="fa fa-save"></i> </button>
 
                     <div class="btn-group">
-                        <button type="button" class="btn btn-inverse" id="btn-calc"><i class="fa fa-rocket"></i> &nbsp;&nbsp;<span locale="launch">Launch</span></button>
-                        <button type="button" class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button"
+                                title="launch-model"
+                                class="btn btn-inverse" id="btn-calc">
+                            <i class="fa fa-rocket"></i> &nbsp;&nbsp;<span locale="launch">Launch</span>
+                        </button>
+                        <button type="button"
+                                class="btn btn-inverse dropdown-toggle"
+                                data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu nav-btn-group-dropdown">
-                            <!--<li class="hidden-crossroad"><a type="button" href="#" id="btn-phases-optimize"><i class="fa fa-server "></i> &nbsp;<span locale="phases">Phases</span></a></li>-->
-                            <li class="hidden-crossroad"><a type="button" href="#" id="btn-offsets-optimize"><i class="fa fa-sliders "></i> &nbsp;<span locale="offsets">Offsets</span></a></li>
+                            <li class="hidden-crossroad">
+                                <a type="button" href="#" id="btn-offsets-optimize"><i class="fa fa-sliders "></i> &nbsp;<span locale="offsets">Offsets</span></a></li>
                         </ul>
                     </div>
                 </form>
                 <form class="visible-network visible-routes navbar-form navbar-left" role="search" id="form-create-route">
                     <div class="btn-group pull-left hidden" id="routes-list-button-panel">
-                        <button type="button" class="btn btn-inverse dropdown-toggle" id="" data-toggle="dropdown"><i class="fa fa-map-marker"></i> &nbsp;<span locale="choose-route">Choose a route</span></button>
+                        <button type="button"
+                                class="btn btn-inverse dropdown-toggle"
+                                data-toggle="dropdown"><i class="fa fa-map-marker"></i> &nbsp;<span locale="choose-route">Choose a route</span></button>
                         <ul class="dropdown-menu nav-btn-group-dropdown" id="routes-dropdown-list">
                         </ul>
                     </div>
                     <div class="btn-group pull-left">
-                        <button type="button" class="btn btn-inverse hidden-routes dropdown-toggle" data-toggle="dropdown" id="btn-add-route"><i class="fa fa-plus"></i> <span locale="add-route">Route</button>
+                        <button type="button"
+                                class="btn btn-inverse hidden-routes dropdown-toggle"
+                                data-toggle="dropdown"
+                                id="btn-add-route">
+                            <i class="fa fa-plus"></i> <span locale="add-route">Route</button>
                         <ul class="dropdown-menu nav-btn-group-dropdown">
                             <li class="li-route-name-dropdown">
-                                <input type="text" class="form-control input-route-name" id="input-route-name" placeholder="Enter a route name">
+                                <input type="text"
+                                       class="form-control input-route-name"
+                                       id="input-route-name"
+                                       placeholder="enter-route-name">
                                 <button type="submit" class="btn btn-sm btn-info" id="btn-create-route" locale="create">Create</button>
                             </li>
                         </ul>
                     </div>
                 </form>
                 <form class="visible-network navbar-form navbar-left" role="search">
-                    <button type="button" class="btn btn-inverse" id="btn-arcgis-switch">
-                            <span class="fa-stack fa-sm">
-                              <i class="fa fa-map"></i>
-                              <i class="fa fa-ban fa-stack-1x text-danger"></i>
-                            </span>
-
+                    <button type="button"
+                        title="show-map-in-background"
+                        class="btn btn-inverse" id="btn-arcgis-switch">
+                        <span class="fa-stack fa-sm">
+                          <i class="fa fa-map"></i>
+                          <i class="fa fa-ban fa-stack-1x text-danger"></i>
+                        </span>
                     </button>
-                    <button type="button" class="btn btn-inverse" id="btn-arcgis-set-extent"><i class="fa fa-map-pin fa-rotate-90"></i> </button>
 
+                    <button type="button"
+                        title="pin-model-to-map"
+                        class="btn btn-inverse"
+                        id="btn-arcgis-set-extent"><i class="fa fa-map-pin fa-rotate-90"></i>
+                    </button>
                 </form>
-
-
                 <form class="visible-crossroad navbar-form navbar-left" role="search">
                     &nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-inverse dropdown-toggle" id="btn-cycle-and-phase-rate" >
+                    <button type="button"
+                            title="opti-cycle-length"
+                            class="btn btn-inverse dropdown-toggle"
+                            id="btn-cycle-and-phase-rate" >
                         <i class="fa fa-clock-o"></i>  Длительность цикла и фаз
                     </button>
-                    <button type="button" class="btn btn-primary" id="btn-save-crossroad-data">
+                    <button type="button"
+                            title="save-crossroad-program"
+                            class="btn btn-primary"
+                            id="btn-save-crossroad-data">
                         <i class="fa fa-check"></i> <span locale="apply">Apply</span>
                     </button>
                 </form>
-
                 <ul class="nav navbar-nav navbar-right ">
-                    <!--<li><a href="#">Link</a></li>-->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user"></i> <span id="label-my-account-username">Loading...</span>
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <!--<li><a href="#"><i class="fa fa-lock fa-fw"></i> Account</a></li>-->
-                            <!--<li><a href="#"><i class="fa fa-cog fa-fw"></i> Settings</a></li>-->
-                            <!--<li role="separator" class="divider"></li>-->
                             <li><a href="/sign-out"><i class="fa fa-sign-out fa-fw"></i> <span locale="log-out">Log out</span></a></li>
                         </ul>
                     </li>
                 </ul>
-
-                <!--<ul class="nav navbar-nav navbar-right">-->
-                    <!--<li class="dropdown visible-network hidden-files hidden-crossroad hidden-api-doc hidden-routes hidden-map ">-->
-                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span locale="samples">Samples</span>-->
-                            <!--<span class="caret"></span>-->
-                        <!--</a>-->
-                        <!--<ul class="dropdown-menu">-->
-                            <!--<li><a href="#" data-key="sample1" class="add-sample-item" locale="conflict-point">Conflict point</a></li>-->
-                            <!--<li><a href="#" data-key="sample2" class="add-sample-item" locale="crossroad-and-carriageway" >Crossroad & Carriageway</a></li>-->
-                            <!--<li><a href="#" data-key="sample3" class="add-sample-item" locale="four-cross-in-line" >4 Crossroads in line</a></li>-->
-                            <!--<li><a href="#" data-key="sample4" class="add-sample-item" locale="ilinskoe-highway-212" >Ilinskoe highway - morning (212)</a></li>-->
-                            <!--<li role="separator" class="divider"></li>-->
-                            <!--<li><a href="#">All samples...</a></li>-->
-                        <!--</ul>-->
-                    <!--</li>-->
-                <!--</ul>-->
-
                 <form id="input-model-search-form" class="visible-files navbar-form navbar-right " role="search">
-                    <!--<div class="form-group">-->
-                        <input type="text" id="input-model-search" class="form-control input-file-search" placeholder="Search model">
-                    <!--</div>-->
+                    <input type="text"
+                           id="input-model-search"
+                           class="form-control input-file-search"
+                           placeholder="search-model">
                     &nbsp;
                     <button type="submit" class="btn btn-inverse" id="btn-file-search"><i class="fa fa-search"></i></button>
                 </form>

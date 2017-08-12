@@ -1,127 +1,124 @@
 <div id="crossroad-panel" class="screen visible-crossroad" data-tab="btn-show-crossroad">
-
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label id="label-crossroad-opti-off">
+                    <input type="checkbox" id="inputCrossroadOptiOff"/> <span locale="optimization-exclude">Exclude from optimization</span>
+                </label>
+                <label for="input-crossroad-name"><span locale="name">Name</span></label>
+                <input type="text" class="form-control input-sm" id="input-crossroad-name" placeholder="crossroad-name"/>
+            </div>
+            <div class="form-group">
+                <label for="inputCrossroadCycleLength"><span locale="crossroad-program">Программа</span></label>
                 <div class="row">
-                    <div class="col-sm-4">
-
-                        <div class="form-group">
-                            <label id="label-crossroad-opti-off">
-                                <input type="checkbox" id="inputCrossroadOptiOff"/> Исключить из оптимизации
-                            </label>
-                            <label for="input-crossroad-name"><span locale="name">Name</span></label>
-                            <input type="text" class="form-control input-sm" id="input-crossroad-name" placeholder="..."/>
-
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="inputCrossroadCycleLength"><span locale="crossroad-program">Программа</span></label>
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <select type="text" class="form-control input-sm" id="inputCrossroadProgram">
-                                        <option>Программа  №1 (212)</option>
-                                        <option>Программа  №2 (90)</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-4 no-left-padding no-right-padding">
-                                    <div class="btn-group"  role="group">
-                                        <div class="btn-group" role="group">
-                                            <button class="btn btn-default btn-sm dropdown-toggle" id="btnAddProgram" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li class="li-route-name-dropdown">
-                                                    <form id="formCreateProgram">
-                                                        <input type="text" class="form-control input-route-name" id="inputProgramName" placeholder="Name">
-                                                        <button type="submit" class="btn btn-sm btn-primary" id="btnCreateProgram" locale="create">Create</button>
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="btn-group" role="group">
-                                            <button class="btn btn-default btn-sm dropdown-toggle" id="btnEditProgram" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li class="li-route-name-dropdown">
-                                                    <form id="formUpdateProgram">
-                                                        <input type="text" class="form-control input-route-name" id="inputUpdateProgramName" placeholder="Name">
-                                                        <button type="submit" class="btn btn-sm btn-primary" id="btnUpdateProgram" locale="rename">Rename</button>
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <button type="button" class="btn btn-default btn-danger-light btn-sm" id="btnRemoveProgram" ><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </div>
+                    <div class="col-sm-8">
+                        <select type="text" class="form-control input-sm" id="inputCrossroadProgram">
+                            <option>Программа  №1 (212)</option>
+                            <option>Программа  №2 (90)</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 no-left-padding no-right-padding">
+                        <div class="btn-group"  role="group">
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-default btn-sm dropdown-toggle"
+                                        id="btnAddProgram" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="li-route-name-dropdown">
+                                        <form id="formCreateProgram">
+                                            <input type="text" class="form-control input-route-name" id="inputProgramName" placeholder="name">
+                                            <button type="submit" class="btn btn-sm btn-primary" id="btnCreateProgram" locale="create">Create</button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </div>
-                        </div>
-
-
-                        <form>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                        <label for="inputCrossroadCycleLength"><span locale="cycle-length">Cycle lenght</span></label>
-                                        <input type="text" class="form-control input-sm" id="inputCrossroadCycleLength">
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <label for="inputCrossroadOffset"><span locale="offset">Offset</span></label>
-                                        <input type="text" class="form-control input-sm" id="inputCrossroadOffsetText">
-                                    </div>
-                                </div>
-
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-default btn-sm dropdown-toggle"
+                                        id="btnEditProgram" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="li-route-name-dropdown">
+                                        <form id="formUpdateProgram">
+                                            <input type="text" class="form-control input-route-name" id="inputUpdateProgramName" placeholder="name">
+                                            <button type="submit" class="btn btn-sm btn-primary" id="btnUpdateProgram" locale="rename">Rename</button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </div>
-
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="inputCrossroadOffset">
-                            </div>
-                        </form>
-
-                        <div class="form-group">
-                            <label for="inputCrossroadPhasesOrder"><span locale="phases-order">Phases order</span></label>
-                            <div class="row">
-                                <div class="col-sm-9">
-                                    <select class="form-control input-sm" id="inputCrossroadPhasesOrder">
-                                        <option value="master" selected >master: 1, 2, 3</option>
-                                        <option value="reserve">reserve: 2, 3, 1</option>
-                                        <option value="morning">morning: 5, 6, 4</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-3 no-left-padding no-right-padding">
-                                    <div class="btn-group"  role="group">
-                                        <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" id="btnAddPhasesOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li class="li-route-name-dropdown">
-                                                    <form id="formCreatePhaseOrder">
-                                                        <input type="text" class="form-control input-route-name" id="inputPhaseOrderName" name="inputPhaseOrderName" placeholder="Name">
-                                                        <input type="text" class="form-control input-route-name" id="inputPhaseOrderOrder" name="inputPhaseOrderOrder" placeholder="Phase order">
-                                                        <button type="submit" class="btn btn-sm btn-primary" id="btnCreatePhaseOrder" locale="create">Create</button>
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <button type="button" class="btn btn-default btn-danger-light btn-sm" id="btnRemovePhasesOrder" ><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--<div class="form-group">-->
-                            <!--<label for="inputCrossroadLinkWith"><span locale="">Связан по смещению с ...</span></label>-->
-                            <!--<select type="text" class="form-control input-sm" id="inputCrossroadLinkWith">-->
-                                <!--<option> (нет) </option>-->
-                                <!--<option>Перекресток №1</option>-->
-                                <!--<option>Перекресток №2</option>-->
-                            <!--</select>-->
-                        <!--</div>-->
-
-                        <br>
-                        <div id="cy-crossroad-copy">
+                            <button type="button" class="btn btn-default btn-danger-light btn-sm" id="btnRemoveProgram" >
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="col-sm-8">
+                </div>
+            </div>
+            <form>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <label for="inputCrossroadCycleLength"><span locale="cycle-length">Cycle lenght</span></label>
+                            <input type="text" class="form-control input-sm" id="inputCrossroadCycleLength">
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="inputCrossroadOffset"><span locale="offset">Offset</span></label>
+                            <input type="text" class="form-control input-sm" id="inputCrossroadOffsetText">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="inputCrossroadOffset">
+                </div>
+            </form>
+            <div class="form-group">
+                <label for="inputCrossroadPhasesOrder"><span locale="phases-order">Phases order</span></label>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <select class="form-control input-sm" id="inputCrossroadPhasesOrder">
+                            <option value="master" selected >master: 1, 2, 3</option>
+                            <option value="reserve">reserve: 2, 3, 1</option>
+                            <option value="morning">morning: 5, 6, 4</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 no-left-padding no-right-padding">
+                        <div class="btn-group"  role="group">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                        id="btnAddPhasesOrder" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="li-route-name-dropdown">
+                                        <form id="formCreatePhaseOrder">
+                                            <input type="text" class="form-control input-route-name" id="inputPhaseOrderName" name="inputPhaseOrderName" placeholder="name">
+                                            <input type="text" class="form-control input-route-name" id="inputPhaseOrderOrder" name="inputPhaseOrderOrder" placeholder="phase-order">
+                                            <button type="submit" class="btn btn-sm btn-primary" id="btnCreatePhaseOrder" locale="create">Create</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button type="button" class="btn btn-default btn-danger-light btn-sm" id="btnRemovePhasesOrder" ><i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="form-group">-->
+                <!--<label for="inputCrossroadLinkWith"><span locale="">Связан по смещению с ...</span></label>-->
+                <!--<select type="text" class="form-control input-sm" id="inputCrossroadLinkWith">-->
+                    <!--<option> (нет) </option>-->
+                    <!--<option>Перекресток №1</option>-->
+                    <!--<option>Перекресток №2</option>-->
+                <!--</select>-->
+            <!--</div>-->
+
+            <br>
+            <div id="cy-crossroad-copy"></div>
+        </div>
+        <div class="col-sm-8">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table table-phases" id="table-phases">
                                 <thead>
                                 <tr>
@@ -149,5 +146,5 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                </div>
+    </div>
 </div>

@@ -71,18 +71,16 @@
             /**
              *  Crossroad modal events
              */
-            controls.inputs.inputCrossroadOffset = $('#inputCrossroadOffset').slider({
-                max: 100, value: 0,
-                tooltip: 'always'
-            });
-
-            $(document).ready(function(){
-                    controls.inputs.inputCrossroadOffset.on('slideStop', function(){
-                        controls.inputs.inputCrossroadOffsetText
-                            .val(controls.inputs.inputCrossroadOffset.slider('getValue'))
-                            .trigger('change');
-                    });
-            });
+            if ($('#inputCrossroadOffset').length > 0) {
+                controls.inputs.inputCrossroadOffset = $('#inputCrossroadOffset').slider({
+                    max: 100, value: 0,
+                    tooltip: 'always'
+                }).on('slideStop', function(){
+                    controls.inputs.inputCrossroadOffsetText
+                        .val(controls.inputs.inputCrossroadOffset.slider('getValue'))
+                        .trigger('change');
+                });
+            }
 
             controls.panels.body.on('mouseup', function(){
                 that.toggleAddGreenPanel(false);
