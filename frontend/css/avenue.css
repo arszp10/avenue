@@ -482,7 +482,6 @@ body.show-edge-input #input-edge-label {
     font-size: 10px;
 }
 
-
 .signal-red {
     background-color: #fd5149;
 }
@@ -517,17 +516,14 @@ body.show-edge-input #input-edge-label {
     color:#222;
 }
 
+.signal.short {
+    color: transparent;
+}
 
 .disabled {
     background-color: #000;
     opacity: 0.1;
 }
-
-/*.ph-selected {*/
-    /*background-color: #337AB7;*/
-    /*color: #fff;*/
-    /*border-radius: 5px;*/
-/*}*/
 
 .table-phases{
      margin-bottom: 0px;

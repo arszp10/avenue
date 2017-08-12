@@ -101,8 +101,9 @@
             var className = cls == undefined ? '' : cls;
             var s = '<div class="signal-bar ' + className + '">';
             data.signals.forEach(function(v){
-                w = 99.7 * v.length/data.cycleTime;
-                s +='<div class="signal signal-' + v.color + '" style="width:'+ w +'%"> ' +
+                var shortClass = v.length < 3 ? ' short' : '';
+                w = 99.5 * v.length/data.cycleTime;
+                s +='<div class="signal signal-' + v.color + shortClass + '" style="width:'+ w +'%"> ' +
                     (v.hasOwnProperty('label') ? v.label : (v.length)) +
                     ' </div>';
             });
