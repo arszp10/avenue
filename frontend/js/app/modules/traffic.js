@@ -116,7 +116,7 @@
 
         signalDiagramData1:  function(crossroad, program, node, order, noOffset){
             var stopLine = node;
-            var j = 0, icolor = '', inext = 0;
+            var j = 0, icolor = '', inext = 0, iprev = 0;
             var diagram = [];
             var cpi = crossroad.currentProgram;
             var phCurrentOrder = order !== undefined ? order : program.currentOrder;
@@ -132,6 +132,7 @@
                 var i = phOrder.order[j] - 1;
                 icolor = stopLine.greenPhases[cpi][i] ? 'green' : 'red';
                 inext = phOrder.order[(j + 1) % phCount] - 1;
+                iprev = phOrder.order[(j - 1 +  phCount) % phCount] - 1;
 
                 var addGreen = stopLine.hasOwnProperty('additionalGreens')
                     ? stopLine.additionalGreens[cpi][i] : 0;
@@ -171,40 +172,41 @@
                 : this.offsetDiagram(diagram, program.offset, program.cycleTime);
         },
 
-        signalDiagramData:  function(crossRoad, node){
-            var stopLine = node;
-            var i = 0, icolor = '', inext = 0;
-            var diagram = [];
-            var phCount =  crossRoad.phases.length;
-            var interTact ;
-
-            for (i = 0; i < phCount; i++){
-                icolor = stopLine.greenPhases[i] ? 'green' : 'red';
-                inext = (i + 1) % phCount;
-                if (stopLine.greenPhases[i] === stopLine.greenPhases[inext]) {
-                    diagram.push({
-                        color : icolor,
-                        length : crossRoad.phases[i].length
-                    });
-                    continue;
-                }
-                var addGreen = stopLine.hasOwnProperty('additionalGreens')
-                    ? stopLine.additionalGreens[i] : 0;
-                var interPhaseLength = crossRoad.phases[i].hasOwnProperty('intertact')
-                    ? crossRoad.phases[i].intertact : 6;
-
-                interTact = stopLine.greenPhases[i]
-                    ? this.greenToRedInterPhase(interPhaseLength, addGreen)
-                    : this.readToGreenInterPhase(interPhaseLength, addGreen);
-
-                diagram.push({
-                    color : icolor,
-                    length : crossRoad.phases[i].length - interTact.length
-                });
-                diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
-            }
-            return this.offsetDiagram(diagram, crossRoad.offset, crossRoad.cycleTime);
-        },
+        //signalDiagramData:  function(crossRoad, node){
+        //    var stopLine = node;
+        //    var i = 0, icolor = '', inext = 0;
+        //    var diagram = [];
+        //    var phCount =  crossRoad.phases.length;
+        //    var interTact ;
+        //
+        //    for (i = 0; i < phCount; i++){
+        //        icolor = stopLine.greenPhases[i] ? 'green' : 'red';
+        //        inext = (i + 1) % phCount;
+        //        if (stopLine.greenPhases[i] === stopLine.greenPhases[inext]) {
+        //            diagram.push({
+        //                color : icolor,
+        //                length : crossRoad.phases[i].length
+        //            });
+        //            continue;
+        //        }
+        //        var addGreen = stopLine.hasOwnProperty('additionalGreens')
+        //            ? stopLine.additionalGreens[i] : 0;
+        //        var interPhaseLength = crossRoad.phases[i].hasOwnProperty('intertact')
+        //            ? crossRoad.phases[i].intertact : 6;
+        //
+        //        interTact = stopLine.greenPhases[i]
+        //            ? this.greenToRedInterPhase(interPhaseLength, addGreen)
+        //            : this.readToGreenInterPhase(interPhaseLength, addGreen);
+        //
+        //        diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
+        //        diagram.push({
+        //            color : icolor,
+        //            length : crossRoad.phases[i].length - interTact.length
+        //        });
+        //
+        //    }
+        //    return this.offsetDiagram(diagram, crossRoad.offset, crossRoad.cycleTime);
+        //},
         offsetDiagram:      function(diagram, offset, cycle){
             if (offset == 0) {
                 return diagram;

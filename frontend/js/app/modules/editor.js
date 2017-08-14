@@ -193,6 +193,8 @@
 
 
             controls.buttons.btnModelSave.click(function () {
+                if (!$(this).is(':visible')) return;
+
                 var $icon = $(this).find('i.fa');
                 $icon.addClass('fa-spinner fa-spin');
                 $icon.removeClass('fa-save');
@@ -213,6 +215,10 @@
                     }
                 }, $icon);
             });
+
+            setInterval(function(){
+                controls.buttons.btnModelSave.click()
+            }, 90000);
 
             controls.buttons.btnAddRoute.click(function () {
                 controls.inputs.inputRouteName.val('');

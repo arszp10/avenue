@@ -5,7 +5,6 @@
 //= vendor/cytoscape/cytoscape-panzoom.js
 //= vendor/d3/d3.v3.min.js
 
-//= vendor/i-check/icheck.min.js
 //= vendor/bootstrap/bootstrap-slider.min.js
 //= vendor/jquery/jquery.cookie.js
 //= vendor/notify.min.js
