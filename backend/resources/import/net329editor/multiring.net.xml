@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net version="0.13">
+    <edge id=":-1_0" priority="-1" function="internal">
+        <lane id=":-1_0_0" index="0" speed="16.667" length="47.090" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="3.858,-27.182 3.856,-26.682 3.831,-20.057 3.816,-14.391 3.812,-9.494 3.821,-5.172 3.844,-1.234 3.881,2.511 3.936,6.256 4.010,10.192 4.103,14.511 4.218,19.404 4.230,19.904"/>
+    </edge>
+    <edge id=":-1_1" priority="-1" function="internal">
+        <lane id=":-1_1_0" index="0" speed="16.667" length="30.932" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="3.858,-27.182 3.856,-26.682 3.896,-21.993 4.099,-18.139 4.529,-15.043 5.250,-12.627 6.326,-10.814 7.821,-9.528 9.798,-8.690 12.320,-8.223 15.453,-8.052 19.260,-8.097 19.759,-8.112"/>
+    </edge>
+    <edge id=":-1_2" priority="-1" function="internal">
+        <lane id=":-1_2_0" index="0" speed="16.667" length="30.843" allow="pedestrian" width="3.70" shape="7.607,-27.167 7.605,-26.667 7.663,-22.937 7.921,-19.872 8.461,-17.413 9.361,-15.499 10.700,-14.070 12.560,-13.065 15.019,-12.424 18.157,-12.087 22.054,-11.992 26.790,-12.081 27.289,-12.096"/>
+    </edge>
+    <edge id=":-1_3" priority="-1" function="internal">
+        <lane id=":-1_3_0" index="0" speed="16.667" length="29.367" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-3.099,27.124 -3.111,26.624 -3.271,22.422 -3.574,18.970 -4.087,16.200 -4.874,14.044 -6.004,12.434 -7.541,11.301 -9.552,10.577 -12.103,10.195 -15.261,10.086 -19.091,10.182 -19.591,10.202"/>
+    </edge>
+    <edge id=":-1_4" priority="-1" function="internal">
+        <lane id=":-1_4_0" index="0" speed="16.667" length="45.655" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-3.099,27.124 -3.111,26.624 -3.268,20.019 -3.396,14.384 -3.499,9.535 -3.577,5.285 -3.634,1.449 -3.671,-2.159 -3.692,-5.725 -3.699,-9.434 -3.693,-13.472 -3.678,-18.025 -3.676,-18.525"/>
+    </edge>
+    <edge id=":-1_5" priority="-1" function="internal">
+        <lane id=":-1_5_0" index="0" speed="16.667" length="29.152" allow="pedestrian" width="3.70" shape="-6.848,27.214 -6.860,26.714 -7.011,23.454 -7.343,20.778 -7.939,18.635 -8.877,16.974 -10.238,15.743 -12.104,14.890 -14.553,14.365 -17.667,14.114 -21.526,14.087 -26.209,14.232 -26.709,14.253"/>
+    </edge>
+    <edge id=":-1_6" priority="-1" function="internal">
+        <lane id=":-1_6_0" index="0" speed="16.667" length="47.894" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="27.998,2.889 27.498,2.905 21.128,3.152 15.888,3.455 11.495,3.800 7.667,4.177 4.122,4.573 0.576,4.977 -3.251,5.377 -7.643,5.761 -12.881,6.117 -19.248,6.435 -19.748,6.456"/>
+    </edge>
+    <edge id=":-1_7" priority="-1" function="internal">
+        <lane id=":-1_7_0" index="0" speed="16.667" length="47.853" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="28.113,6.637 27.614,6.653 21.250,6.900 16.014,7.203 11.625,7.548 7.800,7.925 4.258,8.321 0.715,8.724 -3.109,9.124 -7.496,9.508 -12.730,9.864 -19.091,10.182 -19.591,10.202"/>
+    </edge>
+    <edge id=":-1_8" priority="-1" function="internal">
+        <lane id=":-1_8_0" index="0" speed="16.667" length="32.491" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="28.113,6.637 27.614,6.653 21.784,6.878 16.989,7.197 13.133,7.661 10.117,8.323 7.844,9.236 6.217,10.452 5.138,12.024 4.510,14.005 4.236,16.448 4.218,19.404 4.230,19.904"/>
+    </edge>
+    <edge id=":-1_9" priority="-1" function="internal">
+        <lane id=":-1_9_0" index="0" speed="16.667" length="31.652" allow="pedestrian" width="3.70" shape="28.229,10.386 27.729,10.401 22.818,10.610 18.780,10.948 15.534,11.481 12.998,12.274 11.090,13.392 9.729,14.901 8.835,16.865 8.325,19.350 8.117,22.421 8.132,26.143 8.144,26.643"/>
+    </edge>
+    <edge id=":-1_10" priority="-1" function="internal">
+        <lane id=":-1_10_0" index="0" speed="16.667" length="47.562" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-27.530,-0.726 -27.030,-0.746 -20.709,-1.064 -15.509,-1.426 -11.149,-1.818 -7.350,-2.228 -3.831,-2.643 -0.312,-3.051 3.488,-3.438 7.849,-3.792 13.051,-4.100 19.375,-4.349 19.875,-4.364"/>
+    </edge>
+    <edge id=":-1_11" priority="-1" function="internal">
+        <lane id=":-1_11_0" index="0" speed="16.667" length="47.603" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-27.687,-4.472 -27.187,-4.493 -20.860,-4.811 -15.655,-5.173 -11.292,-5.565 -7.489,-5.975 -3.967,-6.391 -0.445,-6.799 3.359,-7.186 7.723,-7.540 12.930,-7.848 19.260,-8.097 19.759,-8.112"/>
+    </edge>
+    <edge id=":-1_12" priority="-1" function="internal">
+        <lane id=":-1_12_0" index="0" speed="16.667" length="30.088" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-27.843,-8.219 -27.344,-8.240 -21.526,-8.517 -16.738,-8.843 -12.881,-9.258 -9.856,-9.802 -7.566,-10.515 -5.911,-11.437 -4.793,-12.610 -4.114,-14.071 -3.775,-15.863 -3.678,-18.025 -3.676,-18.525"/>
+    </edge>
+    <edge id=":-1_13" priority="-1" function="internal">
+        <lane id=":-1_13_0" index="0" speed="16.667" length="30.862" allow="pedestrian" width="3.70" shape="-28.000,-11.966 -27.500,-11.987 -22.565,-12.246 -18.503,-12.612 -15.229,-13.145 -12.662,-13.908 -10.716,-14.959 -9.308,-16.361 -8.356,-18.173 -7.775,-20.458 -7.481,-23.275 -7.392,-26.685 -7.390,-27.185"/>
+    </edge>
+    <edge id=":-1_14" priority="-1" function="internal">
+        <lane id=":-1_14_0" index="0" speed="16.667" length="16.741" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="0.108,-27.197 0.106,-26.697 0.002,-18.731 -0.295,-12.167 -0.477,-10.473"/>
+    </edge>
+    <edge id=":-1_15" priority="-1" function="internal">
+        <lane id=":-1_15_0" index="0" speed="16.667" length="29.804" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-0.477,-10.473 -0.864,-6.868 -1.787,-2.695 -3.144,0.490 -5.015,2.826 -7.481,4.450 -10.621,5.500 -14.517,6.116 -19.248,6.435 -19.748,6.456"/>
+    </edge>
+    <edge id=":-1_16" priority="-1" function="internal">
+        <lane id=":-1_16_0" index="0" speed="16.667" length="14.579" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="0.650,27.034 0.638,26.534 0.510,18.148 0.599,12.457"/>
+    </edge>
+    <edge id=":-1_17" priority="-1" function="internal">
+        <lane id=":-1_17_0" index="0" speed="16.667" length="33.425" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="0.599,12.456 0.618,11.242 1.039,5.670 1.851,1.289 3.131,-2.047 4.956,-4.481 7.405,-6.159 10.553,-7.224 14.479,-7.822 19.260,-8.097 19.759,-8.112"/>
+    </edge>
+    <edge id=":-1_18" priority="-1" function="internal">
+        <lane id=":-1_18_0" index="0" speed="16.667" length="14.614" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="0.650,27.034 0.638,26.534 0.532,19.073 0.659,12.927 0.703,12.424"/>
+    </edge>
+    <edge id=":-1_19" priority="-1" function="internal">
+        <lane id=":-1_19_0" index="0" speed="16.667" length="29.987" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="0.703,12.424 1.095,7.968 1.920,4.066 3.211,1.093 5.045,-1.080 7.501,-2.582 10.656,-3.542 14.588,-4.088 19.375,-4.349 19.875,-4.364"/>
+    </edge>
+    <edge id=":-1_20" priority="-1" function="internal">
+        <lane id=":-1_20_0" index="0" speed="16.667" length="18.362" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="27.882,-0.859 27.383,-0.844 19.715,-0.676 13.406,-0.737 9.532,-1.013"/>
+    </edge>
+    <edge id=":-1_21" priority="-1" function="internal">
+        <lane id=":-1_21_0" index="0" speed="16.667" length="25.638" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="9.532,-1.013 8.327,-1.099 4.348,-1.832 1.340,-3.007 -0.828,-4.697 -2.283,-6.973 -3.157,-9.905 -3.579,-13.565 -3.678,-18.025 -3.676,-18.525"/>
+    </edge>
+    <edge id=":-1_22" priority="-1" function="internal">
+        <lane id=":-1_22_0" index="0" speed="16.667" length="17.769" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-27.373,3.021 -26.874,3.000 -19.319,2.751 -13.098,2.741 -9.615,2.946"/>
+    </edge>
+    <edge id=":-1_23" priority="-1" function="internal">
+        <lane id=":-1_23_0" index="0" speed="16.667" length="25.571" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-9.615,2.946 -8.080,3.037 -4.138,3.707 -1.140,4.820 1.043,6.443 2.541,8.646 3.483,11.494 3.999,15.058 4.218,19.404 4.230,19.904"/>
+    </edge>
+    <edge id=":-1_c0" priority="-1" function="crossing" crossingEdges="-1-5 s1-1">
+        <lane id=":-1_c0_0" index="0" speed="0.361" length="18.750" allow="pedestrian" width="5.95" shape="24.277,8.631 23.700,-10.110"/>
+    </edge>
+    <edge id=":wa_0" priority="-1" function="walkingarea">
+        <lane id=":wa_0_0" index="0" speed="0.361" length="18.750" allow="pedestrian" width="5.95" shape="24.277,8.631 23.700,-10.110"/>
+    </edge>
+    <edge id=":-1_c1" priority="-1" function="crossing" crossingEdges="s2-1 -1-2">
+        <lane id=":-1_c1_0" index="0" speed="0.361" length="11.251" allow="pedestrian" width="5.95" shape="-5.060,23.579 6.188,23.305"/>
+    </edge>
+    <edge id=":wa_1" priority="-1" function="walkingarea">
+        <lane id=":wa_1_0" index="0" speed="0.361" length="11.251" allow="pedestrian" width="5.95" shape="-5.060,23.579 6.188,23.305"/>
+    </edge>
+    <edge id=":-1_c2" priority="-1" function="crossing" crossingEdges="s0-1 -1-4">
+        <lane id=":-1_c2_0" index="0" speed="0.361" length="22.502" allow="pedestrian" width="5.95" shape="-24.222,-10.247 -23.002,12.222"/>
+    </edge>
+    <edge id=":wa_2" priority="-1" function="walkingarea">
+        <lane id=":wa_2_0" index="0" speed="0.361" length="22.502" allow="pedestrian" width="5.95" shape="-24.222,-10.247 -23.002,12.222"/>
+    </edge>
+    <edge id=":-1_c3" priority="-1" function="crossing" crossingEdges="-1-3 s3-1">
+        <lane id=":-1_c3_0" index="0" speed="0.361" length="11.248" allow="pedestrian" width="5.95" shape="5.716,-23.006 -5.533,-23.006"/>
+    </edge>
+    <edge id=":wa_3" priority="-1" function="walkingarea">
+        <lane id=":wa_3_0" index="0" speed="0.361" length="11.248" allow="pedestrian" width="5.95" shape="5.716,-23.006 -5.533,-23.006"/>
+    </edge>
+    <edge id=":s0_24" priority="-1" function="internal">
+        <lane id=":s0_24_0" index="0" speed="16.667" length="7.079" allow="pedestrian" width="3.70" shape="-103.897,-5.039 -98.055,-9.037"/>
+    </edge>
+    <edge id=":s0_25" priority="-1" function="internal">
+        <lane id=":s0_25_0" index="0" speed="16.667" length="6.005" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-103.741,-1.292 -97.741,-1.543"/>
+    </edge>
+    <edge id=":s0_26" priority="-1" function="internal">
+        <lane id=":s0_26_0" index="0" speed="16.667" length="6.005" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-103.584,2.454 -97.585,2.204"/>
+    </edge>
+    <edge id=":s0_27" priority="-1" function="internal">
+        <lane id=":s0_27_0" index="0" speed="16.667" length="7.587" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-103.584,2.454 -96.838,5.926"/>
+    </edge>
+    <edge id=":s1_28" priority="-1" function="internal">
+        <lane id=":s1_28_0" index="0" speed="16.667" length="5.997" allow="pedestrian" width="3.70" shape="103.294,8.073 97.300,8.257"/>
+    </edge>
+    <edge id=":s1_29" priority="-1" function="internal">
+        <lane id=":s1_29_0" index="0" speed="16.667" length="5.997" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="103.179,4.324 97.184,4.509"/>
+    </edge>
+    <edge id=":s1_30" priority="-1" function="internal">
+        <lane id=":s1_30_0" index="0" speed="16.667" length="5.997" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="103.063,0.576 97.069,0.761"/>
+    </edge>
+    <edge id=":s1_31" priority="-1" function="internal">
+        <lane id=":s1_31_0" index="0" speed="16.667" length="7.073" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="103.063,0.576 96.953,-2.987"/>
+    </edge>
+    <edge id=":s2_32" priority="-1" function="internal">
+        <lane id=":s2_32_0" index="0" speed="16.667" length="6.027" allow="pedestrian" width="3.70" shape="-5.021,103.187 -5.166,97.162"/>
+    </edge>
+    <edge id=":s2_33" priority="-1" function="internal">
+        <lane id=":s2_33_0" index="0" speed="16.667" length="6.027" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-1.272,103.097 -1.417,97.072"/>
+    </edge>
+    <edge id=":s2_34" priority="-1" function="internal">
+        <lane id=":s2_34_0" index="0" speed="16.667" length="7.098" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-1.272,103.097 2.332,96.982"/>
+    </edge>
+    <edge id=":s3_35" priority="-1" function="internal">
+        <lane id=":s3_35_0" index="0" speed="16.667" length="5.896" allow="pedestrian" width="3.70" shape="7.908,-102.846 7.885,-96.951"/>
+    </edge>
+    <edge id=":s3_36" priority="-1" function="internal">
+        <lane id=":s3_36_0" index="0" speed="16.667" length="5.896" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="4.159,-102.861 4.136,-96.966"/>
+    </edge>
+    <edge id=":s3_37" priority="-1" function="internal">
+        <lane id=":s3_37_0" index="0" speed="16.667" length="6.987" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="4.159,-102.861 0.386,-96.981"/>
+    </edge>
+    <edge id="-4s0" from="-4" to="s0" priority="-1" shape="-701.359,29.325 -100.508,4.202">
+        <lane id="-4s0_0" index="0" speed="16.667" length="598.376" allow="pedestrian" width="3.70" shape="-701.750,19.959 -103.897,-5.039"/>
+        <lane id="-4s0_1" index="1" speed="16.667" length="598.376" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-701.594,23.705 -103.741,-1.292"/>
+        <lane id="-4s0_2" index="2" speed="16.667" length="598.376" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-701.437,27.452 -103.584,2.454"/>
+    </edge>
+    <edge id="s0-1" from="s0" to="-1" priority="-1" shape="-100.504,4.202 -0.006,0.000">
+        <lane id="s0-1_0" index="0" speed="16.667" length="70.116" allow="pedestrian" width="3.70" shape="-98.055,-9.037 -28.000,-11.966"/>
+        <lane id="s0-1_1" index="1" speed="16.667" length="70.111" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-97.898,-5.290 -27.848,-8.219"/>
+        <lane id="s0-1_2" index="2" speed="16.667" length="70.111" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-97.741,-1.543 -27.692,-4.472"/>
+        <lane id="s0-1_3" index="3" speed="16.667" length="70.111" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-97.585,2.204 -27.535,-0.725"/>
+        <lane id="s0-1_4" index="4" speed="16.667" length="69.525" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-96.838,5.926 -27.373,3.021"/>
+    </edge>
+    <edge id="-1-4" from="-1" to="-4" priority="-1" shape="0.000,0.000 -701.359,29.325">
+        <lane id="-1-4_0" index="0" speed="16.667" length="674.691" allow="pedestrian" width="3.70" shape="-26.709,14.253 -700.811,42.439"/>
+        <lane id="-1-4_1" index="1" speed="16.667" length="681.972" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-19.591,10.202 -700.967,38.692"/>
+        <lane id="-1-4_2" index="2" speed="16.667" length="681.972" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-19.748,6.456 -701.124,34.946"/>
+    </edge>
+    <edge id="-5s1" from="-5" to="s1" priority="-1" shape="644.621,-19.862 99.949,-3.080">
+        <lane id="-5s1_0" index="0" speed="16.667" length="541.930" allow="pedestrian" width="3.70" shape="644.968,-8.617 103.294,8.073"/>
+        <lane id="-5s1_1" index="1" speed="16.667" length="541.930" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="644.852,-12.365 103.179,4.324"/>
+        <lane id="-5s1_2" index="2" speed="16.667" length="541.930" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="644.737,-16.114 103.063,0.576"/>
+    </edge>
+    <edge id="s1-1" from="s1" to="-1" priority="-1" shape="99.952,-3.080 0.000,0.000">
+        <lane id="s1-1_0" index="0" speed="16.667" length="69.104" allow="pedestrian" width="3.70" shape="97.300,8.257 28.229,10.386"/>
+        <lane id="s1-1_1" index="1" speed="16.667" length="69.104" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="97.184,4.509 28.113,6.637"/>
+        <lane id="s1-1_2" index="2" speed="16.667" length="69.104" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="97.069,0.761 27.998,2.889"/>
+        <lane id="s1-1_3" index="3" speed="16.667" length="69.104" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="96.953,-2.987 27.882,-0.859"/>
+    </edge>
+    <edge id="-1-5" from="-1" to="-5" priority="-1" shape="0.000,0.000 644.621,-19.862">
+        <lane id="-1-5_0" index="0" speed="16.667" length="617.275" allow="pedestrian" width="3.70" shape="27.289,-12.096 644.271,-31.106"/>
+        <lane id="-1-5_1" index="1" speed="16.667" length="624.924" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="19.759,-8.112 644.387,-27.358"/>
+        <lane id="-1-5_2" index="2" speed="16.667" length="624.924" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="19.875,-4.364 644.502,-23.610"/>
+    </edge>
+    <edge id="-2s2" from="-2" to="s2" priority="-1" shape="9.077,377.430 2.405,100.010">
+        <lane id="-2s2_0" index="0" speed="16.667" length="274.503" allow="pedestrian" width="3.70" shape="1.578,377.611 -5.021,103.187"/>
+        <lane id="-2s2_1" index="1" speed="16.667" length="274.503" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="5.328,377.520 -1.272,103.097"/>
+    </edge>
+    <edge id="s2-1" from="s2" to="-1" priority="-1" shape="2.404,99.981 0.001,0.039">
+        <lane id="s2-1_0" index="0" speed="16.667" length="69.935" allow="pedestrian" width="3.70" shape="-5.166,97.162 -6.848,27.247"/>
+        <lane id="s2-1_1" index="1" speed="16.667" length="69.935" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-1.417,97.072 -3.098,27.157"/>
+        <lane id="s2-1_2" index="2" speed="16.667" length="69.967" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="2.332,96.982 0.650,27.035"/>
+    </edge>
+    <edge id="-1-2" from="-1" to="-2" priority="-1" shape="0.000,0.000 9.077,377.430">
+        <lane id="-1-2_0" index="0" speed="16.667" length="350.708" allow="pedestrian" width="3.70" shape="8.144,26.643 16.575,377.250"/>
+        <lane id="-1-2_1" index="1" speed="16.667" length="357.539" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="4.230,19.904 12.826,377.340"/>
+    </edge>
+    <edge id="-3s3" from="-3" to="s3" priority="-1" shape="2.727,-684.382 0.398,-99.872">
+        <lane id="-3s3_0" index="0" speed="16.667" length="581.510" allow="pedestrian" width="3.70" shape="10.225,-684.352 7.908,-102.846"/>
+        <lane id="-3s3_1" index="1" speed="16.667" length="581.510" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="6.476,-684.367 4.159,-102.861"/>
+    </edge>
+    <edge id="s3-1" from="s3" to="-1" priority="-1" shape="0.398,-99.981 0.000,0.000">
+        <lane id="s3-1_0" index="0" speed="16.667" length="69.785" allow="pedestrian" width="3.70" shape="7.885,-96.951 7.607,-27.167"/>
+        <lane id="s3-1_1" index="1" speed="16.667" length="69.785" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="4.136,-96.966 3.858,-27.182"/>
+        <lane id="s3-1_2" index="2" speed="16.667" length="69.785" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="0.386,-96.981 0.108,-27.197"/>
+    </edge>
+    <edge id="-1-3" from="-1" to="-3" priority="-1" shape="0.000,0.000 2.727,-684.382">
+        <lane id="-1-3_0" index="0" speed="16.667" length="657.105" allow="pedestrian" width="3.70" shape="-7.390,-27.185 -4.772,-684.285"/>
+        <lane id="-1-3_1" index="1" speed="16.667" length="665.750" allow="private emergency passenger bus truck motorcycle bicycle" width="3.70" shape="-3.676,-18.525 -1.023,-684.270"/>
+    </edge>
+    <tlLogic id="-1" type="static" programID="0" offset="0">
+        <phase duration="1" state="ooooooooooooooooooooooo"/>
+    </tlLogic>
+    <junction id="-1" type="traffic_light" x="0.000" y="0.000" incLanes="s2-1_0 s2-1_1 s2-1_2 s1-1_0 s1-1_1 s1-1_2 s1-1_3 s3-1_0 s3-1_1 s3-1_2 s0-1_0 s0-1_1 s0-1_2 s0-1_3 s0-1_4" intLanes=":-1_5_0 :-1_4_0 :-1_3_0 :-1_19_0 :-1_17_0 :-1_9_0 :-1_8_0 :-1_7_0 :-1_6_0 :-1_21_0 :-1_2_0 :-1_1_0 :-1_0_0 :-1_15_0 :-1_13_0 :-1_12_0 :-1_11_0 :-1_10_0 :-1_23_0 :-1_c0_0 :-1_c1_0 :-1_c2_0 :-1_c3_0" shape="10.018,26.598 6.269,26.688 6.105,19.859 2.356,19.949 2.524,26.953 -1.225,27.043 -4.975,27.133 -8.724,27.223 -26.631,16.127 -26.787,12.380 -19.513,12.076 -19.669,8.329 -19.826,4.582 -27.290,4.894 -27.446,1.148 -27.603,-2.599 -27.760,-6.346 -27.916,-10.093 -28.073,-13.839 -9.265,-27.192 -5.515,-27.177 -5.551,-18.532 -1.801,-18.517 -1.766,-27.326 1.983,-27.311 5.733,-27.296 9.482,-27.281 27.232,-13.970 27.347,-10.222 19.702,-9.986 19.817,-6.238 19.933,-2.490 27.828,-2.733 27.943,1.015 28.059,4.763 28.174,8.511 28.290,12.260 10.018,26.598">
+        <request index="0" response="00000000000000000000000" foes="00000000000000000000000" cont="0"/>
+        <request index="1" response="00101111000000000000100" foes="00101111010001110000100" cont="0"/>
+        <request index="2" response="00100000000000010000000" foes="00100000000000010000010" cont="0"/>
+        <request index="3" response="00001100001000000000000" foes="00001100001001110000000" cont="1"/>
+        <request index="4" response="00001110001100000000000" foes="00001110001101110000000" cont="1"/>
+        <request index="5" response="00000000000000000000000" foes="00000000000000000000000" cont="0"/>
+        <request index="6" response="00010000000000000000000" foes="00011000001000010000000" cont="0"/>
+        <request index="7" response="00010000000000001011010" foes="00011000001000001011110" cont="0"/>
+        <request index="8" response="00010000000000000011010" foes="00011000011000000011010" cont="0"/>
+        <request index="9" response="00000111000000000011010" foes="00000111011000000011010" cont="1"/>
+        <request index="10" response="00000000000000000000000" foes="00000000000000000000000" cont="0"/>
+        <request index="11" response="10000000001000000000000" foes="10000010001000000010000" cont="0"/>
+        <request index="12" response="10000000000001111000000" foes="10001110000101111011000" cont="0"/>
+        <request index="13" response="00000000000001100000010" foes="00001110000001100000010" cont="1"/>
+        <request index="14" response="00000000000000000000000" foes="00000000000000000000000" cont="0"/>
+        <request index="15" response="01000000000000000000000" foes="01000000000001000000010" cont="0"/>
+        <request index="16" response="01000000011100000000000" foes="01000000011101000010010" cont="0"/>
+        <request index="17" response="01000000011000000000000" foes="01000000011001000011010" cont="0"/>
+        <request index="18" response="00000000011000111000000" foes="00000000011000111011010" cont="1"/>
+        <request index="19" response="00000000000000000000000" foes="00000000000000111000000" cont="0"/>
+        <request index="20" response="00000000000000000000000" foes="00000000000000000000110" cont="0"/>
+        <request index="21" response="00000000000000000000000" foes="00000111000000000000000" cont="0"/>
+        <request index="22" response="00000000000000000000000" foes="00000000001100000000000" cont="0"/>
+    </junction>
+    <junction id="-2" type="dead_end" x="9.077" y="377.430"/>
+    <junction id="-3" type="dead_end" x="2.727" y="-684.382"/>
+    <junction id="-4" type="dead_end" x="-701.359" y="29.325"/>
+    <junction id="-5" type="dead_end" x="644.621" y="-19.862"/>
+    <junction id="s0" type="unregulated" x="-100.504" y="4.202" incLanes="-4s0_0 -4s0_1 -4s0_2"/>
+    <junction id="s1" type="unregulated" x="99.952" y="-3.080" incLanes="-5s1_0 -5s1_1 -5s1_2"/>
+    <junction id="s2" type="unregulated" x="2.404" y="99.981" incLanes="-2s2_0 -2s2_1"/>
+    <junction id="s3" type="unregulated" x="0.398" y="-99.981" incLanes="-3s3_0 -3s3_1"/>
+    <junction id=":-1_14_0" type="internal" x="-0.477" y="-10.473" incLanes=":-1_14_0 s2-1_1 s1-1_3 s1-1_2 s0-1_4 s0-1_3 s0-1_2" intLanes=":-1_15_0 :-1_11_0 :-1_10_0 :-1_6_0 :-1_4_0"/>
+    <junction id=":-1_16_0" type="internal" x="0.599" y="12.456" incLanes=":-1_16_0 s3-1_1 s3-1_1 s1-1_3 s1-1_2 s1-1_1 s0-1_4 s0-1_3 s0-1_2" intLanes=":-1_17_0 :-1_11_0 :-1_10_0 :-1_7_0 :-1_6_0 :-1_1_0 :-1_0_0"/>
+    <junction id=":-1_18_0" type="internal" x="0.703" y="12.424" incLanes=":-1_18_0 s3-1_1 s1-1_3 s1-1_2 s1-1_1 s0-1_4 s0-1_3" intLanes=":-1_19_0 :-1_10_0 :-1_7_0 :-1_6_0 :-1_0_0"/>
+    <junction id=":-1_20_0" type="internal" x="9.532" y="-1.013" incLanes=":-1_20_0 s3-1_2 s3-1_1 s2-1_2 s2-1_2 s2-1_1 s0-1_3 s0-1_2 s0-1_1" intLanes=":-1_21_0 :-1_19_0 :-1_17_0 :-1_15_0 :-1_12_0 :-1_11_0 :-1_10_0 :-1_4_0 :-1_0_0"/>
+    <junction id=":-1_22_0" type="internal" x="-9.615" y="2.946" incLanes=":-1_22_0 s3-1_2 s3-1_1 s2-1_2 s2-1_2 s2-1_1 s1-1_2 s1-1_1 s1-1_1" intLanes=":-1_23_0 :-1_19_0 :-1_17_0 :-1_15_0 :-1_8_0 :-1_7_0 :-1_6_0 :-1_4_0 :-1_0_0"/>
+    <connection from="s2-1" to="-1-4" fromLane="0" toLane="0" via=":-1_5_0" tl="-1" linkIndex="0" dir="r" state="M"/>
+    <connection from="s2-1" to="-1-3" fromLane="1" toLane="1" via=":-1_4_0" tl="-1" linkIndex="1" dir="s" state="m"/>
+    <connection from="s2-1" to="-1-4" fromLane="1" toLane="1" via=":-1_3_0" tl="-1" linkIndex="2" dir="r" state="m"/>
+    <connection from="s2-1" to="-1-5" fromLane="2" toLane="2" via=":-1_18_0" tl="-1" linkIndex="3" dir="l" state="O"/>
+    <connection from="s2-1" to="-1-5" fromLane="2" toLane="1" via=":-1_16_0" tl="-1" linkIndex="4" dir="l" state="O"/>
+    <connection from="s1-1" to="-1-2" fromLane="0" toLane="0" via=":-1_9_0" tl="-1" linkIndex="5" dir="r" state="M"/>
+    <connection from="s1-1" to="-1-2" fromLane="1" toLane="1" via=":-1_8_0" tl="-1" linkIndex="6" dir="r" state="M"/>
+    <connection from="s1-1" to="-1-4" fromLane="1" toLane="1" via=":-1_7_0" tl="-1" linkIndex="7" dir="s" state="M"/>
+    <connection from="s1-1" to="-1-4" fromLane="2" toLane="2" via=":-1_6_0" tl="-1" linkIndex="8" dir="s" state="M"/>
+    <connection from="s1-1" to="-1-3" fromLane="3" toLane="1" via=":-1_20_0" tl="-1" linkIndex="9" dir="l" state="O"/>
+    <connection from="s3-1" to="-1-5" fromLane="0" toLane="0" via=":-1_2_0" tl="-1" linkIndex="10" dir="r" state="M"/>
+    <connection from="s3-1" to="-1-5" fromLane="1" toLane="1" via=":-1_1_0" tl="-1" linkIndex="11" dir="r" state="m"/>
+    <connection from="s3-1" to="-1-2" fromLane="1" toLane="1" via=":-1_0_0" tl="-1" linkIndex="12" dir="s" state="M"/>
+    <connection from="s3-1" to="-1-4" fromLane="2" toLane="2" via=":-1_14_0" tl="-1" linkIndex="13" dir="l" state="O"/>
+    <connection from="s0-1" to="-1-3" fromLane="0" toLane="0" via=":-1_13_0" tl="-1" linkIndex="14" dir="r" state="M"/>
+    <connection from="s0-1" to="-1-3" fromLane="1" toLane="1" via=":-1_12_0" tl="-1" linkIndex="15" dir="r" state="M"/>
+    <connection from="s0-1" to="-1-5" fromLane="2" toLane="1" via=":-1_11_0" tl="-1" linkIndex="16" dir="s" state="m"/>
+    <connection from="s0-1" to="-1-5" fromLane="3" toLane="2" via=":-1_10_0" tl="-1" linkIndex="17" dir="s" state="m"/>
+    <connection from="s0-1" to="-1-2" fromLane="4" toLane="1" via=":-1_22_0" tl="-1" linkIndex="18" dir="l" state="O"/>
+    <connection from=":-1_0" to="-1-2" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_1" to="-1-5" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_2" to="-1-5" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":-1_3" to="-1-4" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_4" to="-1-3" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_5" to="-1-4" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":-1_6" to="-1-4" fromLane="0" toLane="2" dir="s" state="M"/>
+    <connection from=":-1_7" to="-1-4" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_8" to="-1-2" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_9" to="-1-2" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":-1_10" to="-1-5" fromLane="0" toLane="2" dir="s" state="M"/>
+    <connection from=":-1_11" to="-1-5" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_12" to="-1-3" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_13" to="-1-3" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":-1_14" to="-1-4" fromLane="0" toLane="2" via=":-1_15_0" dir="l" state="m"/>
+    <connection from=":-1_15" to="-1-4" fromLane="0" toLane="2" dir="s" state="M"/>
+    <connection from=":-1_16" to="-1-5" fromLane="0" toLane="1" via=":-1_17_0" dir="l" state="m"/>
+    <connection from=":-1_17" to="-1-5" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_18" to="-1-5" fromLane="0" toLane="2" via=":-1_19_0" dir="l" state="m"/>
+    <connection from=":-1_19" to="-1-5" fromLane="0" toLane="2" dir="s" state="M"/>
+    <connection from=":-1_20" to="-1-3" fromLane="0" toLane="1" via=":-1_21_0" dir="l" state="m"/>
+    <connection from=":-1_21" to="-1-3" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":-1_22" to="-1-2" fromLane="0" toLane="1" via=":-1_23_0" dir="l" state="m"/>
+    <connection from=":-1_23" to="-1-2" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from=":wa_0" to=":-1_c0" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":wa_1" to=":-1_c1" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":wa_2" to=":-1_c2" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":wa_3" to=":-1_c3" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":-1_c0" to=":wa_0" fromLane="0" toLane="0" tl="-1" linkIndex="19" dir="s" state="M"/>
+    <connection from=":-1_c1" to=":wa_1" fromLane="0" toLane="0" tl="-1" linkIndex="20" dir="s" state="M"/>
+    <connection from=":-1_c2" to=":wa_2" fromLane="0" toLane="0" tl="-1" linkIndex="21" dir="s" state="M"/>
+    <connection from=":-1_c3" to=":wa_3" fromLane="0" toLane="0" tl="-1" linkIndex="22" dir="s" state="M"/>
+    <connection from="-4s0" to="s0-1" fromLane="0" toLane="0" via=":s0_24_0" dir="s" state="M"/>
+    <connection from=":s0_24" to="s0-1" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from="-4s0" to="s0-1" fromLane="1" toLane="2" via=":s0_25_0" dir="s" state="M"/>
+    <connection from=":s0_25" to="s0-1" fromLane="0" toLane="2" dir="s" state="M"/>
+    <connection from="-4s0" to="s0-1" fromLane="2" toLane="3" via=":s0_26_0" dir="s" state="M"/>
+    <connection from=":s0_26" to="s0-1" fromLane="0" toLane="3" dir="s" state="M"/>
+    <connection from="-4s0" to="s0-1" fromLane="2" toLane="4" via=":s0_27_0" dir="s" state="M"/>
+    <connection from=":s0_27" to="s0-1" fromLane="0" toLane="4" dir="s" state="M"/>
+    <connection from="-5s1" to="s1-1" fromLane="0" toLane="0" via=":s1_28_0" dir="s" state="M"/>
+    <connection from=":s1_28" to="s1-1" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from="-5s1" to="s1-1" fromLane="1" toLane="1" via=":s1_29_0" dir="s" state="M"/>
+    <connection from=":s1_29" to="s1-1" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from="-5s1" to="s1-1" fromLane="2" toLane="2" via=":s1_30_0" dir="s" state="M"/>
+    <connection from=":s1_30" to="s1-1" fromLane="0" toLane="2" dir="s" state="M"/>
+    <connection from="-5s1" to="s1-1" fromLane="2" toLane="3" via=":s1_31_0" dir="s" state="M"/>
+    <connection from=":s1_31" to="s1-1" fromLane="0" toLane="3" dir="s" state="M"/>
+    <connection from="-2s2" to="s2-1" fromLane="0" toLane="0" via=":s2_32_0" dir="s" state="M"/>
+    <connection from=":s2_32" to="s2-1" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from="-2s2" to="s2-1" fromLane="1" toLane="1" via=":s2_33_0" dir="s" state="M"/>
+    <connection from=":s2_33" to="s2-1" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from="-2s2" to="s2-1" fromLane="1" toLane="2" via=":s2_34_0" dir="s" state="M"/>
+    <connection from=":s2_34" to="s2-1" fromLane="0" toLane="2" dir="s" state="M"/>
+    <connection from="-3s3" to="s3-1" fromLane="0" toLane="0" via=":s3_35_0" dir="s" state="M"/>
+    <connection from=":s3_35" to="s3-1" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from="-3s3" to="s3-1" fromLane="1" toLane="1" via=":s3_36_0" dir="s" state="M"/>
+    <connection from=":s3_36" to="s3-1" fromLane="0" toLane="1" dir="s" state="M"/>
+    <connection from="-3s3" to="s3-1" fromLane="1" toLane="2" via=":s3_37_0" dir="s" state="M"/>
+    <connection from=":s3_37" to="s3-1" fromLane="0" toLane="2" dir="s" state="M"/>
+</net>

@@ -39,13 +39,18 @@ module.exports = {
 
         var xml = fs.readFileSync(fileName);
         parser.parseString(xml, function (err, result) {
+
             if (err) {
                 ready(err, []);
                 return;
             }
 
-            var bound       = result.net.location.convBoundary.split(',');
-            var yMax        = parseInt(bound[bound.length - 1]) * zoomMap;
+            var yMax = 0;
+            if (result.net.location) {
+                var bound   = result.net.location.convBoundary.split(',');
+                yMax        = parseInt(bound[bound.length - 1]) * zoomMap;
+            }
+
             var edges       = result.net.edge;
             var connections = result.net.connection;
             var junctions   = result.net.junction;
@@ -67,7 +72,7 @@ module.exports = {
 
                 var node  = deepClone(defaults.cyNodeProps);
                 var crossRoadData = defaults.crossRoad;
-                crossRoadData.programs.push(defaults.programDefaults);
+                crossRoadData.programs = [];//.push(defaults.programDefaults);
                 crossRoadData.currentProgram = 0;
                 node.data = deepClone(crossRoadData);
                 node.position.x = parseInt(junction.x) * zoomMap;
@@ -181,6 +186,7 @@ module.exports = {
                 cyEdge.data.portion = portion;
                 data.push(cyEdge);
             };
+
 
 
             _.forEach(junctions, function(junction){

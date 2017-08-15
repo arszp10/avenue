@@ -321,6 +321,7 @@ module.exports = function(app, config) {
                 return;
             }
             var result  = model.toObject();
+                result.id = result._id;
             delete result._creator;
             delete result._id;
             delete result.__v;
