@@ -5,23 +5,21 @@
     <title locale="app-title">AvenueApp</title>
     <link href="/css/_bundle.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://js.arcgis.com/4.4/esri/css/main.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0">
 </head>
 <body class="show-network">
-    <div>
-        //= templates/top-panel.html
-        //= templates/left-panel.html
-        //= templates/right-panel.html
+//= templates/top-panel.html
+//= templates/left-panel.html
+//= templates/right-panel.html
 
-        <div id="cy" class="screen visible-network" data-tab="btn-show-network"></div>
-        <div id="mapBack" class="screen-0 visible-map" data-tab="btn-show-map"></div>
-        //= templates/crossroad-panel.html
-        //= templates/routes-panel.html
-        //= templates/bottom-panel.html
-    </div>
+<div id="cy" class="screen visible-network" data-tab="btn-show-network"></div>
+<div id="mapBack" class="screen-0 visible-map" data-tab="btn-show-map"></div>
+//= templates/crossroad-panel.html
+//= templates/routes-panel.html
+//= templates/bottom-panel.html
+
 <!-- hidden elemetns section-->
 //= templates/input-edge-label.html
-<!--templates/crossroad-modal.html-->
 //= templates/co-plan-modal.html
 //= templates/cycle-graph-modal.html
 //= templates/panel-point-property.html
