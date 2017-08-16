@@ -1,5 +1,8 @@
 (function(App){
     var browserLang = navigator.language || navigator.userLanguage;
+    if (browserLang.length > 2) {
+        browserLang = browserLang.substr(0, 2);
+    }
     var locales = {
         ru: {
             'api-doc'           : 'Документация API',
@@ -181,6 +184,9 @@
         },
 
         localize: function(key){
+            if (!locales.hasOwnProperty(browserLang)) {
+                return key;
+            }
             var keyExist = locales[browserLang].hasOwnProperty(key);
             return keyExist ? locales[browserLang][key] : key ;
         }
