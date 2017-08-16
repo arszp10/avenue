@@ -43,6 +43,10 @@
             inputCrossroadOffset:   '#inputCrossroadOffset',
             inputCoPlanCycleTime:   '#inputCoPlanCycleTime',
             inputCoPlanName:        '#inputCoPlanName',
+            inputCoIntertactOrder:  '#inputCoIntertactOrder',
+            inputCoNodeDefaultIntensity:  '#inputCoNodeDefaultIntensity',
+            inputCoNodeDefaultCapacity:  '#inputCoNodeDefaultCapacity',
+
             inputCoPlanNotes:       '#inputCoPlanNotes',
             inputsNodeProperty:     'input.node-property',
             inputCrossroadName:     '#input-crossroad-name',

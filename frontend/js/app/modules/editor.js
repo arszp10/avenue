@@ -211,7 +211,10 @@
                         cycleTime: App.State.currentModel.cycleTime,
                         position: cy.aveGetExtents(),
                         anchored: App.State.currentModel.anchored,
-                        showMapInBackground: App.State.currentModel.showMapInBackground
+                        intertactOrder: App.State.currentModel.intertactOrder,
+                        defaultIntensity: App.State.currentModel.defaultIntensity,
+                        defaultCapacity: App.State.currentModel.defaultCapacity
+
                     }
                 }, $icon);
             });
@@ -476,12 +479,20 @@
                 controls.inputs.inputCoPlanCycleTime.val(cp.cycleTime);
                 controls.inputs.inputCoPlanName.val(cp.name);
                 controls.inputs.inputCoPlanNotes.val(cp.notes);
+                controls.inputs.inputCoIntertactOrder.val(cp.intertactOrder);
+                controls.inputs.inputCoNodeDefaultIntensity.val(cp.defaultIntensity);
+                controls.inputs.inputCoNodeDefaultCapacity.val(cp.defaultCapacity);
                 controls.panels.coPlanModal.modal('show');
             });
             controls.buttons.btnCoPlanSave.click(function () {
                 App.State.currentModel.cycleTime = controls.inputs.inputCoPlanCycleTime.val();
                 App.State.currentModel.name = controls.inputs.inputCoPlanName.val();
                 App.State.currentModel.notes = controls.inputs.inputCoPlanNotes.val();
+
+                App.State.currentModel.intertactOrder = controls.inputs.inputCoIntertactOrder.val();
+                App.State.currentModel.defaultIntensity = controls.inputs.inputCoNodeDefaultIntensity.val();
+                App.State.currentModel.defaultCapacity = controls.inputs.inputCoNodeDefaultCapacity.val();
+
                 cy.aveSetCycleTime(App.State.currentModel.cycleTime);
                 controls.panels.coPlanModal.modal('hide');
             });
@@ -608,7 +619,7 @@
             if (node.type == 'crossRoad' && errors.length == 0) {
                 var stopLines = cy.aveGetCrossroadStoplines(node.id);
                 stopLines.sort(intersectionEditor.stopLineSort);
-
+                var intertactOrder = App.State.currentModel.intertactOrder;
                 var program = node.programs[node.currentProgram];
                 var order = program.phasesOrders[program.currentOrder];
                 var rows = templates.crossRoadPropsDiagramRow({
@@ -618,7 +629,7 @@
                 $.each(stopLines, function(i, stopline){
                     rows += templates.crossRoadPropsDiagramRow({
                         cycleTime: program.cycleTime,
-                        signals: traffic.signalDiagramData1(node, program, stopline.data, undefined, true)
+                        signals: traffic.signalDiagramData1(intertactOrder, node, program, stopline.data, undefined, true)
                     });
                 });
                 controls.panels.nodeSearchInfo.append(templates.crossRoadPropsSignalBars(rows));
@@ -657,11 +668,12 @@
 
                 var crossroad = cy.getElementById(node.parent).data();
                 var program = crossroad.programs[crossroad.currentProgram];
+                var intertactOrder = App.State.currentModel.intertactOrder;
                 var stopline = node;
                 controls.panels.nodeSearchInfo.append(
                     templates.signalBar({
                         cycleTime: node.cycleTime,
-                        signals: traffic.signalDiagramData1(crossroad, program, stopline)
+                        signals: traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline)
                     })
                 );
             }

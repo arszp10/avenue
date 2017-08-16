@@ -21,7 +21,10 @@
             x: e.originalEvent.pageX - offset.left,
             y: e.originalEvent.pageY - offset.top
         };
-        cy.aveAddNode(JSON.parse(JSON.stringify(settings[App.State.nodeType])), position);
+        var node = JSON.parse(JSON.stringify(settings[App.State.nodeType]));
+        node.avgIntensity = App.State.currentModel.defaultIntensity;
+        node.capacity = App.State.currentModel.defaultCapacity;
+        cy.aveAddNode(node, position);
     };
 
     var markInnerCrossEdge = function(edge){
@@ -411,6 +414,7 @@
                     }
                 } else {
                     var program = JSON.parse(JSON.stringify(cy.aveGetCurrentProgramPhases(v)));
+                    item.itertactOrder = App.State.currentModel.intertactOrder;
                     item.offset = program.offset;
                     item.cycleTime = program.cycleTime;
                     item.phases = program.phases;

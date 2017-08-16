@@ -130,20 +130,23 @@
         getModel: {
             done: function(r,o){
                 if (r.success) {
-                    App.State.currentModel = r.data;
-                    if (!App.State.currentModel.hasOwnProperty('routes')) {
-                        App.State.currentModel.routes = [];
-                    }
-                    var content = r.data.content === undefined ? [] : r.data.content;
-                    App.State.currentModel.anchored = r.data.anchored  === undefined ? false : r.data.anchored;
-                    App.State.currentModel.showMapInBackground = r.data.showMapInBackground  === undefined ? false : r.data.showMapInBackground;
+                    var defaults = {
+                        routes: [],
+                        content: [],
+                        anchored: false,
+                        showMapInBackground: false,
+                        intertactOrder: 'after',
+                        defaultIntensity: 600,
+                        defaultCapacity: 1800
+                    };
+                    App.State.currentModel = $.extend({}, defaults, r.data);
 
                     var zoom = r.data.hasOwnProperty('position') ? r.data.position.cyZoom : 1;
                     var extent = r.data.hasOwnProperty('position')
                         ? $.extend({x1: 0, y1:0}, r.data.position.cyExtent)
                         : {x1: 0, y1:0};
 
-                    cy.add(content);
+                    cy.add(App.State.currentModel.content);
                     cy.viewport({
                         zoom: zoom, pan : { x:-1*extent.x1*zoom, y:-1*extent.y1*zoom }
                     });

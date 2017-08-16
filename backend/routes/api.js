@@ -301,7 +301,10 @@ module.exports = function(app, config) {
             model.routes        = bodyData.routes;
             model.position      = bodyData.position;
             model.anchored      = bodyData.anchored;
-            model.showMapInBackground      = bodyData.showMapInBackground;
+            model.showMapInBackground = bodyData.showMapInBackground;
+            model.intertactOrder   = bodyData.intertactOrder;
+            model.defaultIntensity = bodyData.defaultIntensity;
+            model.defaultCapacity  = bodyData.defaultCapacity;
             model.save(function(err){
                 if (err) {
                     throw err;

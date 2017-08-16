@@ -2,6 +2,7 @@ function CrossRoad(options){
     this.options = options;
     this.offset = parseInt(options.offset);
     this.cycleTime = parseInt(options.cycleTime);
+    this.itertactOrder = options.itertactOrder;
     this.name = options.name;
     this.id = options.id;
     this.phases = options.phases.map(function(ph){

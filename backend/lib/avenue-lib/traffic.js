@@ -77,7 +77,8 @@ module.exports = {
     },
 
     signalDiagramData:  function(stopLine, crossRoad){
-        var i = 0, icolor = '', inext = 0;
+        var itertactOrder = crossRoad.itertactOrder;
+        var i = 0, icolor = '', inext = 0, iprev=0;
         var diagram = [];
         var phCount =  crossRoad.phases.length;
         var interTact ;
@@ -85,7 +86,10 @@ module.exports = {
         for (i = 0; i < phCount; i++){
             icolor = stopLine.greenPhases[i] ? 'green' : 'red';
             inext = (i + 1) % phCount;
-            if (stopLine.greenPhases[i] === stopLine.greenPhases[inext]) {
+            iprev = (i - 1 +  phCount) % phCount;
+
+            var checkPhase = itertactOrder == 'after' ? inext : iprev;
+            if (stopLine.greenPhases[i] === stopLine.greenPhases[checkPhase]) {
                 diagram.push({
                     color : icolor,
                     length : crossRoad.phases[i].length
@@ -97,15 +101,28 @@ module.exports = {
             var interPhaseLength = crossRoad.phases[i].hasOwnProperty('intertact')
                 ? crossRoad.phases[i].intertact : 3;
 
-            interTact = stopLine.greenPhases[i]
+            var checkColor = itertactOrder == 'after'
+                ? stopLine.greenPhases[i]
+                : !stopLine.greenPhases[i];
+
+            interTact = checkColor
                 ? this.greenToRedInterPhase(interPhaseLength, addGreen)
                 : this.readToGreenInterPhase(interPhaseLength, addGreen);
 
-            diagram.push({
-                color : icolor,
-                length : crossRoad.phases[i].length - interTact.length
-            });
-            diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
+
+            if (itertactOrder == 'after') {
+                diagram.push({
+                    color: icolor,
+                    length: crossRoad.phases[i].length - interTact.length
+                });
+                diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
+            } else {
+                diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
+                diagram.push({
+                    color: icolor,
+                    length: crossRoad.phases[i].length - interTact.length
+                });
+            }
         }
         return diagram;
     },

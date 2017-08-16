@@ -19,6 +19,9 @@ var modelSchema = new Schema({
     position:      Object,
     anchored:      { type: Boolean },
     showMapInBackground:{ type: Boolean },
+    intertactOrder: { type: String },
+    defaultIntensity:  { type: Number},
+    defaultCapacity:  { type: Number},
     _creator :  { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
@@ -31,6 +34,9 @@ modelSchema.pre('validate', function(next) {
         this.crossCount = 0;
         this.nodeCount = 0;
         this.createdAt = currentDate;
+        this.intertactOrder = 'after';
+        this.defaultIntensity = 600;
+        this.defaultCapacity = 1800;
     }
     next();
 });

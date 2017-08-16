@@ -261,6 +261,7 @@
 
         expandRoute: function(data){
             var route = JSON.parse(JSON.stringify(data));
+            var intertactOrder = App.State.currentModel.intertactOrder;
             route.points.forEach(function(point) {
 
                 point.length = point.forward.hasOwnProperty('carriages')
@@ -291,7 +292,7 @@
                             }, 0)
                         : 0;
 
-                    point[direction].signals = traffic.signalDiagramData1(crossroad, program, stopline, undefined);
+                    point[direction].signals = traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline, undefined);
                     //signalDiagramData(crossroad, stopline);
                     var signalsString = JSON.stringify(point[direction].signals);
                     var a1 = JSON.parse(signalsString);

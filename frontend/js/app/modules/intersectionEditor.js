@@ -706,13 +706,13 @@
                     signals: traffic.signalDiagramPhases(crossroad, program, order)
                 })
             );
-
+            var intertactOrder = App.State.currentModel.intertactOrder;
             $.each(stopLines, function(i, stopline){
                 controls.panels.tblDiagramsBody.append(templates.crossRoadTableDiagramRow(
                     stopline.data,
                     {
                         cycleTime: program.cycleTime,
-                        signals: traffic.signalDiagramData1(crossroad, program, stopline.data, order, true)
+                        signals: traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline.data, order, true)
                     }
                 ));
             });
@@ -915,13 +915,13 @@
                 ]
             };
             var myLineChart = new Chart(ctx).Line(data, settings.chart.common);
-
+            var intertactOrder = App.State.currentModel.intertactOrder;
             if (node.type == 'stopline' && node.hasOwnProperty('parent')){
                 var stopline = node;
                 controls.panels.crossroadNodeInfoPanel.append(
                     templates.signalBar({
                         cycleTime: node.cycleTime,
-                        signals: traffic.signalDiagramData1(crossroad, program, stopline)
+                        signals: traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline)
                     })
                 );
             }

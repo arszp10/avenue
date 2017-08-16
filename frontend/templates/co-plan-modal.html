@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-cog"></i> <span locale="coordination-plan-properties">Coordination plan properties</span></h4>
+                <h4 class="modal-title"><i class="fa fa-cog"></i> <span locale="coordination-plan-properties">Model properties</span></h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
@@ -19,6 +19,33 @@
                             <input type="text" class="form-control" id="inputCoPlanName">
                         </div>
                     </div>
+                    <!-- new -->
+
+                    <div class="form-group">
+                        <label for="inputCoPlanName" class="col-sm-3 control-label"><span locale="intertact-order">Intertact order</span>:</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="inputCoIntertactOrder">
+                                <option value="after" locale="after-stage">After stage</option>
+                                <option value="before" locale="before-stage">Before stage</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputCoNodeDefaultIntensity" class="col-sm-3 control-label"><span locale="default-flow-value">Default flow value</span>:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputCoNodeDefaultIntensity">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputCoNodeDefaultCapacity" class="col-sm-3 control-label"><span locale="default-capacity">Default capacity</span>:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputCoNodeDefaultCapacity">
+                        </div>
+                    </div>
+                    <!-- new -->
+
                     <div class="form-group">
                         <label for="inputCoPlanNotes" class="col-sm-3 control-label"><span locale="notes">Notes</span>:</label>
                         <div class="col-sm-9">

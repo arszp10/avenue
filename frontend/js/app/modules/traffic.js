@@ -114,7 +114,7 @@
             return diagram;
         },
 
-        signalDiagramData1:  function(crossroad, program, node, order, noOffset){
+        signalDiagramData1:  function(itertactOrder, crossroad, program, node, order, noOffset){
             var stopLine = node;
             var j = 0, icolor = '', inext = 0, iprev = 0;
             var diagram = [];
@@ -149,7 +149,9 @@
                     continue;
                 }
 
-                if (stopLine.greenPhases[cpi][i] === stopLine.greenPhases[cpi][inext]) {
+                var checkPhase = itertactOrder == 'after' ? inext : iprev;
+
+                if (stopLine.greenPhases[cpi][i] === stopLine.greenPhases[cpi][checkPhase]) {
                     diagram.push({
                         color : icolor,
                         length : program.phases[i].length
@@ -157,15 +159,28 @@
                     continue;
                 }
 
-                interTact = stopLine.greenPhases[cpi][i]
+                var checkColor = itertactOrder == 'after'
+                    ? stopLine.greenPhases[cpi][i]
+                    : !stopLine.greenPhases[cpi][i];
+
+                interTact = checkColor
                     ? this.greenToRedInterPhase(interPhaseLength, addGreen)
                     : this.readToGreenInterPhase(interPhaseLength, addGreen);
 
-                diagram.push({
-                    color : icolor,
-                    length : program.phases[i].length - interTact.length
-                });
-                diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
+                if (itertactOrder == 'after') {
+                    diagram.push({
+                        color : icolor,
+                        length : program.phases[i].length - interTact.length
+                    });
+                    diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
+                } else {
+                    diagram = diagram.concat(JSON.parse(JSON.stringify(interTact.signals)));
+                    diagram.push({
+                        color : icolor,
+                        length : program.phases[i].length - interTact.length
+                    });
+                }
+
             }
             return noOffset
                 ? diagram
