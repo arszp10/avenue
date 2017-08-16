@@ -86,6 +86,12 @@
                 that.toggleAddGreenPanel(false);
             });
 
+            controls.panels.addGreenProperty.find('form').submit(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                controls.buttons.btnAddGreenDone.click();
+            });
+
             /**
              *  Node popup properies block related events
              */
