@@ -192,6 +192,12 @@
             });
 
 
+            controls.buttons.btnModelDownload.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                api.downloadModel(App.State.modelId);
+            });
+
             controls.buttons.btnModelSave.click(function () {
                 if (!$(this).is(':visible')) return;
 
@@ -218,10 +224,6 @@
                     }
                 }, $icon);
             });
-
-            setInterval(function(){
-                controls.buttons.btnModelSave.click()
-            }, 90000);
 
             controls.buttons.btnAddRoute.click(function () {
                 controls.inputs.inputRouteName.val('');
@@ -495,6 +497,7 @@
 
                 cy.aveSetCycleTime(App.State.currentModel.cycleTime);
                 controls.panels.coPlanModal.modal('hide');
+                controls.buttons.btnModelSave.click();
             });
 
         },

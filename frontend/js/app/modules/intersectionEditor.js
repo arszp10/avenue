@@ -307,6 +307,7 @@
                 });
 
                 cyCrossroad.$().unselect();
+                controls.buttons.btnModelSave.click();
 
                 var currentRouteInx = routes.getSelected();
                 if (currentRouteInx === false) {
@@ -314,7 +315,6 @@
                 }
                 var route = routes.getRoute(currentRouteInx);
                     routes.drawRoute(route);
-
             });
 
             controls.inputs.inputCrossroadCycleLength.change(function(){

@@ -64,6 +64,11 @@
         saveModel: function(id, data, options) {
             return action('POST:/api/model/update/'+id, data, handlers.saveModel, options);
         },
+
+        downloadModel: function(id) {
+            window.location = '/api/model/download/'+id;
+        },
+
         getModel: function(id, options) {
             return action('GET:/api/model/get/'+id, {}, handlers.getModel, options);
         },

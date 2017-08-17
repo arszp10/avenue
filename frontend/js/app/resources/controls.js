@@ -111,6 +111,7 @@
             btnsCrossFormPhasesCount:   '.table-phases th.ph-th',
             btnSaveCrossroadData :      '#btn-save-crossroad-data',
             btnModelSave:               '#btn-model-save',
+            btnModelDownload:           '#btn-model-download',
             btnCalc:                    '#btn-calc',
             btnOffsetsOptimize:         '#btn-offsets-optimize',
             btnPhasesOptimize:         '#btn-phases-optimize',

@@ -314,6 +314,32 @@ module.exports = function(app, config) {
         });
     });
 
+
+    app.get('/api/model/download/:modelId', authenticateApi, function (req, res) {
+        var modelId = req.params.modelId;
+        var userId = req.session.user.id;
+        Model.findOne({_id: modelId, _creator:userId}, function (err, model) {
+            if (err || !model) {
+                res.status(404);
+                res.json(responses.entityNotFound('Model', modelId));
+                return;
+            }
+            var result  = model.toObject();
+            result.id = result._id;
+            delete result._creator;
+            delete result._id;
+            delete result.__v;
+
+            var data = JSON.stringify(result);
+            res.setHeader('Content-disposition', 'attachment; filename= ' + result.name + '.json');
+            res.setHeader('Content-type', 'application/json');
+            res.write(data, function (err) {
+                res.end();
+            });
+        });
+    });
+
+
     app.get('/api/model/get/:modelId', authenticateApi, function (req, res) {
         var modelId = req.params.modelId;
         var userId = req.session.user.id;

@@ -30,10 +30,10 @@ module.exports = {
         return errObj(false, err.message, errors);
     },
     entityCreatedSuccessfully: function(e, data){
-        return errObj(true, e +' successfully created!', data);
+        return errObj(true, e +' created successfully!', data);
     },
     entityUpdatedSuccessfully: function(e, data){
-        return errObj(true, e +' successfully updated!', data);
+        return errObj(true, e +' saved successfully!', data);
     },
     entityNotFound: function(e, id){
         return errObj(false, e + ' with id ' + id + ' is not found!', []);
@@ -44,7 +44,7 @@ module.exports = {
     },
 
     entityRemoved: function(e, id, d){
-        return errObj(true, e +' with id = ' + id + ' has ben removed.' , d);
+        return errObj(true, e +' with id = ' + id + ' has been removed.' , d);
     },
 
     entityListFound: function(e, cnt, d){
