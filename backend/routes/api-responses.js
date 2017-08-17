@@ -78,6 +78,9 @@ module.exports = {
     importWrongMime: function(){
         return errObj(false, 'Invalid mime file type', {'code': 400 });
     },
+    importWrongModelType: function(){
+        return errObj(false, 'Invalid import model type', {'code': 400 });
+    },
 
     importWrongSize: function(){
         return errObj(false, 'The file is too big', {'code': 400 });

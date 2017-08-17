@@ -57,6 +57,12 @@
                 return false;
             });
 
+            controls.inputs.inputImportModelType.change(function(e){
+               var value = $(this).val();
+               var $aditionalProps = $('.import-additional-props');
+                   $aditionalProps.toggleClass('hidden', value == 'avenue');
+            });
+
             controls.inputs.inputImportFile.change(function(){
                 $(this).parent().next().html($(this).val().replace('C:\\fakepath\\', ''));
             });

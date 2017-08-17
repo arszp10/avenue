@@ -66,6 +66,7 @@
             inputPhaseOrderName:    '#inputPhaseOrderName',
             inputPhaseOrderOrder:   '#inputPhaseOrderOrder',
             inputImportFile:        '#inputImportFile',
+            inputImportModelType:   '#inputImportModelType',
             inputZoomIntersection:  '#inputZoomIntersection',
             inputZoomMap:           '#inputZoomMap',
             inputArcgisScale:       '#input-arcgis-scale',

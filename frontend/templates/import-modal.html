@@ -8,9 +8,10 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="import-file-form" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="inputModelType" class="col-sm-3 control-label"><span locale="import-model-type">Type</span>:</label>
+                        <label for="inputImportModelType" class="col-sm-3 control-label"><span locale="import-model-type">Type</span>:</label>
                         <div class="col-sm-6">
-                            <select class="form-control" name="inputModelType" id="inputModelType">
+                            <select class="form-control" name="inputImportModelType" id="inputImportModelType">
+                                <option value="avenue">Avenue 2.0</option>
                                 <option value="sumo">SUMO</option>
                                 <!--<option value="yo">YoEditor</option>-->
                                 <!--<option value="osm">OpenStreetMap</option>-->
@@ -18,15 +19,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="inputModelType" class="col-sm-3 control-label"><span locale="import-zoom-map">Zoom map</span>:</label>
+                    <div class="form-group import-additional-props hidden">
+                        <label for="inputZoomMap" class="col-sm-3 control-label"><span locale="import-zoom-map">Zoom map</span>:</label>
                         <div class="col-sm-2">
                             <input type="text" id="inputZoomMap" class="form-control"  name="inputZoomMap" size="10" value="1">
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="inputModelType" class="col-sm-3 control-label"><span locale="import-zoom-intersection">Zoom intersection</span>:</label>
+                    <div class="form-group import-additional-props hidden">
+                        <label for="inputZoomIntersection" class="col-sm-3 control-label"><span locale="import-zoom-intersection">Zoom intersection</span>:</label>
                         <div class="col-sm-2">
                             <input type="text" id="inputZoomIntersection" class="form-control"  name="inputZoomIntersection" size="10" value="10">
                         </div>

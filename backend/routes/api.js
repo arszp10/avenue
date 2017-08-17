@@ -391,19 +391,44 @@ module.exports = function(app, config) {
 
 
     app.post('/api/model/import', authenticateApi, upload.single('inputImportFile'), function (req, res, next) {
-        var allowedMimeTypes = ['text/xml'];
+        var allowedMimeTypes = ['text/xml', 'application/json'];
+        var allowedModelTypes = ['avenue', 'sumo'];
         var maxFileSize      = 20000000;
         var zoomMap          = parseInt(req.body.inputZoomMap) | 1;
         var zoomIntersection = parseInt(req.body.inputZoomIntersection) | 1;
-
+        var inputImportModelType = req.body.inputImportModelType;
+        console.log(req.body);
         if (allowedMimeTypes.indexOf(req.file.mimetype) < 0) {
             fs.unlinkSync(req.file.path);
             res.json(responses.importWrongMime());
         }
 
+        if (allowedModelTypes.indexOf(inputImportModelType) < 0) {
+            fs.unlinkSync(req.file.path);
+            res.json(responses.importWrongModelType());
+        }
+
         if (req.file.size > maxFileSize) {
             fs.unlinkSync(req.file.path);
             res.json(responses.importWrongSize());
+        }
+
+
+        if (inputImportModelType == 'avenue') {
+            var userId = req.session.user.id;
+            var data = JSON.parse(fs.readFileSync(req.file.path, "utf8"));
+                data['_creator'] = userId;
+                data['createdAt'] = new Date();
+
+            var newAveModel = Model(data);
+            newAveModel.save(function (err) {
+                if (err) {
+                    res.json(responses.fieldsErrorsList(err));
+                    return;
+                }
+                res.json(responses.entityCreatedSuccessfully('Model', {id: newAveModel._id}));
+            });
+            return;
         }
 
         sumoImport.convert(req.file.path, zoomMap, zoomIntersection, function(err, result){
