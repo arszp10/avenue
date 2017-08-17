@@ -132,11 +132,14 @@ module.exports = {
         var intervals = [];
         var s = 0, i = 0;
         _.forEach(diagram, function(v){
+            if (v.length == 0) {
+                return;
+            }
             if (v.color == 'amber') {
                 intervals.push([s, i + v.length-1]);
             }
             if (v.color == 'yellow') {
-                s = i-1;
+                s = i > 0 ? i-1 : 0;
             }
             i += v.length;
         });
