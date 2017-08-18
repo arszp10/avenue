@@ -51,9 +51,6 @@
                 controls.panels.body.removeClass('show-right-panel');
             });
 
-            //cyCrossroad.on('unselect', 'node', null, function (d, a) {
-            //});
-
             cyCrossroad.on('click', 'node:selected', null, function (e) {
                 var type = e.cyTarget.data('type');
                 //e.originalEvent.stopPropagation();

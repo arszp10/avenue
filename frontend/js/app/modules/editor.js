@@ -236,16 +236,14 @@
                 var routeName = controls.inputs.inputRouteName.val();
                 if (routeName.length  == 0) {
                     $.notify(
-                        "Please enter a route name",
-                        { position: 'top right', className: "error" }
+                        "Please enter a route name", { position: 'top right', className: "error" }
                     );
                     return;
                 }
                 var selected = cy.$('node[type="stopline"]:selected');
                 if (!(selected.length == 2 || selected.length == 4)){
                     $.notify(
-                        "The number of selected stop lines should be equal 2 or 4",
-                        { position: 'top right', className: "error" }
+                        "The number of selected stop lines should be equal 2 or 4", { position: 'top right', className: "error" }
                     );
                     return;
                 }
@@ -256,13 +254,19 @@
                 var unique = $.unique(parents);
                 if (unique.length != 2) {
                     $.notify(
-                        "The number of selected crossroads should be equal 2",
-                        { position: 'top right', className: "error" }
+                        "The number of selected crossroads should be equal 2", { position: 'top right', className: "error" }
                     );
                     return;
                 }
 
                 var cyRoutesNodes = cy.aveBuildRoutes(selected);
+                if (!cyRoutesNodes || cyRoutesNodes.length == 0) {
+                    $.notify(
+                        "Sorry, the route cannot be built",
+                        { position: 'top right', className: "error" }
+                    );
+                    return false;
+                }
                 var forward = routes.filterNodes(cyRoutesNodes[0]);
                 var back    = cyRoutesNodes.length > 1
                     ? routes.filterNodes(cyRoutesNodes[1])
@@ -273,7 +277,6 @@
                     .addLines(forward, 'forward')
                     .addLines(back , 'back')
                 ;
-                console.log(route);
                 that.renderRoutesDropDown();
                 routes.drawRoute(route);
 
