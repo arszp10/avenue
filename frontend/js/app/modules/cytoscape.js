@@ -181,7 +181,11 @@
         });
 
         cy.on('viewport', function(e){
-            cy.aveScaleCyToArcGis();
+            if (!App.State.currentModel.anchored) {
+                return;
+            }
+            var pos = cy.aveScaleCyToArcGis();
+            map.mapSetExtentAndScale(pos);
         });
     };
 
@@ -489,11 +493,11 @@
 
         },
 
-        aveScaleCyToArcGis:function(justReturn){
+        aveScaleCyToArcGis:function(){
             var cybe = cy.cyBaseExtent;
             var arcbe = cy.mapExtent;
-            if (!cybe || !arcbe) {
-                return;
+            if (!cybe || !arcbe || !arcbe.xmin || !arcbe.xmax || !arcbe.ymin || !arcbe.ymax) {
+                return false;
             }
 
             var cye = cy.extent();
@@ -528,15 +532,11 @@
                     wkid: 102100
                 }
             };
-            if (justReturn) {
-                return {
-                    mapExtent : arce,
-                    mapScale : cy.mapScale/cyxC
-                };
-            } else {
-                map.MapView.extent = new map.Classes.Extent(arce);
-                map.MapView.scale = cy.mapScale/cyxC;
-            }
+            return {
+                mapExtent : arce,
+                mapScale : cy.mapScale/cyxC
+            };
+
         },
         aveGetExtents: function(){
             return {
@@ -550,25 +550,26 @@
         },
         aveSetBaseExtent:function(){
             var  cye = cy.extent();
-            var  ve = map.MapView.extent;
+
             cy.cyBaseExtent = JSON.parse(JSON.stringify(cye));
             cy.cyZoom = cy.zoom();
+
+            var  ve = map.validExtent(map.MapView.extent);
             cy.mapScale     = map.MapView.scale;
-            if (!ve) {
-                return
-            }
+
             cy.mapExtent    = JSON.parse(JSON.stringify(ve));
             cy.xC = (ve.xmax - ve.xmin)/(cye.x2 - cye.x1);
             cy.yC = (ve.ymax - ve.ymin)/(cye.y2 - cye.y1);
-        },
-        aveClearBaseExtent:function(){
-            cy.cyZoom = 1;
-            cy.cyBaseExtent = null;
-            cy.mapExtent    = null;
-            cy.mapScale     = 1128;
-            cy.xC = 1;
-            cy.yC = 1;
+
         }
+        //aveClearBaseExtent:function(){
+        //    cy.cyZoom = 1;
+        //    cy.cyBaseExtent = false;
+        //    cy.mapExtent    = false;
+        //    cy.mapScale     = false;
+        //    cy.xC = 1;
+        //    cy.yC = 1;
+        //}
 
     };
 

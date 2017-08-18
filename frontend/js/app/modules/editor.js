@@ -166,7 +166,6 @@
                    cy.aveSetBaseExtent();
                     App.State.currentModel.anchored = true;
                 } else {
-                    cy.aveClearBaseExtent();
                     App.State.currentModel.anchored = false;
                 }
 
@@ -217,6 +216,7 @@
                         cycleTime: App.State.currentModel.cycleTime,
                         position: cy.aveGetExtents(),
                         anchored: App.State.currentModel.anchored,
+                        showMapInBackground: App.State.currentModel.showMapInBackground,
                         intertactOrder: App.State.currentModel.intertactOrder,
                         defaultIntensity: App.State.currentModel.defaultIntensity,
                         defaultCapacity: App.State.currentModel.defaultCapacity

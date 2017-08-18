@@ -36,61 +36,71 @@
             if (typeof require == 'undefined') {
                 return;
             }
-            //$(document).ready(function(){
-                require([
-                    "esri/Map",
-                    "esri/views/MapView",
-                    "esri/geometry/Extent",
-                    "esri/geometry/SpatialReference",
-                    "esri/widgets/Search",
-                    "esri/widgets/Compass",
-                    "esri/widgets/Zoom",
-                    "esri/widgets/Locate"
-                ], function(Map, MapView, Extent, SpatialReference, Search, Compass, Zoom, Locate){
-                    that.Classes.Extent = Extent;
-                    that.Classes.Compass = Compass;
-                    that.Classes.Zoom = Zoom;
-                    that.Classes.Search = Search;
-                    that.Classes.Locate = Locate;
+            require([
+                "esri/Map",
+                "esri/views/MapView",
+                "esri/geometry/Extent",
+                "esri/geometry/SpatialReference",
+                "esri/widgets/Search",
+                "esri/widgets/Compass",
+                "esri/widgets/Zoom",
+                "esri/widgets/Locate"
+            ], function(Map, MapView, Extent, SpatialReference, Search, Compass, Zoom, Locate){
+                that.Classes.Extent = Extent;
+                that.Classes.Compass = Compass;
+                that.Classes.Zoom = Zoom;
+                that.Classes.Search = Search;
+                that.Classes.Locate = Locate;
 
-                    var pos = cy.aveScaleCyToArcGis(true);
-                    var scale = cy.mapScale ? pos.mapScale : 1128;
-                    var extent = cy.mapExtent ? pos.mapExtent : defaultExtent;
-
-                    map  = new Map({basemap: "hybrid"});
-                    view = new MapView({
-                        container: "mapBack",
-                        map: map,
-                        //center: [30.318474, 59.908733],
-                        extent: new Extent(extent),
-                        scale: scale,
-                        constraints: {
-                            minScale: 140,
-                            maxScale: 9028
-                        },
-                        resizeAlign: 'top-left'
-                    });
-
-                    that.hideWidgets();
-                    view.on('resize', function(e){
-                        setTimeout(function() {
-
-                            if (!cy.cyBaseExtent) {
-                                return;
-                            }
-                            cy.aveSetBaseExtent();
-                            cy.trigger('viewport');
-                        }, 1000);
-                    });
-
-                    that.Map = map;
-                    that.MapView = view;
-
+                map  = new Map({basemap: "hybrid"});
+                view = new MapView({
+                    container: "mapBack",
+                    map: map,
+                    //extent: new Extent(extent),
+                    //scale: scale,
+                    constraints: {
+                        minScale: 140,
+                        maxScale: 9028
+                    },
+                    resizeAlign: 'top-left'
                 });
-            //});
+
+                that.hideWidgets();
+                view.on('resize', function(e){
+                    setTimeout(function() {
+
+                        if (!cy.cyBaseExtent) {
+                            return;
+                        }
+                        cy.aveSetBaseExtent();
+                        cy.trigger('viewport');
+                    }, 1000);
+                });
+
+                that.Map = map;
+                that.MapView = view;
+
+                var pos = cy.aveGetExtents();
+                that.mapSetExtentAndScale(pos);
+
+            });
+        },
+
+        mapSetExtentAndScale: function (cyExt){
+            if (! this.MapView) return;
+            this.MapView.extent = new this.Classes.Extent(this.validExtent(cyExt.mapExtent));
+            this.MapView.scale = parseInt(cyExt.mapScale) ? cyExt.mapScale : 1128;
+        },
+
+        validExtent: function(ext){
+            if (!ext || !ext.xmin || !ext.xmax || !ext.ymin || !ext.ymax) {
+                return defaultExtent;
+            }
+            return ext;
         },
 
         hideWidgets:function() {
+            if (!view) return;
             view.ui.empty('top-left');
             view.ui.empty('top-right');
             view.ui.empty('bottom-right');
@@ -98,6 +108,7 @@
         },
 
         showWidgets:function(){
+            if (!view) return;
             search = new this.Classes.Search({view: view});
             compass = new this.Classes.Compass({view: view});
             zoom = new this.Classes.Zoom({view: view});
