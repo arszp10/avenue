@@ -151,17 +151,17 @@
                         zoom: zoom, pan : { x:-1*extent.x1*zoom, y:-1*extent.y1*zoom }
                     });
 
-                    cy.cyZoom = r.data.position.cyZoom;
-                    cy.cyBaseExtent = r.data.position.cyExtent;
-                    cy.mapExtent = r.data.position.mapExtent;
-                    cy.mapScale = r.data.position.mapScale;
-                    cy.xC = r.data.position.xC;
-                    cy.yC = r.data.position.yC;
-
-              //  if (map.Classes.Extent) {
-                    var pos = cy.aveGetExtents();
-                    map.mapSetExtentAndScale(pos);
-               // }
+                    if (r.data.position) {
+                        cy.cyZoom = r.data.position.cyZoom;
+                        cy.cyBaseExtent = r.data.position.cyExtent;
+                        cy.mapExtent = r.data.position.mapExtent;
+                        cy.mapScale = r.data.position.mapScale;
+                        cy.xC = r.data.position.xC;
+                        cy.yC = r.data.position.yC;
+                        var pos = cy.aveGetExtents();
+                        map.mapSetExtentAndScale(pos);
+                    }
+                    
                     if(App.State.currentModel.anchored) {
                         var button = controls.buttons.btnArcgisSetExtent;
                         var icon = button.find('i');

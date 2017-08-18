@@ -64,7 +64,6 @@
                     },
                     resizeAlign: 'top-left'
                 });
-
                 that.hideWidgets();
                 view.on('resize', function(e){
                     setTimeout(function() {
