@@ -364,6 +364,16 @@
                 controls.inputs.inputNodeSearch.val('');
             });
 
+            controls.buttons.btnExpandRightPanel.click(function () {
+                controls.panels.body.removeClass('collapse-right-panel');
+                controls.panels.body.addClass('show-right-panel');
+            });
+
+            controls.buttons.btnCollapseRightPanel.click(function () {
+                controls.panels.body.addClass('collapse-right-panel');
+            });
+
+
             controls.inputs.inputNodeSearchForm.submit(function (e) {
                 var text = controls.inputs.inputNodeSearch.val();
                 var limit = 20;

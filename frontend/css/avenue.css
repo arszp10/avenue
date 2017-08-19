@@ -149,7 +149,7 @@ body{
 }
 
 
-
+.right-panel-collapse-button,
 .right-panel-close-button{
     display: block;
     position: absolute;
@@ -158,6 +158,21 @@ body{
     border: 0px;
     padding: 0px 4px;
     color: #ccc;
+}
+
+.right-panel-collapse-button{
+    right: 19px;
+}
+
+.right-panel-expand-button{
+    display: none;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    border: 0;
+    padding: 0 8px;
+    color: #ccc;
+    font-size: 31px;
 }
 
 .right-panel{
@@ -197,6 +212,25 @@ body{
     font-size:15px;
     color: #000;
 }
+
+
+.collapse-right-panel #btn-collapse-right-panel,
+.collapse-right-panel #btn-close-right-panel,
+.collapse-right-panel .node-search-info {
+    display:none;
+}
+
+.collapse-right-panel .right-panel-expand-button {
+    display:block;
+}
+
+.collapse-right-panel .right-panel {
+    right: 15px;
+    overflow:hidden;
+    width:50px;
+    height:50px;
+}
+
 
 .btn-group, .btn-group-vertical {
     display:block;

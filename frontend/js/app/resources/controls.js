@@ -104,6 +104,8 @@
             btnGroupNodes:              '#btn-group-nodes',
             btnUngroupNodes:            '#btn-ungroup-nodes',
             btnCloseRightPanel:         '#btn-close-right-panel',
+            btnExpandRightPanel:        '#btn-expand-right-panel',
+            btnCollapseRightPanel:      '#btn-collapse-right-panel',
             btnCoPlanProperties:        '#btn-co-plan-properties',
             btnCoPlanSave:              '#btn-co-plan-save',
             btnsDirection:              'div.menu-directions button',
