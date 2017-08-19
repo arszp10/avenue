@@ -82,6 +82,15 @@
                 api.removeModel(id, function(){api.listModel(state);});
             });
 
+
+            $(document).on('click', 'a.btn-model-download', function(){
+                var id = $(this).closest('tr').data('id');
+                api.downloadModel(id);
+            });
+
+
+
+
             api.listModel(state);
 
         },

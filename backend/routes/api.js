@@ -71,6 +71,19 @@ function validateModel(req, res, next) {
     return;
 }
 
+
+function encodeRFC5987ValueChars (str) {
+    return encodeURIComponent(str).
+        // Note that although RFC3986 reserves "!", RFC5987 does not,
+        // so we do not need to escape it
+        replace(/['()]/g, escape). // i.e., %27 %28 %29
+        replace(/\*/g, '%2A').
+        // The following are not required for percent-encoding per RFC5987,
+        // so we can allow for a little better readability over the wire: |`^
+        replace(/%(?:7C|60|5E)/g, unescape);
+}
+
+
 module.exports = function(app, config) {
 
 
@@ -232,7 +245,7 @@ module.exports = function(app, config) {
         ));
     });
 
-    /**
+    /*
      * @apiName ModelOptimizePhases
      * @apiGroup  Simulate
      *
@@ -245,13 +258,13 @@ module.exports = function(app, config) {
      *
      * @apiParam  {Object[]} data Массив объектов типа `stopline`, `carriageway`, `crossroad` и т.д. см. [Примеры](#api-Examples)
      */
-    app.post('/api/model/optimize/phases', authenticateApi, validateModel, function (req, res) {
-        var bodyData = requestBodyData(req);
-        res.json(
-            responses.modelSimulationSuccess(
-                avenueLib.optimizeSplits(bodyData)
-            ));
-    });
+    //app.post('/api/model/optimize/phases', authenticateApi, validateModel, function (req, res) {
+    //    var bodyData = requestBodyData(req);
+    //    res.json(
+    //        responses.modelSimulationSuccess(
+    //            avenueLib.optimizeSplits(bodyData)
+    //        ));
+    //});
 
     app.post('/api/model/optimize/cycle-single', authenticateApi, validateModel, function (req, res) {
         var bodyData = requestBodyData(req);
@@ -330,8 +343,10 @@ module.exports = function(app, config) {
             delete result._id;
             delete result.__v;
 
+            var contentDisposition = "attachment; filename*=UTF-8''" + encodeRFC5987ValueChars(result.name + '.json');
             var data = JSON.stringify(result);
-            res.setHeader('Content-disposition', 'attachment; filename= ' + result.name + '.json');
+
+            res.setHeader('Content-disposition', contentDisposition);
             res.setHeader('Content-type', 'application/json');
             res.write(data, function (err) {
                 res.end();

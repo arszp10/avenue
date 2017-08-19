@@ -249,6 +249,7 @@
                 '<li><a href="/app/'+data._id+'"><i class="fa fa-folder-open-o fa-fw"></i> &nbsp;'+__('open')+'</a></li>' +
                 '<li><a href="/app/'+data._id+'" target="_blank"><i class="fa fa-folder-open fa-fw"></i> &nbsp;'+__('open-in-new-tab')+'</a></li>' +
                 '<li><a href="#" class="btn-model-remove"><i class="fa fa-trash-o fa-fw"></i> &nbsp;'+__('remove')+'</a></li>' +
+                '<li><a href="#" class="btn-model-download"><i class="fa fa-download fa-fw"></i> &nbsp;'+__('download-file')+'</a></li>' +
                 //'<li><a href="#"><i class="fa fa-copy fa-fw"></i> &nbsp;Copy</a></li>' +
                 //'<li><a href="#"><i class="fa fa-info fa-fw"></i> &nbsp;Model info</a></li>' +
                 '</ul>' +

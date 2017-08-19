@@ -326,37 +326,37 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
 
 
 
-Network.prototype.optimizeSplits = function(){
-    var that = this;
-
-    _.forEach(this.crIndexMap, function(inx){
-        var crossRoad = that.network[inx];
-
-        var maxSatEl = _.maxBy(crossRoad.phases, 'saturation');
-        var minSatEl = _.minBy(crossRoad.phases, 'saturation');
-        if (maxSatEl.saturation - minSatEl.saturation < 0.11) {
-            return that;
-        }
-        var maxInx = crossRoad.phases.indexOf(maxSatEl);
-        var minInx = crossRoad.phases.indexOf(minSatEl);
-        var sumSat = maxSatEl.saturation + minSatEl.saturation;
-        var sumLen = parseInt(maxSatEl.length) + parseInt(minSatEl.length);
-        var dMax = Math.round(sumLen * maxSatEl.saturation/sumSat);
-        var dMin = Math.round(sumLen * minSatEl.saturation/sumSat);
-        if (dMin < parseInt(minSatEl.minLength)) {
-            dMin = parseInt(minSatEl.minLength);
-            dMax = sumLen - dMin;
-        }
-        maxSatEl.length = dMax;
-        minSatEl.length = dMin;
-        _.forEach(that.crStopLines[crossRoad.id], function(id){
-            var sl = that.getNode(id);
-            sl.resetIntervals(traffic.redIntervals(sl, crossRoad));
-        });
-
-    });
-
-    return this;
-};
+//Network.prototype.optimizeSplits = function(){
+//    var that = this;
+//
+//    _.forEach(this.crIndexMap, function(inx){
+//        var crossRoad = that.network[inx];
+//
+//        var maxSatEl = _.maxBy(crossRoad.phases, 'saturation');
+//        var minSatEl = _.minBy(crossRoad.phases, 'saturation');
+//        if (maxSatEl.saturation - minSatEl.saturation < 0.11) {
+//            return that;
+//        }
+//        var maxInx = crossRoad.phases.indexOf(maxSatEl);
+//        var minInx = crossRoad.phases.indexOf(minSatEl);
+//        var sumSat = maxSatEl.saturation + minSatEl.saturation;
+//        var sumLen = parseInt(maxSatEl.length) + parseInt(minSatEl.length);
+//        var dMax = Math.round(sumLen * maxSatEl.saturation/sumSat);
+//        var dMin = Math.round(sumLen * minSatEl.saturation/sumSat);
+//        if (dMin < parseInt(minSatEl.minLength)) {
+//            dMin = parseInt(minSatEl.minLength);
+//            dMax = sumLen - dMin;
+//        }
+//        maxSatEl.length = dMax;
+//        minSatEl.length = dMin;
+//        _.forEach(that.crStopLines[crossRoad.id], function(id){
+//            var sl = that.getNode(id);
+//            sl.resetIntervals(traffic.redIntervals(sl, crossRoad));
+//        });
+//
+//    });
+//
+//    return this;
+//};
 
 module.exports = Network;

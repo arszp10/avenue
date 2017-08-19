@@ -61,16 +61,16 @@ module.exports = {
         return request == undefined || request.length == 0;
     },
 
-    optimizeSplits: function(request){
-        if (this.isEmptyRequest(request)) return [];
-        this.replacePercentPortionToAbs(request);
-        var network = new Network(request);
-        return network
-            .simulate(3)
-            .optimizeSplits()
-            .simulate(3)
-            .json();
-    },
+    //optimizeSplits: function(request){
+    //    if (this.isEmptyRequest(request)) return [];
+    //    this.replacePercentPortionToAbs(request);
+    //    var network = new Network(request);
+    //    return network
+    //        .simulate(3)
+    //        .optimizeSplits()
+    //        .simulate(3)
+    //        .json();
+    //},
 
     optimizeCycleSingleCrossroad: function(request){
         if (this.isEmptyRequest(request)) return [];
@@ -92,7 +92,6 @@ module.exports = {
         this.replacePercentPortionToAbs(request);
         var network = new Network(request);
         return network.simulate(100).json();
-
     },
 
     validate : function(data) {

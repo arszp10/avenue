@@ -97,7 +97,16 @@
                 'text-outline-width': 2,
                 'opacity':1
             }
-        }
+        },
+
+        {
+            selector: 'edge[secondary="true"]',
+            css: {
+                'line-style': 'dashed'
+            }
+        },
+
+
 
     ];
 })(AvenueApp.Resources);
