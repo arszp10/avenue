@@ -66,10 +66,6 @@ $(document).ready(function(event){
         return false;
     };
 
-    $('input[type="checkbox"]').iCheck({
-        checkboxClass: 'icheckbox_minimal-blue'
-    });
-
     $('#sign-up-form').submit(function(){
         return formSubmit($(this),'signUp', 'welcome');
     });

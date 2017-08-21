@@ -531,10 +531,7 @@
             });
 
         },
-
-        //initCheckBoxes: function($el) {
-        //    $el.find('input[type="checkbox"]').iCheck({ checkboxClass: 'icheckbox_minimal-blue' });
-        //},
+       
 
         toggleNodePopupPanel: function(show){
             controls.panels.body.toggleClass('show-panel-point-property', show);
