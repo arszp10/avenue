@@ -23,6 +23,7 @@ var isint = /^[0-9]+$/;
 var isfloat = /^([0-9]+)?\.[0-9]+$/;
 
 function coerce(str) {
+    if (Array.isArray(str)) return undefined;
     if ('null' == str) return null;
     if ('true' == str) return true;
     if ('false' == str) return false;

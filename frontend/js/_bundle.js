@@ -1,14 +1,18 @@
 //= vendor/jquery/jquery-2.2.1.min.js
 //= vendor/bootstrap/bootstrap.min.js
-//= vendor/cytoscape/cytoscape.js
-//= vendor/cytoscape/cytoscape-edgehandles.js
-//= vendor/cytoscape/cytoscape-panzoom.js
-//= vendor/d3/d3.v3.min.js
+//= vendor/lodash/lodash.js
+
+//= vendor/cytoscape/cytoscape.new.min.js
+//= vendor/cytoscape/cytoscape-edgehandles.new.js
+//= vendor/cytoscape/cytoscape-panzoom.new.js
+//= vendor/cytoscape/cytoscape-edge-bend-editing.js
+//= vendor/cytoscape/cytoscape-undo-redo.js
 
 //= vendor/bootstrap/bootstrap-slider.min.js
 //= vendor/jquery/jquery.cookie.js
 //= vendor/notify.min.js
 ;
+//= vendor/d3/d3.v3.min.js
 //= vendor/charts/Chart.min.js
 ;
 

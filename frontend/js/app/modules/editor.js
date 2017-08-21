@@ -45,6 +45,16 @@
                 }
             });
 
+
+            document.addEventListener('keydown', function (e){
+                if (e.ctrlKey && e.which == '90') {
+                    cy.undoRedo().undo();
+                }
+                else if (e.ctrlKey && e.which == '89') {
+                    cy.undoRedo().redo();
+                }
+            }, true );
+
             $(document).on('keyup', 'input', function(e){ e.stopPropagation(); });
 
             $(document).bind('copy', function(){controls.buttons.btnCopy.click();});
@@ -68,7 +78,11 @@
             controls.buttons.btnVerticalAlign.click(function () { cy.aveAlignSelected('x'); });
 
             controls.buttons.btnDeleteNode.click(function () {
-                cy.$(':selected').remove();
+                //cy.$(':selected').remove();
+
+                var selecteds = cy.$(":selected");
+                cy.ur.do("deleteEles", selecteds);
+
                 cy.trigger('unselect');
                 that.toggleNodePopupPanel(false);
             });
@@ -92,6 +106,9 @@
                 cy.avePaste(ids, data);
             });
 
+            controls.buttons.btnUndo.click(function () {
+                cy.undoRedo().undo();
+            });
         },
 
         initTopPanelEvents: function(){
@@ -448,7 +465,7 @@
                 cy.getElementById(id).data('portion', value);
             });
             controls.inputs.inputEdgeLabel.on('keyup', function (event) {
-                if (event.which == 13) {
+                if (event.which == 13 || event.which == 27) {
                     controls.inputs.inputEdgeLabel.blur();
                 }
             });
@@ -546,7 +563,7 @@
             controls.panels.pointProperty.css(
                 {
                     top: y + 10,
-                    left: x - 135
+                    left: x - 145
                 }).data("node", target.id);
             controls.inputs.inputNodeType.text(target.type);
             controls.inputs.inputsNodeProperty.each(function(i, v){

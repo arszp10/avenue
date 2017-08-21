@@ -20,260 +20,163 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-;( function( $$, $ ) {
+( function($$) {
   'use strict';
+  var whitespace = /\s+/;
 
-  var debounce = (function(){
-    /**
-     * lodash 3.1.1 (Custom Build) <https://lodash.com/>
-     * Build: `lodash modern modularize exports="npm" -o ./`
-     * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
-     * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-     * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-     * Available under MIT license <https://lodash.com/license>
-     */
-    /** Used as the `TypeError` message for "Functions" methods. */
-    var FUNC_ERROR_TEXT = 'Expected a function';
+  var $ = function(d){
+    var dataKey = '_cytoscapeEdgehandlesData';
+    var listenerKey = '_cytoscapeEdgehandlesListeners';
 
-    /* Native method references for those with the same name as other `lodash` methods. */
-    var nativeMax = Math.max,
-        nativeNow = Date.now;
+    return {
+      0: d,
+      addClass: function( cls ){
+        this.toggleClass( cls, true );
+      },
+      removeClass: function( cls ){
+        this.toggleClass( cls, true );
+      },
+      toggleClass: function( cls, bool ){
+        this[0].classList.toggle( cls, bool );
+      },
+      data: function( name, val ){
+        var k = dataKey;
+        var data = this[0][k] = this[0][k] || {};
 
-    /**
-     * Gets the number of milliseconds that have elapsed since the Unix epoch
-     * (1 January 1970 00:00:00 UTC).
-     *
-     * @static
-     * @memberOf _
-     * @category Date
-     * @example
-     *
-     * _.defer(function(stamp) {
-     *   console.log(_.now() - stamp);
-     * }, _.now());
-     * // => logs the number of milliseconds it took for the deferred function to be invoked
-     */
-    var now = nativeNow || function() {
-      return new Date().getTime();
-    };
-
-    /**
-     * Creates a debounced function that delays invoking `func` until after `wait`
-     * milliseconds have elapsed since the last time the debounced function was
-     * invoked. The debounced function comes with a `cancel` method to cancel
-     * delayed invocations. Provide an options object to indicate that `func`
-     * should be invoked on the leading and/or trailing edge of the `wait` timeout.
-     * Subsequent calls to the debounced function return the result of the last
-     * `func` invocation.
-     *
-     * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
-     * on the trailing edge of the timeout only if the the debounced function is
-     * invoked more than once during the `wait` timeout.
-     *
-     * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
-     * for details over the differences between `_.debounce` and `_.throttle`.
-     *
-     * @static
-     * @memberOf _
-     * @category Function
-     * @param {Function} func The function to debounce.
-     * @param {number} [wait=0] The number of milliseconds to delay.
-     * @param {Object} [options] The options object.
-     * @param {boolean} [options.leading=false] Specify invoking on the leading
-     *  edge of the timeout.
-     * @param {number} [options.maxWait] The maximum time `func` is allowed to be
-     *  delayed before it's invoked.
-     * @param {boolean} [options.trailing=true] Specify invoking on the trailing
-     *  edge of the timeout.
-     * @returns {Function} Returns the new debounced function.
-     * @example
-     *
-     * // avoid costly calculations while the window size is in flux
-     * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
-     *
-     * // invoke `sendMail` when the click event is fired, debouncing subsequent calls
-     * jQuery('#postbox').on('click', _.debounce(sendMail, 300, {
-     *   'leading': true,
-     *   'trailing': false
-     * }));
-     *
-     * // ensure `batchLog` is invoked once after 1 second of debounced calls
-     * var source = new EventSource('/stream');
-     * jQuery(source).on('message', _.debounce(batchLog, 250, {
-     *   'maxWait': 1000
-     * }));
-     *
-     * // cancel a debounced call
-     * var todoChanges = _.debounce(batchLog, 1000);
-     * Object.observe(models.todo, todoChanges);
-     *
-     * Object.observe(models, function(changes) {
-     *   if (_.find(changes, { 'user': 'todo', 'type': 'delete'})) {
-     *     todoChanges.cancel();
-     *   }
-     * }, ['delete']);
-     *
-     * // ...at some point `models.todo` is changed
-     * models.todo.completed = true;
-     *
-     * // ...before 1 second has passed `models.todo` is deleted
-     * // which cancels the debounced `todoChanges` call
-     * delete models.todo;
-     */
-    function debounce(func, wait, options) {
-      var args,
-          maxTimeoutId,
-          result,
-          stamp,
-          thisArg,
-          timeoutId,
-          trailingCall,
-          lastCalled = 0,
-          maxWait = false,
-          trailing = true;
-
-      if (typeof func != 'function') {
-        throw new TypeError(FUNC_ERROR_TEXT);
-      }
-      wait = wait < 0 ? 0 : (+wait || 0);
-      if (options === true) {
-        var leading = true;
-        trailing = false;
-      } else if (isObject(options)) {
-        leading = !!options.leading;
-        maxWait = 'maxWait' in options && nativeMax(+options.maxWait || 0, wait);
-        trailing = 'trailing' in options ? !!options.trailing : trailing;
-      }
-
-      function cancel() {
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-        if (maxTimeoutId) {
-          clearTimeout(maxTimeoutId);
-        }
-        lastCalled = 0;
-        maxTimeoutId = timeoutId = trailingCall = undefined;
-      }
-
-      function complete(isCalled, id) {
-        if (id) {
-          clearTimeout(id);
-        }
-        maxTimeoutId = timeoutId = trailingCall = undefined;
-        if (isCalled) {
-          lastCalled = now();
-          result = func.apply(thisArg, args);
-          if (!timeoutId && !maxTimeoutId) {
-            args = thisArg = undefined;
-          }
-        }
-      }
-
-      function delayed() {
-        var remaining = wait - (now() - stamp);
-        if (remaining <= 0 || remaining > wait) {
-          complete(trailingCall, maxTimeoutId);
+        if ( val === undefined ) {
+          return data[ name ];
         } else {
-          timeoutId = setTimeout(delayed, remaining);
+          data[ name ] = val;
         }
-      }
 
-      function maxDelayed() {
-        complete(trailing, timeoutId);
-      }
+        return this;
+      },
+      trigger: function(eventName){
+        var evt = new Event(eventName);
 
-      function debounced() {
-        args = arguments;
-        stamp = now();
-        thisArg = this;
-        trailingCall = trailing && (timeoutId || !leading);
+        this[0].dispatchEvent(evt);
 
-        if (maxWait === false) {
-          var leadingCall = leading && !timeoutId;
+        return this;
+      },
+      append: function(ele) {
+        this[0].appendChild( ele[0] || ele );
+
+        return this;
+      },
+      attr: function( name, val ) {
+        if (val === undefined) {
+          return this[0].getAttribute( name );
         } else {
-          if (!maxTimeoutId && !leading) {
-            lastCalled = stamp;
-          }
-          var remaining = maxWait - (stamp - lastCalled),
-              isCalled = remaining <= 0 || remaining > maxWait;
+          this[0].setAttribute( name, val );
+        }
 
-          if (isCalled) {
-            if (maxTimeoutId) {
-              maxTimeoutId = clearTimeout(maxTimeoutId);
+        return this;
+      },
+      offset: function() {
+        var rect = this[0].getBoundingClientRect();
+
+        return {
+          top: rect.top + window.pageYOffset,
+          left: rect.left + window.pageXOffset
+        };
+      },
+      listeners: function( name ){
+        var k = listenerKey;
+        var l = this[0][k] = this[0][k] || {};
+
+        l[ name ] = l[ name ] || [];
+
+        return l[ name ];
+      },
+      on: function(name, listener, one) {
+        name.split( whitespace ).forEach(function(n){
+          var wrappedListener = (function( e ){
+            e.originalEvent = e;
+
+            if( one ){
+              this.off( n, wrappedListener );
             }
-            lastCalled = stamp;
-            result = func.apply(thisArg, args);
+
+            listener.apply( this[0], [ e ] );
+          }).bind( this );
+
+          this.listeners(n).push({
+            wrapped: wrappedListener,
+            passed: listener
+          });
+
+          this[0].addEventListener( n, wrappedListener );
+        }, this);
+
+        return this;
+      },
+      bind: function(name, listener){
+        return this.on( name, listener );
+      },
+      off: function(name, listener){
+        name.split( whitespace ).forEach(function(n) {
+          var liss = this.listeners(n);
+
+          for( var i = liss.length - 1; i >= 0; i-- ){
+            var lis = liss[i];
+
+            if( lis.wrapped === listener || lis.passed === listener ){
+              this[0].removeEventListener( n, lis.wrapped );
+
+              liss.splice( i, 1 );
+            }
           }
-          else if (!maxTimeoutId) {
-            maxTimeoutId = setTimeout(maxDelayed, remaining);
-          }
-        }
-        if (isCalled && timeoutId) {
-          timeoutId = clearTimeout(timeoutId);
-        }
-        else if (!timeoutId && wait !== maxWait) {
-          timeoutId = setTimeout(delayed, wait);
-        }
-        if (leadingCall) {
-          isCalled = true;
-          result = func.apply(thisArg, args);
-        }
-        if (isCalled && !timeoutId && !maxTimeoutId) {
-          args = thisArg = undefined;
-        }
-        return result;
+        }, this);
+
+        return this;
+      },
+      one: function(name, listener) {
+        return this.on( name, listener, true );
+      },
+      height: function(){
+        return this[0].clientHeight;
+      },
+      width: function(){
+        return this[0].clientWidth;
       }
-      debounced.cancel = cancel;
-      return debounced;
+    };
+  };
+
+  var assign = function( tgt ){
+    for( var i = 1; i < arguments.length; i++ ){
+      var obj = arguments[i];
+      var keys = Object.keys( obj );
+
+      for( var j = 0; j < keys.length; j++ ){
+        var key = keys[j];
+
+        tgt[key] = obj[key];
+      }
     }
 
-    /**
-     * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
-     * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-     *
-     * @static
-     * @memberOf _
-     * @category Lang
-     * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-     * @example
-     *
-     * _.isObject({});
-     * // => true
-     *
-     * _.isObject([1, 2, 3]);
-     * // => true
-     *
-     * _.isObject(1);
-     * // => false
-     */
-    function isObject(value) {
-      // Avoid a V8 JIT bug in Chrome 19-20.
-      // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-      var type = typeof value;
-      return !!value && (type == 'object' || type == 'function');
-    }
-
-    return debounce;
-
-  })();
-
+    return tgt;
+  };
 
   // registers the extension on a cytoscape lib ref
-  var register = function( $$, $ ) {
-    if( !cytoscape ) {
+  var register = function( $$, debounce, throttle ) {
+    if( !$$ || !debounce || !throttle ) {
       return;
-    } // can't register if cytoscape unspecified
+    } // can't register if cytoscape or dependencies unspecified
 
+    /* eslint-disable no-unused-vars */
     var defaults = {
       preview: true, // whether to show added edges preview before releasing selection
       stackOrder: 4, // Controls stack order of edgehandles canvas element by setting it's z-index
       handleSize: 10, // the size of the edge handle put on nodes
+      handleHitThreshold: 6, // a threshold for hit detection that makes it easier to grab the handle
+      handleIcon: false, // an image to put on the handle
       handleColor: '#ff0000', // the colour of the handle and the line drawn from it
       handleLineType: 'ghost', // can be 'ghost' for real edge, 'straight' for a straight line, or 'draw' for a draw-as-you-go line
       handleLineWidth: 1, // width of handle line in pixels
+      handleOutlineColor: '#000000', // the colour of the handle outline
+      handleOutlineWidth: 0, // the width of the handle outline in pixels
       handleNodes: 'node', // selector/filter function for whether edges can be made from a given node
+      handlePosition: 'middle top', // sets the position of the handle in the format of "X-AXIS Y-AXIS" such as "left top", "middle top"
       hoverDelay: 150, // time spend over a target node before it is considered a target selection
       cxt: false, // whether cxt events trigger edgehandles (useful on touch)
       enabled: true, // whether to start the plugin in the enabled state
@@ -307,11 +210,18 @@ SOFTWARE.
       },
       stop: function( sourceNode ) {
         // fired when edgehandles interaction is stopped (either complete with added edges or incomplete)
+      },
+      cancel: function( sourceNode, renderedPosition, invalidTarget ) {
+        // fired when edgehandles are cancelled ( incomplete - nothing has been added ) - renderedPosition is where the edgehandle was released, invalidTarget is
+        // a collection on which the handle was released, but which for other reasons (loopAllowed | edgeType) is an invalid target
       }
     };
+    /* eslint-enable */
 
-    $.fn.cytoscapeEdgehandles = function( params ) {
+    var edgehandles = function( params ) {
+      var cy = this;
       var fn = params;
+      var container = cy.container();
 
       var functions = {
         destroy: function() {
@@ -323,6 +233,9 @@ SOFTWARE.
           }
 
           data.unbind();
+
+          data.canvas.parentNode.removeChild( data.canvas );
+
           $container.data( 'cyedgehandles', {} );
 
           return $container;
@@ -341,7 +254,7 @@ SOFTWARE.
           if( value === undefined ) {
             if( typeof name == typeof {} ) {
               var newOpts = name;
-              options = $.extend( true, {}, defaults, newOpts );
+              options = assign( {}, defaults, newOpts );
               data.options = options;
             } else {
               return options[ name ];
@@ -378,49 +291,54 @@ SOFTWARE.
         },
 
         init: function() {
-          var self = this;
-          var opts = $.extend( true, {}, defaults, params );
+          var opts = assign({}, defaults, params );
           var $container = $( this );
-          var cy;
-          var $canvas = $( '<canvas></canvas>' );
-          var handle;
-          var line, linePoints;
+          var canvas = document.createElement('canvas');
+          var $canvas = $(canvas);
+          var linePoints;
           var mdownOnHandle = false;
           var grabbingNode = false;
           var inForceStart = false;
           var hx, hy, hr;
+          var mx, my;
           var hoverTimeout;
           var drawsClear = true;
           var ghostNode;
-          var ghostEdge;
           var sourceNode;
           var drawMode = false;
+          var pxRatio;
+
+          function getDevicePixelRatio(){
+            return window.devicePixelRatio || 1;
+          }
+
+          cy.on( 'resize', function() {
+            $container.trigger( 'cyedgehandles.resize' );
+          });
 
           $container.append( $canvas );
 
           var _sizeCanvas = debounce( function(){
+            pxRatio = getDevicePixelRatio();
+
+            var width = $container.width();
+            var height = $container.height();
+
+            var attrWidth = width * pxRatio;
+            var attrHeight = height * pxRatio;
+
             $canvas
-              .attr( 'height', $container.height() )
-              .attr( 'width', $container.width() )
-              .css( {
-                'position': 'absolute',
-                'top': 0,
-                'left': 0,
-                'z-index': opts.stackOrder
-              } )
+              .attr( 'width', attrWidth )
+              .attr( 'height', attrHeight )
             ;
 
-            setTimeout(function(){
-              var canvasBb = $canvas.offset();
-              var containerBb = $container.offset();
+            canvas.setAttribute('style', 'position:absolute; top:0; left:0; z-index:'+options().stackOrder+'; width:'+width+'px; height:'+height+'px;');
 
-              $canvas
-                .css( {
-                  'top': -( canvasBb.top - containerBb.top ),
-                  'left': -( canvasBb.left - containerBb.left )
-                } )
-              ;
-            }, 0);
+            var c2d = canvas.getContext('2d');
+
+            c2d.setTransform( 1, 0, 0, 1, 0, 0 );
+
+            c2d.scale( pxRatio, pxRatio );
           }, 250 );
 
           var sizeCanvas = function(){
@@ -465,6 +383,7 @@ SOFTWARE.
             data = {};
           }
           data.options = opts;
+          data.canvas = canvas;
 
           var optCache;
 
@@ -478,6 +397,16 @@ SOFTWARE.
 
           function disabled() {
             return !enabled();
+          }
+
+          function addClassesToEleJson( json, classes ){
+            if( json.classes ){
+              json.classes += ' ' + classes;
+            } else {
+              json.classes = classes;
+            }
+
+            return json;
           }
 
           function clearDraws() {
@@ -521,9 +450,10 @@ SOFTWARE.
             cy.nodes()
               .removeClass( 'edgehandles-hover' )
               .removeClass( 'edgehandles-source' )
+              .removeClass( 'edgehandles-presumptive-target')
               .removeClass( 'edgehandles-target' );
 
-            cy.$( '.edgehandles-ghost' ).remove();
+            cy.$( '.edgehandles-ghost, .edgehandles-preview' ).remove();
             //}, 1);
 
 
@@ -552,28 +482,35 @@ SOFTWARE.
 
           }
 
-          function drawHandle( hx, hy, hr ) {
+          function drawHandle() {
             ctx.fillStyle = options().handleColor;
-            ctx.strokeStyle = options().handleColor;
+            ctx.strokeStyle = options().handleOutlineColor;
 
             ctx.beginPath();
             ctx.arc( hx, hy, hr, 0, 2 * Math.PI );
             ctx.closePath();
             ctx.fill();
 
+            if(options().handleOutlineWidth) {
+              ctx.lineWidth = options().handleLineWidth * cy.zoom();
+              ctx.stroke();
+            }
+
+            if(options().handleIcon){
+               var icon = options().handleIcon;
+               var width = icon.width*cy.zoom(), height = icon.height*cy.zoom();
+               ctx.drawImage(icon, hx-(width/2), hy-(height/2), width, height);
+            }
+
             drawsClear = false;
           }
 
-          var lineDrawRate = 1000 / 30;
-          var lastDrawLine = 0;
-          var drawLine = function( hx, hy, x, y ) {
-            var now = +new Date();
+          var lineDrawRate = 1000 / 60;
 
-            if( now - lastDrawLine < lineDrawRate ) {
-              return;
-            }
+          var drawLine = throttle( function( x, y ) {
 
-            lastDrawLine = now;
+            // can't draw a line without having the starting node
+            if( !sourceNode ){ return; }
 
             if( options().handleLineType !== 'ghost' ) {
               ctx.fillStyle = options().handleColor;
@@ -596,7 +533,8 @@ SOFTWARE.
                       'background-color': 'blue',
                       'width': 0.0001,
                       'height': 0.0001,
-                      'opacity': 0
+                      'opacity': 0,
+                      'events': 'no'
                     },
                     position: {
                       x: 0,
@@ -604,12 +542,15 @@ SOFTWARE.
                     }
                   } );
 
-                  ghostEdge = cy.add( {
+                  cy.add( {
                     group: 'edges',
                     classes: 'edgehandles-ghost edgehandles-ghost-edge',
                     data: {
                       source: sourceNode.id(),
                       target: ghostNode.id()
+                    },
+                    css: {
+                      'events': 'no'
                     }
                   } );
 
@@ -658,7 +599,7 @@ SOFTWARE.
             if( options().handleLineType !== 'ghost' ) {
               drawsClear = false;
             }
-          };
+          }, lineDrawRate, { leading: true } );
 
           function makeEdges( preview, src, tgt ) {
 
@@ -674,6 +615,9 @@ SOFTWARE.
             }
 
             if( source.size() === 0 || targets.size() === 0 ) {
+              var presumptiveTarget = cy.nodes( '.edgehandles-presumptive-target' );
+              options().cancel(source, {x: mx, y: my}, presumptiveTarget);
+              source.trigger( 'cyedgehandles.cancel', [{x: mx, y: my}, presumptiveTarget]);
               return; // nothing to do :(
             }
 
@@ -681,7 +625,6 @@ SOFTWARE.
             if( !src && !tgt ) {
               if( !preview && options().preview ) {
                 added = cy.elements( '.edgehandles-preview' ).removeClass( 'edgehandles-preview' );
-
                 options().complete( source, targets, added );
                 source.trigger( 'cyedgehandles.complete' );
                 return;
@@ -713,39 +656,59 @@ SOFTWARE.
                     };
                   }
 
-                  var interNode = cy.add( $.extend( true, {
-                    group: 'nodes',
-                    position: p
-                  }, options().nodeParams( source, target ) ) ).addClass( classes );
+                  var interNode = cy.add(
+                    addClassesToEleJson( assign(
+                      {
+                        group: 'nodes',
+                        position: p
+                      },
+                      options().nodeParams( source, target )
+                    ), classes )
+                  );
 
-                  var source2inter = cy.add( $.extend( true, {
-                    group: 'edges',
-                    data: {
-                      source: source.id(),
-                      target: interNode.id()
-                    }
-                  }, options().edgeParams( source, target, 0 ) ) ).addClass( classes );
+                  var source2inter = cy.add(
+                    addClassesToEleJson( assign(
+                      {
+                        group: 'edges',
+                        data: {
+                          source: source.id(),
+                          target: interNode.id()
+                        }
+                      },
+                      options().edgeParams( source, target, 0 )
+                    ), classes )
+                  );
 
-                  var inter2target = cy.add( $.extend( true, {
-                    group: 'edges',
-                    data: {
-                      source: interNode.id(),
-                      target: target.id()
-                    }
-                  }, options().edgeParams( source, target, 1 ) ) ).addClass( classes );
+                  var inter2target = cy.add(
+                    addClassesToEleJson( assign(
+                      {
+                        group: 'edges',
+                        data: {
+                          source: interNode.id(),
+                          target: target.id()
+                        }
+                      },
+                      options().edgeParams( source, target, 1 )
+                    ), classes )
+                  );
 
                   added = added.add( interNode ).add( source2inter ).add( inter2target );
 
                   break;
 
                 case 'flat':
-                  var edge = cy.add( $.extend( true, {
-                    group: 'edges',
-                    data: {
-                      source: source.id(),
-                      target: target.id()
-                    }
-                  }, options().edgeParams( source, target, 0 ) ) ).addClass( classes );
+                  var edge = cy.add(
+                    addClassesToEleJson( assign(
+                      {
+                        group: 'edges',
+                        data: {
+                          source: source.id(),
+                          target: target.id()
+                        }
+                      },
+                      options().edgeParams( source, target, 0 )
+                    ), classes )
+                  );
 
                   added = added.add( edge );
 
@@ -774,6 +737,9 @@ SOFTWARE.
               var loopAllowed = options().loopAllowed( node );
               var isGhost = node.hasClass( 'edgehandles-ghost-node' );
               var noEdge = options().edgeType( source, node ) == null;
+
+              node.addClass('edgehandles-presumptive-target');
+
 
               if( isGhost || noEdge ) {
                 return;
@@ -805,13 +771,39 @@ SOFTWARE.
               var source = sourceNode;
 
               node.removeClass( 'edgehandles-target' );
+              node.removeClass( 'edgehandles-presumptive-target' );
+
               removePreview( source, target );
             }
           }
 
-          $container.cytoscape( function( e ) {
-            cy = this;
+          function setHandleDimensions( node ){
+            var p = node.renderedPosition();
+            var h = node.renderedHeight();
+            var w = node.renderedWidth();
 
+            hr = options().handleSize / 2 * cy.zoom();
+
+            // store how much we should move the handle from origin(p.x, p.y)
+            var moveX = 0;
+            var moveY = 0;
+
+            // grab axis's
+            var axisX = options().handlePosition.split(' ')[0].toLowerCase();
+            var axisY = options().handlePosition.split(' ')[1].toLowerCase();
+
+            // based on handlePosition move left/right/top/bottom. Middle/middle will just be normal
+            if(axisX == 'left') moveX = -(w / 2);
+            else if(axisX == 'right') moveX = w / 2;
+            if(axisY == 'top') moveY = -(h / 2);
+            else if(axisY == 'bottom') moveY = h / 2;
+
+            // set handle x and y based on adjusted positions
+            hx = p.x + moveX;
+            hy = p.y + moveY;
+          }
+
+          cy.ready( function() {
             lastPanningEnabled = cy.panningEnabled();
             lastZoomingEnabled = cy.zoomingEnabled();
             lastBoxSelectionEnabled = cy.boxSelectionEnabled();
@@ -828,7 +820,7 @@ SOFTWARE.
             var lastMdownHandler;
 
             var startHandler, hoverHandler, leaveHandler, grabNodeHandler, freeNodeHandler, dragNodeHandler, forceStartHandler, removeHandler, cxtstartHandler, tapToStartHandler, cxtdragHandler, cxtdragoverHandler, cxtdragoutHandler, cxtendHandler, dragHandler, grabHandler;
-            cy.on( 'mouseover tap', 'node', startHandler = function( e ) {
+            cy.on( 'mouseover tap', 'node', startHandler = function() {
               var node = this;
 
               if( disabled() || drawMode || mdownOnHandle || grabbingNode || this.hasClass( 'edgehandles-preview' ) || inForceStart || this.hasClass( 'edgehandles-ghost-node' ) || node.filter( options().handleNodes ).length === 0 ) {
@@ -843,21 +835,15 @@ SOFTWARE.
                 $container[ 0 ].removeEventListener( 'touchstart', lastMdownHandler, true );
               }
 
-              var source = this;
-              var p = node.renderedPosition();
-              var h = node.renderedOuterHeight();
-
               lastActiveId = node.id();
 
               // remove old handle
               clearDraws();
 
-              hr = options().handleSize / 2 * cy.zoom();
-              hx = p.x;
-              hy = p.y - h / 2;
+              setHandleDimensions( node );
 
               // add new handle
-              drawHandle( hx, hy, hr );
+              drawHandle();
 
               node.trigger( 'cyedgehandles.showhandle' );
 
@@ -870,7 +856,7 @@ SOFTWARE.
                 var pageY = !e.touches ? e.pageY : e.touches[ 0 ].pageY;
                 var x = pageX - $container.offset().left;
                 var y = pageY - $container.offset().top;
-                var hrTarget = hr;
+                var hrTarget = hr + options().handleHitThreshold;
 
                 if( e.button !== 0 && !e.touches ) {
                   return; // sorry, no right clicks allowed
@@ -896,16 +882,15 @@ SOFTWARE.
                 node.addClass( 'edgehandles-source' );
                 node.trigger( 'cyedgehandles.start' );
 
-                function doneMoving( dmEvent ) {
+                function doneMoving() {
                   // console.log('doneMoving %s %o', node.id(), node);
 
                   if( !mdownOnHandle || inForceStart ) {
                     return;
                   }
 
-                  var $this = $( this );
                   mdownOnHandle = false;
-                  $( window ).unbind( 'mousemove touchmove', moveHandler );
+                  $( window ).off( 'mousemove touchmove', moveHandler );
 
                   makeEdges();
                   resetToDefaultState();
@@ -914,7 +899,8 @@ SOFTWARE.
                   node.trigger( 'cyedgehandles.stop' );
                 }
 
-                $( window ).one( 'mouseup touchend touchcancel blur', doneMoving ).bind( 'mousemove touchmove', moveHandler );
+                $( window ).one('mouseup touchend touchcancel blur', doneMoving )
+                  .bind('mousemove touchmove', moveHandler );
                 disableGestures();
 
                 options().start( node );
@@ -925,16 +911,20 @@ SOFTWARE.
               function moveHandler( e ) {
                 // console.log('mousemove moveHandler %s %o', node.id(), node);
 
-                var pageX = !e.originalEvent.touches ? e.pageX : e.originalEvent.touches[ 0 ].pageX;
-                var pageY = !e.originalEvent.touches ? e.pageY : e.originalEvent.touches[ 0 ].pageY;
+                var pageX = !e.touches ? e.pageX : e.touches[ 0 ].pageX;
+                var pageY = !e.touches ? e.pageY : e.touches[ 0 ].pageY;
                 var x = pageX - $container.offset().left;
                 var y = pageY - $container.offset().top;
 
+                mx = x;
+                my = y;
+
                 if( options().handleLineType !== 'ghost' ) {
                   clearDraws();
-                  drawHandle( hx, hy, hr );
+                  drawHandle();
                 }
-                drawLine( hx, hy, x, y );
+                drawLine( x, y );
+
 
                 return false;
               }
@@ -944,9 +934,8 @@ SOFTWARE.
               lastMdownHandler = mdownHandler;
 
 
-            } ).on( 'mouseover tapdragover', 'node', hoverHandler = function() {
+            } ).on( 'mouseover tapdragover', 'node', hoverHandler = function(e) {
               var node = this;
-              var target = this;
 
               // console.log('mouseover hoverHandler')
 
@@ -954,7 +943,8 @@ SOFTWARE.
                 return; // ignore preview nodes
               }
 
-              if( mdownOnHandle ) { // only handle mdown case
+              // n.b. only desktop mouse events can show hover preview in force mode
+              if( mdownOnHandle || (inForceStart && e.type === 'mouseover') ) {
 
                 // console.log( 'mouseover hoverHandler %s $o', node.id(), node );
 
@@ -963,14 +953,15 @@ SOFTWARE.
                 return false;
               }
 
-            } ).on( 'mouseout tapdragout', 'node', leaveHandler = function() {
+            } ).on( 'mouseout tapdragout', 'node', leaveHandler = function(e) {
               var node = this;
 
               if( drawMode ) {
                 return;
               }
 
-              if( mdownOnHandle ) {
+              // n.b. only desktop mouse events can show hover preview in force mode
+              if( mdownOnHandle || (inForceStart && e.type === 'mouseout') ) {
                 hoverOut( node );
               }
 
@@ -1021,13 +1012,26 @@ SOFTWARE.
               var h = node.renderedOuterHeight();
               var w = node.renderedOuterWidth();
 
-              var hr = options().handleSize / 2 * cy.zoom();
-              var hx = p.x;
-              var hy = p.y - h / 2;
+              setHandleDimensions( node );
 
-              drawHandle( hx, hy, hr );
+              drawHandle();
 
               node.trigger( 'cyedgehandles.showhandle' );
+
+              var moveHandler = function( me ) {
+                var offset = $container.offset();
+                var x = ( me.pageX !== undefined ? me.pageX : me.touches[ 0 ].pageX ) - offset.left;
+                var y = ( me.pageY !== undefined ? me.pageY : me.touches[ 0 ].pageY ) - offset.top;
+
+                mx = x;
+                my = y;
+
+                if( options().handleLineType !== 'ghost' ) {
+                  clearDraws();
+                  drawHandle();
+                }
+                drawLine( x, y );
+              };
 
               // case: down and drag as normal
               var downHandler = function( e ) {
@@ -1035,25 +1039,14 @@ SOFTWARE.
                 $container[ 0 ].removeEventListener( 'mousedown', downHandler, true );
                 $container[ 0 ].removeEventListener( 'touchstart', downHandler, true );
 
-                var x = ( e.pageX !== undefined ? e.pageX : e.originalEvent.touches[ 0 ].pageX ) - $container.offset().left;
-                var y = ( e.pageY !== undefined ? e.pageY : e.originalEvent.touches[ 0 ].pageY ) - $container.offset().top;
+                var x = ( e.pageX !== undefined ? e.pageX : e.touches[ 0 ].pageX ) - $container.offset().left;
+                var y = ( e.pageY !== undefined ? e.pageY : e.touches[ 0 ].pageY ) - $container.offset().top;
                 var d = hr / 2;
                 var onNode = p.x - w / 2 - d <= x && x <= p.x + w / 2 + d && p.y - h / 2 - d <= y && y <= p.y + h / 2 + d;
 
                 if( onNode ) {
                   disableGestures();
                   mdownOnHandle = true; // enable the regular logic for handling going over target nodes
-
-                  var moveHandler = function( me ) {
-                    var x = ( me.pageX !== undefined ? me.pageX : me.originalEvent.touches[ 0 ].pageX ) - $container.offset().left;
-                    var y = ( me.pageY !== undefined ? me.pageY : me.originalEvent.touches[ 0 ].pageY ) - $container.offset().top;
-
-                    if( options().handleLineType !== 'ghost' ) {
-                      clearDraws();
-                      drawHandle( hx, hy, hr );
-                    }
-                    drawLine( hx, hy, x, y );
-                  }
 
                   $container[ 0 ].addEventListener( 'mousemove', moveHandler, true );
                   $container[ 0 ].addEventListener( 'touchmove', moveHandler, true );
@@ -1070,7 +1063,7 @@ SOFTWARE.
                     options().stop( node );
                     node.trigger( 'cyedgehandles.stop' );
 
-                    cy.off( 'tap', 'node', tapHandler );
+                    cy.off( 'tap', tapHandler );
                     node.off( 'remove', removeBeforeHandler );
                     resetToDefaultState();
                   } );
@@ -1088,24 +1081,10 @@ SOFTWARE.
               node.one( 'remove', function() {
                 $container[ 0 ].removeEventListener( 'mousedown', downHandler, true );
                 $container[ 0 ].removeEventListener( 'touchstart', downHandler, true );
-                cy.off( 'tap', 'node', tapHandler );
+                cy.off( 'tap', tapHandler );
               } );
 
-              // case: tap a target node
-              var tapHandler;
-              cy.one( 'tap', 'node', tapHandler = function() {
-                var target = this;
-
-                var isLoop = source.id() === target.id();
-                var loopAllowed = options().loopAllowed( target );
-
-                if( !isLoop || ( isLoop && loopAllowed ) ) {
-                  makeEdges( false, source, target );
-
-                  //options().complete( node );
-                  //node.trigger('cyedgehandles.complete');
-                }
-
+              function stopForceMode( node ){
                 inForceStart = false; // now we're done so reset the flag
 
                 options().stop( node );
@@ -1113,9 +1092,37 @@ SOFTWARE.
 
                 $container[ 0 ].removeEventListener( 'mousedown', downHandler, true );
                 $container[ 0 ].removeEventListener( 'touchstart', downHandler, true );
+                $container[ 0 ].removeEventListener( 'mousemove', moveHandler, true );
                 node.off( 'remove', removeBeforeHandler );
+
                 resetToDefaultState();
+              }
+
+              // case: tap a target node
+              var tapHandler;
+              cy.one( 'tap', tapHandler = function(e) {
+                var target = e.target || e.cyTarget; // 3.x | 2.x
+
+                if( target === cy ){ // tap bg cancels force gesture
+                  stopForceMode( node );
+
+                  return;
+                } else if( target.isNode() ){ // tap node completes force gesture
+                  var isLoop = source.id() === target.id();
+                  var loopAllowed = options().loopAllowed( target );
+
+                  if( !isLoop || ( isLoop && loopAllowed ) ) {
+                    makeEdges( false, source, target );
+                  }
+
+                  stopForceMode( node );
+                }
               } );
+
+              // in the forced start, we use the above tap case but we can still preview on desktop mousemove
+              if( inForceStart ){
+                $container[ 0 ].addEventListener( 'mousemove', moveHandler, true );
+              }
 
 
             } ).on( 'remove', 'node', removeHandler = function() {
@@ -1131,6 +1138,10 @@ SOFTWARE.
             } ).on( 'cxttapstart tapstart', 'node', cxtstartHandler = function( e ) {
               var node = this;
 
+              if( disabled() ) {
+                return; // prevent drawing an edge whenever the extension is disabled
+              }
+
               if( node.filter( options().handleNodes ).length === 0 ) {
                 return; // skip if node not allowed
               }
@@ -1142,23 +1153,18 @@ SOFTWARE.
 
                 clearDraws(); // clear just in case
 
-                var node = sourceNode = this;
-                var source = node;
+                disableGestures(); // cases like draw mode need this
+
+                node = sourceNode = this;
 
                 lastActiveId = node.id();
 
                 node.trigger( 'cyedgehandles.start' );
                 node.addClass( 'edgehandles-source' );
 
-                var p = node.renderedPosition();
-                var h = node.renderedOuterHeight();
-                var w = node.renderedOuterWidth();
+                setHandleDimensions( node );
 
-                hr = options().handleSize / 2 * cy.zoom();
-                hx = p.x;
-                hy = p.y - h / 2 - hr / 2;
-
-                drawHandle( hx, hy, hr );
+                drawHandle();
 
                 node.trigger( 'cyedgehandles.showhandle' );
 
@@ -1171,12 +1177,15 @@ SOFTWARE.
               var cxtOk = options().cxt && e.type === 'cxtdrag';
               var tapOk = drawMode && e.type === 'tapdrag';
 
-              if( ( cxtOk || tapOk ) && sourceNode ) {
-                var rpos = e.cyRenderedPosition;
+              if( !disabled() && ( cxtOk || tapOk ) && sourceNode ) {
+                var rpos = e.renderedPosition || e.cyRenderedPosition;
 
-                drawLine( hx, hy, rpos.x, rpos.y );
-
+                drawLine( rpos.x, rpos.y );
+                mx = rpos.x;
+                my = rpos.y;
               }
+
+
 
 
             } ).on( 'cxtdragover tapdragover', 'node', cxtdragoverHandler = function( e ) {
@@ -1208,42 +1217,34 @@ SOFTWARE.
               if( cxtOk || tapOk ) {
 
                 makeEdges();
-                resetToDefaultState();
-                sourceNode = null;
 
                 if( sourceNode ) {
                   options().stop( sourceNode );
-                  node.trigger( 'cyedgehandles.stop' );
-
-                  options().complete( sourceNode );
+                  sourceNode.trigger( 'cyedgehandles.stop' );
                 }
+
+                resetToDefaultState();
               }
 
             } ).on( 'tap', 'node', tapToStartHandler = function() {
-              return;
-              var node = this;
-
-              if( !sourceNode ) { // must not be active
-                setTimeout( function() {
-                  if( node.filter( options().handleNodes ).length === 0 ) {
-                    return; // skip if node not allowed
-                  }
-
-                  clearDraws(); // clear just in case
-
-                  var p = node.renderedPosition();
-                  var h = node.renderedOuterHeight();
-                  var w = node.renderedOuterWidth();
-
-                  var hr = options().handleSize / 2 * cy.zoom();
-                  var hx = p.x;
-                  var hy = p.y - h / 2;
-
-                  drawHandle( hx, hy, hr );
-
-                  node.trigger( 'cyedgehandles.showhandle' );
-                }, 16 );
-              }
+              // TODO can this be re-enabled and exposed behind an option?
+              // var node = this;
+              //
+              // if( !sourceNode ) { // must not be active
+              //   setTimeout( function() {
+              //     if( node.filter( options().handleNodes ).length === 0 ) {
+              //       return; // skip if node not allowed
+              //     }
+              //
+              //     clearDraws(); // clear just in case
+              //
+              //     setHandleDimensions( node );
+              //
+              //     drawHandle();
+              //
+              //     node.trigger( 'cyedgehandles.showhandle' );
+              //   }, 16 );
+              // }
 
             } );
 
@@ -1263,7 +1264,10 @@ SOFTWARE.
                 .off( 'cxtdrag', cxtdragHandler )
                 .off( 'cxtdragover', 'node', cxtdragoverHandler )
                 .off( 'cxtdragout', 'node', cxtdragoutHandler )
-                .off( 'tap', 'node', tapToStartHandler );
+                .off( 'tap', 'node', tapToStartHandler )
+                .off( 'drag', 'node', dragHandler )
+                .off( 'grab', 'node', grabHandler )
+              ;
 
               cy.unbind( 'zoom pan', transformHandler );
 
@@ -1280,49 +1284,39 @@ SOFTWARE.
         },
 
         start: function( id ) {
-          var $container = $( this );
-
-          $container.cytoscape( function( e ) {
-            var cy = this;
-
+          cy.ready( function() {
             cy.$( '#' + id ).trigger( 'cyedgehandles.forcestart' );
           } );
         }
       };
 
       if( functions[ fn ] ) {
-        return functions[ fn ].apply( this, Array.prototype.slice.call( arguments, 1 ) );
+        return functions[ fn ].apply( container, Array.prototype.slice.call( arguments, 1 ) );
       } else if( typeof fn == 'object' || !fn ) {
-        return functions.init.apply( this, arguments );
+        return functions.init.apply( container, arguments );
       } else {
-        $.error( 'No such function `' + fn + '` for jquery.cytoscapeEdgeHandles' );
+        throw new Error( 'No such function `' + fn + '` for edgehandles' );
       }
-
-      return $( this );
     };
 
-    $.fn.cyEdgehandles = $.fn.cytoscapeEdgehandles;
-
-    $$( 'core', 'edgehandles', function( options ) {
-      var cy = this;
-
-      return $( cy.container() ).cytoscapeEdgehandles( options );
-    } );
+    $$( 'core', 'edgehandles', edgehandles );
 
   };
 
-  if( typeof module !== 'undefined' && module.exports ) { // expose as a commonjs module
-    module.exports = register;
-  }
+  /* global _, define, cytoscape */
 
-  if( typeof define !== 'undefined' && define.amd ) { // expose as an amd/requirejs module
+  if( typeof module !== 'undefined' && module.exports ) { // expose as a commonjs module
+    module.exports = function( $$ ){
+      register( $$, require('lodash.debounce'), require('lodash.throttle') );
+    };
+  } else if( typeof define !== 'undefined' && define.amd ) { // expose as an amd/requirejs module
     define( 'cytoscape-edgehandles', function() {
       return register;
     } );
   }
 
-  if( $ && $$ ) { // expose to global cytoscape (i.e. window.cytoscape)
-    register( $$, $ );
+  if( $$ && typeof _ !== 'undefined' ) { // expose to global cytoscape (i.e. window.cytoscape)
+    register( $$, _.debounce.bind( _ ), _.throttle.bind( _ ) );
   }
 
-} )( cytoscape, jQuery );
+} )( typeof cytoscape !== 'undefined' ? cytoscape : null );

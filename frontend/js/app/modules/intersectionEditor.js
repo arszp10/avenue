@@ -39,8 +39,9 @@
             options.ready = function() { };
             options.container = controls.panels.cyCrossroadCopy[0];
             cyCrossroad = cytoscape(options);
+            cyCrossroad.edgeBendEditing({undoable: false});
 
-            cyCrossroad.on('select', 'node', null, function (d, a) {
+            cyCrossroad.on('select', 'node', function (e) {
                 var s = cyCrossroad.$('node:selected');
                 s = s[0];
                 var original = cy.getElementById(s.data('id'));
@@ -51,8 +52,8 @@
                 controls.panels.body.removeClass('show-right-panel');
             });
 
-            cyCrossroad.on('click', 'node:selected', null, function (e) {
-                var type = e.cyTarget.data('type');
+            cyCrossroad.on('click', 'node:selected', function (e) {
+                var type = e.target.data('type');
                 //e.originalEvent.stopPropagation();
             });
 
@@ -751,6 +752,7 @@
 
             controls.inputs.inputCrossroadOffset.slider('relayout');
             var data = cy.aveSelectedCrossroadNodes(crossroad.id);
+
             that.initCyCrossroadCopy();
             cyCrossroad.$().remove();
             cyCrossroad.add(data).unselect();
@@ -900,8 +902,6 @@
             if (results.length == 0) {
                 return;
             }
-
-            console.log(results, node);
 
             controls.panels.crossroadNodeInfoPanel.append(
                 templates.nodeModelingResults(results[0])

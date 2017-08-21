@@ -1,5 +1,9 @@
 'use strict';
 
+var args = process.argv;
+var lastArg = args[args.length - 1];
+var letsUglify = (lastArg && lastArg == '--uglify');
+
 var gulp = require('gulp'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
@@ -59,17 +63,17 @@ gulp.task('html:build', function () {
 });
 
 gulp.task('js:build', function () {
-    gulp.src(path.src.js)
-        .pipe(rigger())
-        //.pipe(sourcemaps.init())
-        //.pipe(uglify())
-        //.pipe(gzip())
-        //.pipe(sourcemaps.write())
-        .pipe(gulp.dest(path.build.js))
+    var pipe = gulp.src(path.src.js).pipe(rigger());
+
+    if (letsUglify) {
+        pipe = pipe.pipe(uglify());
+    }
+    pipe.pipe(gulp.dest(path.build.js))
         .pipe(reload({stream: true}));
-    gulp.src('frontend/js/vendor/ace/**')
-        .pipe(gulp.dest(path.build.js + 'ace'))
-        .pipe(reload({stream: true}));
+
+    //.pipe(sourcemaps.init())
+    //.pipe(gzip())
+    //.pipe(sourcemaps.write())
 });
 
 gulp.task('css:build', function () {

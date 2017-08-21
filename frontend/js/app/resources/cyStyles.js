@@ -77,7 +77,7 @@
                 'padding-left': '15px',
                 'padding-bottom': '15px',
                 'padding-right': '15px',
-                'border-radius': '5px',
+                //'border-radius': '5px',
                 'text-valign': 'top',
                 'text-halign': 'center',
                 'border-color': '#777777',
@@ -106,7 +106,7 @@
             selector: 'node:selected',
             css: {
                 'content': 'data(icon)',
-                'background-color': '#cddc39',
+                'background-color': '#333333',//'#cddc39',
                 'border-color': '#ffffff',
                 'color': '#ffffff',
                 'border-width': 2
@@ -149,7 +149,10 @@
         {
             selector: 'edge',
             css: {
-                'target-arrow-shape': 'triangle',
+                'arrow-scale': 1.3,
+                'curve-style': 'bezier',
+                'width': 1,
+                'target-arrow-shape': 'triangle-backcurve',
                 'text-outline-color': '#999999',
                 'line-color': '#999999',
                 'target-arrow-color': '#999999',
@@ -165,7 +168,7 @@
         {
             selector: 'edge.edge-in-crossroad',
             css: {
-                'line-style': 'dotted',
+                //'line-style': 'dotted',
                 'text-outline-color': '#999999',
                 'line-color': '#999999',
                 'target-arrow-color': '#999999'
@@ -183,16 +186,17 @@
         {
             selector: 'edge:selected',
             css: {
-                'width': 2,
-                'line-color': '#cddc39', //'#2e6da4',
-                'target-arrow-color': '#cddc39', //'#2e6da4',
+                'width': 3,
+                'line-color': '#333333',//'#cddc39', //'#2e6da4',
+                'target-arrow-color':  '#333333',//'#cddc39', //'#2e6da4',
                 'color': '#fff',
-                'text-outline-color': '#cddc39', //'#2e6da4'
+                'text-outline-color':  '#333333',//'#cddc39', //'#2e6da4'
             }
         },
         {
             selector: 'edge.edge-in-flow',
             css: {
+                'width': 3,
                 'line-color': '#333333',
                 'target-arrow-color': '#333333',
                 'text-outline-color': '#333333'
@@ -201,6 +205,7 @@
         {
             selector: 'edge.edge-out-flow',
             css: {
+                'width': 3,
                 'line-color': '#337AB7',
                 'target-arrow-color': '#337AB7',
                 'text-outline-color': '#337AB7'

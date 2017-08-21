@@ -95,6 +95,7 @@
             btnCut:                     '#btn-cut',
             btnCopy:                    '#btn-copy',
             btnPaste:                   '#btn-paste',
+            btnUndo:                    '#btn-undo',
             btnShowNetwork:             '#btn-show-network',
             btnShowResults:             '#btn-show-results',
             btnShowRoutes:              '#btn-show-routes',

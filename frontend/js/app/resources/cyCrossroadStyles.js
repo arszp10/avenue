@@ -63,8 +63,12 @@
         {
             selector: 'edge',
             css: {
+                //'arrow-scale': 1.3,
+                'curve-style': 'bezier',
+                //'width': 1,
+                'target-arrow-shape': 'triangle-backcurve',
                 'line-style': 'dotted',
-                'target-arrow-shape': 'triangle',
+                //'target-arrow-shape': 'triangle',
                 'text-outline-color': '#fff',
                 'line-color': '#ccc',
                 'target-arrow-color': '#ccc',

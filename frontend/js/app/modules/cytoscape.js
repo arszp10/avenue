@@ -10,9 +10,12 @@
     var that;
 
     var onTapToBackground = function(e){
-        if(e.cyTarget !== cy) { return }
-        controls.inputs.inputEdgeLabel.blur();
-
+        if(e.target !== cy.$('edge:selected')[0]) {
+            controls.inputs.inputEdgeLabel.blur();
+        }
+        if(e.target !== cy) {
+            return
+        }
         if (App.State.clickMode == 'select-mode' || App.State.clickMode == 'pan-mode') {
             return true;
         }
@@ -69,22 +72,24 @@
     var initCytoscapeEvents = function() {
         cy.on('tap', onTapToBackground);
 
-        cy.on('select', 'node', null, function (d, a) {
+        cy.on('select', 'node', function (e) {
             var s = cy.$('node:selected');
+
+            $.each(s,function(inx, si){
+                $.each(si.connectedEdges(), function (i, v) {
+                    if (v.source() == si) { v.addClass('edge-out-flow'); }
+                    if (v.target() == si) { v.addClass('edge-in-flow'); }
+                });
+            });
+
             if (s.length > 1) {
                 editor.showSideMultiNodeEditor(s.length);
-                return;
+            } else if (s.length > 0) {
+                editor.showSideNodeInfo(s[0].data());
             }
-            s = s[0];
-            //console.log(s.data('cycleTime'));
-            $.each(s.connectedEdges(), function (i, v) {
-                if (v.source() == s) { v.addClass('edge-out-flow'); }
-                if (v.target() == s) { v.addClass('edge-in-flow'); }
-            });
-            editor.showSideNodeInfo(s.data());
         });
 
-        cy.on('unselect', 'node', null, function (d, a) {
+        cy.on('unselect', 'node', function (e) {
             var s = cy.$('edge');
             $.each(s, function (i, v) {
                 v.removeClass('edge-in-flow');
@@ -96,43 +101,46 @@
             controls.panels.body.removeClass('show-right-panel');
         });
 
-        cy.on('click', 'edge:selected', null, function (e) {
+        cy.on('click', 'edge:selected', function (e) {
             controls.panels.body.toggleClass('show-edge-input');
-            controls.inputs.inputEdgeLabel.css(
-                {
+            controls.inputs.inputEdgeLabel.css({
                     top: e.originalEvent.clientY - 10,
                     left: e.originalEvent.clientX - 15
-                }).data("edge", e.cyTarget.data('id')).val(e.cyTarget.data('portion')).focus();
+                })
+                .data("edge", e.target.data('id'))
+                .val(e.target.data('portion'))
+                .focus()
+                .select();
         });
 
-        cy.on('click', 'node:selected', null, function (e) {
-            var type = e.cyTarget.data('type');
+        cy.on('click', 'node:selected', function (e) {
+            var type = e.target.data('type');
 
             if (['select-mode','pan-mode'].indexOf(App.State.clickMode) == -1 ) {
                 return;
             }
 
             if (type == 'crossRoad') {
-                intersectionEditor.showCrossroadModal(e.cyTarget.data());
+                intersectionEditor.showCrossroadModal(e.target.data());
                 return;
             }
 
-            editor.showNodePopup(e.cyTarget.data(), e.originalEvent.clientX, e.originalEvent.clientY );
+            editor.showNodePopup(e.target.data(), e.originalEvent.clientX, e.originalEvent.clientY );
             e.originalEvent.stopPropagation();
         });
 
-        cy.on('add', 'node', null, function (e) {
-            e.cyTarget.data('cycleTime', App.State.currentModel.cycleTime);
+        cy.on('add', 'node', function (e) {
+            e.target.data('cycleTime', App.State.currentModel.cycleTime);
         });
 
-        cy.on('add', 'edge', null, function (e) {
-            var edge = e.cyTarget.data();
-            if (e.cyTarget.parallelEdges().length > 1) {
+        cy.on('add', 'edge', function (e) {
+            var edge = e.target.data();
+            if (e.target.parallelEdges().length > 1) {
                 cy.getElementById(edge.id).remove();
                 return;
             };
 
-            markInnerCrossEdge(e.cyTarget);
+            markInnerCrossEdge(e.target);
 
             var target = cy.getElementById(edge.target);
             var source = cy.getElementById(edge.source);
@@ -176,7 +184,7 @@
                 }
             }
 
-            setEdgePortion(e.cyTarget, source);
+            setEdgePortion(e.target, source);
 
         });
 
@@ -189,19 +197,32 @@
         });
     };
 
+    function deleteEles(eles){
+        return eles.remove();
+    }
+    function restoreEles(eles){
+        return eles.restore();
+    }
+
     var initParent = function (ready){
         var options   = settings.cytoscape;
+        options.container = controls.panels.cytoscape;
         options.style = App.Resources.CyStyles;
         options.ready = function() {
+
             cy = $.extend(this, that);
-
-            cy.edgehandles({ });
+            cy.edgehandles({});
             cy.panzoom({});
-
+            cy.edgeBendEditing({undoable: true});
+            cy.ur = cy.undoRedo({});
+            cy.ur.action("deleteEles", deleteEles, restoreEles); // regi
 
             ready();
         };
-        controls.panels.cytoscape.cytoscape(options);
+
+        cytoscape(options);
+
+
     };
 
     //<!--22, 141-->
@@ -243,14 +264,16 @@
         },
         aveAddNode:function(data, pos){
             var d = $.extend({}, data, {id: this.aveNextId()});
-            this.add([{group: "nodes",
+            cy.ur.do('add', [{group: "nodes",
                 data: d,
                 renderedPosition: pos
             }]);
             return d.id;
         },
         aveSelectedCrossroadNodes: function(id){
-            return this.$('node[parent="' + id + '"], node[id="' + id + '"] > edge').jsons();
+            var nodes = this.$('node[parent="'+id+'"]');
+            var edges = nodes.edgesWith(nodes);
+            return nodes.union(edges).jsons();
         },
         aveCopy:function(){
             var jsons = this.$(':selected').jsons();
