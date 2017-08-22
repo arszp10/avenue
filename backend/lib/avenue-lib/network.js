@@ -72,15 +72,17 @@ Network.prototype.weighNodes = function () {
 
 Network.prototype.findOutterNodes = function () {
     var outterNodes = [];
-
-    _.forEach(this.network, function(node){
+    var whatEverInx = this.network.length - 1;
+    _.forEach(this.network, function(node, inx){
         if (!node.hasOwnProperty('edges') && node.type != 'crossRoad') {
             outterNodes.push(node.id);
         }
+        if (node.type != 'crossRoad') {
+            whatEverInx = inx;
+        }
     });
-
     if (outterNodes.length == 0) {
-        outterNodes.push(network[0].id);
+        outterNodes.push(this.network[whatEverInx].id);
     }
     return outterNodes;
 };
@@ -141,7 +143,8 @@ Network.prototype.simulate = function(numberOfIteration){
     var weight = 1;
     for (var i = 0; i < numberOfIteration; i++) {
         _.forEach(this.network, function(node){
-            if (that.outterNodes.indexOf(node.id) > -1 && i > 0) {
+            var isNotSingleOutterNode = that.outterNodes.indexOf(node.id) > -1 && i > 0 && that.outterNodes.length > 1;
+            if (isNotSingleOutterNode) {
                 return;
             }
             node.calc();

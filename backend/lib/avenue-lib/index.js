@@ -91,7 +91,7 @@ module.exports = {
         if (this.isEmptyRequest(request)) return [];
         this.replacePercentPortionToAbs(request);
         var network = new Network(request);
-        return network.simulate(100).json();
+        return network.simulate(50).json();
     },
 
     validate : function(data) {
