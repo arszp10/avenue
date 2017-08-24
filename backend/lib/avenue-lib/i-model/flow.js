@@ -90,13 +90,16 @@ function Flow(options, network)
             var T = 1;//ct/3600;
             overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 4*x/(T*ct))|0;
         }
-
+        var that = this;
         return {
             id: this.id,
             type: this.type,
             cycleTime: this.cycleTime,
             inFlow: this.inFlow,
             outFlow: this.outFlow,
+            queueFunc: this.queueFunc.map(function(v){
+                return that.capacityPerSecond*v/that.maxQueueLength;
+            }),
             isCongestion: this.isCongestion,
             maxQueue: this.maxQueueLength,
             queueLimit: this.queueLimit,

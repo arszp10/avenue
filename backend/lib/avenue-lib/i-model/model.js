@@ -130,6 +130,7 @@ module.exports = {
         var capacityPerSecond   = flow.capacityPerSecond;
         var inFlow              = flow.inFlow;
         var outFlow             = flow.outFlow;
+        var queueFunc           = flow.queueFunc;
         var queue               = queueTail == undefined ? 0 : queueTail;
         var delay       = 0;
         var lt          = 0;
@@ -138,6 +139,7 @@ module.exports = {
         var maxQueueLength = 0;
 
         for (var i = 0; i < inFlow.length; i++){
+            queueFunc[i] = queue;
             var value = inFlow[i];
             sumInFlow += value;
             lt = queue + value - capacityPerSecond;
@@ -162,6 +164,7 @@ module.exports = {
         flow.sumInFlow      = sumInFlow;
         flow.sumOutFlow     = sumOutFlow;
         flow.maxQueueLength = maxQueueLength;
+        flow.queueFunc          = queueFunc;
         flow.greenSaturation = Math.round(100*sumOutFlow/(flow.capacityPerSecond*flow.cycleTime));
         flow.isCongestion = checkCongestion(sumInFlow, sumOutFlow, queueTail, flow.queueLimit, maxQueueLength);
         return flow;
@@ -171,6 +174,7 @@ module.exports = {
         var cycleTime           = flow1.cycleTime;
         var capacityPerSecond1  = flow1.capacity/3600;
         var capacityPerSecond2  = flow2.capacity/3600;
+        var queueFunc           = flow2.queueFunc;
         var inFlow2             = flow2.inFlow;
         var outFlow1            = flow1.outFlow;
         var outFlow2            = flow2.outFlow;
@@ -193,6 +197,7 @@ module.exports = {
         for (var i = 0; i < inFlow2.length; i++){
             value = inFlow2[i];
             queue += value;
+            queueFunc[i] = queue;
             if (queue > dynCapacity[i]) {
                 outFlow2[i] = dynCapacity[i];
                 delay += dynamicCapacityDelay(cycleTime, dynCapacity, i, queue, value);
@@ -216,6 +221,7 @@ module.exports = {
         flow2.sumOutFlow        = sumOutFlow;
         flow2.delay             = delay;
         flow2.outFlow           = outFlow2;
+        flow2.queueFunc          = queueFunc;
         flow2.maxQueueLength    = maxQueueLength;
         flow2.greenSaturation   = Math.round(100 * sumOutFlow / (flow2.capacityPerSecond * flow2.cycleTime));
         flow2.isCongestion      = checkCongestion(sumInFlow, sumOutFlow, queueTail, flow2.queueLimit, maxQueueLength);

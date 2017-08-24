@@ -913,6 +913,7 @@
             var data = {
                 labels: settings.chart.labels(node.cycleTime),
                 datasets: [
+                    settings.chart.queueFunc(results[0].queueFunc),
                     settings.chart.flowIn(results[0].inFlow),
                     settings.chart.flowOut(results[0].outFlow)
                 ]

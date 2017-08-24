@@ -70,24 +70,36 @@
             flowIn: function(data){
                 return {
                     label: "flow in",
-                    fillColor: "rgba(220,220,220,0.2)",
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "rgba(220,220,220,1)",
+                    fillColor: "rgba(110,110,110,0.1)",
+                    strokeColor: "rgba(110,110,110,0.51)",
+                    pointColor: "rgba(110,110,110,0.51)",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    pointHighlightStroke: "rgba(110,110,110,0.51)",
                     data: data
                 };
             },
             flowOut: function(data){
                 return {
                     label: "flow out",
-                    fillColor: "rgba(151,187,205,0.2)",
-                    strokeColor: "rgba(151,187,205,1)",
-                    pointColor: "rgba(151,187,205,1)",
+                    fillColor: "rgba(51,122,183,0.15)",
+                    strokeColor: "rgba(51,122,183,0.51)",
+                    pointColor: "rgba(51,122,183,0.51)",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    pointHighlightStroke: "rgba(51,122,183,0.51)",
+                    data: data
+                };
+            },
+            queueFunc: function(data){
+                return {
+                    label: "queue",
+                    fillColor: "rgba(250,80,80,0.05)",
+                    strokeColor: "rgba(250,80,80,0.5)",
+                    pointColor: "rgba(250,80,80,0.5)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(250,80,80,0.5)",
                     data: data
                 };
             }
