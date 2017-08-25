@@ -7,7 +7,7 @@ module.exports = {
         numericality: {
             onlyInteger: true,
             greaterThanOrEqualTo: 40,
-            lessThanOrEqualTo: 600
+            lessThanOrEqualTo: 3600
         }
     },
     avgIntensity:{

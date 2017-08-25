@@ -34,42 +34,6 @@
             }
         },
         {
-            selector: 'node[color="danger"]',
-            css: {
-                'color': '#d9534f'
-            }
-        },
-        {
-            selector: 'node[color="success"]',
-            css: {
-                'color': '#5cb85c'
-            }
-        },
-        //{
-        //    selector: 'node[color="info"]',
-        //    css: {
-        //        'color': '#5bc0de'
-        //    }
-        //},
-        {
-            selector: 'node[color="default"]',
-            css: {
-                'color': '#777'
-            }
-        },
-        {
-            selector: 'node[color="warning"]',
-            css: {
-                'color': '#f0ad4e'
-            }
-        },
-        //{
-        //    selector: 'node[color="primary"]',
-        //    css: {
-        //        'color': '#337ab7'
-        //    }
-        //},
-        {
             selector: '$node > node',
             css: {
                 'label': 'data(label)',
@@ -77,7 +41,6 @@
                 'padding-left': '15px',
                 'padding-bottom': '15px',
                 'padding-right': '15px',
-                //'border-radius': '5px',
                 'text-valign': 'top',
                 'text-halign': 'center',
                 'border-color': '#777777',
@@ -87,10 +50,6 @@
                 'shape': 'roundrectangle',
                 'background-opacity': 0.6,
                 'color': '#ffffff'
-                //'shape-polygon-points': '-1 -1 1 -1 1 1 0.5 0.5 -1 1 -0.5 0.5'
-                //'background-image':'http://road.perm.ru/images/2945.jpg',
-                //'background-fit':'none',
-                //'background-image-opacity': 0.6
             }
         },
         {
