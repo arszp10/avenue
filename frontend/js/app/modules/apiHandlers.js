@@ -146,7 +146,18 @@
                         ? $.extend({x1: 0, y1:0}, r.data.position.cyExtent)
                         : {x1: 0, y1:0};
 
-                    cy.add(App.State.currentModel.content);
+                    var content = App.State.currentModel.content.map(function(element){
+                        switch (element.data.type) {
+                            case 'carriageway': element.data.icon = '\u0079'; break;
+                            case 'point': element.data.icon = '\u0071'; break;
+                            case 'bottleneck': element.data.icon = '\u0076'; break;
+                            case 'concurrent': element.data.icon = '\u0067'; break;
+                            case 'concurrentMerge': element.data.icon = '\u0068'; break;
+                        } ;
+                        return element;
+                    });
+
+                    cy.add(content);
                     cy.viewport({
                         zoom: zoom, pan : { x:-1*extent.x1*zoom, y:-1*extent.y1*zoom }
                     });

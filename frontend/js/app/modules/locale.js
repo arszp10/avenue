@@ -31,6 +31,7 @@
             'bottleneck'        : 'Бутылочное горлышко',
             'concurrent'        : 'Конфликтная точка',
             'concurrent-merge'  : 'Конфликт со слиянием',
+            'pedestrian'        : 'Пешеходный переход',
             'horizontal-align'  : 'Выровнять по горизонтали',
             'vertical-align'    : 'Выровнять по вертикали',
             'node-type'         : 'Тип точки',

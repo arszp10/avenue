@@ -89,6 +89,7 @@
             btnAddBottleneck:           '#btn-add-bottleneck',
             btnAddConcurrent:           '#btn-add-concurrent',
             btnAddConcurrentMerge:      '#btn-add-concurrent-merge',
+            btnAddPedestrian:           '#btn-add-pedestrian',
             btnDeleteNode:              '#btn-delete-node',
             btnHorizontalAlign:         '#btn-horizontal-align',
             btnVerticalAlign:           '#btn-vertical-align',

@@ -10,8 +10,8 @@
                 'border-color': '#999',
                 'color': '#fff',
                 'border-width': 0.5,
-                'font-family': 'FontAwesome',
-                'font-size': '4px',
+                'font-size': '6px',
+                'font-family': 'Avenue',
                 'font-weight':'normal',
                 'min-zoomed-font-size':'8px',
                 'width':'8px',
@@ -19,7 +19,7 @@
             }
         },
         {
-            selector: 'node[type="stopline"]',
+            selector: 'node[type="stopline"], node[type="pedestrian"]',
             css: {
                 'content': 'data(icon)',
                 'text-valign': 'center',
@@ -110,6 +110,19 @@
             }
         },
 
+        {
+            selector: 'edge[pedestrian]',
+            css: {
+                'target-arrow-shape': 'triangle',
+                'source-arrow-shape': 'none',
+                'target-arrow-color': '#888888',
+                'arrow-scale': 0.2,
+                'width': 20,
+                'line-style': 'dashed',
+                'text-outline-color': '#ffffff',
+                'line-color': '#888888'
+            }
+        },
 
 
     ];

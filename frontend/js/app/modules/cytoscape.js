@@ -153,6 +153,11 @@
             var targetEdges = cy.$('edge[target="' + edge.target + '"]');
             var isTargetConcurrent = (target.data('type') == 'concurrent' || target.data('type') == 'concurrentMerge');
             var isSourceConcurrent = (source.data('type') == 'concurrent' || source.data('type') == 'concurrentMerge');
+            var isTargetPedestrian = (target.data('type') == 'pedestrian');
+            var isSourcePedestrian = (source.data('type') == 'pedestrian');
+            var isTargetConflict = (target.data('type') == 'concurrent');
+            var isSourceConflict = (source.data('type') == 'concurrent');
+            var isTargetUndefined = (target.data('type') === undefined);
 
             if (isTargetConcurrent && targetEdges.length > 2) {
                 cy.getElementById(edge.id).remove();
@@ -160,6 +165,8 @@
             }
 
             var sourceEdges = cy.$('edge[source="' + edge.source + '"]');
+            var targetEdges = cy.$('edge[target="' + edge.target + '"]');
+
             if (source.data('type') == 'concurrentMerge' && sourceEdges.length > 2) {
                 cy.getElementById(edge.id).remove();
                 return;
@@ -183,6 +190,36 @@
                     cy.getElementById(edge.id).data('secondary', 'true');
                 }
             }
+
+            if (isSourcePedestrian) {
+                if (!(isTargetConflict || isTargetPedestrian||isTargetUndefined)) {
+                    cy.getElementById(edge.id).remove();
+                    return;
+                }
+            }
+
+            if (isTargetPedestrian) {
+                if (!(isSourceConflict || isSourcePedestrian)) {
+                    cy.getElementById(edge.id).remove();
+                    return;
+                }
+            }
+
+            if (isSourcePedestrian && sourceEdges.length > 2) {
+                cy.getElementById(edge.id).remove();
+                return;
+            }
+
+            if (isTargetPedestrian && targetEdges.length > 1) {
+                cy.getElementById(edge.id).remove();
+                return;
+            }
+
+            if ( isTargetPedestrian || isSourcePedestrian ) {
+                e.target.data('pedestrian', true);
+            }
+
+
 
             setEdgePortion(e.target, source);
 

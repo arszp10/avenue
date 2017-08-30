@@ -1154,3 +1154,8 @@ a.btn-edit-add-green[disabled] span.add-green-value {
 table.table-cycle-graph-legend td {
     padding:2px;
 }
+
+ul.points-list li a i {
+    font-size: 18px;
+    vertical-align: middle;
+}

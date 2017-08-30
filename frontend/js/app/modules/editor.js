@@ -73,6 +73,7 @@
             controls.buttons.btnAddBottleneck.on('click', this.nodesAddMode);
             controls.buttons.btnAddConcurrent.on('click', this.nodesAddMode);
             controls.buttons.btnAddConcurrentMerge.on('click', this.nodesAddMode);
+            controls.buttons.btnAddPedestrian.on('click', this.nodesAddMode);
 
             controls.buttons.btnHorizontalAlign.click(function () { cy.aveAlignSelected('y'); });
             controls.buttons.btnVerticalAlign.click(function () { cy.aveAlignSelected('x'); });
@@ -716,8 +717,9 @@
             $this.parent().addClass("active");
             var btn = $this.closest('ul').prev();
             btn.addClass("active");
+
             btn.find('i')
-                .removeClass('fa fa-genderless fa-circle-thin fa-exchange fa-filter fa-random fa-ellipsis-v fa-code-fork')
+                .removeClass('av-node av-traffic-light av-road-1 av-bottleneck-sign-3 av-shuffle av-join fa-fw av-pedestrian')
                 .addClass($this.find('i').attr('class'));
             App.State.nodeType = $this.data('type');
             App.State.clickMode = String($this.attr('id')).substring(8);

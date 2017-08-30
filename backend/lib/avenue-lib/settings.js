@@ -146,6 +146,17 @@ module.exports = {
         queueLimit: 0
     },
 
+    pedestrian: {
+        icon: '\u0064',
+        type: 'pedestrian',
+        tag: '',
+        cycleTime: 100,
+        avgIntensity: 900,
+        capacity: 1800,
+        weight: 1,
+        queueLimit: 0
+    },
+
     interPhaseDefaults:{
         amber: 2,
         blink: 3,

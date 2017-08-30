@@ -10,14 +10,14 @@
                 'border-color': '#777777',
                 'color': '#2e6da4',
                 'border-width': 0.5,
-                'font-family': 'FontAwesome',
-                'font-size': '14px',
+                'font-family': 'Avenue',
+                'font-size': '20px',
                 'font-weight':'normal',
                 'min-zoomed-font-size':'8px'
             }
         },
         {
-            selector: 'node[type="stopline"]',
+            selector: 'node[type="stopline"], node[type="pedestrian"]',
             css: {
                 'content': 'data(icon)',
                 'text-valign': 'center',
@@ -28,7 +28,7 @@
                 'border-width': 1.5,
                 'font-family': 'Avenue',
                 'font-size': '20px',
-                'font-weight':'normal',
+                //'font-weight':'normal',
                 'min-zoomed-font-size':'8px',
                 'shape': 'roundrectangle'
             }
@@ -110,7 +110,7 @@
             css: {
                 'arrow-scale': 1.3,
                 'curve-style': 'bezier',
-                'width': 1,
+                'width': 2,
                 'target-arrow-shape': 'triangle-backcurve',
                 'text-outline-color': '#999999',
                 'line-color': '#999999',
@@ -142,6 +142,21 @@
                 'target-arrow-color': '#999999'
             }
         },
+
+        {
+            selector: 'edge[pedestrian]',
+            css: {
+                'target-arrow-shape': 'triangle',
+                'source-arrow-shape': 'none',
+                'target-arrow-color': '#4665b7',
+                'arrow-scale': 0.2,
+                'width': 20,
+                'line-style': 'dashed',
+                'text-outline-color': '#999999',
+                'line-color': '#ffffff'
+            }
+        },
+
         {
             selector: 'edge:selected',
             css: {
@@ -149,9 +164,19 @@
                 'line-color': '#333333',//'#cddc39', //'#2e6da4',
                 'target-arrow-color':  '#333333',//'#cddc39', //'#2e6da4',
                 'color': '#fff',
-                'text-outline-color':  '#333333',//'#cddc39', //'#2e6da4'
+                'text-outline-color':  '#333333'//'#cddc39', //'#2e6da4'
             }
         },
+
+        {
+            selector: 'edge[pedestrian]:selected',
+            css: {
+                'width': 20,
+                'text-outline-color': '#333333',
+                'line-color': '#333333'
+            }
+        },
+
         {
             selector: 'edge.edge-in-flow',
             css: {
@@ -170,6 +195,16 @@
                 'text-outline-color': '#337AB7'
             }
         },
+
+
+        {
+            selector: 'edge[pedestrian].edge-out-flow, edge[pedestrian].edge-in-flow',
+            css: {
+                'width': 20
+            }
+        },
+
+
         {
             selector: '.edgehandles-hover',
             css: {

@@ -184,7 +184,7 @@
 
         },
         carriageway:{
-            icon:'\uf0ec',
+            icon:'\u0079',
             type: 'carriageway',
             tag: '',
             cycleTime: 100,
@@ -197,7 +197,7 @@
             queueLimit: 0
         },
         point: {
-            icon: '\uf22d',
+            icon: '\u0071',
             type: 'point',
             tag: '',
             cycleTime: 100,
@@ -207,7 +207,7 @@
             queueLimit: 0
         },
         bottleneck: {
-            icon: '\uf0b0',
+            icon: '\u0076',
             type: 'bottleneck',
             tag: '',
             cycleTime: 100,
@@ -217,7 +217,7 @@
             queueLimit: 0
         },
         concurrent: {
-            icon: '\uf074',
+            icon: '\u0067',
             type: 'concurrent',
             tag: '',
             cycleTime: 100,
@@ -228,13 +228,24 @@
             queueLimit: 0
         },
         concurrentMerge: {
-            icon: '\uf126',
+            icon: '\u0068',
             type: 'concurrentMerge',
             tag: '',
             cycleTime: 100,
             avgIntensity: 900,
             capacity: 1800,
             secondaryFlowCapacity: 1800,
+            weight: 1,
+            queueLimit: 0
+        },
+
+        pedestrian: {
+            icon: '\u0064',
+            type: 'pedestrian',
+            tag: '',
+            cycleTime: 100,
+            avgIntensity: 900,
+            capacity: 1800,
             weight: 1,
             queueLimit: 0
         },

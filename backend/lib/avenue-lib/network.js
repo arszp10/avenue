@@ -10,7 +10,8 @@ var objects = {
     concurrent:     require('./i-model/competitor'),
     concurrentMerge:require('./i-model/competitor-merge'),
     point:          require('./i-model/point'),
-    crossRoad:      require('./i-model/crossroad')
+    crossRoad:      require('./i-model/crossroad'),
+    pedestrian:     require('./i-model/bottleneck')
 };
 
 function Network(request) {
@@ -148,6 +149,7 @@ Network.prototype.simulate = function(numberOfIteration){
                 return;
             }
             node.calc();
+
             if (i == numberOfIteration - 1){
                 delay = node.hasOwnProperty('delay') ? parseFloat(node['delay']) : 0;
                 weight = node.hasOwnProperty('weight') ? parseFloat(node['weight']) : 1;
