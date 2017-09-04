@@ -38,6 +38,7 @@
             'node-tag'          : 'Ярлык',
             'intensity'         : 'Интенс.',
             'v_h'               : 'авт/ч',
+            'p_h'               : 'чел/ч',
             'capacity'          : 'Насыщ.',
             'secondary-flow-capacity' : 'Насыщ. втор.',
             'length'            : 'Длина',

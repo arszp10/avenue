@@ -30,16 +30,6 @@
         cy.aveAddNode(node, position);
     };
 
-    var markInnerCrossEdge = function(edge){
-        var target = cy.$('#' + edge.data().target);
-        var source = cy.$('#' + edge.data().source);
-        if (
-            target.data().hasOwnProperty('parent')
-            && target.data('parent') == source.data('parent')) {
-            edge.addClass('edge-in-crossroad');
-        }
-    };
-
     var setEdgePortion = function(edge, source){
         if (edge.data('portion')!== undefined && edge.data('portion')) {
             return;
@@ -70,6 +60,16 @@
     };
 
     var initCytoscapeEvents = function() {
+
+        cy.on('cxttap', 'node', function (e) {
+            var type = e.target.data('type');
+            if (type == 'crossRoad') {
+                return;
+            }
+            e.target.select();
+            editor.showNodePopup(e.target.data(), e.originalEvent.clientX, e.originalEvent.clientY );
+        });
+
         cy.on('tap', onTapToBackground);
 
         cy.on('select', 'node', function (e) {
@@ -116,16 +116,10 @@
         cy.on('click', 'node:selected', function (e) {
             var type = e.target.data('type');
 
-            if (['select-mode','pan-mode'].indexOf(App.State.clickMode) == -1 ) {
-                return;
-            }
-
             if (type == 'crossRoad') {
                 intersectionEditor.showCrossroadModal(e.target.data());
                 return;
             }
-
-            editor.showNodePopup(e.target.data(), e.originalEvent.clientX, e.originalEvent.clientY );
             e.originalEvent.stopPropagation();
         });
 
@@ -134,16 +128,19 @@
         });
 
         cy.on('add', 'edge', function (e) {
-            var edge = e.target.data();
-            if (e.target.parallelEdges().length > 1) {
+            var cyEdge = e.target;
+            var edge = cyEdge.data();
+            if (cyEdge.parallelEdges().length > 1) {
                 cy.getElementById(edge.id).remove();
                 return;
             };
 
-            markInnerCrossEdge(e.target);
-
             var target = cy.getElementById(edge.target);
             var source = cy.getElementById(edge.source);
+
+            if ( target.data('type') == 'carriageway' || source.data('type') == 'carriageway') {
+                cyEdge.addClass('carriageway-edge');
+            }
 
             if (target.data('type') == 'crossRoad' || source.data('type') == 'crossRoad') {
                 cy.getElementById(edge.id).remove();
@@ -216,16 +213,27 @@
             }
 
             if ( isTargetPedestrian || isSourcePedestrian ) {
-                e.target.data('pedestrian', true);
+                cyEdge.data('pedestrian', true);
             }
 
+            edge = cyEdge.data();
+            var defults;
+            if (edge.pedestrian) {
+                defults = JSON.parse(JSON.stringify(settings.pedEdge));
+            } else if(target.data('parent')){
+                defults = JSON.parse(JSON.stringify(settings.crossEdge));
+            } else {
+                defults = JSON.parse(JSON.stringify(settings.vehEdge));
+            }
+            edge = $.extend({}, defults, edge);
 
-
-            setEdgePortion(e.target, source);
+            cyEdge.data(edge);
+            setEdgePortion(cyEdge, source);
 
         });
 
         cy.on('viewport', function(e){
+            editor.toggleNodePopupPanel(false);
             if (!App.State.currentModel.anchored) {
                 return;
             }
@@ -372,9 +380,7 @@
                 return;
             }
             var nodes = selected.jsons();
-            var edges = selected.neighborhood('edge')
-                .removeClass('edge-in-crossroad')
-                .jsons();
+            var edges = selected.neighborhood('edge').jsons();
             var parent;
 
             $.each(nodes, function (inx, e) {
@@ -621,7 +627,26 @@
             cy.xC = (ve.xmax - ve.xmin)/(cye.x2 - cye.x1);
             cy.yC = (ve.ymax - ve.ymin)/(cye.y2 - cye.y1);
 
+        },
+
+
+       aveRecalcEdgesLengths: function(id){
+            var crNode = cy.getElementById(id);
+            var nw = crNode.width(), nh = crNode.height();
+            var gw = crNode.data('width'), gh = crNode.data('height');
+            var nodeDiagonal = Math.sqrt(nw*nw + nh*nh);
+            var geoDiagonal = Math.sqrt(gw*gw + gh*gh);
+            var scale = geoDiagonal/nodeDiagonal;
+            var nodes = crNode.children('node');
+            var edges = nodes.edgesWith(nodes);
+            edges.forEach(function(edge){
+                var sp = edge.source().position();
+                var tp = edge.target().position();
+                var d = Math.round(scale * Math.sqrt(Math.pow(sp.x - tp.x , 2) + Math.pow(sp.y - tp.y, 2)));
+                edge.data('distance', d);
+            })
         }
+
         //aveClearBaseExtent:function(){
         //    cy.cyZoom = 1;
         //    cy.cyBaseExtent = false;

@@ -1088,7 +1088,7 @@ a.btn-edit-add-green[disabled] span.add-green-value {
 
 
 #cy-crossroad-copy {
-    height: 250px;
+    height: 300px;
     width: 100%;
     /*background: #f0f0f0;*/
 }
@@ -1158,4 +1158,45 @@ table.table-cycle-graph-legend td {
 ul.points-list li a i {
     font-size: 18px;
     vertical-align: middle;
+}
+
+
+.crossroad-form .form-group {
+    margin-bottom:5px;
+}
+
+.crossroad-form label {
+    font-size: 12px;
+    margin-bottom: 1px;
+}
+
+.incoming-flow-data {
+    min-width: 200px;
+    font-size: 12px;
+    margin-bottom:5px;
+}
+
+.incoming-flow-data td {
+    padding: 1px;
+}
+
+.incoming-flow-data .input-sm {
+    padding: 0 7px;
+    border-radius: 0;
+    font-size: 12px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    height: 25px;
+}
+
+.incoming-flow-data  .from-name {
+    padding-right:5px;
+}
+
+#input-node-intensity {
+    width:75px;
+}
+
+#btn-show-incoming-data {
+    width:100%;
 }

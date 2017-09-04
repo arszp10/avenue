@@ -3,7 +3,7 @@
     var templates = App.Templates;
     var settings  = App.Resources.Settings;
     var samples   = App.Resources.Samples;
-    var cy, traffic, api, map, intersectionEditor;
+    var cy, traffic, api, map, intersectionEditor,locale;
     var routes;
     var that;
 
@@ -16,6 +16,7 @@
             api       = modules.apiCalls;
             routes    = modules.routes;
             map       = modules.map;
+            locale   = modules.locale;
             intersectionEditor = modules.intersectionEditor;
         },
         initModule: function(){
@@ -110,6 +111,22 @@
             controls.buttons.btnUndo.click(function () {
                 cy.undoRedo().undo();
             });
+
+
+
+
+            $(document).on('change', 'input.input-incoming-data', function(e){
+                var edgeId = $(this).data('id');
+                var field = $(this).data('field');
+                var value = field !== 'portion'
+                    ? parseInt($(this).val())|0
+                    : that.parseIntOrPercent($(this).val());
+                var cyEdge = cy.getElementById(edgeId);
+                cyEdge.data(field, value);
+                $(this).val(value);
+            });
+
+
         },
 
         initTopPanelEvents: function(){
@@ -447,24 +464,11 @@
             });
             controls.inputs.inputEdgeLabel.change(function () {
                 var id = $(this).data('edge');
-                var value = $(this).val();
-                var lastChar = value.slice(-1);
-
-                if (lastChar === '%') {
-                    value = value.substring(0, value.length - 1);
-                }
-                value = parseInt(value);
-                value = isNaN(value) ? 0 : value;
-
-                if (lastChar === '%') {
-                    if (value > 100) {
-                        value = 100;
-                    }
-                    value = value + '%';
-                }
-
+                var value = that.parseIntOrPercent($(this).val())
                 cy.getElementById(id).data('portion', value);
             });
+
+
             controls.inputs.inputEdgeLabel.on('keyup', function (event) {
                 if (event.which == 13 || event.which == 27) {
                     controls.inputs.inputEdgeLabel.blur();
@@ -534,6 +538,23 @@
         },
        
 
+        parseIntOrPercent: function(value){
+            var lastChar = value.slice(-1);
+            if (lastChar === '%') {
+                value = value.substring(0, value.length - 1);
+            }
+            value = parseInt(value);
+            value = isNaN(value) ? 0 : value;
+
+            if (lastChar === '%') {
+                if (value > 100) {
+                    value = 100;
+                }
+                value = value + '%';
+            }
+            return value;
+        },
+
         toggleNodePopupPanel: function(show){
             controls.panels.body.toggleClass('show-panel-point-property', show);
         },
@@ -572,11 +593,31 @@
                 }
                 $v.val(data);
             });
+            var edgesTarget = cy.getElementById(target.id)
+                .connectedEdges('[target="' + target.id + '"]')
+                .filter(function(edge){
+                    return !edge.hasClass('carriageway-edge');
+                });
+            controls.labels.labelIncomingEdgesCount.text(edgesTarget.length);
+            controls.panels.rowWithBtnIncomingData.toggle(edgesTarget.length > 0);
+
+            var incomers = cy.getElementById(target.id).incomers('node');
+            var sources = {};
+            $.each(incomers, function(inx, node){
+                var data = node.data();
+                sources[data.id] = data;
+            });
+
+            if (edgesTarget.length > 0) {
+                controls.panels.incomingFlowDataTable.html(
+                    templates.incomingEdgesDataTable(edgesTarget.jsons(), sources)
+                );
+            }
 
             var color = target.color == undefined ? 'btn-primary' : 'btn-' + target.color;
             controls.buttons.btnNodeColorSelection.trigger('changeColor', [color]);
 
-            if (target.type == 'stopline'){
+            if (target.type == 'stopline' ||  target.type == 'pedestrian'){
                 controls.panels.pointProperty.find('.is-stopLine').show();
                 if (target.parent == undefined) {
                     controls.panels.pointProperty.find('.out-crossroad').show();
@@ -587,6 +628,13 @@
                 }
             } else {
                 controls.panels.pointProperty.find('.is-stopLine').hide();
+            }
+
+            if (target.type == 'pedestrian'){
+                controls.panels.pointProperty.find('.direction-icon-row').hide();
+            }
+            if (target.type == 'stopline'){
+                controls.panels.pointProperty.find('.direction-icon-row').show();
             }
 
             if (target.type == 'carriageway'){
@@ -601,6 +649,8 @@
                 controls.panels.pointProperty.find('.is-concurrent').hide();
             }
 
+            var localeKey = target.type == 'pedestrian' ? 'p_h' : 'v_h';
+            controls.panels.pointProperty.find('span[locale="v_h"]').text(locale.localize(localeKey));
         },
 
         showSideMultiNodeEditor: function(totalSelected){

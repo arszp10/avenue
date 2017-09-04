@@ -111,7 +111,7 @@
                 'arrow-scale': 1.3,
                 'curve-style': 'bezier',
                 'width': 2,
-                'target-arrow-shape': 'triangle-backcurve',
+                'target-arrow-shape': 'circle',
                 'text-outline-color': '#999999',
                 'line-color': '#999999',
                 'target-arrow-color': '#999999',
@@ -125,12 +125,9 @@
         },
 
         {
-            selector: 'edge.edge-in-crossroad',
+            selector: 'edge.carriageway-edge',
             css: {
-                //'line-style': 'dotted',
-                'text-outline-color': '#999999',
-                'line-color': '#999999',
-                'target-arrow-color': '#999999'
+                'target-arrow-shape': 'triangle-backcurve'
             }
         },
         {
@@ -146,9 +143,10 @@
         {
             selector: 'edge[pedestrian]',
             css: {
-                'target-arrow-shape': 'triangle',
+                'target-arrow-shape': 'circle',
                 'source-arrow-shape': 'none',
                 'target-arrow-color': '#4665b7',
+                //'target-arrow-color': '#999999',
                 'arrow-scale': 0.2,
                 'width': 20,
                 'line-style': 'dashed',
@@ -156,6 +154,13 @@
                 'line-color': '#ffffff'
             }
         },
+
+        //{
+        //    selector: 'edge[pedestrian].edge-in-crossroad',
+        //    css: {
+        //        'source-arrow-shape': 'circle'
+        //    }
+        //},
 
         {
             selector: 'edge:selected',

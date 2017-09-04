@@ -110,20 +110,10 @@
             type: 'crossRoad',
             name: 'Default intersection',
             optimizeOff: false,
-            //cycleTime: 100,
-            //offset: 10,
-            //phases: [
-            //    {
-            //        tag: 'ph-1',
-            //        length: 50,
-            //        minLength: 15
-            //    },
-            //    {
-            //        tag: 'ph-2',
-            //        length: 50,
-            //        minLength: 15
-            //    }
-            //]
+            width: 50,
+            height: 50,
+            vehicleSpeed: 23,
+            pedestrianSpeed: 5,
             programs: [],
             currentProgram: null
         },
@@ -262,8 +252,22 @@
             length: 0,
             minLength: 12,
             intertact: 3
-        }
+        },
 
+        pedEdge: {
+            speed: 5,
+            distance: 20
+        },
+
+        vehEdge: {
+            speed: 50,
+            distance: 100
+        },
+
+        crossEdge: {
+            speed: 23,
+            distance: 50
+        },
 
     };
 })(AvenueApp.Resources);

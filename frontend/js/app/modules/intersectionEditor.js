@@ -296,9 +296,16 @@
 
             controls.buttons.btnSaveCrossroadData.click(function () {
                 var nodeId = crossroad.id;
-                crossroad.optimizeOff = controls.inputs.inputCrossroadOptiOff.prop('checked');
-                crossroad.name = controls.inputs.inputCrossroadName.val();
-                crossroad.label = program.name + ' (' + program.cycleTime + ')';
+
+                crossroad.optimizeOff       = controls.inputs.inputCrossroadOptiOff.prop('checked');
+                crossroad.name              = controls.inputs.inputCrossroadName.val();
+                crossroad.label             = program.name + ' (' + program.cycleTime + ')';
+                crossroad.width             = controls.inputs.inputCrossroadWidth.val();
+                crossroad.height            = controls.inputs.inputCrossroadHeight.val();
+                crossroad.vehicleSpeed      = controls.inputs.inputCrossroadVehicleSpeed.val();
+                crossroad.pedestrianSpeed   = controls.inputs.inputCrossroadPedestrianSpeed.val();
+
+                cy.aveRecalcEdgesLengths(nodeId);
                 cy.getElementById(nodeId).data(crossroad);
                 $.each(stopLines, function(i, stopline){
                     cy.getElementById(stopline.data.id).data(stopline.data);
@@ -364,6 +371,19 @@
                 program.cycleTime = data.cycleTime;
                 that.fillCrossroadFormData(crossroad);
             });
+
+            controls.buttons.btnResetEdgesSpeeds.click(function(){
+                var crNode = cy.getElementById(crossroad.id);
+                var nodes = crNode.children('node');
+                var edges = nodes.edgesWith(nodes);
+                edges.forEach(function(edge){
+                    var isPedesrian = edge.data('pedestrian');
+                    edge.data('speed', isPedesrian
+                        ? crNode.data('pedestrianSpeed')
+                        : crNode.data('vehicleSpeed'));
+                })
+            })
+
 
         },
 
@@ -613,7 +633,10 @@
             program = crossroad.programs[crossroad.currentProgram];
             controls.inputs.inputCrossroadName.val(crossroad.name);
             controls.inputs.inputCrossroadOptiOff.prop('checked', crossroad.optimizeOff);
-
+            controls.inputs.inputCrossroadWidth.val(crossroad.width);
+            controls.inputs.inputCrossroadHeight.val(crossroad.height);
+            controls.inputs.inputCrossroadVehicleSpeed.val(crossroad.vehicleSpeed);
+            controls.inputs.inputCrossroadPedestrianSpeed.val(crossroad.pedestrianSpeed);
 
             /* fill programs list */
             this.renderProgramsList(crossroad);

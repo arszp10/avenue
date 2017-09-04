@@ -1,6 +1,6 @@
 <div id="crossroad-panel" class="screen visible-crossroad" data-tab="btn-show-crossroad">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-4 crossroad-form">
             <div class="form-group">
                 <label id="label-crossroad-opti-off">
                     <input type="checkbox" id="inputCrossroadOptiOff"/> <span locale="optimization-exclude">Exclude from optimization</span>
@@ -8,7 +8,42 @@
                 <label for="input-crossroad-name"><span locale="name">Name</span></label>
                 <input type="text" class="form-control input-sm" id="input-crossroad-name" placeholder="crossroad-name"/>
             </div>
-            <div class="form-group">
+            <form>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="inputCrossroadWidth"><span locale=""><i class="fa fa-arrows-h"></i> Width (m)</span></label>
+                            <input type="text" class="form-control input-sm" id="inputCrossroadWidth">
+                        </div>
+                        <div class="col-sm-6  no-left-padding">
+                            <label for="inputCrossroadHeight"><span locale=""><i class="fa fa-arrows-v"></i> Height (m)</span></label>
+                            <input type="text" class="form-control input-sm" id="inputCrossroadHeight">
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+            <form>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <label for="inputCrossroadVehicleSpeed"><span locale=""><i class="fa fa-car"></i> Veh. speed (km/h)</span></label>
+                            <input type="text" class="form-control input-sm" id="inputCrossroadVehicleSpeed" value="23">
+                        </div>
+                        <div class="col-sm-5  no-left-padding no-right-padding">
+                            <label for="inputCrossroadPedestrianSpeed"><span locale=""><i class="fa fa-male"></i> Ped. speed (km/h)</span> </label>
+                            <input type="text" class="form-control input-sm" id="inputCrossroadPedestrianSpeed" value="5">
+                        </div>
+                        <div class="col-sm-2">
+                            <label style="color:transparent">&nbsp;...</label>
+                            <button type="button" class="btn btn-primary btn-sm" id="btnResetEdgesSpeeds" title="Set speeds to all"><i class="fa fa-check"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="">
                 <label for="inputCrossroadCycleLength"><span locale="crossroad-program">Программа</span></label>
                 <div class="row">
                     <div class="col-sm-8">
@@ -63,7 +98,7 @@
                             <label for="inputCrossroadCycleLength"><span locale="cycle-length">Cycle lenght</span></label>
                             <input type="text" class="form-control input-sm" id="inputCrossroadCycleLength">
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-4  no-left-padding ">
                             <label for="inputCrossroadOffset"><span locale="offset">Offset</span></label>
                             <input type="text" class="form-control input-sm" id="inputCrossroadOffsetText">
                         </div>
@@ -117,6 +152,7 @@
 
             <br>
             <div id="cy-crossroad-copy"></div>
+            <br>
         </div>
         <div class="col-sm-8">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table table-phases" id="table-phases">

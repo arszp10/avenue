@@ -310,7 +310,6 @@
         },
 
         cycleGraphLegendTable: function(data){
-
             var row1 = '<td>Цикл</td>';
             var row2 = '<td>'+ data.cycleTime +'</td>';
             var row3 = '<td>'+ data.avgCycleSaturation.toFixed(3) +'</td>';
@@ -328,7 +327,34 @@
                 '<tr><th>Мах. насыщенность</th>'+row3+'</tr>' +
                 '</tbody>' +
                 '</table>';
+        },
+
+        incomingEdgesDataTable: function(edges, sources){
+            var header = '<tr>' +
+                '<td></td>' +
+                '   <td>Distance <div class="measure-unit">m</div></td>' +
+                '   <td>Speed <div class="measure-unit">km/h</div></td>' +
+                '   <td>Flow <div class="measure-unit">unit/h</div></td>' +
+                '</tr>';
+
+            return header + edges.map(function(edge){
+                var defaults = {
+                    speed: 0,
+                    distance: 0,
+                    portion: '100%'
+                };
+                var edgeData = $.extend({}, defaults, edge.data);
+                var source = sources[edgeData.source];
+                return '<tr>' +
+                '   <td class="from-name"><span class="stop-line-icon">' + source.icon + '</span>&nbsp;' + source.tag + '</td>' +
+                '   <td><input type="text" data-field="distance" data-id="' + edgeData.id + '" class="form-control input-sm input-incoming-data" value="'+edgeData.distance+'"></td>' +
+                '   <td><input type="text" data-field="speed"    data-id="' + edgeData.id + '" class="form-control input-sm input-incoming-data" value="'+edgeData.speed+'"></td>' +
+                '   <td><input type="text" data-field="portion"  data-id="' + edgeData.id + '" class="form-control input-sm input-incoming-data" value="'+edgeData.portion+'"></td>' +
+                '</tr>';
+            }).join();
+
         }
+
 
     }
 })(AvenueApp);

@@ -13,7 +13,8 @@
             cycleGraphSvg:          "#cycle-diagram-svg",
             cycleDiagramLoader:     '#cycle-diagram-loader',
             cycleDiagramLegend:     '#cycle-diagram-legend',
-
+            incomingFlowDataTable:  '#incoming-flow-data-table tbody',
+            rowWithBtnIncomingData: '#row-with-btn-incoming-data',
             tblPhasesBody:          '#crossroad-panel #table-phases tbody',
             tblDiagramsBody:        '#crossroad-panel #crossroad-table-diagrams tbody',
             tblDiagrams:            '#crossroad-table-diagrams',
@@ -35,12 +36,17 @@
             labelWelcomeUsername:   '#label-welcome-username',
             labelModelPagesStart:   '#label-model-pages-start',
             labelModelPagesFinish:   '#label-model-pages-finish',
-            labelModelPagesTotal:   '#label-model-pages-total'
+            labelModelPagesTotal:   '#label-model-pages-total',
+            labelIncomingEdgesCount: '#label-incoming-edges-count'
         },
         inputs: {
             inputEdgeLabel:         '#input-edge-label',
             inputNodeType:          '#input-node-type',
             inputCrossroadOffset:   '#inputCrossroadOffset',
+            inputCrossroadWidth:    '#inputCrossroadWidth',
+            inputCrossroadHeight:   '#inputCrossroadHeight',
+            inputCrossroadVehicleSpeed:'#inputCrossroadVehicleSpeed',
+            inputCrossroadPedestrianSpeed:'#inputCrossroadPedestrianSpeed',
             inputCoPlanCycleTime:   '#inputCoPlanCycleTime',
             inputCoPlanName:        '#inputCoPlanName',
             inputCoIntertactOrder:  '#inputCoIntertactOrder',
@@ -146,7 +152,10 @@
             btnSsaveCrossroadData:      '#btnSsaveCrossroadData',
             btnCycleAndPhaseRate:       '#btn-cycle-and-phase-rate',
             btnCycleLenghtRecalc:       '#btn-cycle-lenght-recalc',
-            btnCycleLenghtApply:        '#btn-cycle-lenght-apply'
+            btnCycleLenghtApply:        '#btn-cycle-lenght-apply',
+            btnShowIncomingData:        '#btn-show-incoming-data',
+            btnRecalcEdgesLengths:      '#btnRecalcEdgesLengths',
+            btnResetEdgesSpeeds:      '#btnResetEdgesSpeeds'
         }
     };
 })(AvenueApp);

@@ -69,11 +69,10 @@ gulp.task('js:build', function () {
         pipe = pipe.pipe(uglify());
     }
     pipe.pipe(gulp.dest(path.build.js))
+        //.pipe(sourcemaps.init())
+        //.pipe(sourcemaps.write())
         .pipe(reload({stream: true}));
 
-    //.pipe(sourcemaps.init())
-    //.pipe(gzip())
-    //.pipe(sourcemaps.write())
 });
 
 gulp.task('css:build', function () {
