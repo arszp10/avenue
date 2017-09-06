@@ -32,6 +32,8 @@ function Competitor(options, network){
     Flow.apply(this.primary, [pOptions, network]);
     Flow.apply(this, [sOptions, network]);
 
+    this.primary.pedestrian = primaryEdges[0].hasOwnProperty('pedestrian');
+
     this.calc = function(){
         this.initInFlow();
         this.primary.initInFlow();

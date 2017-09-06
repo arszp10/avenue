@@ -123,6 +123,7 @@ module.exports = {
                     this.checkConstraint(node, nodeConstraints);
                     break;
                 case "stopline":
+                case "pedestrian":
                     this.checkConstraint(node, stoplineConstraints);
                     this.checkConstraint(node, nodeConstraints);
                     break;

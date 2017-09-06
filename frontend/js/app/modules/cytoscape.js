@@ -61,6 +61,11 @@
 
     var initCytoscapeEvents = function() {
 
+        cy.on('free', 'node', function (e) {
+            if (!e.target.data('parent')) return;
+            cy.aveRecalcEdgesLengths(e.target.data('parent'));
+        });
+
         cy.on('cxttap', 'node', function (e) {
             var type = e.target.data('type');
             if (type == 'crossRoad') {
@@ -222,11 +227,16 @@
                 defults = JSON.parse(JSON.stringify(settings.pedEdge));
             } else if(target.data('parent')){
                 defults = JSON.parse(JSON.stringify(settings.crossEdge));
+                cy.aveRecalcEdgesLengths(target.data('parent'));
             } else {
                 defults = JSON.parse(JSON.stringify(settings.vehEdge));
             }
-            edge = $.extend({}, defults, edge);
 
+            edge = $.extend({}, defults, edge);
+            if ( target.data('type') == 'carriageway' || source.data('type') == 'carriageway') {
+                edge.speed = 0;
+                edge.distance = 0;
+            }
             cyEdge.data(edge);
             setEdgePortion(cyEdge, source);
 
@@ -477,7 +487,7 @@
                 delete item.greenOffset2;
                 if (item.type != 'crossRoad') {
                     item.edges = groupedEdges[v.data('id')];
-                    if (item.type == 'stopline' && item.parent) {
+                    if ((item.type == 'stopline'||item.type == 'pedestrian') && item.parent) {
                         var programInx = cy.getElementById(item.parent).data('currentProgram');
                         item.greenPhases = cy.aveGetCurrentProgramGreens(item.greenPhases[programInx], item.parent);
                         item.additionalGreens = cy.aveGetCurrentProgramGreens(item.additionalGreens[programInx], item.parent);
@@ -506,7 +516,12 @@
             return this.$('edge[source="' + id + '"]');
         },
         aveGetCrossroadStoplines: function(id) {
-            return this.$('node[parent="' + id + '"][type="stopline"]').jsons();
+            return this.getElementById(id)
+                       .children('[type="stopline"], [type="pedestrian"]')
+                       .filter(function(ele){
+                            return ele.outgoers('edge').length > 0;
+                       })
+                       .jsons();
         },
         aveConstantIntensity: function(node){
 

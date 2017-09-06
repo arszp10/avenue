@@ -11,7 +11,7 @@ var objects = {
     concurrentMerge:require('./i-model/competitor-merge'),
     point:          require('./i-model/point'),
     crossRoad:      require('./i-model/crossroad'),
-    pedestrian:     require('./i-model/bottleneck')
+    pedestrian:     require('./i-model/pedestrian')
 };
 
 function Network(request) {
@@ -28,11 +28,50 @@ function Network(request) {
 
     _.forEach(network, function(node, index){
         indexMap[node.id] = index;
+    });
+
+    _.forEach(network, function(node, index){
+        if (node.hasOwnProperty('edges')) {
+            console.log(node.id, node.edges.length);
+            node.edges.forEach(function(edge, index){
+
+                if (!edge.distance) return;
+                if (!edge.speed) return;
+
+                var vms = edge.speed/3.6;
+
+                var newCarriageway = JSON.parse(JSON.stringify(settings.carriageway));
+                newCarriageway.id = edge.target + '_cwb_'+ index;
+                newCarriageway.avgIntensity = edge.portion;
+                //console.log(indexMap, edge.target);
+                newCarriageway.capacity = network[indexMap[edge.target]].capacity;
+                newCarriageway.dispersion = edge.hasOwnProperty('pedestrian') ? 0.15 : 0.5;
+                newCarriageway.length = edge.distance;
+                newCarriageway.routeTime = Math.round(edge.distance/vms);
+
+                delete newCarriageway.icon;
+                delete newCarriageway.tag;
+                delete edge.speed;
+                delete edge.distance;
+
+                var newEdge = JSON.parse(JSON.stringify(edge));
+                newEdge.id = newEdge.id + '_cwb_' + index;
+                newEdge.target = newCarriageway.id;
+
+                newCarriageway.edges = [newEdge];
+                network.push(newCarriageway);
+                edge.source = newCarriageway.id;
+            }, this);
+        }
+    });
+
+    _.forEach(network, function(node, index){
+        indexMap[node.id] = index;
         node['routeWeight'] = 0;
     });
 
     _.forEach(network, function(node){
-        if (node.type == 'stopline' && node.hasOwnProperty('parent')) {
+        if ((node.type == 'stopline' || node.type == 'pedestrian' ) && node.hasOwnProperty('parent')) {
             node.intervals = traffic.redIntervals(node, that.getNode(node.parent));
             if (!that.crStopLines.hasOwnProperty(node.parent)) {
                 that.crStopLines[node.parent] = [node.id];

@@ -4,8 +4,11 @@ var settings    = require('./settings');
 
 module.exports = {
 
-    readToGreenInterPhase: function(len, addGreen){
-        var ipDefaults = settings.interPhaseDefaults;
+    readToGreenInterPhase: function(len, addGreen,isPedestrian){
+        var ipDefaults = isPedestrian
+            ? settings.pedestrianInterPhaseDefaults
+            : settings.interPhaseDefaults;
+
         if (len < ipDefaults.totalLength) {
             len = ipDefaults.totalLength;
         }
@@ -36,8 +39,10 @@ module.exports = {
 
 
     },
-    greenToRedInterPhase: function(len, addGreen){
-        var ipDefaults = settings.interPhaseDefaults;
+    greenToRedInterPhase: function(len, addGreen, isPedestrian){
+        var ipDefaults = isPedestrian
+            ? settings.pedestrianInterPhaseDefaults
+            : settings.interPhaseDefaults;
         if (len < ipDefaults.totalLength) {
             len = ipDefaults.totalLength;
         }
@@ -80,9 +85,9 @@ module.exports = {
         var itertactOrder = crossRoad.itertactOrder;
         var i = 0, icolor = '', inext = 0, iprev=0;
         var diagram = [];
+        var isPedestrian = stopLine.type == 'pedestrian';
         var phCount =  crossRoad.phases.length;
         var interTact ;
-
         for (i = 0; i < phCount; i++){
             icolor = stopLine.greenPhases[i] ? 'green' : 'red';
             inext = (i + 1) % phCount;
@@ -106,9 +111,8 @@ module.exports = {
                 : !stopLine.greenPhases[i];
 
             interTact = checkColor
-                ? this.greenToRedInterPhase(interPhaseLength, addGreen)
-                : this.readToGreenInterPhase(interPhaseLength, addGreen);
-
+                ? this.greenToRedInterPhase(interPhaseLength, addGreen, isPedestrian)
+                : this.readToGreenInterPhase(interPhaseLength, addGreen, isPedestrian);
 
             if (itertactOrder == 'after') {
                 diagram.push({
@@ -129,10 +133,11 @@ module.exports = {
 
     redIntervals: function(stopLine, crossRoad){
         var diagram = this.signalDiagramData (stopLine, crossRoad);
+        var isPedestrian = stopLine.type == 'pedestrian';
         var intervals = [];
         var s = 0, i = 0;
         _.forEach(diagram, function(v){
-            if (v.length == 0) {
+            if (v.length == 0 && !isPedestrian) {
                 return;
             }
             if (v.color == 'amber') {

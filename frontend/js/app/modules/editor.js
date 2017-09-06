@@ -651,6 +651,14 @@
 
             var localeKey = target.type == 'pedestrian' ? 'p_h' : 'v_h';
             controls.panels.pointProperty.find('span[locale="v_h"]').text(locale.localize(localeKey));
+
+            if (target.type == 'concurrent'){
+                var hasPedestrian = cy.getElementById(target.id).connectedEdges('[pedestrian]').length > 0;
+                if (hasPedestrian) {
+                    controls.panels.pointProperty.find('span[locale="v_h"].primary').text(locale.localize('p_h'));
+                }
+            }
+
         },
 
         showSideMultiNodeEditor: function(totalSelected){
@@ -746,7 +754,7 @@
             };
             var myLineChart = new Chart(ctx).Line(data, settings.chart.common);
 
-            if (node.type == 'stopline' && node.hasOwnProperty('parent')){
+            if ((node.type == 'stopline'|| node.type == 'pedestrian') && node.hasOwnProperty('parent')){
 
                 var crossroad = cy.getElementById(node.parent).data();
                 var program = crossroad.programs[crossroad.currentProgram];

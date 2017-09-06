@@ -25,6 +25,7 @@ function Flow(options, network)
     this.edges = flow.edges;
     this.tag = flow.tag;
     this.parent = flow.parent;
+    this.pedestrian = false;
     this.greenPhases = flow.greenPhases;
     this.cycleTime      = parseInt(flow.cycleTime);
     this.avgIntensity   = parseInt(flow.avgIntensity);

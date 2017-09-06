@@ -187,11 +187,9 @@ module.exports = {
         var value = 0;
         var maxQueueLength = 0;
 
+        var power = flow1.pedestrian ? 9 : 5;
         for (var j = 0; j < inFlow2.length; j++){
-            dynCapacity[j] = capacityPerSecond2 * Math.pow(
-                Math.abs(outFlow1[j] / capacityPerSecond1 - 1),
-                5
-            );
+            dynCapacity[j] = capacityPerSecond2 * Math.pow(Math.abs(outFlow1[j] / capacityPerSecond1 - 1), power);
         }
 
         for (var i = 0; i < inFlow2.length; i++){

@@ -50,7 +50,7 @@
         },
 
         {
-            selector: 'node[type="stopline"]:selected',
+            selector: 'node:selected',
             css: {
                 'border-color': '#333333',
                 'color': '#333333',
@@ -124,6 +124,14 @@
             }
         },
 
-
+        {
+            selector: 'edge[pedestrian].green',
+            css: {
+                'target-arrow-color': '#4caf50',
+                'color': '#fff',
+                'text-outline-color': '#4caf50', //'#2e6da4'
+                'line-color': '#4caf50'
+            }
+        }
     ];
 })(AvenueApp.Resources);

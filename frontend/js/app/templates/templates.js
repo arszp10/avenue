@@ -175,14 +175,16 @@
             if (data.constantIntensity > 0) { className = 'text-success';}
             if (data.constantIntensity < 0) { className = 'text-danger';}
 
+            var u_h = data.type=='pedestrian' ? 'p_h' : 'v_h';
+
             return '<h4>' + __('node-props') + (data.tag ? (' ['+data.tag+']') : '') + '</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
                 '<tr><td>' + __('type') + '</td><td class="text-right">' + data.type + '</td><td class="measure-unit"></td></tr>' +
                 '<tr><td>' + __('cycle-time') + '</td><td class="text-right">' + data.cycleTime + '</td><td class="measure-unit">' + __('sec') + '</td></tr>' +
-                '<tr><td>' + __('full-capacity') + '</td><td class="text-right">' + data.capacity + '</td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
-                '<tr><td>' + __('full-intensity') + '</td><td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
+                '<tr><td>' + __('full-capacity') + '</td><td class="text-right">' + data.capacity + '</td><td class="measure-unit">' + __(u_h) + '</td></tr>' +
+                '<tr><td>' + __('full-intensity') + '</td><td class="text-right">' + data.avgIntensity + '</td><td class="measure-unit">' + __(u_h) + '</td></tr>' +
                 '<tr><td>' + __('capacity-rate') + '</td><td class="text-right">' + (100*data.avgIntensity/data.capacity).toFixed(2) + '</td><td class="measure-unit">%</td></tr>' +
-                '<tr><td>' + __('constant-comp-intensity') + '</td><td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">' + __('v_h') + '</td></tr>' +
+                '<tr><td>' + __('constant-comp-intensity') + '</td><td class="text-right"><span class="'+className+'">' + sign + data.constantIntensity + '</span></td><td class="measure-unit">' + __(u_h) + '</td></tr>' +
                 '<tr><td>' + __('weight') + '</td><td class="text-right">' + weight + '</td><td class="measure-unit">' + __('unit') + '</td></tr>' +
                 '</tbody></table>';
         },
@@ -210,15 +212,26 @@
                 ? data.queueLimit.toFixed(2) + ' / '
                 : '- / ';
 
+            var unit_sec, unit_h_h, unit;
+            if (data.type == 'pedestrian'){
+                unit_sec = 'ped_sec';
+                unit_h_h = 'ped_h_h';
+                unit = 'p';
+            } else {
+                unit_sec = 'veh_sec';
+                unit_h_h = 'veh_h_h';
+                unit = 'vehicle';
+            };
+
             var no = data.isCongestion ? '<span class="text-danger">' + __('congestion') : '<span class="text-success">' + __('no-congestion');
             return '<h4>' + __('modeling-results') + '</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
-                '    <tr><td>' + __('delay-model') + '</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">' + __('veh_sec') + '</td></tr>' +
-                '    <tr><td>' + __('delay') + '</td><td class="text-right">'+data.delayPerHour.toFixed(2)+'</td><td class="measure-unit">' + __('veh_h_h') + '</td></tr>' +
-                '    <tr><td>' + __('delay-oversaturation') + '</td><td class="text-right">'+data.overSaturationDelay.toFixed(2)+'</td><td class="measure-unit">' + __('veh_h_h') + '</td></tr>' +
+                '    <tr><td>' + __('delay-model') + '</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">' + __(unit_sec) + '</td></tr>' +
+                '    <tr><td>' + __('delay') + '</td><td class="text-right">'+data.delayPerHour.toFixed(2)+'</td><td class="measure-unit">' + __(unit_h_h) + '</td></tr>' +
+                '    <tr><td>' + __('delay-oversaturation') + '</td><td class="text-right">'+data.overSaturationDelay.toFixed(2)+'</td><td class="measure-unit">' + __(unit_h_h) + '</td></tr>' +
                 '    <tr><td>' + __('green-saturation') + '</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td></tr>' +
-                '    <tr><td>' + __('limit-max-queue') + '</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">' + __('vehicle') + '</td></tr>' +
-                '    <tr><td>' + __('sum-io-flow') + '</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">' + __('vehicle') + '</td></tr>' +
+                '    <tr><td>' + __('limit-max-queue') + '</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">' + __(unit) + '</td></tr>' +
+                '    <tr><td>' + __('sum-io-flow') + '</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">' + __(unit) + '</td></tr>' +
                 '    <tr><td>' + no + '</span></td><td class="text-right">'+con+'</td><td class="measure-unit"></td></tr>' +
                 '</tbody></table>';
         },
@@ -290,11 +303,11 @@
                 '<tbody><tr>' +
                 '    <td>'+__('full-capacity')+'</td>' +
                 '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-capacity-multi" data-key="capacity" placeholder="1800"></td>' +
-                '    <td class="measure-unit">'+__('v_h')+'</td>' +
+                '    <td class="measure-unit">'+__('u_h')+'</td>' +
                 '</tr><tr>' +
                 '    <td>'+__('full-intensity')+'</td>' +
                 '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-intensity-multi" data-key="avgIntensity" placeholder="900"></td>' +
-                '    <td class="measure-unit">'+__('v_h')+'</td>' +
+                '    <td class="measure-unit">'+__('u_h')+'</td>' +
                 '</tr><tr>' +
                 '    <td>'+__('queue-limit')+'</td>' +
                 '    <td class="text-right"><input type="text" class="form-control input-multi-edit" id="input-node-queue-limit-multi" data-key="queueLimit" placeholder="10"></td>' +
@@ -344,10 +357,16 @@
                     portion: '100%'
                 };
                 var edgeData = $.extend({}, defaults, edge.data);
+                if (Number.isNaN(edgeData.distance)) {
+                    edgeData.distance = 0;
+                }
+                if (Number.isNaN(edgeData.speed)) {
+                    edgeData.speed = 0;
+                }
                 var source = sources[edgeData.source];
                 return '<tr>' +
                 '   <td class="from-name"><span class="stop-line-icon">' + source.icon + '</span>&nbsp;' + source.tag + '</td>' +
-                '   <td><input type="text" data-field="distance" data-id="' + edgeData.id + '" class="form-control input-sm input-incoming-data" value="'+edgeData.distance+'"></td>' +
+                '   <td><input type="text" data-field="distance" data-id="' + edgeData.id + '" class="form-control input-sm input-incoming-data" value="'+(edgeData.distance+'')+'"></td>' +
                 '   <td><input type="text" data-field="speed"    data-id="' + edgeData.id + '" class="form-control input-sm input-incoming-data" value="'+edgeData.speed+'"></td>' +
                 '   <td><input type="text" data-field="portion"  data-id="' + edgeData.id + '" class="form-control input-sm input-incoming-data" value="'+edgeData.portion+'"></td>' +
                 '</tr>';

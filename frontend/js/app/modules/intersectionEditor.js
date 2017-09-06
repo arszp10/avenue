@@ -376,11 +376,15 @@
                 var crNode = cy.getElementById(crossroad.id);
                 var nodes = crNode.children('node');
                 var edges = nodes.edgesWith(nodes);
+
+                crossroad.vehicleSpeed      = controls.inputs.inputCrossroadVehicleSpeed.val();
+                crossroad.pedestrianSpeed   = controls.inputs.inputCrossroadPedestrianSpeed.val();
+
                 edges.forEach(function(edge){
                     var isPedesrian = edge.data('pedestrian');
                     edge.data('speed', isPedesrian
-                        ? crNode.data('pedestrianSpeed')
-                        : crNode.data('vehicleSpeed'));
+                        ? crossroad.pedestrianSpeed
+                        : crossroad.vehicleSpeed);
                 })
             })
 
@@ -797,30 +801,31 @@
         drawGreenFlows:function(phase){
             cyCrossroad.$().removeClass('green');
             var stoplineIds = that.getGreenStoplines(phase);
+            var filter = 'node[type!="stopline"] node[type!="pedestrian"], edge';
 
             stoplineIds.map(function(slId){
                 cyCrossroad.$('#'+slId).addClass('green')
-                    .outgoers('node[type!="stopline"], edge').addClass('green')
-                    .outgoers('node[type!="stopline"], edge').addClass('green')
-                    .outgoers('node[type!="stopline"], edge').addClass('green')
-                    //.outgoers('node[type!="stopline"], edge').addClass('green')
+                    .outgoers(filter).addClass('green')
+                    .outgoers(filter).addClass('green')
+                    .outgoers(filter).addClass('green')
+                    //.outgoers(filter).addClass('green')
             });
 
             $.each(cyCrossroad.$('node[type="concurrent"]'), function(inx, concurent){
                 var inPrimary = concurent.incomers('edge[^secondary].green');
                 if (inPrimary.length == 0) {
                     concurent.outgoers('edge[^secondary].green').removeClass('green')
-                        .outgoers('node[type!="stopline"], edge').addClass('green')
-                        .outgoers('node[type!="stopline"], edge').addClass('green')
-                        .outgoers('node[type!="stopline"], edge').addClass('green');
+                        .outgoers(filter).addClass('green')
+                        .outgoers(filter).addClass('green')
+                        .outgoers(filter).addClass('green');
                 }
 
                 var inSecondary = concurent.incomers('edge[secondary].green');
                 if (inSecondary.length == 0) {
                     concurent.outgoers('edge[secondary].green').removeClass('green')
-                        .outgoers('node[type!="stopline"], edge').addClass('green')
-                        .outgoers('node[type!="stopline"], edge').addClass('green')
-                        .outgoers('node[type!="stopline"], edge').addClass('green');
+                        .outgoers(filter).addClass('green')
+                        .outgoers(filter).addClass('green')
+                        .outgoers(filter).addClass('green');
                 }
             });
         },

@@ -9,8 +9,12 @@
 
     App.Modules.traffic =  {
 
-        readToGreenInterPhase: function(len, addGreen){
-            var ipDefaults = settings.interPhaseDefaults;
+        readToGreenInterPhase: function(len, addGreen,isPedestrian){
+            var signals = [];
+            var ipDefaults = isPedestrian
+                ? settings.pedestrianInterPhaseDefaults
+                : settings.interPhaseDefaults;
+
             if (len < ipDefaults.totalLength) {
                 len = ipDefaults.totalLength;
             }
@@ -26,22 +30,27 @@
             var amber = ipDefaults.amber;
             var green = addGreen;
 
-            var signals = [];
             if (red > 0) {
                 signals.push({ color: 'red', length: red });
             }
+            if (amber > 0){
                 signals.push({ color: 'amber', length: amber });
+            }
             if (green > 0) {
                 signals.push({ color: 'green', length: green });
             }
             return {
                 length : len,
                 signals : signals
-            }
+            };
 
         },
-        greenToRedInterPhase: function(len, addGreen){
-            var ipDefaults = settings.interPhaseDefaults;
+        greenToRedInterPhase: function(len, addGreen, isPedestrian){
+            var signals = [];
+
+            var ipDefaults = isPedestrian
+                ? settings.pedestrianInterPhaseDefaults
+                : settings.interPhaseDefaults;
             if (len < ipDefaults.totalLength) {
                 len = ipDefaults.totalLength;
             }
@@ -63,13 +72,13 @@
             var red = len - (blink + ipDefaults.yellow + addGreen);
             if (red < 0) { red = 0 }
 
-            var signals = [];
             if (green > 0) {
                 signals.push({ color: 'green', length: green });
             }
             signals.push({ color: 'blink', length: blink });
-            signals.push({ color: 'yellow', length: yellow });
-
+            if (yellow > 0) {
+                signals.push({color: 'yellow', length: yellow});
+            }
             if (red > 0) {
                 signals.push({ color: 'red', length: red });
             }
@@ -116,6 +125,7 @@
 
         signalDiagramData1:  function(itertactOrder, crossroad, program, node, order, noOffset){
             var stopLine = node;
+            var isPedestrian = stopLine.type == 'pedestrian';
             var j = 0, icolor = '', inext = 0, iprev = 0;
             var diagram = [];
             var cpi = crossroad.currentProgram;
@@ -164,8 +174,8 @@
                     : !stopLine.greenPhases[cpi][i];
 
                 interTact = checkColor
-                    ? this.greenToRedInterPhase(interPhaseLength, addGreen)
-                    : this.readToGreenInterPhase(interPhaseLength, addGreen);
+                    ? this.greenToRedInterPhase(interPhaseLength, addGreen, isPedestrian)
+                    : this.readToGreenInterPhase(interPhaseLength, addGreen, isPedestrian);
 
                 if (itertactOrder == 'after') {
                     diagram.push({

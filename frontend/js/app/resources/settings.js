@@ -237,13 +237,24 @@
             avgIntensity: 900,
             capacity: 1800,
             weight: 1,
-            queueLimit: 0
+            queueLimit: 0,
+            intervals: [[0,20], [40,55]],
+            greenPhases: [[true, true]],
+            additionalGreens: [[0, 0]],
         },
 
         interPhaseDefaults:{
             amber: 2,
             blink: 3,
             yellow: 3,
+            totalLength: 3
+        },
+
+
+        pedestrianInterPhaseDefaults:{
+            amber: 0,
+            blink: 3,
+            yellow: 0,
             totalLength: 3
         },
 
