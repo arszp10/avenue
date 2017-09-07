@@ -239,7 +239,7 @@
             weight: 1,
             queueLimit: 0,
             intervals: [[0,20], [40,55]],
-            greenPhases: [[true, true]],
+            greenPhases: [[true, true, true, true,true, true,true, true,true, true, true, true]],
             additionalGreens: [[0, 0]],
         },
 

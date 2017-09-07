@@ -32,7 +32,6 @@ function Network(request) {
 
     _.forEach(network, function(node, index){
         if (node.hasOwnProperty('edges')) {
-            console.log(node.id, node.edges.length);
             node.edges.forEach(function(edge, index){
 
                 if (!edge.distance) return;
@@ -40,11 +39,12 @@ function Network(request) {
 
                 var vms = edge.speed/3.6;
 
+                var target = network[indexMap[edge.target]];
                 var newCarriageway = JSON.parse(JSON.stringify(settings.carriageway));
                 newCarriageway.id = edge.target + '_cwb_'+ index;
-                newCarriageway.avgIntensity = edge.portion;
-                //console.log(indexMap, edge.target);
-                newCarriageway.capacity = network[indexMap[edge.target]].capacity;
+                newCarriageway.avgIntensity = edge.portion == 0 ? target.avgIntensity : edge.portion;
+                newCarriageway.capacity = target.capacity;
+                newCarriageway.cycleTime = target.cycleTime;
                 newCarriageway.dispersion = edge.hasOwnProperty('pedestrian') ? 0.15 : 0.5;
                 newCarriageway.length = edge.distance;
                 newCarriageway.routeTime = Math.round(edge.distance/vms);
@@ -65,6 +65,7 @@ function Network(request) {
         }
     });
 
+    //console.log(JSON.stringify(network));
     _.forEach(network, function(node, index){
         indexMap[node.id] = index;
         node['routeWeight'] = 0;
@@ -181,6 +182,7 @@ Network.prototype.simulate = function(numberOfIteration){
     var that = this;
     var delay = 0;
     var weight = 1;
+
     for (var i = 0; i < numberOfIteration; i++) {
         _.forEach(this.network, function(node){
             var isNotSingleOutterNode = that.outterNodes.indexOf(node.id) > -1 && i > 0 && that.outterNodes.length > 1;

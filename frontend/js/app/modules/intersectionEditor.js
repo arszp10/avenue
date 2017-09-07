@@ -801,33 +801,34 @@
         drawGreenFlows:function(phase){
             cyCrossroad.$().removeClass('green');
             var stoplineIds = that.getGreenStoplines(phase);
-            var filter = 'node[type!="stopline"] node[type!="pedestrian"], edge';
+
+            var getEdgeType = function(edge){
+                return edge.data('secondary') ? 'secondary' : 'primary';
+            };
+
+            var markGreen = function(node, edgeType){
+                var edges = node.outgoers('edge');
+                node.addClass('green');
+                edges.forEach(function(edge, inx){
+                    if (!edgeType || getEdgeType(edge) == edgeType ) {
+                        edge.addClass('green');
+                        var target = edge.target();
+                        if (!(target.data('type') == 'stopline' || target.data('type') == 'pedestrian')) {
+                            target.addClass('green');
+                            var eType = target.data('type') == 'concurrentMerge'
+                                ? false
+                                : getEdgeType(edge)
+                            markGreen(target, eType);
+                        }
+                    }
+                })
+
+            };
 
             stoplineIds.map(function(slId){
-                cyCrossroad.$('#'+slId).addClass('green')
-                    .outgoers(filter).addClass('green')
-                    .outgoers(filter).addClass('green')
-                    .outgoers(filter).addClass('green')
-                    //.outgoers(filter).addClass('green')
+                markGreen(cyCrossroad.getElementById(slId));
             });
 
-            $.each(cyCrossroad.$('node[type="concurrent"]'), function(inx, concurent){
-                var inPrimary = concurent.incomers('edge[^secondary].green');
-                if (inPrimary.length == 0) {
-                    concurent.outgoers('edge[^secondary].green').removeClass('green')
-                        .outgoers(filter).addClass('green')
-                        .outgoers(filter).addClass('green')
-                        .outgoers(filter).addClass('green');
-                }
-
-                var inSecondary = concurent.incomers('edge[secondary].green');
-                if (inSecondary.length == 0) {
-                    concurent.outgoers('edge[secondary].green').removeClass('green')
-                        .outgoers(filter).addClass('green')
-                        .outgoers(filter).addClass('green')
-                        .outgoers(filter).addClass('green');
-                }
-            });
         },
 
         addDefaultsToPhasesList: function(program){

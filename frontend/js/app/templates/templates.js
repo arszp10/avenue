@@ -177,7 +177,7 @@
 
             var u_h = data.type=='pedestrian' ? 'p_h' : 'v_h';
 
-            return '<h4>' + __('node-props') + (data.tag ? (' ['+data.tag+']') : '') + '</h4>' +
+            return '<h4>' + __('node-props') + (data.tag ? (' ['+data.tag+']') : '') + ' ' + data.id +'</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
                 '<tr><td>' + __('type') + '</td><td class="text-right">' + data.type + '</td><td class="measure-unit"></td></tr>' +
                 '<tr><td>' + __('cycle-time') + '</td><td class="text-right">' + data.cycleTime + '</td><td class="measure-unit">' + __('sec') + '</td></tr>' +
