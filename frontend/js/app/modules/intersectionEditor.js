@@ -305,8 +305,9 @@
                 crossroad.vehicleSpeed      = controls.inputs.inputCrossroadVehicleSpeed.val();
                 crossroad.pedestrianSpeed   = controls.inputs.inputCrossroadPedestrianSpeed.val();
 
-                cy.aveRecalcEdgesLengths(nodeId);
                 cy.getElementById(nodeId).data(crossroad);
+                cy.aveRecalcEdgesLengths(nodeId);
+
                 $.each(stopLines, function(i, stopline){
                     cy.getElementById(stopline.data.id).data(stopline.data);
                 });

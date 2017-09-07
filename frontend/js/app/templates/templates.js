@@ -345,9 +345,9 @@
         incomingEdgesDataTable: function(edges, sources){
             var header = '<tr>' +
                 '<td></td>' +
-                '   <td>Distance <div class="measure-unit">m</div></td>' +
-                '   <td>Speed <div class="measure-unit">km/h</div></td>' +
-                '   <td>Flow <div class="measure-unit">unit/h</div></td>' +
+                '   <td>' + __('distance') + ' <div class="measure-unit">' + __('m') + '</div></td>' +
+                '   <td>' + __('speed') + ' <div class="measure-unit">' + __('km_h') + '</div></td>' +
+                '   <td>' + __('flow') + ' <div class="measure-unit">' + __('u_h') + '</div></td>' +
                 '</tr>';
 
             return header + edges.map(function(edge){
