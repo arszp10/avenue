@@ -508,6 +508,24 @@
                 that.toggleNodePopupPanel(false);
             });
 
+            controls.buttons.btnSumIncomingFlow.click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                var id = controls.panels.pointProperty.data('node');
+                var sum = 0;
+
+                cy.getElementById(id).incomers('edge').forEach(function(ele){
+                    var p = ele.data('portion') + '';
+                    var lastChar = p.slice(-1);
+                    var val = lastChar === '%'
+                        ? Math.round(ele.source().data('avgIntensity') * parseInt(p) / 100)
+                        : parseInt(p)|0;
+                    sum +=val;
+                });
+                controls.inputs.inputNodeIntensity.val(sum).trigger('change');
+            });
+
+
             /**
              *  Coordination plan modal events
              */
