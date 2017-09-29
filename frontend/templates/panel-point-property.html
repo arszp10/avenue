@@ -40,15 +40,28 @@
             <div class="form-group">
                 <label for="input-node-intensity" class="col-sm-6 control-label"><b locale="intensity">Intensity</b> (<span class="primary" locale="v_h">v/h</span>):</label>
                 <div class="col-sm-6">
-                    <button type="button" class="btn btn-default btn-sm pull-right" id="btn-sum-incoming-flow">&sum;<i class="fa fa-share-alt"></i></button>
+                    <button type="button" class="btn btn-default btn-sm pull-right" id="btn-sum-incoming-flow">&nbsp;&sum;&nbsp;</button>
                     <input type="text" class="form-control input-sm node-property" id="input-node-intensity" data-key="avgIntensity" placeholder="1800">
                 </div>
             </div>
             <div class="form-group">
                 <label for="input-node-capacity" class="col-sm-6 control-label"><b locale="capacity">Capacity</b> (<span class="primary" locale="v_h">v/h</span>):</label>
                 <div class="col-sm-6">
+                    <!--<div class="btn-group pull-right">-->
+                        <!--<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown"-->
+                                <!--aria-haspopup="true" aria-expanded="false">&nbsp;<span class="caret"></span>&nbsp;</button>-->
+                        <!--<ul class="dropdown-menu lanes-dropdown is-stopline">-->
+                            <!--<li><a href="#">1 полоса - 1250 <span locale="v_h">v/h</span></a></li>-->
+                            <!--<li><a href="#">2 полосы - 2300 <span locale="v_h">v/h</span></a></li>-->
+                            <!--<li><a href="#">3 полосы - 3125 <span locale="v_h">v/h</span></a></li>-->
+                            <!--<li><a href="#">4 полосы - 3800 <span locale="v_h">v/h</span></a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
                     <input type="text" class="form-control input-sm node-property" id="input-node-capacity"  data-key="capacity" value="" placeholder="3600">
+
                 </div>
+
+
             </div>
             <div class="form-group is-concurrent">
                 <label for="input-node-secondary-flow-capacity" class="col-sm-6 control-label"><b locale="secondary-flow-capacity">s.f. capacity</b> (<span locale="v_h">v/h</span>):</label>

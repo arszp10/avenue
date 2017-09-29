@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The d3 test</title>
+    <style>
+        .chart {
+
+        }
+
+        .main text {
+            font: 10px sans-serif;
+        }
+
+        .axis line, .axis path {
+            shape-rendering: crispEdges;
+            stroke: black;
+            fill: none;
+        }
+
+        .line{
+            fill: none;
+            stroke: #8888ff;
+            stroke-width: 1px;
+        }
+
+        .line0{
+            fill: none;
+            stroke: #ff8888;
+            stroke-width: 2px;
+        }
+
+
+        .line1{
+            fill: none;
+            stroke: #8888ff;
+            stroke-width: 2px;
+        }
+
+        circle {
+            fill: steelblue;
+        }
+
+    </style>
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+</head>
+<body>
+<div class='content'>
+    <!-- /the chart goes here -->
+</div>
+
+<script type="text/javascript" src="trace-test.out.0.js"></script>
+<script type="text/javascript" src="trace-test.out.js"></script>
+<script type="text/javascript">
+
+//    queueOut
+//    queueIn
+//    trace
+
+    var margin = {top: 20, right: 15, bottom: 60, left: 60}
+            , width = 1800 - margin.left - margin.right
+            , height = 500 - margin.top - margin.bottom;
+
+    var x = d3.scale.linear()
+            .domain([0, data.queueIn.length])
+            .range([ 0, width ]);
+
+    var y = d3.scale.linear()
+            .domain([0, 300])
+            .range([ height, 0 ]);
+
+    var chart = d3.select('body')
+            .append('svg:svg')
+            .attr('width', width + margin.right + margin.left)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('class', 'chart');
+
+    var main = chart.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('class', 'main');
+
+    // draw the x axis
+    var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient('bottom');
+
+    main.append('g')
+            .attr('transform', 'translate(0,' + height + ')')
+            .attr('class', 'main axis date')
+            .call(xAxis);
+
+    // draw the y axis
+    var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient('left');
+
+    main.append('g')
+            .attr('transform', 'translate(0,0)')
+            .attr('class', 'main axis date')
+            .call(yAxis);
+
+    var g = main.append("svg:g");
+
+    var line = d3.svg.line()
+        .x(function(d) { return x(d.x); })
+        .y(function(d) { return y(d.y); });
+
+    data.traces.forEach(function(trace, inx){
+        g.append('path')
+                .datum(trace)
+                .attr('class', inx == 47 ?'line1': 'line')
+                .attr('d', line);
+
+
+    });
+
+    g.selectAll("scatter-dots-out")
+        .data(data.queueOut)
+        .enter().append("svg:circle")
+        .attr("stroke", "#99ff99")
+        .attr("cx", function (d,i) { return x(d.x); } )
+        .attr("cy", function (d) { return y(d.y); } )
+        .attr("r", 1);
+
+
+    g.selectAll("scatter-dots-in")
+        .data(data.queue)
+        .enter().append("svg:circle")
+        .attr("stroke", "#ff9999")
+        .attr("cx", function (d,i) { return x(i); } )
+        .attr("cy", function (d) { return y(300-5*d); } )
+        .attr("r", 1);
+
+
+
+//data0.traces.slice(45, 46).forEach(function(trace){
+//    g.append('path')
+//            .datum(trace)
+//            .attr('class', 'line0')
+//            .attr('d', line);
+//});
+
+
+
+</script>
+</body>
+</html>

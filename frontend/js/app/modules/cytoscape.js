@@ -72,7 +72,7 @@
                 return;
             }
             e.target.select();
-            editor.showNodePopup(e.target.data(), e.originalEvent.clientX, e.originalEvent.clientY );
+            editor.showNodePopup(e.target, e.originalEvent.clientX, e.originalEvent.clientY );
         });
 
         cy.on('tap', onTapToBackground);

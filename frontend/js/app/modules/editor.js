@@ -371,7 +371,7 @@
         initRightPanelEvents: function(){
             $(document).on('click', 'button.btn-stop-line, button.btn-edit-node', function(e){
                 var nodeId = $(this).closest('tr').data('id');
-                var target = cy.getElementById(nodeId).data();
+                var target = cy.getElementById(nodeId);
                 that.showNodePopup(target, e.clientX, e.clientY);
             });
 
@@ -464,8 +464,24 @@
             });
             controls.inputs.inputEdgeLabel.change(function () {
                 var id = $(this).data('edge');
-                var value = that.parseIntOrPercent($(this).val())
-                cy.getElementById(id).data('portion', value);
+                var value = that.parseIntOrPercent($(this).val());
+                var edge = cy.getElementById(id);
+                edge.data('portion', value);
+
+                var target = edge.target();
+                var source = edge.source();
+                var concurrent = target.data('type') == 'concurrent'
+                    ? target : source ;
+
+                if (target.data('type') == 'concurrent' || source.data('type') == 'concurrent') {
+                    var isSecondary = !!edge.data('secondary');
+                    var filter = isSecondary
+                        ? 'edge[secondary]'
+                        : 'edge[^secondary]';
+                    concurrent.neighborhood(filter).forEach(function(ed){
+                        ed.data('portion', value);
+                    });
+                }
             });
 
 
@@ -513,8 +529,8 @@
                 e.stopPropagation();
                 var id = controls.panels.pointProperty.data('node');
                 var sum = 0;
-
-                cy.getElementById(id).incomers('edge').forEach(function(ele){
+                var incomers = cy.getElementById(id).incomers('edge');
+                incomers.forEach(function(ele){
                     var p = ele.data('portion') + '';
                     var lastChar = p.slice(-1);
                     var val = lastChar === '%'
@@ -522,7 +538,9 @@
                         : parseInt(p)|0;
                     sum +=val;
                 });
-                controls.inputs.inputNodeIntensity.val(sum).trigger('change');
+                if (incomers.length > 0) {
+                    controls.inputs.inputNodeIntensity.val(sum).trigger('change');
+                }
             });
 
 
@@ -596,30 +614,31 @@
             return flattern;
         },
         showNodePopup: function(target, x, y){
+            var node = target.data();
             this.toggleNodePopupPanel();
             controls.panels.pointProperty.css(
                 {
                     top: y + 10,
                     left: x - 145
-                }).data("node", target.id);
-            controls.inputs.inputNodeType.text(target.type);
+                }).data("node", node.id);
+            controls.inputs.inputNodeType.text(node.type);
             controls.inputs.inputsNodeProperty.each(function(i, v){
                 var $v = $(v);
-                var data = target[$v.data('key')];
+                var data = node[$v.data('key')];
                 if ($v.data('key') == 'intervals') {
                     data = JSON.stringify(data);
                 }
                 $v.val(data);
             });
-            var edgesTarget = cy.getElementById(target.id)
-                .connectedEdges('[target="' + target.id + '"]')
+            var edgesTarget = target
+                .connectedEdges('[target="' + node.id + '"]')
                 .filter(function(edge){
                     return !edge.hasClass('carriageway-edge');
                 });
             controls.labels.labelIncomingEdgesCount.text(edgesTarget.length);
             controls.panels.rowWithBtnIncomingData.toggle(edgesTarget.length > 0);
 
-            var incomers = cy.getElementById(target.id).incomers('node');
+            var incomers = cy.getElementById(node.id).incomers('node');
             var sources = {};
             $.each(incomers, function(inx, node){
                 var data = node.data();
@@ -632,12 +651,12 @@
                 );
             }
 
-            var color = target.color == undefined ? 'btn-primary' : 'btn-' + target.color;
+            var color = node.color == undefined ? 'btn-primary' : 'btn-' + node.color;
             controls.buttons.btnNodeColorSelection.trigger('changeColor', [color]);
 
-            if (target.type == 'stopline' ||  target.type == 'pedestrian'){
+            if (node.type == 'stopline' ||  node.type == 'pedestrian'){
                 controls.panels.pointProperty.find('.is-stopLine').show();
-                if (target.parent == undefined) {
+                if (node.parent == undefined) {
                     controls.panels.pointProperty.find('.out-crossroad').show();
                     controls.panels.pointProperty.find('.in-crossroad').hide();
                 } else {
@@ -648,30 +667,30 @@
                 controls.panels.pointProperty.find('.is-stopLine').hide();
             }
 
-            if (target.type == 'pedestrian'){
+            if (node.type == 'pedestrian'){
                 controls.panels.pointProperty.find('.direction-icon-row').hide();
             }
-            if (target.type == 'stopline'){
+            if (node.type == 'stopline'){
                 controls.panels.pointProperty.find('.direction-icon-row').show();
             }
 
-            if (target.type == 'carriageway'){
+            if (node.type == 'carriageway'){
                 controls.panels.pointProperty.find('.is-carriageway').show();
             } else {
                 controls.panels.pointProperty.find('.is-carriageway').hide();
             }
 
-            if (target.type == 'concurrent' ||target.type == 'concurrentMerge'){
+            if (node.type == 'concurrent' ||node.type == 'concurrentMerge'){
                 controls.panels.pointProperty.find('.is-concurrent').show();
             } else {
                 controls.panels.pointProperty.find('.is-concurrent').hide();
             }
 
-            var localeKey = target.type == 'pedestrian' ? 'p_h' : 'v_h';
+            var localeKey = node.type == 'pedestrian' ? 'p_h' : 'v_h';
             controls.panels.pointProperty.find('span[locale="v_h"]').text(locale.localize(localeKey));
 
-            if (target.type == 'concurrent'){
-                var hasPedestrian = cy.getElementById(target.id).connectedEdges('[pedestrian]').length > 0;
+            if (node.type == 'concurrent'){
+                var hasPedestrian = target.connectedEdges('[pedestrian]').length > 0;
                 if (hasPedestrian) {
                     controls.panels.pointProperty.find('span[locale="v_h"].primary').text(locale.localize('p_h'));
                 }

@@ -449,6 +449,11 @@ body.show-edge-input #input-edge-label {
     padding-right:0px;
 }
 
+.panel-point-property .btn-group {
+    margin-bottom:0px;
+}
+
+
 @media (min-width: 768px){
     .modal-dialog {
         width: 900px;
@@ -1197,6 +1202,14 @@ ul.points-list li a i {
     width:75px;
 }
 
+/*#input-node-capacity {*/
+    /*width:75px;*/
+/*}*/
+
 #btn-show-incoming-data {
     width:100%;
+}
+
+ul.lanes-dropdown > li > a {
+    font-size: 12px;
 }
