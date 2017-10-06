@@ -143,6 +143,10 @@
             var target = cy.getElementById(edge.target);
             var source = cy.getElementById(edge.source);
 
+            if ( target.data('parent')  == source.data('parent') && target.data('parent')) {
+                cyEdge.data('parent', target.data('parent')) ;
+            }
+
             if ( target.data('type') == 'carriageway' || source.data('type') == 'carriageway') {
                 cyEdge.addClass('carriageway-edge');
             }

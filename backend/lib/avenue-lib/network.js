@@ -289,6 +289,9 @@ Network.prototype.refreshPhasesLengthAndCycle = function(crossRoad, newCycle){
     if (newCycle) {
         _.forEach(this.network, function(node){
             node.cycleTime = newCycle;
+            node.inFlow         = [].fillArray(newCycle, 0);
+            node.outFlow        = [].fillArray(newCycle, 0);
+            node.queueFunc      = [].fillArray(newCycle, 0);
         });
     }
 
@@ -317,27 +320,48 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
         });
 
         for(var ct = leftCycleBound; ct <=rightCycleBound; ct = ct + crossRoad.phases.length) {
+            console.log(ct);
             crossRoad.phases.map(function(phase){
                 phase.length++;
             });
             that.refreshPhasesLengthAndCycle(crossRoad, ct);
             that.simulate(1);
-
+            if (ct == 112) {
+                console.log(11111);
+            }
             var avgSaturationPrev = 0;
 
             for (var t = 0; t <= 50; t++) {
                 var deltaR = 1;
                 var s = that.phasesSaturationStat(crossRoad);
+
+                if (ct == 112) {
+                   // console.log(111,s, crossRoad);
+                }
                 crossRoad.phases[s.maxPhase].length+= deltaR;
                 crossRoad.phases[s.minPhase].length-= deltaR;
+
+                if (ct == 112) {
+                   // console.log(222,crossRoad.phases);
+                }
                 that.refreshPhasesLengthAndCycle(crossRoad);
+                if (ct == 112) {
+                  //  console.log(333,crossRoad.phases);
+                }
+
                 that.simulate(1);
+
+                if (ct == 112) {
+                   // console.log(444,crossRoad.phases);
+                }
                 if (avgSaturationPrev == s.avg) {
                     break;
                 }
                 avgSaturationPrev = s.avg;
             }
-
+            if (ct == 112) {
+              //  console.log(2222);
+            }
             var sumcongestion = 0;
             var sumdelay = 0;
 
@@ -356,7 +380,9 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
                 sumcongestion += (node.isCongestion?1:0);
                 sumdelay += delay ;
             });
-
+            if (ct == 112) {
+                console.log(33333);
+            }
             result.push({
                 cycleTime: ct,
                 avgCycleSaturation: avgSaturationPrev,
