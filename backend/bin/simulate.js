@@ -39,9 +39,6 @@ if (errors.length > 0) {
     return;
 }
 
-var result = avenueLib.simulate(requestBodyData);
-
-
 function tracesExtremePoints(flow){
     var result = [];
     var sum = 0;
@@ -112,6 +109,8 @@ function queueInOutProfilesinVeh(point, dxdo){
         queueOut: queueOut
     }
 }
+
+var result = avenueLib.simulate(requestBodyData);
 
 var p1Id = '1pjwfbozk2x';
 var p2Id = 'kj0mfc6mjsq';
