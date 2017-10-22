@@ -3,6 +3,7 @@ var fs = require('fs');
 var model = require('./model');
 var traces = require('./traces');
 var fileName = process.argv[2];
+var trackNum  = process.argv[3] ? parseInt(process.argv[3]) : 20 ;
 var contents = fs.readFileSync(fileName, 'utf8');
 try {
     var jsonData = JSON.parse(contents);
@@ -84,6 +85,26 @@ function Mmin (single, traces, distance){
     return mmin;
 }
 
+
+function Mavg (single, traces, distance){
+    var offset = 10;
+    var msum = 0;
+    var mcnt = 0;
+    _.forEach(traces, function(trace){
+        if (Math.abs(trace[0].x-single[0].x) > offset) {
+            return;
+        }
+        var M = metricSquare(trace,single, distance);
+        msum = msum+ M;
+        mcnt++;
+        //if (mmin < 0 || M < mmin) {
+        //    mmin = M;
+        //}
+    });
+    return mcnt>0? Math.round(msum/mcnt): -1;
+}
+
+
 var portions = [
     [	10	,	10	,	80	],
     [	10	,	20	,	70	],
@@ -123,7 +144,9 @@ var portions = [
     [	80	,	10	,	10	]
 ];
 
-portions = [[66.6667,16.66667,16.66667]];
+portions = [[66.6667,16.66667,16.66667]];  //600
+//portions = [[33.3334,33.3334,33.3334]];  //300
+//portions = [[44.44445, 33.3334, 22.222223]]; // 900
 
 var distance = 300;
 var slot = 5;
@@ -132,8 +155,10 @@ var p2Id = 'kj0mfc6mjsq'; // next stopline
 
 var result1 = model.simulate(jsonData);
 
-var graphdata1 = traces.traces(result1, p1Id, p2Id, slot, distance, 40);
+var graphdata1 = traces.traces(result1, p1Id, p2Id, slot, distance, trackNum);
 var l = graphdata1.traces.length;
+
+//console.log(l); process.exit(0);
 var single = graphdata1.traces[l-1];
 
 var p1 = _.find(jsonData.data, {id: p1Id});
@@ -143,8 +168,23 @@ _.forEach(p1.edges, function(edge) {
 
 var result2;
 var graphdata2;
+var res = [];
 
-for(var q = 100; q<= 1500; q=q+50) {
+function smoothing(data){
+   var i = data.length-1;
+   var c = 0;
+   var N = 6;
+   var s = 0;
+  do {
+    s = s + data[i];
+    i--;
+    c++;
+  } while (i>=0 && c < N);
+
+  return Math.round(s/c);
+};
+
+for(var q = 200; q<= 1000; q=q+5) {
     p1.avgIntensity = q;
     var mmin = -1;
     var minport;
@@ -161,7 +201,8 @@ for(var q = 100; q<= 1500; q=q+50) {
             return;
         }
 
-        var m = Mmin(single, graphdata2.traces,distance);
+        //var m = Mmin(single, graphdata2.traces,distance);
+        var m = Mavg(single, graphdata2.traces,distance);
 
         if (mmin == -1 || m < mmin) {
             mmin = m;
@@ -171,7 +212,10 @@ for(var q = 100; q<= 1500; q=q+50) {
         //console.log(q, port.map(function(v){return Math.round(v*q/100);}), m);
     });
 
-    console.log(q+','+ mmin);
+    res.push(mmin);
+    console.log(smoothing(res));
+    //console.log(q+',' +mmin);
+    //console.log(mmin);
     //console.log(q, mmin, minport.map(function(v){return Math.round(v*q/100);}));
 }
 

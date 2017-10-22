@@ -8,6 +8,7 @@
             motionBlur: true,
             boxSelectionEnabled:true,
             userPanningEnabled:false,
+            desktopTapThreshold:4,
             elements: [],
             showOverlay: false,
             minZoom: 0.1,

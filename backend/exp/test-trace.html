@@ -26,14 +26,14 @@
         .line0{
             fill: none;
             stroke: #ff8888;
-            stroke-width: 2px;
+            stroke-width: 3px;
         }
 
 
         .line1{
             fill: none;
-            stroke: #8888ff;
-            stroke-width: 2px;
+            stroke: #333;
+            stroke-width: 3px;
         }
 
         circle {
@@ -109,7 +109,7 @@
     data.traces.forEach(function(trace, inx){
         g.append('path')
                 .datum(trace)
-                .attr('class', 'line')
+                .attr('class',inx==33 ? 'line1': 'line')
                 .attr('d', line);
     });
 
