@@ -3,18 +3,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-bar-chart"></i> <span locale="">Расчет оптимальной длительности цикла</span></h4>
+                <h4 class="modal-title"><i class="fa fa-bar-chart"></i> <span locale="оptimal-cycletime">Optimal cycle time</span></h4>
             </div>
             <div class="modal-body">
                 <div class="loader"  id="cycle-diagram-loader"><i class="fa fa-spin fa-spinner"></i> loading ...</div>
-                <div class="cycle-diagram-svg hidden" id="cycle-diagram-svg">
-                </div>
-                <div class="cycle-diagram-legend" id="cycle-diagram-legend">
-
-                </div>
+                <div class="cycle-diagram-svg hidden" id="cycle-diagram-svg"></div>
+                <div class="cycle-diagram-legend" id="cycle-diagram-legend"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" id="btn-cycle-lenght-recalc"><i class="fa fa-refresh"></i> <span locale="">Обновить</span></button>
+                <button type="button" class="btn btn-default pull-left" id="btn-cycle-lenght-recalc"><i class="fa fa-refresh"></i> <span locale="refresh">Refresh</span></button>
                 <button type="button" class="btn btn-primary hidden" id="btn-cycle-lenght-apply"><i class="fa fa-check"></i> <span locale="apply">Apply</span></button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" locale="cancel">Cancel</button>
             </div>

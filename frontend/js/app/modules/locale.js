@@ -92,7 +92,7 @@
             'modeling-results'      : 'Результат моделирования',
             'delay'                 : 'Задержка',
             'delay-model'           : 'Задержка (модель)',
-            'delay-oversaturation'  : 'Задержка (перерузки)',
+            'delay-oversaturation'  : 'Задержка (перегрузки)',
             'green-saturation'      : 'Насыщ. зеленого',
             'limit-max-queue'       : 'Предел/Max. очередь',
             'sum-io-flow'           : 'Сумма I/O потока',
@@ -170,9 +170,9 @@
             'width': 'Ширина',
             'height': 'Высота',
             'veh-speed': 'Скор. авт.',
-            'ped-speed': 'Скор. пешеходов'
-
-
+            'ped-speed': 'Скор. пешеходов',
+            'оptimal-cycletime': 'Расчет оптимальной длительности цикла',
+            'refresh': 'Обновить',
 
         },
 
