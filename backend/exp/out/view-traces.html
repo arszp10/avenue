@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>The d3 test</title>
+    <title>View traces</title>
     <style>
         .chart {
 
@@ -49,12 +49,9 @@
 </div>
 
 <!--<script type="text/javascript" src="trace-test.out.0.js"></script>-->
-<script type="text/javascript" src="trace-test.out.js"></script>
+<script type="text/javascript" src="traces-data.out.js"></script>
 <script type="text/javascript">
 
-//    queueOut
-//    queueIn
-//    trace
 
     var margin = {top: 20, right: 15, bottom: 60, left: 60}
             , width = 1800 - margin.left - margin.right
@@ -109,7 +106,7 @@
     data.traces.forEach(function(trace, inx){
         g.append('path')
                 .datum(trace)
-                .attr('class',inx==33 ? 'line1': 'line')
+                .attr('class',inx == -1 ? 'line1': 'line')
                 .attr('d', line);
     });
 
@@ -125,26 +122,6 @@
         .attr("cx", function (d,i) { return x(d.x); } )
         .attr("cy", function (d) { return y(d.y); } )
         .attr("r", 1);
-
-
-//    g.selectAll("scatter-dots-in")
-//        .data(data.queue)
-//        .enter().append("svg:circle")
-//        .attr("stroke", "#ff9999")
-//        .attr("cx", function (d,i) { return x(i); } )
-//        .attr("cy", function (d) { return y(300-5*d); } )
-//        .attr("r", 1);
-
-
-
-//data0.traces.slice(45, 46).forEach(function(trace){
-//    g.append('path')
-//            .datum(trace)
-//            .attr('class', 'line0')
-//            .attr('d', line);
-//});
-
-
 
 </script>
 </body>

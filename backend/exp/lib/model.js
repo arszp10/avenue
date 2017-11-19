@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var fs = require('fs');
-var avenueLib = require('../lib/avenue-lib');
-var responses = require('../routes/api-responses');
+var avenueLib = require('../../lib/avenue-lib');
+var responses = require('../../routes/api-responses');
 
 var isint = /^[0-9]+$/;
 var isfloat = /^([0-9]+)?\.[0-9]+$/;
@@ -17,8 +17,6 @@ function coerce(str) {
 
 module.exports = {
     simulate: function(jsonData){
-
-
 
         var requestBodyData = _.cloneDeepWith(jsonData, coerce);
         requestBodyData = requestBodyData.data;
