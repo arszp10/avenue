@@ -157,24 +157,25 @@
             'remove-current-route'  : 'Удалить текущий маршрут',
             'crossroad-name'        : 'Название перекрестка',
             'phase-order'           : 'Порядок фаз (1,2,3)',
+            'crossroad-program'     : 'Программа',
+            'intertact-order'       : 'Расположение пром такта',
+            'before-stage'          : 'В начале основного такта',
+            'after-stage'           : 'В конце основного такта',
+            'default-flow-value'    : 'Интенсивность по умолчанию',
+            'default-capacity'      : 'Поток насыщения по умолчанию',
+            'download-model'        : 'Экспорт модели (скачать как файл .json)',
+            'download-file'         : 'Скачать файл модели',
+            'links'                 : 'Связи',
+            'incoming-data'         : 'Входящие потоки',
+            'width'                 : 'Ширина',
+            'height'                : 'Высота',
+            'veh-speed'             : 'Скор. авт.',
+            'ped-speed'             : 'Скор. пешеходов',
+            'оptimal-cycletime'     : 'Расчет оптимальной длительности цикла',
+            'оptimal-cycle-length'  : 'Длительность цикла и фаз',
+            'refresh'               : 'Обновить'
 
-            'intertact-order': 'Расположение пром такта',
-            'before-stage': 'В начале основного такта',
-            'after-stage': 'В конце основного такта',
-            'default-flow-value': 'Интенсивность по умолчанию',
-            'default-capacity': 'Поток насыщения по умолчанию',
-            'download-model': 'Экспорт модели (скачать как файл .json)',
-            'download-file': 'Скачать файл модели',
-            'links': 'Связи',
-            'incoming-data': 'Входящие потоки',
-            'width': 'Ширина',
-            'height': 'Высота',
-            'veh-speed': 'Скор. авт.',
-            'ped-speed': 'Скор. пешеходов',
-            'оptimal-cycletime': 'Расчет оптимальной длительности цикла',
-            'refresh': 'Обновить',
-
-        },
+        }
 
     };
 

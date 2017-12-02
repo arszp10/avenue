@@ -113,7 +113,7 @@
             optimizeOff: false,
             width: 50,
             height: 50,
-            vehicleSpeed: 23,
+            vehicleSpeed: 36,
             pedestrianSpeed: 5,
             programs: [],
             currentProgram: null
