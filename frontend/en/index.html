@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <meta name="keywords"    content="Software for traffic flows simulation online, calculation of traffic signals,traffic light cycle, coordination programs, green wave, time space diagram, cyclic flow diagram">
+    <meta name="description" content="web-service of transport flows simulation and calculation of traffic signalization (coordination programs, time space diagram, cyclic flow diagram)">
+    <title>AvenueApp - web-service of transport flows simulation and calculation of traffic signalization (coordination programs, time space diagram, cyclic flow diagram)</title>
+	<link rel="stylesheet" href="../css/_bundle.css">
+    //= templates/counters.html
+</head>
+
+<body class="landing-page">
+
+<!-- Header -->
+<header class="header">
+	<div class="container">
+		<div class="row header-section" >
+			<div class="col-lg-8 col-lg-push-2 text-center">
+                <img src="../img/logo2.png" alt="" />
+				<h1 class="lead">
+                    Online service for transport flows simulation, a signals times calculation  <br>for traffic lights and coordination plans  also known as "green wave".
+				</h1>
+				
+				<p>If you want get to know all the features of the service you need to <a href="/register">register</a><br>
+                    This is absolutely <b>free</b>! If you already have an account can use the form below
+                    or go to the form <a href="/sign-in">Sign In</a></p>
+					<br>
+				
+				<form class="form-inline" id="sign-in-form" method="post" >
+					<div class="form-group"><input type="email" name="email" placeholder="Email" class="form-control input-lg"></div>
+					<div class="form-group"><input type="password" name="password" placeholder="Password" class="form-control input-lg"></div>
+                    <div class="form-group"><button type="submit" name="go"  class="btn btn-lg btn-default">Sign In</button></div>
+				</form>
+				<p class="small text-muted">Demo account: <code>test@user.com</code>  password <code>123</code>. If you forget, you can <a href="/reset-password">recover a password</a></p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div id="illustration">
+					<img src="../img/landing/ap-screenshot2.png" alt="The main window of the software for transport flows simulationAvenue 2.0" >
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- /Header -->
+	
+
+<!-- Content -->
+<main class="content">
+
+	<!-- Lead -->
+	<section class="container space-before space-after">
+		<div class="row">
+			<div class="col-sm-10 col-sm-push-1">
+				<h2 class="text-center">What is it and why?</h2>
+				<h2 class="lead text-center">
+					AvenueApp 2.0 - this is a simple, accessible service for traffic flows simulation, development of traffic light's program and optimization of plans of coordination.
+				</h2>
+			</div>
+		</div>
+	</section>
+	<!-- /Lead -->
+
+
+
+	<!-- Features -->
+	<section class="container space-before">
+		
+		<div class="row featurelist space-after">
+			<div class="col-md-5 col-sm-6 col-md-push-1 ">
+				<img class="img-feature img-responsive" src="../img/landing/screen-editor1.png" alt="Редактор модели" title="моделирование транспортных потоков онлайн">
+			</div>
+			<div class="col-md-5 col-md-push-1 col-sm-6">
+				<h2 class="space-before">Create any model online! <span class="text-muted"></span></h2><br>
+				<p>
+                    You do not need to install complicated and expensive program to calculate the phases of the traffic light and simulation of traffic flow.
+                    The model editor works in modern versions of any browser.
+                    All models are stored on the server and is always available to you.
+                </p>
+                <p>
+                    You can work with multiple transport models, to copy parts of some models.
+                    Quickly calculate optimal cycle for an isolated intersection, and calculate a transport delay and queue lengths at all approaches of intersection.
+                </p>
+			</div>
+		</div>
+
+		<div class="row featurelist space-after">
+			<div class="col-md-5 col-sm-6 col-sm-push-6">
+				<img class="img-feature img-responsive" src="../img/landing/screen-routes1.png" alt="The time space diagram, graph-analytical method, green wave" title="The time space diagram, graph-analytical method, green wave">
+			</div>
+			<div class="col-md-5 col-sm-6 col-md-pull-4 col-sm-pull-6">
+				<h2 class="space-before">Routes and charts. <span class="text-muted"></span></h2><br>
+				<p>You can group part of the network to one or more of the routes on which a chart is built automatically time-path and the tape non-stop time travel - "green wave".</p>
+				<p>The results of the automatic optimization can be edited directly on the chart. Dragging chart of signals at the intersection with the mouse. Graph-analytical method of calculation of programs coordination online</p>
+                <p><a class="feature-button" href="https://www.youtube.com/watch?v=_9GvXzJykNg" target="_blank"><i class="fa fa-youtube"></i> Green wave </a></p>
+			</div>
+		</div>
+
+		<div class="row featurelist space-after">
+			<div class="col-md-5 col-sm-6 col-md-push-1 col-sm-6">
+				<img class="img-feature img-responsive" src="../img/landing/screen-api2.png" alt="API" title="API & integrations">
+			</div>
+			<div class="col-md-5 col-md-push-1 col-sm-6">
+				<h2 class="space-before">HTTP API Integrations</span></h2>
+				<p>
+                    Make requests on calculation or optimization of any model you can not only in your browser, but also from your software with Avenue-2.0 HTTP API.
+                    <p>
+                        <a class="feature-button" href="/api/doc" target="_blank"><i class="fa fa-question"></i> API Docs</a>
+                        <a class="feature-button" href="https://github.com/kuzinmv/avenue/blob/master/backend/bin/curl-exmpl.txt#L1c" target="_blank">An example CURL request</a>
+                    </p>
+                </p>
+			</div>
+		</div>
+	</section>
+	<!-- /Features -->
+
+</main>
+
+
+<footer id="footer" class="jumbotron">
+	<section class="container">
+		<div class="row">
+				<div class="col-md-5 col-md-push-1">
+					<h3>Need help?</h3>
+					<p>If you have any questions, suggestions or comments, please email:</p>
+                    <p><code>mikhail@avenue-app.com</code></p>
+				</div>
+                <div class="col-md-5 col-md-push-1">
+                    <iframe class="iframe-border" width="450" height="320" src="https://www.youtube.com/embed/Y9VPTQlKe3M" allowfullscreen></iframe>
+                </div>
+		</div>	
+	</section>
+</footer>
+
+<p class="small text-muted text-center">Copyright &copy; 2017, AvenueApp - the web-service of transport flows simulation and calculation of traffic signalization</p>
+<br>
+
+<script src="../js/_signup.js"></script>
+<script>
+    jQuery(document).ready(function($) {
+        $('#illustration').hover( function(){
+            $(this).addClass('expand');
+        }, function(){
+            $(this).removeClass('expand');
+        } );
+    });
+</script>
+
+</body>
+</html>
+

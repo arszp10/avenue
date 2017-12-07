@@ -14,6 +14,9 @@
 
 <!-- Header -->
 <header class="header">
+    <div class="switch-eng alert alert-warning text-center" style="display:none;">
+        <a href="/en"> <i class="fa fa-rocket"></i> Switch to english version</a>
+    </div>
 	<div class="container">
 		<div class="row header-section" >
 			<div class="col-lg-8 col-lg-push-2 text-center">
@@ -145,6 +148,17 @@
         }, function(){
             $(this).removeClass('expand');
         } );
+
+        var browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang.length > 2) {
+            browserLang = browserLang.substr(0, 2);
+        }
+
+        if (browserLang != 'ru') {
+           setTimeout(function(){ $('.switch-eng').fadeIn(200)}, 1500);
+        }
+
+
     });
 </script>
 

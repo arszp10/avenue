@@ -46,15 +46,26 @@ function queueInOutProfilesinVeh(point, slot, distance){
 }
 
 
+function findFirstOverValue(arr, val){
+    for(var i=0; i<=arr.length-1; i++){
+        if (arr[i] > val) return i;
+    }
+    return val;
+}
+
 module.exports = {
     traces: function(result, p1Id, p2Id, slot, distance, limit){
         var p1 = _.find(result, {id: p1Id});
         var p2 = _.find(result, {id: p2Id});
+        var p12 = _.find(result, {id: p2Id+'_cwb_'+0});
+
         var dxdo = 2;
         var speed0 = Math.round(50/3.6);
 
         var startXarray  = tracesExtremePoints(p1.outFlow);
         startXarray  = startXarray.slice(0, limit);
+
+        var exitXarray  = tracesExtremePoints(p12.outFlow);
 
         var queueProfile = queueInOutProfilesinVeh(p2, slot, distance);
         var queueOutStop = queueProfile.queueOutStop;
@@ -69,7 +80,10 @@ module.exports = {
             var x = 0;
             var y = 0;
             var exit = 0;
-            var speed = speed0;
+            var arrivalTimeIndex = findFirstOverValue(exitXarray, startX + distance/speed0);//!!!
+            var arrivalTime = exitXarray[arrivalTimeIndex];
+            exitXarray = exitXarray.slice(arrivalTimeIndex + 1);
+            var speed = Math.round(distance/(arrivalTime-startX));
             var moved = true;
             trace.push({x:startX, y:0});
             for (x = startX + 1; x < p1.cycleTime; x++) {
@@ -122,6 +136,7 @@ module.exports = {
                         var ps = _.filter(queueOut, function(o) { return o.y == queue[x]-1 && o.x >= x});
                         if(ps.length>0 && x >= ps[0].x){
                             moved = true;
+                            speed = speed0;
                         }
                     }
                 }
