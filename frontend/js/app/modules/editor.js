@@ -795,7 +795,9 @@
                         var cwbId = node.id + '_cwb_' + index;
                         return val.id == cwbId;
                     });
-                    datasets.push(settings.chart.flowInColorIndex(results1[0].outFlow, index));
+                    if (results1.length > 0) {
+                        datasets.push(settings.chart.flowInColorIndex(results1[0].outFlow, index));
+                    }
                     return ;
                 });
             }
