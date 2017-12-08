@@ -781,17 +781,32 @@
             controls.panels.nodeSearchInfo.append(templates.chartPanel());
 
             var ctx = document.getElementById("chart-panel").getContext("2d");
+            var datasets = [];
+
+            if (node.type == 'stopline') {
+                datasets.push(settings.chart.queueFunc(results[0].queueFunc));
+            }
+            datasets.push(settings.chart.flowIn(results[0].inFlow));
+            datasets.push(settings.chart.flowOut(results[0].outFlow));
+
+            if (node.type == 'bottleneck') {
+                cy.getElementById(node.id).incomers('node').map(function(carriageway, index){
+                    var results1 = App.State.lastModelingResult.filter(function(val){
+                        var cwbId = node.id + '_cwb_' + index;
+                        return val.id == cwbId;
+                    });
+                    datasets.push(settings.chart.flowInColorIndex(results1[0].outFlow, index));
+                    return ;
+                });
+            }
+
             var data = {
                 labels: settings.chart.labels(node.cycleTime),
-                datasets: [
-                    settings.chart.queueFunc(results[0].queueFunc),
-                    settings.chart.flowIn(results[0].inFlow),
-                    settings.chart.flowOut(results[0].outFlow)
-                ]
+                datasets: datasets
             };
             var myLineChart = new Chart(ctx).Line(data, settings.chart.common);
 
-            if ((node.type == 'stopline'|| node.type == 'pedestrian') && node.hasOwnProperty('parent')){
+            if ((node.type == 'stopline'|| node.type == 'pedestrian' || node.type == 'bottleneck') && node.hasOwnProperty('parent')){
 
                 var crossroad = cy.getElementById(node.parent).data();
                 var program = crossroad.programs[crossroad.currentProgram];
@@ -800,7 +815,10 @@
                 controls.panels.nodeSearchInfo.append(
                     templates.signalBar({
                         cycleTime: node.cycleTime,
-                        signals: traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline)
+                        signals:
+                            node.type !== 'bottleneck'
+                                ? traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline)
+                                : traffic.signalDiagramDataPhasesOnly(crossroad)
                     })
                 );
             }

@@ -68,6 +68,28 @@
                 }
                 return labels;
             },
+            colors: [
+                "rgba(233,30,99,0.51)",
+                "rgba(103,58,183,0.51)",
+                "rgba(96,125,139,0.51)",
+                "rgba(3,168,244,0.51)",
+                "rgba(121,75,82,0.51)",
+                "rgba(0,150,136,0.51)",
+                "rgba(76,175,80,0.51)",
+                "rgba(205,220,57,0.51)"
+            ],
+            flowInColorIndex: function(data, index){
+                return {
+                    label: "flow in",
+                    fillColor: "rgba(110,110,110,0.0)",
+                    strokeColor: this.colors[index],
+                    pointColor: this.colors[index],
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    data: data
+                };
+            },
+
             flowIn: function(data){
                 return {
                     label: "flow in",
