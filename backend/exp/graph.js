@@ -47,10 +47,10 @@ if (qx) {
 
 var result1 = model.simulate(jsonData);
 
-var graphdata1 = traces.traces(result1, p1Id, p2Id, slot, distance, trackNum);
-var l = graphdata1.traces.length;
-
-var single = graphdata1.traces[l-1];
+//var graphdata1 = traces.traces(result1, p1Id, p2Id, slot, distance, trackNum);
+//var l = graphdata1.traces.length;
+//
+var single = [];//graphdata1.traces[l-1];
 
 var result2 = model.simulate(jsonData);
 var graphdata2 = traces.traces(result2, p1Id, p2Id, slot, distance, 1000);

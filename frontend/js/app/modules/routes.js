@@ -55,7 +55,8 @@
     Route.prototype.newPointLine =  function(node){
         return {
             id: node.id,
-            carriages: node.carriages
+            carriages: node.carriages,
+            bottleneck: node.bottleneck
         };
         return this;
     };
@@ -234,10 +235,13 @@
             var route = cyRoutePath.nodes().jsons()
                 .map(function(v){ return v.data })
                 .filter(function(val){
-                    return (val.type == 'stopline' && val.hasOwnProperty('parent')) || val.type == 'carriageway';
+                    return (val.type == 'stopline' && val.hasOwnProperty('parent'))
+                           || (val.type == 'bottleneck' && val.hasOwnProperty('parent'))
+                           || val.type == 'carriageway';
                 });
             var prevCw = {
-                carriages: []
+                carriages: [],
+                bottleneck: false
             };
             for (var i=0; i< route.length; i++) {
                 if (route[i].type == 'stopline') {
@@ -249,10 +253,22 @@
                 if (route[i].type == 'carriageway') {
                     if ( prevCw === false) {
                         prevCw = {
-                            carriages: [route[i].id]
+                            carriages: [route[i].id],
+                            bottleneck: false
                         }
                     } else {
                         prevCw.carriages.push(route[i].id);
+                    }
+                }
+
+                if (route[i].type == 'bottleneck') {
+                    if ( prevCw === false) {
+                        prevCw = {
+                            bottleneck: route[i].id,
+                            carriages: []
+                        }
+                    } else {
+                        prevCw.bottleneck = route[i].id;
                     }
                 }
             }
@@ -292,8 +308,14 @@
                             }, 0)
                         : 0;
 
+                    point[direction].distance =  point[direction].hasOwnProperty('carriages')
+                        ? point[direction].carriages.reduce(function (sum, cwId) {
+                                return sum + cy.getElementById(cwId).data('length')|0;
+                            }, 0)
+                        : 0;
+
                     point[direction].signals = traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline, undefined);
-                    //signalDiagramData(crossroad, stopline);
+
                     var signalsString = JSON.stringify(point[direction].signals);
                     var a1 = JSON.parse(signalsString);
                     var a2 = JSON.parse(signalsString);
@@ -313,6 +335,66 @@
 
                     point[direction].isGreenMoment = traffic.greenRedArray(point[direction].signals);
                     point[direction].signals = result;
+
+                    point[direction].traces = [];
+
+
+                    var bnNodeSimResult = App.State.lastModelingResult.filter(function(val){
+                        return val.id == point[direction].bottleneck;
+                    });
+
+                    var slNodeSimResult = App.State.lastModelingResult.filter(function(val){
+                        return val.id == stopline.id;
+                    });
+
+                    var simulationResultExist = bnNodeSimResult.length > 0 && slNodeSimResult.length > 0;
+                    console.log(point[direction].hasOwnProperty('bottleneck'),simulationResultExist);
+                    if (point[direction].hasOwnProperty('bottleneck') && simulationResultExist) {
+
+                        var cycleTime = program.cycleTime * 5;
+                        var slot = 6;
+                        var distance =  point[direction].distance;
+                        var speed0 = distance /  point[direction].routeTime;
+                        var capacityPerSecond = stopline.capacity/3600;
+                        var bnOutFlowStr = JSON.stringify(bnNodeSimResult[0].outFlow);
+                        var slOutFlowStr = JSON.stringify(slNodeSimResult[0].outFlow);
+                        var slInFlowStr = JSON.stringify(slNodeSimResult[0].inFlow);
+
+                        var bnOutFlow = [];
+                        var slOutFlow = [];
+                        var slInFlow = [];
+
+                        var b1 = JSON.parse(bnOutFlowStr);
+                        var b2 = JSON.parse(bnOutFlowStr);
+                        var b3 = JSON.parse(bnOutFlowStr);
+                        var b4 = JSON.parse(bnOutFlowStr);
+                        var b5 = JSON.parse(bnOutFlowStr);
+
+                        bnOutFlow = bnOutFlow.concat(b1,b2,b3,b4,b5);
+
+                        var s1 = JSON.parse(slOutFlowStr);
+                        var s2 = JSON.parse(slOutFlowStr);
+                        var s3 = JSON.parse(slOutFlowStr);
+                        var s4 = JSON.parse(slOutFlowStr);
+                        var s5 = JSON.parse(slOutFlowStr);
+
+                        slOutFlow = slOutFlow.concat(s1,s2,s3,s4,s5);
+
+
+                        var si1 = JSON.parse(slInFlowStr);
+                        var si2 = JSON.parse(slInFlowStr);
+                        var si3 = JSON.parse(slInFlowStr);
+                        var si4 = JSON.parse(slInFlowStr);
+                        var si5 = JSON.parse(slInFlowStr);
+
+                        slInFlow = slInFlow.concat(si1,si2,si3,si4,si5);
+
+                        point[direction].traces = traffic.traces(cycleTime, slot, distance, speed0, bnOutFlow, slOutFlow, slInFlow, capacityPerSecond);
+                        //console.log(point[direction].traces);
+                    }
+
+
+
                 });
 
             });
@@ -326,6 +408,8 @@
                 current.backGeoOffset = current.geoOffset + 15;
                 return current.geoOffset;
             }, 0);
+
+            //console.log(route);
             return route;
         },
 
@@ -366,6 +450,17 @@
                     }
                 }
 
+            }
+        },
+
+
+        virtualTracks: function(route, direction, callback){
+            if (route.forwardOnly && direction == 'back') {return;};
+            for(var i=0; i < route.points.length - 1; i++){
+                var sl1 = route.points[i];
+                var sl2 = route.points[i + 1];
+                var traces = sl2[direction].traces;
+                callback(traces, sl1.geoOffset);
             }
         },
 
@@ -477,6 +572,28 @@
                         + x(points[2].x) + "," + y(points[2].y) + ", "
                         + x(points[3].x) + "," + y(points[3].y));  // x,y points
                 });
+
+                this.virtualTracks(route, direction, function (traces, y0){
+                    console.log('call me', traces.length);
+
+                    var line = d3.svg.line()
+                        .x(function(d) { return x(d.x - cycleTime); })
+                        .y(function(d) { return y(d.y+y0); });
+
+                    traces.forEach(function(trace, inx){
+                        svg.append('path')
+                            .datum(trace)
+                            .attr('class', 'line')
+                            .attr("fill", "none")
+                            .attr("stroke", "#295f2b")
+                            .attr("stroke-width", "1px")
+                            .attr('d', line);
+                    });
+
+
+                } );
+
+
             }, this);
 
 

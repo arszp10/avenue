@@ -313,6 +313,7 @@
                     .addLines(back , 'back')
                 ;
                 that.renderRoutesDropDown();
+                console.log(route);
                 routes.drawRoute(route);
 
                 return false;

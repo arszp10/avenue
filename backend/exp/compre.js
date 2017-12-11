@@ -1,8 +1,8 @@
 var _ = require('lodash');
 var fs = require('fs');
-var model = require('./model');
-var traces = require('./traces');
-var trackProps = require('./track-props');
+var model = require('./lib/model');
+var traces = require('./lib/traces');
+var trackProps = require('./lib/track-props');
 var fileName = process.argv[2];
 
 var contents = fs.readFileSync(fileName, 'utf8');
@@ -38,12 +38,12 @@ var pp3a = _.find(jsonData2.data, {id: p3aId});
 var pp3b = _.find(jsonData2.data, {id: p3bId});
 var pp3c = _.find(jsonData2.data, {id: p3cId});
 
-_.forEach(pp1.edges, function(edge) {
-    edge.portion = 0;
-});
-_.forEach(p1.edges, function(edge) {
-    edge.portion = 0;
-});
+//_.forEach(pp1.edges, function(edge) {
+//    edge.portion = 0;
+//});
+//_.forEach(p1.edges, function(edge) {
+//    edge.portion = 0;
+//});
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -53,9 +53,9 @@ for(var qx = 200; qx <= 900; qx = qx + 100) {
 
     p1.avgIntensity = qx;
     p2.avgIntensity = qx;
-    //p3a.avgIntensity = Math.round(qx/3);
-    //p3b.avgIntensity = Math.round(qx/3);
-    //p3c.avgIntensity = Math.round(qx/3);
+    p3a.avgIntensity = Math.round(qx/3);
+    p3b.avgIntensity = Math.round(qx/3);
+    p3c.avgIntensity = Math.round(qx/3);
 
     var result1 = model.simulate(jsonData1);
     var graphdata1 = traces.traces(result1, p1Id, p2Id, slot, distance, 1000);
@@ -63,7 +63,7 @@ for(var qx = 200; qx <= 900; qx = qx + 100) {
     var singles = [];
     var singlesInx = [];
     _.forEach(graphdata1.traces, function(trace, inx) {
-        if (model.hasStops(trace, distance) && trace[0].x > 90 && singles.length < 2000){
+        if (trackProps.hasStops(trace, distance) && trace[0].x > 90 && singles.length < 2000){
             singles.push(trace);
             singlesInx.push(inx);
             //console.log(inx);
@@ -83,9 +83,9 @@ for(var qx = 200; qx <= 900; qx = qx + 100) {
         var minq = [];
         pp1.avgIntensity = q;
         pp2.avgIntensity = q;
-        //pp3a.avgIntensity = Math.round(q/3);
-        //pp3b.avgIntensity = Math.round(q/3);
-        //pp3c.avgIntensity = Math.round(q/3);
+        pp3a.avgIntensity = Math.round(q/3);
+        pp3b.avgIntensity = Math.round(q/3);
+        pp3c.avgIntensity = Math.round(q/3);
 
         try{
             result2 = model.simulate(jsonData2);

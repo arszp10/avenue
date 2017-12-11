@@ -1,5 +1,6 @@
 var _ = require('lodash');
 
+var capacity = 0.6;
 function tracesExtremePoints(flow){
     var result = [];
     var sum = 0;
@@ -30,8 +31,8 @@ function queueInOutProfilesinVeh(point, slot, distance){
             startX = x;
             var sum = 0;
             for (var i = startX; i < point.cycleTime; i++){
-                sum += 0.5; //todo !!!!! capacity
-                queueOut.push({x:i, y:sum});
+                sum += capacity;
+                queueOut.push({x:i, y:Math.round(sum)});
                 if (sum * slot >= distance) break;
             }
         } else if (queueOutStop[x]){
@@ -59,11 +60,10 @@ module.exports = {
         var p2 = _.find(result, {id: p2Id});
         var p12 = _.find(result, {id: p2Id+'_cwb_'+0});
 
-        var dxdo = 2;
         var speed0 = Math.round(50/3.6);
 
         var startXarray  = tracesExtremePoints(p1.outFlow);
-        startXarray  = startXarray.slice(0, limit);
+        startXarray  = startXarray.slice(0, 130);
 
         var exitXarray  = tracesExtremePoints(p12.outFlow);
 
@@ -80,13 +80,14 @@ module.exports = {
             var x = 0;
             var y = 0;
             var exit = 0;
-            var arrivalTimeIndex = findFirstOverValue(exitXarray, startX + distance/speed0);//!!!
-            var arrivalTime = exitXarray[arrivalTimeIndex];
-            exitXarray = exitXarray.slice(arrivalTimeIndex + 1);
-            var speed = Math.round(distance/(arrivalTime-startX));
+            //var arrivalTimeIndex = findFirstOverValue(exitXarray, startX + distance/speed0);//!!!
+            //var arrivalTime = exitXarray[arrivalTimeIndex];
+            //exitXarray = exitXarray.slice(arrivalTimeIndex + 1);
+            var speed = speed0;//Math.round(distance/(arrivalTime-startX));
             var moved = true;
             trace.push({x:startX, y:0});
             for (x = startX + 1; x < p1.cycleTime; x++) {
+
                 if (y >= distance) {
                     return trace;
                 }
@@ -108,10 +109,14 @@ module.exports = {
                                 }
                             }
                         } else {
-                            exit =  p1.cycleTime;
-                            for(var j = x; j< p1.cycleTime; j++){
-                                if (queue[j] < queue[x]) {
-                                    exit = j + 2;
+                            exit = x;
+                            for(var j = 0; j < queueOut.length-1; j++){
+                                var condition = capacity > 1
+                                        ? queueOut[j].y >= queue[x] && queue[x] < queueOut[j+1].y && queueOut[j].x >= x
+                                        : queueOut[j].y == queue[x] && queueOut[j].x >= x;
+
+                                if (condition) {
+                                    exit = queueOut[j].x;
                                     break;
                                 }
                             }
@@ -119,8 +124,8 @@ module.exports = {
 
                         var delta = queue[x-1] + 1 == queue[x] ? 2 : 1;
 
-                        for(var j=x ; j< exit; j++){
-                            queue[j] = queue[x-1] + delta;
+                        for(var j = x ; j < exit; j++){
+                            queue[j] = queue[x - 1] + delta;
                         }
 
                         trace.push({x:x,y:y});
@@ -132,15 +137,11 @@ module.exports = {
 
                 }
                 if (!moved){
-                    if (queue[x] > 0) {
-                        var ps = _.filter(queueOut, function(o) { return o.y == queue[x]-1 && o.x >= x});
-                        if(ps.length>0 && x >= ps[0].x){
-                            moved = true;
-                            speed = speed0;
-                        }
+                    if (x >= exit) {
+                        moved = true;
+                        speed = speed0;
                     }
                 }
-
 
                 trace.push({x:x,y:y});
             }
