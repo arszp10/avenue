@@ -143,6 +143,7 @@
             btnGoImportModel:           '#btn-go-import-model',
             btnArcgisSetExtent:         '#btn-arcgis-set-extent',
             btnArcgisSwitch:            '#btn-arcgis-switch',
+            btnShowVehicleTraces:       '#btn-show-vehicle-traces',
             btnRemovePhasesOrder:       '#btnRemovePhasesOrder',
             btnCreatePhaseOrder:        '#btnCreatePhaseOrder',
             btnCreateProgram:           '#btnCreateProgram',

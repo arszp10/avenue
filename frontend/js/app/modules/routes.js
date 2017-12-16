@@ -2,7 +2,7 @@
     var controls  = App.Controls;
     var cy, traffic, intersectionEditor;
     var that;
-
+    var showVehicleTraces = false;
     var svgMargin = {top: 50, right: 200, bottom: 50, left: 50};
     var routeDirections = ['forward', 'back'];
     var minScale = 0.2;
@@ -206,6 +206,35 @@
                 route.scale = scale;
                 that.drawRoute(route);
             });
+
+
+            controls.buttons.btnShowVehicleTraces.click(function () {
+                var button = $(this);
+                var icon = button.find('i.fa-ban');
+                button.toggleClass('active');
+                if (button.hasClass('active')){
+                    icon.addClass('hidden');
+                    showVehicleTraces = true;
+                } else {
+                    icon.removeClass('hidden');
+                    showVehicleTraces = false;
+
+                }
+                if (showVehicleTraces) {
+                    controls.buttons.btnCalc.click();
+                } else {
+                    that.refreshSelectedRoute();
+                }
+            });
+        },
+
+        refreshSelectedRoute: function(){
+            var inx = this.getSelected();
+            if (inx === false) {
+                return;
+            }
+            var route = this.getRoute(inx);
+            this.drawRoute(route);
         },
 
         createRoute:function(name, forwardOnly){
@@ -278,7 +307,9 @@
         expandRoute: function(data){
             var route = JSON.parse(JSON.stringify(data));
             var intertactOrder = App.State.currentModel.intertactOrder;
-            route.points.forEach(function(point) {
+            route.length = 0;
+
+            route.points.forEach(function(point, inxPoint) {
 
                 point.length = point.forward.hasOwnProperty('carriages')
                     ? point.forward.carriages.reduce(function (sum, cwId) {
@@ -286,6 +317,8 @@
                         return sum + carriageWayNode.data('length') | 0;
                       }, 0)
                     : 0;
+
+                route.length += point.length;
 
                 routeDirections.forEach(function(direction){
                     if (! point[direction]) return;
@@ -338,25 +371,25 @@
 
                     point[direction].traces = [];
 
-
-                    var bnNodeSimResult = App.State.lastModelingResult.filter(function(val){
-                        return val.id == point[direction].bottleneck;
-                    });
-
                     var slNodeSimResult = App.State.lastModelingResult.filter(function(val){
                         return val.id == stopline.id;
                     });
 
-                    var simulationResultExist = bnNodeSimResult.length > 0 && slNodeSimResult.length > 0;
-                    console.log(point[direction].hasOwnProperty('bottleneck'),simulationResultExist);
-                    if (point[direction].hasOwnProperty('bottleneck') && simulationResultExist) {
+                    if (showVehicleTraces && slNodeSimResult.length > 0) {
 
                         var cycleTime = program.cycleTime * 5;
                         var slot = 6;
-                        var distance =  point[direction].distance;
-                        var speed0 = distance /  point[direction].routeTime;
+                        var distance = point[direction].distance;
+                        var speed0 = distance / 6;
+                        if (distance == 0) {
+                            distance = 100;
+                            speed0 = distance / 6;
+                        } else {
+                            distance = point[direction].distance;
+                            speed0 = distance / point[direction].routeTime;
+                        }
+
                         var capacityPerSecond = stopline.capacity/3600;
-                        var bnOutFlowStr = JSON.stringify(bnNodeSimResult[0].outFlow);
                         var slOutFlowStr = JSON.stringify(slNodeSimResult[0].outFlow);
                         var slInFlowStr = JSON.stringify(slNodeSimResult[0].inFlow);
 
@@ -364,13 +397,6 @@
                         var slOutFlow = [];
                         var slInFlow = [];
 
-                        var b1 = JSON.parse(bnOutFlowStr);
-                        var b2 = JSON.parse(bnOutFlowStr);
-                        var b3 = JSON.parse(bnOutFlowStr);
-                        var b4 = JSON.parse(bnOutFlowStr);
-                        var b5 = JSON.parse(bnOutFlowStr);
-
-                        bnOutFlow = bnOutFlow.concat(b1,b2,b3,b4,b5);
 
                         var s1 = JSON.parse(slOutFlowStr);
                         var s2 = JSON.parse(slOutFlowStr);
@@ -380,17 +406,16 @@
 
                         slOutFlow = slOutFlow.concat(s1,s2,s3,s4,s5);
 
-
                         var si1 = JSON.parse(slInFlowStr);
                         var si2 = JSON.parse(slInFlowStr);
                         var si3 = JSON.parse(slInFlowStr);
                         var si4 = JSON.parse(slInFlowStr);
                         var si5 = JSON.parse(slInFlowStr);
+                        var si6 = JSON.parse(slInFlowStr);
 
-                        slInFlow = slInFlow.concat(si1,si2,si3,si4,si5);
+                        slInFlow = slInFlow.concat(si1,si2,si3,si4,si5,si6);
 
-                        point[direction].traces = traffic.traces(cycleTime, slot, distance, speed0, bnOutFlow, slOutFlow, slInFlow, capacityPerSecond);
-                        //console.log(point[direction].traces);
+                        point[direction].traces = traffic.traces(cycleTime, slot, distance, speed0, slOutFlow, slInFlow, capacityPerSecond);
                     }
 
 
@@ -409,7 +434,6 @@
                 return current.geoOffset;
             }, 0);
 
-            //console.log(route);
             return route;
         },
 
@@ -456,11 +480,21 @@
 
         virtualTracks: function(route, direction, callback){
             if (route.forwardOnly && direction == 'back') {return;};
-            for(var i=0; i < route.points.length - 1; i++){
+            var offset;
+            for(var i=0; i < route.points.length; i++){
                 var sl1 = route.points[i];
-                var sl2 = route.points[i + 1];
-                var traces = sl2[direction].traces;
-                callback(traces, sl1.geoOffset);
+                var traces = sl1[direction].traces;
+                if (direction == 'forward') {
+                    offset = i == 0
+                        ? 0
+                        : route.points[i-1].geoOffset;
+                } else {
+                    offset = i == route.points.length-1
+                        ? route.length + 200
+                        : route.points[i+1].geoOffset;
+                }
+
+                callback(traces, offset);
             }
         },
 
@@ -574,18 +608,22 @@
                 });
 
                 this.virtualTracks(route, direction, function (traces, y0){
-                    console.log('call me', traces.length);
 
                     var line = d3.svg.line()
                         .x(function(d) { return x(d.x - cycleTime); })
-                        .y(function(d) { return y(d.y+y0); });
+                        .y(function(d) {
+                            return direction == 'forward'
+                               ? y(d.y + y0)
+                               : y(-d.y + y0)
+
+                        });
 
                     traces.forEach(function(trace, inx){
                         svg.append('path')
                             .datum(trace)
                             .attr('class', 'line')
                             .attr("fill", "none")
-                            .attr("stroke", "#295f2b")
+                            .attr("stroke", direction == 'forward' ? "#8ead8e" : "#8d8db1")
                             .attr("stroke-width", "1px")
                             .attr('d', line);
                     });
@@ -631,7 +669,12 @@
                     //cy.getElementById(pointId).data('offset', newOffset);
 
                     // redraw graphic on dragend event
-                    that.drawRoute(data);
+                    if (showVehicleTraces) {
+                        controls.buttons.btnCalc.click();
+                    } else {
+                        that.refreshSelectedRoute();
+                    }
+
                 });
 
             // add bar groups

@@ -1,7 +1,7 @@
 (function(App){
     var controls  = App.Controls;
     var templates = App.Templates;
-    var cy, editor, modelManager, map, intersectionEditor;
+    var cy, editor,routes, modelManager, map, intersectionEditor;
 
     var nop = function(r,o){ };
 
@@ -26,6 +26,11 @@
             controls.panels.statusBar.html(
                 templates.sumDelayStatus(data, options.singleCrossroad)
             );
+
+            if (controls.buttons.btnShowRoutes.parent().hasClass('active')){
+                routes.refreshSelectedRoute();
+            }
+
         } else {
             App.State.lastModelingResult = [];
             App.State.lastErrors = r.data;
@@ -56,6 +61,7 @@
             editor  = modules.editor;
             modelManager = modules.modelManager;
             map = modules.map;
+            routes = modules.routes;
             intersectionEditor = modules.intersectionEditor;
         },
         initModule: nop,
@@ -67,7 +73,6 @@
         },
         offsetsOptimize: {
             done: function(r, options){
-                doneCalcHandler(r, options);
                 if (!r.success) {
                     return;
                 }
@@ -78,6 +83,7 @@
                         program.offset = parseInt(v.offset);
                     }
                 });
+                doneCalcHandler(r, options);
             },
             fail: failCalcHandler,
             always: alwaysCalcHandler

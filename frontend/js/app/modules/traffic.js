@@ -317,10 +317,10 @@
                     for (var i = startX; i < cycleTime; i++){
                         sum += capacityPerSecond;
                         queueOut.push({x:i, y:Math.floor(sum)});
-                        if (sum * slot >= distance) break;
+                        if (sum >= distance*slot) break;
                     }
                 } else if (queueOutStop[x]){
-                    queueOut.push({x:x, y:0});
+                    //queueOut.push({x:x, y:0});
                 }
             }
             return {
@@ -330,11 +330,9 @@
         },
 
 
-        traces: function(cycleTime, slot, distance, speed0, bnOutFlow, slOutFlow, slInFlow, capacityPerSecond){
+        traces: function(cycleTime, slot, distance, speed0, slOutFlow, slInFlow, capacityPerSecond){
 
-            var startXarray  = this.tracesExtremePoints(bnOutFlow);
-            var exitXarray  = this.tracesExtremePoints(slInFlow);
-
+            var startXarray  = this.tracesExtremePoints(slInFlow);
 
             var queueProfile = this.queueInOutProfilesinVeh(cycleTime, slot, distance, slOutFlow, capacityPerSecond);
             var queueOutStop = queueProfile.queueOutStop;
@@ -343,15 +341,11 @@
             //var queueOutMeters = queueOut.map(function(val){ return {x:val.x, y:distance - slot * val.y};});
 
             var queue = new Array(cycleTime).fill(0);
-
             var traces = startXarray.map(function(startX, inxxx){
+                startX = startX - Math.round(distance/speed0);
                 var trace = [];
                 var x = 0, y = 0, exit = 0, j = 0;
 
-                var arrivalTimeIndex = findFirstOverValue(exitXarray, startX + distance/speed0);//!!!
-                var arrivalTime = exitXarray[arrivalTimeIndex];
-                exitXarray = exitXarray.slice(arrivalTimeIndex + 1);
-                //var speed = Math.round(distance/(arrivalTime-startX));
                 var speed = speed0;
                 var moved = true;
                 trace.push({x:startX, y:0});

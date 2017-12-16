@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-var capacity = 0.6;
+var capacity = 0.5;
 function tracesExtremePoints(flow){
     var result = [];
     var sum = 0;

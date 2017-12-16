@@ -313,7 +313,6 @@
                     .addLines(back , 'back')
                 ;
                 that.renderRoutesDropDown();
-                console.log(route);
                 routes.drawRoute(route);
 
                 return false;
@@ -360,12 +359,7 @@
 
             controls.buttons.btnShowRoutes.on('click', function(){
                 that.bottomTabSwitch.call(this);
-                var inx = routes.getSelected();
-                if (inx === false) {
-                    return;
-                }
-                var route = routes.getRoute(inx);
-                routes.drawRoute(route);
+                routes.refreshSelectedRoute();
             });
         },
 
