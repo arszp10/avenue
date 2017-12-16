@@ -47,7 +47,7 @@ var Model = mongoose.model('Model', modelSchema);
 Model.findWithPages = function(p, ready){
     var params = Object.assign({
         page:  1,
-        limit: 10,
+        limit: 20,
         text:  '',
         orderBy: '-updatedAt'
     }, p);
@@ -61,7 +61,7 @@ Model.findWithPages = function(p, ready){
     if (params.page < 1) { params.page = 1; }
 
     if (params.limit > 100) { params.limit = 100; }
-    if (params.limit < 10)  { params.limit = 10; }
+    if (params.limit < 20)  { params.limit = 20; }
     if (params.text.length < 2)  { params.text = '' }
 
     var conditions = {_creator: p.userId};
