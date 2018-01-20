@@ -15,7 +15,7 @@ module.exports = {
         lessThanField: 'capacity',
         numericality: {
             onlyInteger: true,
-            greaterThanOrEqualTo: 0,
+            greaterThanOrEqualTo: 1,
             lessThanOrEqualTo: 100000
         }
     },

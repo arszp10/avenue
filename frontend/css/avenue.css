@@ -15,8 +15,7 @@ body{
     right: 0px;
     z-index: 2;
     background-color: #777;
-    background-image: url("https://www.transparenttextures.com/patterns/project-paper.png");
-    /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+    background-image: url("/img/project-paper.png");
 }
 
 
@@ -780,9 +779,18 @@ td.ph-col-0 label{
 }
 
 .node-search-info {
-    margin: 15px;
+    margin: 12px;
 }
 
+
+.node-search-info .table-condensed>tbody>tr>td,
+.node-search-info .table-condensed>tbody>tr>th,
+.node-search-info .table-condensed>tfoot>tr>td,
+.node-search-info .table-condensed>tfoot>tr>th,
+.node-search-info .table-condensed>thead>tr>td,
+.node-search-info .table-condensed>thead>tr>th {
+    padding: 4px;
+}
 
 .node-list-item {
     padding: 10px;

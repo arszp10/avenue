@@ -128,7 +128,7 @@
             }
             return diagram;
         },
-        signalDiagramDataPhasesOnly: function(crossroad){
+        signalDiagramDataPhasesOnly: function(crossroad, noOffset){
             var diagram = [];
             var program = crossroad.programs[crossroad.currentProgram];
             var phCurrentOrder = program.currentOrder;
@@ -145,7 +145,9 @@
                     length : program.phases[i].length
                 });
             }
-            return diagram;
+            return noOffset
+                ? diagram
+                : this.offsetDiagram(diagram, program.offset, program.cycleTime);
         },
         signalDiagramData1: function(itertactOrder, crossroad, program, node, order, noOffset){
             var stopLine = node;

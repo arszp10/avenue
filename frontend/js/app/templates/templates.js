@@ -222,10 +222,12 @@
                 unit_h_h = 'veh_h_h';
                 unit = 'vehicle';
             };
+            var u_h = data.type=='pedestrian' ? 'p_h' : 'v_h';
 
             var no = data.isCongestion ? '<span class="text-danger">' + __('congestion') : '<span class="text-success">' + __('no-congestion');
             return '<h4>' + __('modeling-results') + '</h4>' +
                 '<table class="table table-condensed table-striped"><tbody>' +
+                '    <tr><td>' + __('full-intensity-model') + '</td><td class="text-right">' + Math.round(data.sumOutFlow*3600/data.cycleTime) + '</td><td class="measure-unit">' + __(u_h) + '</td></tr>' +
                 '    <tr><td>' + __('delay-model') + '</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">' + __(unit_sec) + '</td></tr>' +
                 '    <tr><td>' + __('delay') + '</td><td class="text-right">'+data.delayPerHour.toFixed(2)+'</td><td class="measure-unit">' + __(unit_h_h) + '</td></tr>' +
                 '    <tr><td>' + __('delay-oversaturation') + '</td><td class="text-right">'+data.overSaturationDelay.toFixed(2)+'</td><td class="measure-unit">' + __(unit_h_h) + '</td></tr>' +
