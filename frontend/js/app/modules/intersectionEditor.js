@@ -9,8 +9,6 @@
     var maxCountPhases = 12;
     var $addGreenEditableElement;
 
-
-
     function heatMapColorforValue(value){
         var h = (1.0 - value) * 240;
         return "hsl(" + h + ", 100%, 50%)";
@@ -167,6 +165,9 @@
 
             controls.panels.crossRoadPanel.on('blur', '.ph-td input[type="text"]', function(e){
                 cyCrossroad.$().removeClass('green');
+                controls.panels.tblDiagramsBody.find('.stop-line-diagram-row').removeClass('green-selected');
+                controls.panels.tblPhasesBody.find('.stop-line-row').removeClass('green-selected');
+
             });
 
             controls.panels.crossRoadPanel.on('focus', '.ph-td input[type="text"]', function(e){
@@ -451,9 +452,9 @@
             var vpad = svgMargin.bottom + svgMargin.top;
             var mpad = 150;
             var x  = d3.scale.linear().rangeRound([0, width - hpad]);
-            var y  = d3.scale.linear().rangeRound([height - vpad-mpad, 0]);
-            var y1 = d3.scale.linear().rangeRound([height - vpad-mpad, 0]);
-            var y3 = d3.scale.linear().rangeRound([height - vpad-mpad, 0]);
+            var y  = d3.scale.linear().rangeRound([height - vpad - mpad, 0]);
+            var y1 = d3.scale.linear().rangeRound([height - vpad - mpad, 0]);
+            var y3 = d3.scale.linear().rangeRound([height - vpad - mpad, 0 ]);
             var y2 = d3.scale.linear().rangeRound([height - mpad - vpad + 20, height - vpad ]);
 
             var line = d3.svg.line()
@@ -474,7 +475,9 @@
             y.domain([0,3]);
             y1.domain([0,10]);
             y2.domain([0,100]);
-            y3.domain(d3.extent(data, function(d) { return d.sumDelay; }));
+            y3.domain([0, d3.max(data.map(function(d){return d.sumDelay; }))]);
+
+            //y3.domain(d3.extent(data, function(d) { return d.sumDelay; }));
 
             var yAxis   = d3.svg.axis().scale(y).orient("left");
             var yAxis1   = d3.svg.axis().scale(y1).orient("right").innerTickSize(-width+hpad);
@@ -826,8 +829,12 @@
 
             };
 
+            controls.panels.tblDiagramsBody.find('.stop-line-diagram-row').removeClass('green-selected');
+            controls.panels.tblPhasesBody.find('.stop-line-row').removeClass('green-selected');
             stoplineIds.map(function(slId){
                 markGreen(cyCrossroad.getElementById(slId));
+                controls.panels.tblDiagramsBody.find('[data-id="'+slId+'"]').addClass('green-selected');
+                controls.panels.tblPhasesBody.find('[data-id="'+slId+'"]').addClass('green-selected');
             });
 
         },

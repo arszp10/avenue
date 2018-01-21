@@ -5,26 +5,39 @@
 
     var nop = function(r,o){ };
 
-    var sum = function(items, prop){
-        return items.reduce( function(a, b){
-            return b.hasOwnProperty(prop)
-                ? a + parseFloat(b[prop])
-                : a;
-        }, 0);
-    };
+
+    function sumOfDelaysVector(arr, acceptedNodesArray){
+        return arr.filter(
+            function(node){
+                return acceptedNodesArray.indexOf(node.type) > -1
+            }
+        ).reduce(function(pv, cv) {
+            //console.log(pv,cv);
+            return {
+                delay               : pv.delay + parseFloat(cv.delay)|0,
+                delayPerHour        : pv.delayPerHour + parseFloat(cv.delayPerHour)|0,
+                overSaturationDelay : pv.overSaturationDelay + parseFloat(cv.overSaturationDelay)|0,
+                maxQueue            : pv.maxQueue + parseFloat(cv.maxQueue)|0
+            }
+        },
+        {
+            delay : 0,
+            delayPerHour: 0,
+            overSaturationDelay: 0,
+            maxQueue: 0
+        });
+    }
 
     var doneCalcHandler = function (r, options){
         if (r.success) {
             App.State.lastModelingResult = r.data;
             App.State.lastErrors = [];
-            var data = {
-                sumDelay            : sum(r.data, 'delay'),
-                sumDelayPerHour     : sum(r.data, 'delayPerHour'),
-                overSaturationDelay : sum(r.data, 'overSaturationDelay'),
-                sumQueue            : sum(r.data, 'maxQueue')
-            };
+
+            var dataPedestrians = sumOfDelaysVector(r.data, ['pedestrian']);
+            var dataVehicles = sumOfDelaysVector(r.data, ['stopline', 'carriageway', 'bottleneck', 'concurrent', 'concurrentMerge']);
+
             controls.panels.statusBar.html(
-                templates.sumDelayStatus(data, options.singleCrossroad)
+                templates.sumDelayStatus(dataVehicles, dataPedestrians, options.singleCrossroad)
             );
 
             if (controls.buttons.btnShowRoutes.parent().hasClass('active')){

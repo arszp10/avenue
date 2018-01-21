@@ -118,7 +118,7 @@ body{
     right: 0px;
     z-index: 20;
     padding-left:10px;
-    background: white;
+    background: #f5f5f5;
 }
 
 .top-panel{
@@ -239,6 +239,7 @@ body{
 .nav-tabs.bottom-tabs {
     border-top: 1px solid #ddd;
     border-bottom: 0px solid #ddd;
+    float: left;
 }
 
 .nav-tabs.bottom-tabs > li {
@@ -269,13 +270,9 @@ body{
 
 
 .status-bar{
-    float: right;
-    margin-top: -27px;
-    width: 75%;
-
-    height: 30px;
-    text-align: right;
+    margin-top: 5px;
     padding-right: 15px;
+    float: right;
 }
 
 #crossRoadDelayBar {
@@ -287,12 +284,16 @@ body{
 }
 
 .summary-delay-info {
-    font-size: 13px;
+    font-size: 11px;
     color: #999;
 }
 
 .summary-delay-info .text-muted {
     font-size: 11px;
+}
+
+.summary-delay-info table td {
+    padding: 2px 7px;
 }
 
 #input-edge-label {
@@ -473,6 +474,10 @@ body.show-edge-input #input-edge-label {
     background: #eee;
 }
 
+
+.green-selected.stop-line-row {
+    background: #efe;
+}
 .signal-bar {
     width: 275px;
     padding: 16px 0;
@@ -518,6 +523,18 @@ body.show-edge-input #input-edge-label {
 .signal-bar.signals-bulk .signal {
     height: 15px;
     font-size: 10px;
+}
+
+.green-selected .signal-bar.signals-bulk .signal.signal-red{
+    height: 2px;
+    margin-top: 6px;
+    font-size: 0px;
+    color: transparent;
+}
+
+
+.green-selected .signal-bar.signals-bulk {
+    background: #efe;
 }
 
 .signal-red {
@@ -578,6 +595,7 @@ body.show-edge-input #input-edge-label {
     vertical-align: middle;
     border-top: 0px solid #ddd;
     text-align: center;
+    line-height: 14px;
 }
 
 .table-phases>tbody>tr>td.ph-col-0 {
@@ -596,7 +614,14 @@ td.ph-col-0 label{
 
 .ph-col-stop-line-label {
     font-size:11px;
+    /*color:#999;*/
 }
+
+.green-selected .ph-col-stop-line-label {
+    font-weight:bold;
+    background:#efe;
+}
+
 .table-phases>thead>tr>th {
     vertical-align: bottom;
     border-bottom: 0px solid #ddd;

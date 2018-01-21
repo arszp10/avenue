@@ -238,20 +238,40 @@
                 '</tbody></table>';
         },
 
-        sumDelayStatus:         function(data, singleCrossroad){
+        sumDelayStatus: function(dataVehicles, dataPedestrians, singleCrossroad){
             var descrSymbol = singleCrossroad ? '&#8983;' : '<sub>&sum;</sub>';
-            return '<div class="summary-delay-info">' +
-            ''+descrSymbol+'&nbsp;<i class="fa fa-car"></i><i class="fa fa-signal"></i>' +
-            '    <strong class="text-primary">' + data.sumQueue.toFixed(0) + '</strong>' +
-            '    <span class="text-muted">' + __('vehicle') + '</span>&nbsp;&nbsp;&nbsp;&nbsp;' +
-            ''+descrSymbol+'&nbsp;<i class="fa fa-car"></i><i class="fa fa-hourglass-end"></i>' +
-            '    <strong class="text-primary">'+data.sumDelay.toFixed(2)+'</strong>' +
-            '    <span class="text-muted">' + __('veh_sec') + '</span> ' +
-            '    / <strong class="text-primary">'+data.sumDelayPerHour.toFixed(2)+'</strong>' +
-            '    <span class="text-muted">' + __('veh_h_h') + '</span> ' +
-            '    / <strong class="text-primary">'+data.overSaturationDelay.toFixed(2)+'</strong>' +
-            '    <span class="text-muted">' + __('veh_h_h') + '</span>' +
-            '</div>';
+            //'<div class="summary-delay-info">' +
+            var vehiclesDelayRow =
+                '<td>'+descrSymbol+'&nbsp;<i class="fa fa-car"></i><i class="fa fa-signal"></i>' +
+                '    <strong class="text-primary">' + dataVehicles.maxQueue.toFixed(0) + '</strong>' +
+                '    <span class="text-muted">' + __('vehicle') + '</span></td>' +
+
+                '<td>'+descrSymbol+'&nbsp;<i class="fa fa-car"></i><i class="fa fa-hourglass-end"></i>' +
+                '    <strong class="text-primary">'+dataVehicles.delay.toFixed(2)+'</strong>' +
+                '    <span class="text-muted">' + __('veh_sec') + '</span> </td>' +
+
+                '<td><strong class="text-primary">'+dataVehicles.delayPerHour.toFixed(2)+'</strong>' +
+                '    <span class="text-muted">' + __('veh_h_h') + '</span></td>' +
+
+                '<td><strong class="text-primary">'+dataVehicles.overSaturationDelay.toFixed(2)+'</strong>' +
+                '    <span class="text-muted">' + __('veh_h_h') + '</span></td>';
+
+            var pedestriansDelayRow =
+                '<td>'+descrSymbol+'&nbsp;<i class="fa fa-male"></i><i class="fa fa-signal"></i>' +
+                '    <strong class="text-primary">' + dataPedestrians.maxQueue.toFixed(0) + '</strong>' +
+                '    <span class="text-muted">' + __('p') + '</span></td>' +
+
+                '<td>'+descrSymbol+'&nbsp;<i class="fa fa-male"></i><i class="fa fa-hourglass-end"></i>' +
+                '    <strong class="text-primary">'+dataPedestrians.delay.toFixed(2)+'</strong>' +
+                '    <span class="text-muted">' + __('ped_sec') + '</span></td>' +
+
+                '<td><strong class="text-primary">'+dataPedestrians.delayPerHour.toFixed(2)+'</strong>' +
+                '    <span class="text-muted">' + __('ped_h_h') + '</span></td>' +
+
+                '<td><strong class="text-primary">'+dataPedestrians.overSaturationDelay.toFixed(2)+'</strong>' +
+                '    <span class="text-muted">' + __('ped_h_h') + '</span></td>';
+
+            return '<div class="summary-delay-info"><table><tr>'+vehiclesDelayRow +'</tr><tr>' + pedestriansDelayRow + '</tr></table></div>';
         },
 
 
