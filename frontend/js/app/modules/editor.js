@@ -814,7 +814,7 @@
                         cycleTime: node.cycleTime,
                         signals:
                             node.type !== 'bottleneck'
-                                ? traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline)
+                                ? traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline, undefined, false)
                                 : traffic.signalDiagramDataPhasesOnly(crossroad)
                     })
                 );

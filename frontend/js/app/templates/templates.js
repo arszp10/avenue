@@ -101,6 +101,9 @@
             var className = cls == undefined ? '' : cls;
             var s = '<div class="signal-bar ' + className + '">';
             data.signals.forEach(function(v){
+                if (v.length <= 0) {
+                    return;
+                }
                 var shortClass = v.length < 3 ? ' short' : '';
                 w = 99.5 * v.length/data.cycleTime;
                 s +='<div class="signal signal-' + v.color + shortClass + '" style="width:'+ w +'%"> ' +

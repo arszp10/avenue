@@ -234,7 +234,7 @@
             var tail = [];
             while (i < l){
                 sum += diagram[i].length;
-                if (backOffset > sum ) {
+                if (backOffset >= sum ) {
                     head.push(diagram[i]);
                 } else {
                     if (tail.length == 0) {
