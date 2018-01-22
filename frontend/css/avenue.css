@@ -1162,9 +1162,36 @@ a.btn-edit-add-green[disabled] span.add-green-value {
 #cycle-diagram-svg {
     width: 870px;
 }
-
 .cycle-diagram-legend{
-    /*height:0px;*/
+    margin-right:20px;
+}
+
+.cycle-diagram-legend-left{
+    margin-right:20px;
+}
+
+.legend-item-congestion {
+    width:10px;
+    height:16px;
+    background: #ffeeee;
+}
+
+.legend-item-cycle-saturation {
+    width:10px;
+    /*height:6px;*/
+    border-bottom:2px solid #4682b4;
+}
+
+.legend-item-saturation-limit {
+    width:10px;
+    /*height:6px;*/
+    border-bottom:2px solid #ff8b8b;
+}
+
+.legend-item-sum-delay {
+  width:10px;
+  /*height:6px;*/
+  border-bottom:2px solid #999999;
 }
 
 .phases-bars text {
@@ -1186,7 +1213,7 @@ a.btn-edit-add-green[disabled] span.add-green-value {
 
 .table-cycle-graph-legend {
     width:auto;
-    font-size:12px;
+    font-size:11px;
 }
 
 table.table-cycle-graph-legend td {

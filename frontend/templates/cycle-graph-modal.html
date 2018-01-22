@@ -5,10 +5,18 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"><i class="fa fa-bar-chart"></i> <span locale="оptimal-cycletime">Optimal cycle time</span></h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body clearfix">
                 <div class="loader"  id="cycle-diagram-loader"><i class="fa fa-spin fa-spinner"></i> loading ...</div>
                 <div class="cycle-diagram-svg hidden" id="cycle-diagram-svg"></div>
-                <div class="cycle-diagram-legend" id="cycle-diagram-legend"></div>
+                <div class="cycle-diagram-legend-left pull-left" id="cycle-diagram-legend-legend">
+                    <table class="table-cycle-graph-legend"><tbody>
+                        <tr><td><div class="legend-item-congestion"></div></td><td>Число заторных стоп линий</td></tr>
+                        <tr><td><div class="legend-item-cycle-saturation"></div></td><td>Среднея насыщенность цикла по самым насыщенным направлениям </td></tr>
+                        <tr><td><div class="legend-item-saturation-limit"></div></td><td>Граница допустимой насыщенности цикла</td></tr>
+                        <tr><td><div class="legend-item-sum-delay"></div></td><td>Суммарная задержка + задержка перегрузки (HCM 2010)</td></tr>
+                    </tbody></table>
+                </div>
+                <div class="cycle-diagram-legend pull-right" id="cycle-diagram-legend"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" id="btn-cycle-lenght-recalc"><i class="fa fa-refresh"></i> <span locale="refresh">Refresh</span></button>
