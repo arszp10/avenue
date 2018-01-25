@@ -316,7 +316,7 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
         var rightCycleBound = 300;
 
         crossRoad.phases.map(function(phase){
-            phase.length = Math.round(minLengthSum/crossRoad.phases.length);
+            phase.length = phase.minLength;
         });
 
         for(var ct = leftCycleBound; ct <=rightCycleBound; ct = ct + crossRoad.phases.length) {

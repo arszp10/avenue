@@ -10,7 +10,10 @@
     var $addGreenEditableElement;
 
     function heatMapColorforValue(value){
-        var h = (1.0 - value) * 240;
+        var v = value;
+        if (value > 1.37) {v = 1.37}
+        if (value < 0.5) {v = 0.5}
+        var h = (1.0 - v/1.25) * 450;
         return "hsl(" + h + ", 100%, 50%)";
     }
 
@@ -611,7 +614,7 @@
                 .style("stroke", "#ffffff")
                 //.attr('fill-opacity', 0.1)
                 .attr("fill", function(d) {
-                    return heatMapColorforValue(d.saturation/1.6);
+                    return heatMapColorforValue(d.saturation);
                 })
                 .attr('fill-opacity', 1)
                 .style("stroke-width", 1)
