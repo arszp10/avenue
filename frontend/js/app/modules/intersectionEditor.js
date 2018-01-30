@@ -319,6 +319,17 @@
                 cyCrossroad.$().unselect();
                 controls.buttons.btnModelSave.click();
 
+                var crNode = cy.getElementById(crossroad.id);
+                var nodes = crNode.children('node');
+                var edges = nodes.edgesWith(nodes);
+
+                edges.forEach(function(edge){
+                    var isPedesrian = edge.data('pedestrian');
+                    edge.data('speed', isPedesrian
+                        ? crossroad.pedestrianSpeed
+                        : crossroad.vehicleSpeed);
+                });
+
                 var currentRouteInx = routes.getSelected();
                 if (currentRouteInx === false) {
                     return;
@@ -376,23 +387,6 @@
                 program.cycleTime = data.cycleTime;
                 that.fillCrossroadFormData(crossroad);
             });
-
-            controls.buttons.btnResetEdgesSpeeds.click(function(){
-                var crNode = cy.getElementById(crossroad.id);
-                var nodes = crNode.children('node');
-                var edges = nodes.edgesWith(nodes);
-
-                crossroad.vehicleSpeed      = controls.inputs.inputCrossroadVehicleSpeed.val();
-                crossroad.pedestrianSpeed   = controls.inputs.inputCrossroadPedestrianSpeed.val();
-
-                edges.forEach(function(edge){
-                    var isPedesrian = edge.data('pedestrian');
-                    edge.data('speed', isPedesrian
-                        ? crossroad.pedestrianSpeed
-                        : crossroad.vehicleSpeed);
-                })
-            })
-
 
         },
 

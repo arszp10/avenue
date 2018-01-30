@@ -86,7 +86,7 @@ function Flow(options, network)
     this.json = function json() {
         var x = this.sumInFlow/this.sumOutFlow;
         var overSatDelay = 0;
-        if ( x > 1 ) {
+        if ( this.isCongestion ) {
             var ct = this.cycleTime;
             var T = 1;//ct/3600;
             overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 4*x/(T*ct))|0;

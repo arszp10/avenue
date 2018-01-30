@@ -12,7 +12,6 @@
                 return acceptedNodesArray.indexOf(node.type) > -1
             }
         ).reduce(function(pv, cv) {
-            //console.log(pv,cv);
             return {
                 delay               : pv.delay + parseFloat(cv.delay)|0,
                 delayPerHour        : pv.delayPerHour + parseFloat(cv.delayPerHour)|0,

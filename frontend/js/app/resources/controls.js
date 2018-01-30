@@ -157,7 +157,6 @@
             btnCycleLenghtApply:        '#btn-cycle-lenght-apply',
             btnShowIncomingData:        '#btn-show-incoming-data',
             btnRecalcEdgesLengths:      '#btnRecalcEdgesLengths',
-            btnResetEdgesSpeeds:        '#btnResetEdgesSpeeds',
             btnSumIncomingFlow:         '#btn-sum-incoming-flow'
         }
     };
