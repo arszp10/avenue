@@ -863,9 +863,8 @@
                 .removeClass('show-files show-network show-routes show-results show-source show-map show-crossroad')
                 .addClass(tab.data('rel'));
 
-            window.dispatchEvent(new Event('resize'));
+            //window.dispatchEvent(new Event('resize'));
             map.hideWidgets();
-            //условно!!! добавить условие не забыть
             cy.trigger('viewport');
         }
     }
