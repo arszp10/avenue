@@ -81,7 +81,6 @@
 
             controls.buttons.btnDeleteNode.click(function () {
                 //cy.$(':selected').remove();
-
                 var selecteds = cy.$(":selected");
                 cy.ur.do("deleteEles", selecteds);
 
@@ -111,8 +110,6 @@
             controls.buttons.btnUndo.click(function () {
                 cy.undoRedo().undo();
             });
-
-
 
 
             $(document).on('change', 'input.input-incoming-data', function(e){
@@ -863,7 +860,6 @@
                 .removeClass('show-files show-network show-routes show-results show-source show-map show-crossroad')
                 .addClass(tab.data('rel'));
 
-            //window.dispatchEvent(new Event('resize'));
             map.hideWidgets();
             cy.trigger('viewport');
         }

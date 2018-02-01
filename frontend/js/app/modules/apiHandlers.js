@@ -176,6 +176,9 @@
                     });
 
                     cy.add(content);
+                    //var cySize = r.data.position.cySize;
+                    //var cwe = (cy.width()-cySize.width)/2;
+                    //var che = (cy.height()-cySize.height)/2;
                     cy.viewport({
                         zoom: zoom, pan : { x:-1*extent.x1*zoom, y:-1*extent.y1*zoom }
                     });

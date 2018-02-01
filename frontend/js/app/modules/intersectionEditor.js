@@ -1,7 +1,7 @@
 (function(App){
 
     var cy, editor, traffic, routes, api, that;
-    var crossroad, program, stopLines, selectedOptimalCycleData;
+    var crossroad, program, stopLines, allStopLines, selectedOptimalCycleData;
     var cyCrossroad;
     var controls  = App.Controls;
     var templates = App.Templates;
@@ -758,6 +758,8 @@
         showCrossroadModal: function(node){
             crossroad = $.extend({}, JSON.parse(JSON.stringify(settings.crossRoad)), JSON.parse(JSON.stringify(node)));
             stopLines = cy.aveGetCrossroadStoplines(node.id);
+            allStopLines = cy.aveGetCrossroadStoplines(node.id, true);
+
             stopLines.sort(this.stopLineSort);
 
             if (!node.hasOwnProperty('programs')) {
@@ -854,7 +856,7 @@
         addDefaultsToStoplines: function(){
 
             $.each(crossroad.programs, function(inx){
-                $.each(stopLines, function(i, stopline){
+                $.each(allStopLines, function(i, stopline){
                     for (var i = 0; i< maxCountPhases; i++){
                         if (!stopline.data.additionalGreens[inx][i]) {
                             stopline.data.additionalGreens[inx][i] = 0;
@@ -884,7 +886,7 @@
         },
 
         stoplinesAddDefaultArrays:function(){
-            $.each(stopLines, function(i, stopline){
+            $.each(allStopLines, function(i, stopline){
                 stopline.data.additionalGreens.push([0,0]);
                 stopline.data.greenPhases.push([false, false]);
             });
@@ -892,14 +894,14 @@
         },
 
         stoplinesRemoveArrays:function(inx){
-            $.each(stopLines, function(i, stopline){
+            $.each(allStopLines, function(i, stopline){
                 stopline.data.additionalGreens.splice(inx,1);
                 stopline.data.greenPhases.splice(inx,1);
             });
         },
 
         stoplinesOldConvert:function(){
-            $.each(stopLines, function(i, stopline){
+            $.each(allStopLines, function(i, stopline){
                 if (!stopline.data.additionalGreens) {
                     stopline.data.additionalGreens = JSON.parse(JSON.stringify(settings.stopline.additionalGreens));
                 }

@@ -323,6 +323,12 @@
         },
         aveAddNode:function(data, pos){
             var d = $.extend({}, data, {id: this.aveNextId()});
+            //cy.add(
+            //    [{group: "nodes",
+            //        data: d,
+            //        renderedPosition: pos
+            //    }]
+            //);
             cy.ur.do('add', [{group: "nodes",
                 data: d,
                 renderedPosition: pos
@@ -519,13 +525,13 @@
         aveGetSourceEdges : function(id){
             return this.$('edge[source="' + id + '"]');
         },
-        aveGetCrossroadStoplines: function(id) {
+        aveGetCrossroadStoplines: function(id, disableFilter) {
             return this.getElementById(id)
-                       .children('[type="stopline"], [type="pedestrian"]')
-                       .filter(function(ele){
-                            return ele.outgoers('edge').length > 0;
-                       })
-                       .jsons();
+               .children('[type="stopline"], [type="pedestrian"]')
+               .filter(function(ele){
+                    return ele.outgoers('edge').length > 0 || disableFilter == true;
+               })
+               .jsons();
         },
         aveConstantIntensity: function(node){
 
@@ -625,6 +631,10 @@
         },
         aveGetExtents: function(){
             return {
+                cySize: {
+                  width:cy.width(),
+                  height:cy.height()
+                },
                 cyZoom: cy.cyZoom,
                 cyExtent: cy.cyBaseExtent,
                 mapExtent: cy.mapExtent,
@@ -666,24 +676,7 @@
             })
         }
 
-        //aveClearBaseExtent:function(){
-        //    cy.cyZoom = 1;
-        //    cy.cyBaseExtent = false;
-        //    cy.mapExtent    = false;
-        //    cy.mapScale     = false;
-        //    cy.xC = 1;
-        //    cy.yC = 1;
-        //}
-
     };
-
-
-
-
-
-
-
-
 
 
 })(AvenueApp);
