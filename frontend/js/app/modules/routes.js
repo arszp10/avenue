@@ -2,7 +2,9 @@
     var controls  = App.Controls;
     var cy, traffic, intersectionEditor;
     var that;
-    var showVehicleTraces = false;
+    var showVehicleTraces = [];
+        showVehicleTraces['forward'] = false;
+        showVehicleTraces['back'] = false;
     var svgMargin = {top: 50, right: 200, bottom: 50, left: 50};
     var routeDirections = ['forward', 'back'];
     var minScale = 0.2;
@@ -178,6 +180,22 @@
         });
     }
 
+    function btnShowVehicleTraces(button, direction){
+        var icon = button.find('i.fa-ban');
+        button.toggleClass('active');
+        if (button.hasClass('active')){
+            icon.addClass('hidden');
+            showVehicleTraces[direction] = true;
+        } else {
+            icon.removeClass('hidden');
+            showVehicleTraces[direction] = false;
+        }
+        if (showVehicleTraces[direction]) {
+            controls.buttons.btnCalc.click();
+        } else {
+            that.refreshSelectedRoute();
+        }
+    }
 
     App.Modules.routes = {
 
@@ -207,25 +225,14 @@
                 that.drawRoute(route);
             });
 
-
-            controls.buttons.btnShowVehicleTraces.click(function () {
-                var button = $(this);
-                var icon = button.find('i.fa-ban');
-                button.toggleClass('active');
-                if (button.hasClass('active')){
-                    icon.addClass('hidden');
-                    showVehicleTraces = true;
-                } else {
-                    icon.removeClass('hidden');
-                    showVehicleTraces = false;
-
-                }
-                if (showVehicleTraces) {
-                    controls.buttons.btnCalc.click();
-                } else {
-                    that.refreshSelectedRoute();
-                }
+            controls.buttons.btnShowVehicleTracesForward.click(function () {
+                btnShowVehicleTraces($(this),'forward');
             });
+
+            controls.buttons.btnShowVehicleTracesBack.click(function () {
+                btnShowVehicleTraces($(this),'back');
+            });
+
         },
 
         refreshSelectedRoute: function(){
@@ -375,7 +382,7 @@
                         return val.id == stopline.id;
                     });
 
-                    if (showVehicleTraces && slNodeSimResult.length > 0) {
+                    if (showVehicleTraces[direction] && slNodeSimResult.length > 0) {
 
                         var cycleTime = program.cycleTime * 5;
                         var slot = 6;
@@ -547,9 +554,11 @@
 
             route.points.map(function(v){
                 lrange.push(y(v.forwardGeoOffset - 6));
-                lrange.push(y(v.backGeoOffset - 6));
                 llabels.push(v.forward.tag);
-                llabels.push(v.back.tag);
+                if (v.back) {
+                    lrange.push(y(v.backGeoOffset - 6));
+                    llabels.push(v.back.tag);
+                }
             });
 
             lrange.unshift(totalRouteLenght * route.scale  - 100);
@@ -595,18 +604,19 @@
 
             // Draw green-lines
             routeDirections.forEach(function(direction) {
-                this.greenLine(cycleTime, route, direction, function (points) {
-                    svg.append("polygon")
-                        .attr("class", "green-line") // attach a polygon
-                        .attr("stroke", "black")
-                        .style("opacity", .1)
-                        .attr("fill", direction == 'forward' ? "green" : "blue")
-                        .attr("points", x(points[0].x) + "," + y(points[0].y) + ", "
-                        + x(points[1].x) + "," + y(points[1].y) + ", "
-                        + x(points[2].x) + "," + y(points[2].y) + ", "
-                        + x(points[3].x) + "," + y(points[3].y));  // x,y points
-                });
-
+                if (showVehicleTraces[direction] || (!showVehicleTraces['forward']&&!showVehicleTraces['back'])) {
+                    this.greenLine(cycleTime, route, direction, function (points) {
+                        svg.append("polygon")
+                            .attr("class", "green-line") // attach a polygon
+                            .attr("stroke", "black")
+                            .style("opacity", showVehicleTraces[direction] ? 0.05 : .1)
+                            .attr("fill", direction == 'forward' ? "green" : "blue")
+                            .attr("points", x(points[0].x) + "," + y(points[0].y) + ", "
+                            + x(points[1].x) + "," + y(points[1].y) + ", "
+                            + x(points[2].x) + "," + y(points[2].y) + ", "
+                            + x(points[3].x) + "," + y(points[3].y));  // x,y points
+                    });
+                }
                 this.virtualTracks(route, direction, function (traces, y0){
 
                     var line = d3.svg.line()
@@ -623,7 +633,7 @@
                             .datum(trace)
                             .attr('class', 'line')
                             .attr("fill", "none")
-                            .attr("stroke", direction == 'forward' ? "#8ead8e" : "#8d8db1")
+                            .attr("stroke", direction == 'forward' ? "#246726" : "#8094dc")
                             .attr("stroke-width", "1px")
                             .attr('d', line);
                     });
@@ -662,14 +672,11 @@
                     var program = crossroad.programs[crossroad.currentProgram];
                     var o = program.offset;
                     var cycleTime = program.cycleTime;
-                    //var newOffset = (o + x(stop-start) + cycleTime) % cycleTime;
-                    //console.log(o, x(stop-start), cycleTime);
                     var newOffset = (o + Math.round(cycleTime*(stop-start)/ x(cycleTime)) + cycleTime) % cycleTime;
                     program.offset = newOffset;
-                    //cy.getElementById(pointId).data('offset', newOffset);
 
                     // redraw graphic on dragend event
-                    if (showVehicleTraces) {
+                    if (showVehicleTraces['forward']||showVehicleTraces['back']) {
                         controls.buttons.btnCalc.click();
                     } else {
                         that.refreshSelectedRoute();
@@ -682,6 +689,7 @@
                 .data(route.points).enter().append("g")
                 .attr("class", function(d) { return 'bar ' + 'bar-' + d.id})
                 .attr("x", 0)
+                .attr("opacity",showVehicleTraces['forward']||showVehicleTraces['back'] ? "0.3" : "1")
                 .attr("transform", function(d) { return "translate(0," + y(d.forwardGeoOffset ) + ")"; })
                 .call(drag)
                 .on("mouseenter", function(){ d3.select(this).attr("cursor","pointer"); })

@@ -174,7 +174,8 @@
             'ped-speed'             : 'Ped. speed',
             'оptimal-cycletime'     : 'Optimal cycle length & splits',
             'оptimal-cycle-length'  : 'Cycle length & splits',
-            'refresh'               : 'Refresh'
+            'refresh'               : 'Refresh',
+            'show-vehicle-traces'   : "Show vehicles traces"
 
         },
 
@@ -348,7 +349,8 @@
             'ped-speed'             : 'Скор. пешеходов',
             'оptimal-cycletime'     : 'Расчет оптимальной длительности цикла',
             'оptimal-cycle-length'  : 'Длительность цикла и фаз',
-            'refresh'               : 'Обновить'
+            'refresh'               : 'Обновить',
+            'show-vehicle-traces'   : 'Показывать треки автомобилей'
 
         }
 

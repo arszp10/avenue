@@ -303,109 +303,83 @@
             return result;
         },
 
-        queueInOutProfilesinVeh: function(cycleTime, slot, distance, outFlow, capacityPerSecond){
-            var queueOut = [];
-            var queueOutStop = [];
-            var startX = 0;
-
-            for (var x = 0; x < cycleTime; x++){
-                queueOutStop.push(outFlow[x] == 0);
-            }
-
-            for (var x = 0; x < cycleTime; x++){
-                if (outFlow[x-1] == 0 && outFlow[x] > 0){
-                    startX = x;
-                    var sum = 0;
-                    for (var i = startX; i < cycleTime; i++){
-                        sum += capacityPerSecond;
-                        queueOut.push({x:i, y:Math.floor(sum)});
-                        if (sum >= distance*slot) break;
-                    }
-                } else if (queueOutStop[x]){
-                    //queueOut.push({x:x, y:0});
-                }
-            }
-            return {
-                queueOutStop: queueOutStop,
-                queueOut: queueOut
-            };
-        },
-
-
         traces: function(cycleTime, slot, distance, speed0, slOutFlow, slInFlow, capacityPerSecond){
+            var alfa = capacityPerSecond < 0.5 ? 0.5 : capacityPerSecond;
+            var beta = capacityPerSecond < 1 ? capacityPerSecond * 1.14 : capacityPerSecond* 0.86;
+                beta = capacityPerSecond == 1 ? 1 :beta;
+            slot = Math.round(slot/(alfa*2));
 
             var startXarray  = this.tracesExtremePoints(slInFlow);
-
-            var queueProfile = this.queueInOutProfilesinVeh(cycleTime, slot, distance, slOutFlow, capacityPerSecond);
-            var queueOutStop = queueProfile.queueOutStop;
-            var queueOut     = queueProfile.queueOut;
-            //var queueInMeters  = queueOutStop.map(function(val){ return distance - slot * val;});
-            //var queueOutMeters = queueOut.map(function(val){ return {x:val.x, y:distance - slot * val.y};});
+            var queueOutStop = [];
+            for (var x = 0; x < cycleTime; x++){
+                queueOutStop.push(slOutFlow[x] == 0);
+            }
 
             var queue = new Array(cycleTime).fill(0);
-            var traces = startXarray.map(function(startX, inxxx){
-                startX = startX - Math.round(distance/speed0);
-                var trace = [];
-                var x = 0, y = 0, exit = 0, j = 0;
 
-                var speed = speed0;
+            var traces = startXarray.map(function(startX){
+                var trace = [];
+                var x = 0, y = 0, exit = 0;
+                var speed = speed0; // m/s
                 var moved = true;
+                startX = startX - Math.round(distance/speed0);
+
                 trace.push({x:startX, y:0});
                 for (x = startX + 1; x < cycleTime; x++) {
                     if (y >= distance) {
                         return trace;
                     }
 
-                    if (moved){
-                        if (y + speed > distance - slot*(queue[x]) || (queueOutStop[x] && y + speed >= distance)){
-                            y = distance - slot*(queue[x]);
-                            if (y <= 0) {
-                                return trace;
-                            }
-                            moved = false;
-
-                            if (queue[x] == 0) {
-                                    exit = x;
-                                for(var j = x; j< cycleTime; j++){
-                                    if (!queueOutStop[j]) {
-                                        exit = j;
-                                        break;
-                                    }
-                                }
-                            } else {
-                                exit = x;
-                                for(var j = 0; j < queueOut.length-1; j++){
-                                    var condition = capacityPerSecond > 1
-                                        ? queueOut[j].y >= queue[x] && queue[x] < queueOut[j+1].y && queueOut[j].x >= x
-                                        : queueOut[j].y == queue[x] && queueOut[j].x >= x;
-
-                                    if (condition) {
-                                        exit = queueOut[j].x;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            var delta = queue[x-1] + 1 == queue[x] ? 2 : 1;
-
-                            for(var j=x ; j< exit; j++){
-                                queue[j] = queue[x-1] + delta;
-                            }
-
-                            trace.push({x:x,y:y});
-                            continue;
-
-                        } else {
-                            y = y + speed;
-                        }
-
-                    }
                     if (!moved){
                         if (x >= exit) {
                             moved = true;
                             speed = speed0;
                         }
+                        trace.push({x:x,y:y});
+                        continue;
                     }
+
+                    //moved == true
+
+                    if (y + speed >= distance - slot*(queue[x]) || (queueOutStop[x] && y + speed >= distance)){
+                        y = distance - slot*(queue[x]);
+                        if (y <= 0) {
+                            return trace;
+                        }
+                        moved = false;
+
+                        if (!queueOutStop[x]) {
+                            exit = x;
+                            for(var j = x; j > 0; j--){
+                                if (queueOutStop[j]) {
+                                    exit = j + Math.round((queue[x])/beta) - 1;
+                                    break;
+                                }
+                            }
+                        } else {
+                            exit = x;
+                            for(var j = x; j < cycleTime; j++){
+                                if (queue[x] > queue[j-1]) {
+                                    exit = j;
+                                    break;
+                                } else if (!queueOutStop[j]) {
+                                    exit = j + Math.round((queue[x])/beta) - 1 ;
+                                    break;
+                                }
+                            }
+                        }
+
+                        for(var j = x ; j < exit; j++){
+                            queue[j] = queue[x-1] + 1;
+                        }
+
+                        trace.push({x:x,y:y});
+                        continue;
+
+                    } else {
+                        y = y + speed;
+                    }
+
                     trace.push({x:x,y:y});
                 }
                 return trace;

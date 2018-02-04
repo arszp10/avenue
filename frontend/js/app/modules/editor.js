@@ -860,6 +860,9 @@
                 .removeClass('show-files show-network show-routes show-results show-source show-map show-crossroad')
                 .addClass(tab.data('rel'));
 
+            if (!App.State.currentModel.anchored) {
+                window.dispatchEvent(new Event('resize'));
+            }
             map.hideWidgets();
             cy.trigger('viewport');
         }

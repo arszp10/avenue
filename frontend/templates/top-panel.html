@@ -80,15 +80,32 @@
                             </li>
                         </ul>
                     </div>
+                </form>
+
+                <form class="visible-routes navbar-form navbar-left" role="search">
                     <button type="button"
                             title="show-vehicle-traces"
-                            class="btn btn-inverse visible-routes" id="btn-show-vehicle-traces">
+                            class="btn btn-inverse" id="btn-show-vehicle-traces-forward">
                         <span class="fa-stack fa-sm">
                           <i class="fa fa-car"></i>
+                          <i class="fa fa-long-arrow-up"></i>
                           <i class="fa fa-ban fa-stack-1x text-danger"></i>
                         </span>
                     </button>
+
+                    <button type="button"
+                            title="show-vehicle-traces"
+                            class="btn btn-inverse" id="btn-show-vehicle-traces-back">
+                        <span class="fa-stack fa-sm">
+                          <i class="fa fa-car"></i>
+                          <i class="fa fa-long-arrow-down"></i>
+                          <i class="fa fa-ban fa-stack-1x text-danger"></i>
+                        </span>
+                    </button>
+
                 </form>
+
+
                 <form class="visible-network navbar-form navbar-left" role="search">
                     <button type="button"
                         title="show-map-in-background"

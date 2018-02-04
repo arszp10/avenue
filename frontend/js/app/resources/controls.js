@@ -144,6 +144,8 @@
             btnArcgisSetExtent:         '#btn-arcgis-set-extent',
             btnArcgisSwitch:            '#btn-arcgis-switch',
             btnShowVehicleTraces:       '#btn-show-vehicle-traces',
+            btnShowVehicleTracesForward:'#btn-show-vehicle-traces-forward',
+            btnShowVehicleTracesBack:   '#btn-show-vehicle-traces-back',
             btnRemovePhasesOrder:       '#btnRemovePhasesOrder',
             btnCreatePhaseOrder:        '#btnCreatePhaseOrder',
             btnCreateProgram:           '#btnCreateProgram',
