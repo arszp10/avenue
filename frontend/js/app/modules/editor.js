@@ -498,7 +498,7 @@
             controls.buttons.btnsDirection.on('click', function () {
                 var id = controls.panels.pointProperty.data('node');
                 var icon = window.getComputedStyle($('i', this)[0], ':before').getPropertyValue('content');
-                cy.getElementById(id).data('icon', icon.substring(1, 2));
+                cy.getElementById(id).data('icon', icon.replace(/[^a-zA-Z]+/g, ''));
             });
             controls.buttons.btnNodeColorSelection.on('changeColor', function (e, color) {
                 $(this)
