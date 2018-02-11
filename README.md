@@ -61,4 +61,4 @@ http://localhost:9000
 ```
 
 
-<img src="https://github.com/kuzinmv/avenue/raw/master/frontend/img/landing/avenue-prev.gif" alt="Avenue-2.0.intro" style="width: 800px;">
+
