@@ -109,7 +109,9 @@ function Flow(options, network)
             overSaturationDelay: overSatDelay,
             greenSaturation: this.greenSaturation,
             sumInFlow: this.sumInFlow,
-            sumOutFlow: this.sumOutFlow
+            sumOutFlow: this.sumOutFlow,
+            phasesSaturation: this.hasOwnProperty('phasesSaturation') ? this.phasesSaturation : false,
+            phasesSaturationSecondary: this.hasOwnProperty('phasesSaturationSecondary') ? this.phasesSaturationSecondary : false
         }
     };
 
@@ -194,8 +196,48 @@ function Flow(options, network)
                 last.length += first.length;
             }
         }
-    }
+    };
 
+
+    this.isGreenMoment = function(t){
+        for (var i = 0; i < this.intervals.length; i++){
+            if (t >= this.intervals[i].s && t < this.intervals[i].f) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    this.phaseSaturation = function (flow) {
+        if (! this.parent) {
+            return;
+        }
+        var that = this;
+        var crossRoad = this.network.getNode(this.parent);
+        var phaseOffset = 0;
+        var flowOrder = flow ? 'phasesSaturationSecondary': 'phasesSaturation';
+
+        that[flowOrder] = [];
+        that[flowOrder].fillArray(crossRoad.phases.length, 0);
+        crossRoad.phases.map(function(phase, inx){
+
+            var fq = (phaseOffset - 1 + crossRoad.offset + that.cycleTime) % that.cycleTime;
+            var queue = that.queueFunc[fq];
+
+            var sumInPhase = 0;
+            var effectiveGreen = 0;
+            for (var i = 0; i < phase.length; i++){
+                var iq = (phaseOffset + i + crossRoad.offset) % that.cycleTime;
+                sumInPhase += that.inFlow[iq];
+                if (that.isGreenMoment(iq)) {
+                    effectiveGreen++;
+                }
+            }
+            var saturation = (queue + sumInPhase)/(effectiveGreen * that.capacityPerSecond);
+            that[flowOrder][inx] = saturation;
+            phaseOffset += phase.length;
+        });
+    };
 
 }
 

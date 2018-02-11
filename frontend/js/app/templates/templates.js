@@ -96,6 +96,25 @@
                 '</table>';
         },
 
+
+        phasesButtons:function(node){
+            var s = '';
+            var program = node.programs[node.currentProgram];
+            var order = program.phasesOrders[program.currentOrder];
+            var phCount = order.order.length;
+            for (var j = 0; j < phCount; j++) {
+                var i = order.order[j] - 1;
+                s = s + '<button class="btn btn-default btn-get-green-phase" data-phase="' + order.order[j] + '">' +
+                    //'<span class="fa-stack fa-sm">'+
+                    //    '<i class="fa fa-long-arrow-up text-success"></i>'+
+                    //    '<i class="fa fa-arrows-h fa-stack-1x text-success"></i>'+
+                    //'</span>' +
+                    program.phases[i].tag+'</button>&nbsp;';
+            }
+            return '<hr><div>' + s + '</div>';
+        },
+
+
         signalBar : function(data, cls){
             var w = 0.5;
             var className = cls == undefined ? '' : cls;

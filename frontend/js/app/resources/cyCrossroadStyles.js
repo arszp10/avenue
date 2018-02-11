@@ -91,12 +91,14 @@
         {
             selector: 'edge.green',
             css: {
+                'arrow-scale': 0.8,
                 'line-style': 'solid',
-                'width': 8,
-                'line-color': '#4caf50', //'#2e6da4',
-                'target-arrow-color': '#4caf50', //'#2e6da4',
+                'width': 'data(flowWidth)',
+                'line-color': 'data(hmcv)',//,'#4caf50', //'#2e6da4',
+                'target-arrow-color': 'data(hmcv)',//'#4caf50', //'#2e6da4',
+                'target-arrow-shape': 'triangle',
                 'color': '#fff',
-                'text-outline-color': '#4caf50', //'#2e6da4'
+                'text-outline-color': 'data(hmcv)',//'#4caf50', //'#2e6da4'
                 'min-zoomed-font-size':'8px',
                 'text-outline-width': 2,
                 'opacity':1

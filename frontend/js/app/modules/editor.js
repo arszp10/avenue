@@ -237,6 +237,8 @@
                 $icon.removeClass('fa-save');
 
                 cy.aveSetBaseExtent();
+                cy.$().removeClass('green');
+
                 api.saveModel(App.State.modelId, {
                     data: {
                         content: cy.elements().jsons(),
@@ -385,6 +387,14 @@
                     $(this).data('id')).data()
                 );
             });
+
+            $(document).on('click', 'button.btn-get-green-phase', function(e){
+                var phase  = $(this).data('phase');
+                var selected = cy.$('node[type="crossRoad"]:selected');
+                var stoplines = cy.aveGetCrossroadStoplines(selected.data('id'));
+                intersectionEditor.drawGreenFlows(cy, stoplines, phase, selected.data());
+            });
+
 
             controls.buttons.btnCloseRightPanel.click(function () {
                 controls.panels.body.toggleClass('show-right-panel');
@@ -564,7 +574,7 @@
             });
 
         },
-       
+
 
         parseIntOrPercent: function(value){
             var lastChar = value.slice(-1);
@@ -754,6 +764,9 @@
 
                 controls.panels.nodeSearchInfo.append(
                     templates.locateEditButtons(node)
+                );
+                controls.panels.nodeSearchInfo.append(
+                    templates.phasesButtons(node)
                 );
                 return;
             }

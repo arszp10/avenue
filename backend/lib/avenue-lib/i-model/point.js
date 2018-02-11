@@ -7,6 +7,7 @@ function Point(options, network){
     this.calc = function (){
         var hasOverflow = this.initInFlow();
         this.copyFlow();
+        this.phaseSaturation();
     };
 
 }

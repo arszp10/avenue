@@ -7,6 +7,8 @@ function CrossRoad(options){
     this.id = options.id;
     this.phases = options.phases.map(function(ph){
         ph.saturation = 0;
+        ph.stoplineId = false;
+        ph.weight = 1;
         return ph;
     });
 

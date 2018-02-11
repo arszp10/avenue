@@ -88,9 +88,23 @@
                 'color': '#ffffff'
             }
         },
+
+        {
+            selector: 'node.green',
+            css: {
+                'content': 'data(icon)',
+                'background-color': '#4caf50',
+                'border-color': '#ffffff',
+                'color': '#ffffff',
+                'border-width': 2
+            }
+        },
+
         {
             selector: 'node[type="crossRoad"]',
             css: {
+                'background-opacity': 0.3,
+                'background-color': '#000',
                 'font-family': 'Arial',
                 'font-size': '14px'
             }
@@ -99,10 +113,11 @@
         {
             selector: 'node[type="crossRoad"]:selected',
             css: {
-                'background-color': '#2e6da4',
-                'border-color': '#ffffff',
+
+                'background-color': '#000',
+                'border-color': '#2e6da4',
                 'color': '#ffffff',
-                'border-width': 2
+                'border-width': 5
             }
         },
         {
@@ -151,7 +166,7 @@
                 'width': 20,
                 'line-style': 'dashed',
                 'text-outline-color': '#999999',
-                'line-color': '#ffffff'
+                'line-color': '#999999'
             }
         },
 
@@ -237,6 +252,43 @@
                 'target-arrow-color': 'red',
                 'source-arrow-color': 'red'
             }
+        },
+
+        {
+            selector: 'edge.green',
+            css: {
+                'arrow-scale': 0.8,
+                'line-style': 'solid',
+                'width': 'data(flowWidth)',
+                'line-color': 'data(hmcv)',//,'#4caf50', //'#2e6da4',
+                'target-arrow-color': 'data(hmcv)',//'#4caf50', //'#2e6da4',
+                'target-arrow-shape': 'triangle',
+                'color': '#fff',
+                'text-outline-color': 'data(hmcv)',//'#4caf50', //'#2e6da4'
+                'min-zoomed-font-size':'8px',
+                'text-outline-width': 2,
+                'opacity':1
+            }
+        },
+
+        {
+            selector: 'edge[pedestrian].green',
+            css: {
+                'arrow-scale': 0.2,
+                'width': 20,
+                'line-style': 'dashed',
+                'target-arrow-color': '#4caf50',
+                'color': '#fff',
+                'text-outline-color': '#4caf50', //'#2e6da4'
+                'line-color': '#4caf50'
+            }
+        },
+        {
+            selector: 'edge[secondary].green',
+            css: {
+                'line-style': 'dashed'
+            }
         }
+
     ];
 })(AvenueApp.Resources);

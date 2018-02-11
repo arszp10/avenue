@@ -13,8 +13,12 @@
         var v = value;
         if (value > 1.37) {v = 1.37}
         if (value < 0.5) {v = 0.5}
-        var h = (1.0 - v/1.25) * 450;
-        return "hsl(" + h + ", 100%, 50%)";
+        //var h = (1.0 - v/1.25) * 450;
+        //return "hsl(" + h + ", 100%, 50%)";
+        var l  = 80 - Math.round((v - 1.37)*(0 - 80)/(0.5 - 1.37) + 80);
+        var s = 80 - Math.round(l/2);
+        return "hsl(110, " + s + "%, " + l + "%)";
+
     }
 
 
@@ -162,7 +166,7 @@
                 });
 
                 that.renderDiagramTable(program);
-                that.drawGreenFlows(phase);
+                that.drawGreenFlows(cyCrossroad,stopLines, phase, crossroad);
             });
 
 
@@ -176,7 +180,7 @@
             controls.panels.crossRoadPanel.on('focus', '.ph-td input[type="text"]', function(e){
                 var inp = $(this);
                 var phase = inp.data('phase');
-                that.drawGreenFlows(phase);
+                that.drawGreenFlows(cyCrossroad, stopLines, phase, crossroad);
 
             });
 
@@ -790,9 +794,9 @@
 
         },
 
-        getGreenStoplines:function(phaseNum){
-            return stopLines.filter(function(stopline){
-                return stopline.data.greenPhases[crossroad.currentProgram][phaseNum - 1] && true;
+        getGreenStoplines:function(stoplines, phaseNum, currentProgram){
+            return stoplines.filter(function(stopline){
+                return stopline.data.greenPhases[currentProgram][phaseNum - 1] && true;
 
             }).map(function(stopline){
                 return stopline.data.id
@@ -801,26 +805,63 @@
         },
 
 
-        drawGreenFlows:function(phase){
-            cyCrossroad.$().removeClass('green');
-            var stoplineIds = that.getGreenStoplines(phase);
+        drawGreenFlows:function(cy, stoplines, phase, crossroad){
+            cy.$().removeClass('green');
+
+            var stoplineIds = this.getGreenStoplines(stoplines, phase, crossroad.currentProgram);
+            var crossRoadNode =  cy.getElementById(crossroad.id);
+            var isSingleCrossroad = crossRoadNode.empty();
+            var allNodes = !isSingleCrossroad ? crossRoadNode.children('node') : cy.$('node');
+            var max = allNodes.max(function(el){
+                return el.data('avgIntensity');
+            });
+
+            var minFlow = 0;
+            var maxFlow = max.value;
 
             var getEdgeType = function(edge){
                 return edge.data('secondary') ? 'secondary' : 'primary';
             };
 
             var markGreen = function(node, edgeType){
+                var width = 8;
+                var paseSaturationNode = 0.88;
+
+                var results = App.State.lastModelingResult.filter(function(val){
+                    return val.id == node.data('id');
+                });
+
+                if (results.length > 0 && results[0].phasesSaturation) {
+                    paseSaturationNode = results[0].phasesSaturation[phase - 1];
+                }
+
                 var edges = node.outgoers('edge');
                 node.addClass('green');
                 edges.forEach(function(edge, inx){
+                    var target = edge.target();
+                    if (!target.data('parent') && !isSingleCrossroad) {
+                        return;
+                    }
                     if (!edgeType || getEdgeType(edge) == edgeType ) {
+                        var portion = new String(edge.data('portion'));
+                        var flowValue = portion;
+                        if (portion.indexOf('%') > 0) {
+                            flowValue = Math.round(node.data('avgIntensity') * parseInt(portion)/100);
+                        } else {
+                            flowValue = parseInt(portion)|0;
+                        }
+                        var width = flowValue * (40 - 0)/(maxFlow - minFlow);
+                            width = width < 3 ? 3 : width;
+
                         edge.addClass('green');
-                        var target = edge.target();
+                        edge.data('flowWidth', width);
+                        edge.data('hmcv', heatMapColorforValue(paseSaturationNode));
+
                         if (!(target.data('type') == 'stopline' || target.data('type') == 'pedestrian')) {
                             target.addClass('green');
                             var eType = target.data('type') == 'concurrentMerge'
                                 ? false
-                                : getEdgeType(edge)
+                                : getEdgeType(edge);
                             markGreen(target, eType);
                         }
                     }
@@ -831,7 +872,7 @@
             controls.panels.tblDiagramsBody.find('.stop-line-diagram-row').removeClass('green-selected');
             controls.panels.tblPhasesBody.find('.stop-line-row').removeClass('green-selected');
             stoplineIds.map(function(slId){
-                markGreen(cyCrossroad.getElementById(slId));
+                markGreen(cy.getElementById(slId));
                 controls.panels.tblDiagramsBody.find('[data-id="'+slId+'"]').addClass('green-selected');
                 controls.panels.tblPhasesBody.find('[data-id="'+slId+'"]').addClass('green-selected');
             });

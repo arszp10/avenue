@@ -25,7 +25,7 @@ module.exports = function() {
             total += this[i];
         }
         return total;
-    }
+    };
 
     Array.prototype.minIndex3 = function () {
         var a = this;

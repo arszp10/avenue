@@ -7,6 +7,7 @@ function BottleNeck(options, network){
     this.calc = function (){
         var hasOverflow = this.initInFlow();
         model.bottleNeck(this);
+        this.phaseSaturation();
     };
 
 }

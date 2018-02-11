@@ -16,6 +16,7 @@
         if(e.target !== cy) {
             return
         }
+        cy.$().removeClass('green');
         if (App.State.clickMode == 'select-mode' || App.State.clickMode == 'pan-mode') {
             return true;
         }

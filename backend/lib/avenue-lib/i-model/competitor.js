@@ -39,6 +39,11 @@ function Competitor(options, network){
         this.primary.initInFlow();
         this.primary.copyFlow();
         model.competitor(this.primary, this);
+        this.phaseSaturation('secondary');
+        this.primary.phaseSaturation();
+
+        this.phasesSaturation = this.primary.phasesSaturation;
+
     };
 
 }

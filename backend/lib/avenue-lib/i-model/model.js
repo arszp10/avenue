@@ -39,7 +39,7 @@ module.exports = {
         var rTime = currInterval.length;
         var t               = 0;
         var delay           = 0;
-        var sumInFlow       = 0;
+        var sumInFlow       = queue;
         var sumOutFlow      = 0;
         var sumGreenFlow    = 0;
         var sumGreenCpacity = 0;
@@ -134,7 +134,7 @@ module.exports = {
         var queue               = queueTail == undefined ? 0 : queueTail;
         var delay       = 0;
         var lt          = 0;
-        var sumInFlow   = 0;
+        var sumInFlow   = queue;
         var sumOutFlow  = 0;
         var maxQueueLength = 0;
 

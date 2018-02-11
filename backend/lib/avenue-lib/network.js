@@ -74,6 +74,7 @@ function Network(request) {
     _.forEach(network, function(node){
         if ((node.type == 'stopline' || node.type == 'pedestrian' ) && node.hasOwnProperty('parent')) {
             node.intervals = traffic.redIntervals(node, that.getNode(node.parent));
+            node.redGreenArray = traffic.redIntervals(node, that.getNode(node.parent));
             if (!that.crStopLines.hasOwnProperty(node.parent)) {
                 that.crStopLines[node.parent] = [node.id];
             } else {
@@ -252,7 +253,9 @@ Network.prototype.phasesSaturationStat = function(crossRoad){
 
     crossRoad.phases.map(function(phase, inx){
         if (phase.length != phase.minLength){
-            notMinLenCtnr++;
+            if (phase.saturation > 0) {
+                notMinLenCtnr++;
+            }
             notMinLenSaturation += phase.saturation;
             if (phase.saturation > maxSaturation) {
                 maxSaturation = phase.saturation;
@@ -327,7 +330,7 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
             that.simulate(1);
             var avgSaturationPrev = 0;
 
-            for (var t = 0; t <= 50; t++) {
+            for (var t = 0; t <= 25; t++) {
                 var deltaR = 1;
                 var s = that.phasesSaturationStat(crossRoad);
 
@@ -348,7 +351,7 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
                 var node = that.getNode(id);
                 var x = node.sumInFlow/node.sumOutFlow;
                 var overSatDelay = 0;
-                if ( x > 1 ) {
+                if ( node.isCongestion ) {
                     //var T = 10/ct;
                     //overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 8*0.5*0.9*x/(T*ct))|0;
                     var T = 1;//ct/3600;
