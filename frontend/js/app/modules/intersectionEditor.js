@@ -9,16 +9,21 @@
     var maxCountPhases = 12;
     var $addGreenEditableElement;
 
-    function heatMapColorforValue(value){
+    function heatMapColorforValue1(value){
         var v = value;
         if (value > 1.37) {v = 1.37}
         if (value < 0.5) {v = 0.5}
-        //var h = (1.0 - v/1.25) * 450;
-        //return "hsl(" + h + ", 100%, 50%)";
-        var l  = 80 - Math.round((v - 1.37)*(0 - 80)/(0.5 - 1.37) + 80);
+        var h = (1.0 - v/1.25) * 450;
+        return "hsl(" + h + ", 100%, 50%)";
+    }
+
+    function heatMapColorforValue2(value){
+        var v = value;
+        if (value > 1.37) {v = 1.37}
+        if (value < 0.5) {v = 0.5}
+        var l  = 75 - Math.round((v - 1.37)*(0 - 75)/(0.5 - 1.37) + 75);
         var s = 80 - Math.round(l/2);
         return "hsl(110, " + s + "%, " + l + "%)";
-
     }
 
 
@@ -612,7 +617,7 @@
                 .style("stroke", "#ffffff")
                 //.attr('fill-opacity', 0.1)
                 .attr("fill", function(d) {
-                    return heatMapColorforValue(d.saturation);
+                    return heatMapColorforValue1(d.saturation);
                 })
                 .attr('fill-opacity', 1)
                 .style("stroke-width", 1)
@@ -843,19 +848,29 @@
                         return;
                     }
                     if (!edgeType || getEdgeType(edge) == edgeType ) {
-                        var portion = new String(edge.data('portion'));
-                        var flowValue = portion;
-                        if (portion.indexOf('%') > 0) {
-                            flowValue = Math.round(node.data('avgIntensity') * parseInt(portion)/100);
-                        } else {
-                            flowValue = parseInt(portion)|0;
-                        }
-                        var width = flowValue * (40 - 0)/(maxFlow - minFlow);
-                            width = width < 3 ? 3 : width;
 
                         edge.addClass('green');
-                        edge.data('flowWidth', width);
-                        edge.data('hmcv', heatMapColorforValue(paseSaturationNode));
+                        if (node.data('type') == 'concurrent') {
+                            var selector = edgeType == 'secondary'
+                                ? 'edge[secondary]'
+                                : 'edge[^secondary]';
+                            var data = node.incomers(selector).data();
+                            edge.data('flowWidth', data['flowWidth']);
+                            edge.data('hmcv', data['hmcv']);
+
+                        } else {
+                            var portion = new String(edge.data('portion'));
+                            var flowValue = portion;
+                            if (portion.indexOf('%') > 0) {
+                                flowValue = Math.round(node.data('avgIntensity') * parseInt(portion)/100);
+                            } else {
+                                flowValue = parseInt(portion)|0;
+                            }
+                            width = flowValue * (40 - 0)/(maxFlow - minFlow);
+                            width = width < 3 ? 3 : width;
+                            edge.data('flowWidth', width);
+                            edge.data('hmcv', heatMapColorforValue2(paseSaturationNode));
+                        }
 
                         if (!(target.data('type') == 'stopline' || target.data('type') == 'pedestrian')) {
                             target.addClass('green');

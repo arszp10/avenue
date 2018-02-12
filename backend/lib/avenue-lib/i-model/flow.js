@@ -225,13 +225,10 @@ function Flow(options, network)
             var queue = that.queueFunc[fq];
 
             var sumInPhase = 0;
-            var effectiveGreen = 0;
+            var effectiveGreen = phase.length;
             for (var i = 0; i < phase.length; i++){
                 var iq = (phaseOffset + i + crossRoad.offset) % that.cycleTime;
                 sumInPhase += that.inFlow[iq];
-                if (that.isGreenMoment(iq)) {
-                    effectiveGreen++;
-                }
             }
             var saturation = (queue + sumInPhase)/(effectiveGreen * that.capacityPerSecond);
             that[flowOrder][inx] = saturation;

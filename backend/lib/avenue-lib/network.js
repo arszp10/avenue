@@ -45,7 +45,7 @@ function Network(request) {
                 newCarriageway.avgIntensity = edge.portion == 0 ? target.avgIntensity : edge.portion;
                 newCarriageway.capacity = target.capacity;
                 newCarriageway.cycleTime = target.cycleTime;
-                newCarriageway.dispersion = edge.hasOwnProperty('pedestrian') ? 0.1 : 0.5;
+                newCarriageway.dispersion = edge.hasOwnProperty('pedestrian') ? 0.005 : 0.5;
                 newCarriageway.length = edge.distance;
                 newCarriageway.routeTime = Math.round(edge.distance/vms);
 
