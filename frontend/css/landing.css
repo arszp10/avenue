@@ -235,9 +235,9 @@ a.feature-button:hover {
 }
 
 .iframe-border {
-    border-radius: 30px;
+    border-radius: 16px;
     overflow: hidden;
-    border: 15px solid rgba(212, 189, 177, 0.37);
+    border: 5px solid rgba(212, 189, 177, 0.37);
 }
 
 .header-section .form-group {
