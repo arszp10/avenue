@@ -548,13 +548,8 @@
                 var id = controls.panels.pointProperty.data('node');
                 var sum = 0;
                 var incomers = cy.getElementById(id).incomers('edge');
-                incomers.forEach(function(ele){
-                    var p = ele.data('portion') + '';
-                    var lastChar = p.slice(-1);
-                    var val = lastChar === '%'
-                        ? Math.round(ele.source().data('avgIntensity') * parseInt(p) / 100)
-                        : parseInt(p)|0;
-                    sum +=val;
+                incomers.forEach(function(edge){
+                    sum += cy.aveGetEdgeFlowByPortion(edge);
                 });
                 if (incomers.length > 0) {
                     controls.inputs.inputNodeIntensity.val(sum).trigger('change');

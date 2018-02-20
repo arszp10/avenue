@@ -813,12 +813,12 @@
 
             var markGreen = function(node, edgeType){
                 var width = 8;
-                var paseSaturationNode = 0.88;
+                var phaseSaturationNode = 0.88;
 
                 var nodeSimulationData = App.State.getSimulationData(node.data('id'));
 
                 if (nodeSimulationData && nodeSimulationData.phasesSaturation) {
-                    paseSaturationNode = nodeSimulationData.phasesSaturation[phase - 1];
+                    phaseSaturationNode = nodeSimulationData.phasesSaturation[phase - 1];
                 }
 
                 var edges = node.outgoers('edge');
@@ -840,17 +840,9 @@
                             edge.data('hmcv', data['hmcv']);
 
                         } else {
-                            var portion = new String(edge.data('portion'));
-                            var flowValue = portion;
-                            if (portion.indexOf('%') > 0) {
-                                flowValue = Math.round(node.data('avgIntensity') * parseInt(portion)/100);
-                            } else {
-                                flowValue = parseInt(portion)|0;
-                            }
-                            width = flowValue * (40 - 0)/(maxFlow - minFlow);
-                            width = width < 3 ? 3 : width;
-                            edge.data('flowWidth', width);
-                            edge.data('hmcv', traffic.heatMapColorForValue2(paseSaturationNode));
+                            var flowValue = cy.aveGetEdgeFlowByPortion(edge);
+                            edge.data('flowWidth', traffic.arrowWidthByFlow(flowValue, maxFlow));
+                            edge.data('hmcv',      traffic.heatMapColorForValue2(phaseSaturationNode));
                         }
 
                         if (!(target.data('type') == 'stopline' || target.data('type') == 'pedestrian')) {

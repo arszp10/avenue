@@ -416,6 +416,13 @@
             var l  = 75 - Math.round((v - 1.37)*(0 - 75)/(0.5 - 1.37) + 75);
             var s = 80 - Math.round(l/2);
             return "hsl(110, " + s + "%, " + l + "%)";
+        },
+
+        arrowWidthByFlow: function(flowValue, maxFlow){
+            var minFlow = 0;
+            var width = flowValue * (40 - 0)/(maxFlow - minFlow);
+            width = width < 3 ? 3 : width;
+            return width;
         }
 
 

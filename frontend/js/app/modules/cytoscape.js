@@ -677,6 +677,14 @@
             })
         },
 
+        aveGetEdgeFlowByPortion: function(edge){
+            var source = edge.source();
+            var portion = new String(edge.data('portion'));
+            return (portion.indexOf('%') > 0)
+                ? Math.round(source.data('avgIntensity') * parseInt(portion)/100)
+                : parseInt(portion)|0;
+        },
+
         aveGreenSaturationRender:function(){
 
             var width = 8;
@@ -685,7 +693,6 @@
             var max = allNodes.max(function(el){
                 return el.data('avgIntensity');
             });
-            var minFlow = 0;
             var maxFlow = max.value;
 
             cy.$('node').forEach(function(node){
@@ -702,28 +709,16 @@
                             saturationNode = (nodeSimulationData.greenSaturation|0) / 100 + (nodeSimulationData.sumInFlow / nodeSimulationData.sumOutFlow - 1);
                         }
                     }
-                    //console.log(results[0]);
                 }
-
-                var edges = node.incomers('edge');
 
                 node.data('hmcv', traffic.heatMapColorForValue2(saturationNode));
                 node.addClass('green');
 
+                var edges = node.incomers('edge');
                 edges.forEach(function(edge, inx){
-                    var source = edge.source();
-                    var portion = new String(edge.data('portion'));
-                    var flowValue = portion;
-                    if (portion.indexOf('%') > 0) {
-                        flowValue = Math.round(source.data('avgIntensity') * parseInt(portion)/100);
-                    } else {
-                        flowValue = parseInt(portion)|0;
-                    }
-                    width = flowValue * (40 - 0)/(maxFlow - minFlow);
-                    width = width < 3 ? 3 : width;
-
-                    edge.data('flowWidth', width);
-                    edge.data('hmcv', traffic.heatMapColorForValue2(saturationNode));
+                    var flowValue = cy.aveGetEdgeFlowByPortion(edge);
+                    edge.data('flowWidth', traffic.arrowWidthByFlow(flowValue, maxFlow));
+                    edge.data('hmcv',      traffic.heatMapColorForValue2(saturationNode));
                     edge.addClass('green');
                 });
             })
