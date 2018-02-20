@@ -815,12 +815,10 @@
                 var width = 8;
                 var paseSaturationNode = 0.88;
 
-                var results = App.State.lastModelingResult.filter(function(val){
-                    return val.id == node.data('id');
-                });
+                var nodeSimulationData = App.State.getSimulationData(node.data('id'));
 
-                if (results.length > 0 && results[0].phasesSaturation) {
-                    paseSaturationNode = results[0].phasesSaturation[phase - 1];
+                if (nodeSimulationData && nodeSimulationData.phasesSaturation) {
+                    paseSaturationNode = nodeSimulationData.phasesSaturation[phase - 1];
                 }
 
                 var edges = node.outgoers('edge');
@@ -973,16 +971,13 @@
                 );
             }
 
-            var results = App.State.lastModelingResult.filter(function(val){
-                return val.id == node.id;
-            });
-
-            if (results.length == 0) {
+            var nodeSimulationData = App.State.getSimulationData(node.id);
+            if (!nodeSimulationData) {
                 return;
             }
 
             controls.panels.crossroadNodeInfoPanel.append(
-                templates.nodeModelingResults(results[0])
+                templates.nodeModelingResults(nodeSimulationData)
             );
 
             controls.panels.crossroadNodeInfoPanel.append(templates.chartPanel());
@@ -991,9 +986,9 @@
             var data = {
                 labels: settings.chart.labels(node.cycleTime),
                 datasets: [
-                    settings.chart.queueFunc(results[0].queueFunc),
-                    settings.chart.flowIn(results[0].inFlow),
-                    settings.chart.flowOut(results[0].outFlow)
+                    settings.chart.queueFunc(nodeSimulationData.queueFunc),
+                    settings.chart.flowIn(nodeSimulationData.inFlow),
+                    settings.chart.flowOut(nodeSimulationData.outFlow)
                 ]
             };
             var myLineChart = new Chart(ctx).Line(data, settings.chart.common);

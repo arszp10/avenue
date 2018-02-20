@@ -375,14 +375,11 @@
 
                     point[direction].isGreenMoment = traffic.greenRedArray(point[direction].signals);
                     point[direction].signals = result;
-
                     point[direction].traces = [];
 
-                    var slNodeSimResult = App.State.lastModelingResult.filter(function(val){
-                        return val.id == stopline.id;
-                    });
+                    var nodeSimulationData = App.State.getSimulationData(stopline.id);
 
-                    if (showVehicleTraces[direction] && slNodeSimResult.length > 0) {
+                    if (showVehicleTraces[direction] && nodeSimulationData) {
 
                         var cycleTime = program.cycleTime * 5;
                         var slot = 6;
@@ -397,8 +394,8 @@
                         }
 
                         var capacityPerSecond = stopline.capacity/3600;
-                        var slOutFlowStr = JSON.stringify(slNodeSimResult[0].outFlow);
-                        var slInFlowStr = JSON.stringify(slNodeSimResult[0].inFlow);
+                        var slOutFlowStr = JSON.stringify(nodeSimulationData.outFlow);
+                        var slInFlowStr = JSON.stringify(nodeSimulationData.inFlow);
 
                         var bnOutFlow = [];
                         var slOutFlow = [];
@@ -410,7 +407,6 @@
                         var s3 = JSON.parse(slOutFlowStr);
                         var s4 = JSON.parse(slOutFlowStr);
                         var s5 = JSON.parse(slOutFlowStr);
-
                         slOutFlow = slOutFlow.concat(s1,s2,s3,s4,s5);
 
                         var si1 = JSON.parse(slInFlowStr);
@@ -419,7 +415,6 @@
                         var si4 = JSON.parse(slInFlowStr);
                         var si5 = JSON.parse(slInFlowStr);
                         var si6 = JSON.parse(slInFlowStr);
-
                         slInFlow = slInFlow.concat(si1,si2,si3,si4,si5,si6);
 
                         point[direction].traces = traffic.traces(cycleTime, slot, distance, speed0, slOutFlow, slInFlow, capacityPerSecond);

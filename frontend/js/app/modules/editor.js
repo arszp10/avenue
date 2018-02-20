@@ -787,16 +787,13 @@
                 return;
             }
 
-            var results = App.State.lastModelingResult.filter(function(val){
-                return val.id == node.id;
-            });
-
-            if (results.length == 0) {
+            var nodeSimulationData = App.State.getSimulationData(node.id);
+            if (!nodeSimulationData) {
                 return;
             }
 
             controls.panels.nodeSearchInfo.append(
-                templates.nodeModelingResults(results[0])
+                templates.nodeModelingResults(nodeSimulationData)
             );
 
             controls.panels.nodeSearchInfo.append(templates.chartPanel());
@@ -805,19 +802,17 @@
             var datasets = [];
 
             if (node.type == 'stopline') {
-                datasets.push(settings.chart.queueFunc(results[0].queueFunc));
+                datasets.push(settings.chart.queueFunc(nodeSimulationData.queueFunc));
             }
-            datasets.push(settings.chart.flowIn(results[0].inFlow));
-            datasets.push(settings.chart.flowOut(results[0].outFlow));
+            datasets.push(settings.chart.flowIn(nodeSimulationData.inFlow));
+            datasets.push(settings.chart.flowOut(nodeSimulationData.outFlow));
 
             if (node.type == 'bottleneck') {
                 cy.getElementById(node.id).incomers('node').map(function(carriageway, index){
-                    var results1 = App.State.lastModelingResult.filter(function(val){
-                        var cwbId = node.id + '_cwb_' + index;
-                        return val.id == cwbId;
-                    });
-                    if (results1.length > 0) {
-                        datasets.push(settings.chart.flowInColorIndex(results1[0].outFlow, index));
+                    var cwbId = node.id + '_cwb_' + index;
+                    var cwbNodeSimulationData = App.State.getSimulationData(cwbId);
+                    if (cwbNodeSimulationData) {
+                        datasets.push(settings.chart.flowInColorIndex(cwbNodeSimulationData.outFlow, index));
                     }
                     return ;
                 });

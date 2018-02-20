@@ -689,18 +689,17 @@
             var maxFlow = max.value;
 
             cy.$('node').forEach(function(node){
-                var results = App.State.lastModelingResult.filter(function(val){
-                    return val.id == node.data('id');
-                });
 
-                if (results.length > 0) {
-                    if (!(node.data('type') == 'stopline' || node.data('type') == 'pedestrian') && results[0].maxQueue > 1)
+                var nodeSimulationData = App.State.getSimulationData(node.data('id'));
+
+                if (nodeSimulationData) {
+                    if (!(node.data('type') == 'stopline' || node.data('type') == 'pedestrian') && nodeSimulationData.maxQueue > 1)
                         saturationNode = 2;
                     else {
-                        if (results[0].maxQueue > results[0].queueLimit && results[0].queueLimit > 0) {
+                        if (nodeSimulationData.maxQueue > nodeSimulationData.queueLimit && nodeSimulationData.queueLimit > 0) {
                             saturationNode = 2;
                         } else {
-                            saturationNode = (results[0].greenSaturation|0) / 100 + (results[0].sumInFlow / results[0].sumOutFlow - 1);
+                            saturationNode = (nodeSimulationData.greenSaturation|0) / 100 + (nodeSimulationData.sumInFlow / nodeSimulationData.sumOutFlow - 1);
                         }
                     }
                     //console.log(results[0]);
