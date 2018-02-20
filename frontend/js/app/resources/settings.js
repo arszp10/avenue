@@ -257,13 +257,13 @@
             type: 'pedestrian',
             tag: '',
             cycleTime: 100,
-            avgIntensity: 900,
-            capacity: 1800,
+            avgIntensity: 250,
+            capacity: 5400,
             weight: 1,
             queueLimit: 0,
             intervals: [[0,20], [40,55]],
             greenPhases: [[true, true, true, true,true, true,true, true,true, true, true, true]],
-            additionalGreens: [[0, 0]],
+            additionalGreens: [[0, 0]]
         },
 
         interPhaseDefaults:{

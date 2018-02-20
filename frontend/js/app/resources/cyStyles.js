@@ -27,8 +27,8 @@
                 'color': '#fff',// '#2e6da4',
                 'border-width': 1.5,
                 'font-family': 'Avenue',
-                'font-size': '20px',
-                //'font-weight':'normal',
+                'font-size': '22px',
+                'font-weight':'normal',
                 'min-zoomed-font-size':'8px',
                 'shape': 'roundrectangle'
             }
@@ -93,7 +93,8 @@
             selector: 'node.green',
             css: {
                 'content': 'data(icon)',
-                'background-color': '#4caf50',
+                //'background-color': '#4caf50',
+                'background-color': 'data(hmcv)',//,'#4caf50', //'#2e6da4',
                 'border-color': '#ffffff',
                 'color': '#ffffff',
                 'border-width': 2
@@ -257,7 +258,7 @@
         {
             selector: 'edge.green',
             css: {
-                'arrow-scale': 0.8,
+                'arrow-scale': 0.7,
                 'line-style': 'solid',
                 'width': 'data(flowWidth)',
                 'line-color': 'data(hmcv)',//,'#4caf50', //'#2e6da4',

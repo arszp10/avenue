@@ -175,7 +175,8 @@
             'оptimal-cycletime'     : 'Optimal cycle length & splits',
             'оptimal-cycle-length'  : 'Cycle length & splits',
             'refresh'               : 'Refresh',
-            'show-vehicle-traces'   : "Show vehicles traces"
+            'show-vehicle-traces'   : "Show vehicles traces",
+            'situation'             : 'Situation',
 
         },
 
@@ -350,7 +351,8 @@
             'оptimal-cycletime'     : 'Расчет оптимальной длительности цикла',
             'оptimal-cycle-length'  : 'Длительность цикла и фаз',
             'refresh'               : 'Обновить',
-            'show-vehicle-traces'   : 'Показывать треки автомобилей'
+            'show-vehicle-traces'   : 'Показывать треки автомобилей',
+            'situation'             : 'Ситуация'
 
         }
 

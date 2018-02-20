@@ -58,9 +58,21 @@
 
             $(document).on('keyup', 'input', function(e){ e.stopPropagation(); });
 
-            $(document).bind('copy', function(){controls.buttons.btnCopy.click();});
-            $(document).bind('paste', function(){controls.buttons.btnPaste.click();});
-            $(document).bind('cut', function(){controls.buttons.btnCut.click();});
+            $(document).bind('copy', function(){
+                if ($('input:focus').length == 0) {
+                    controls.buttons.btnCopy.click();
+                }
+            });
+            $(document).bind('paste', function(){
+                if ($('input:focus').length == 0) {
+                    controls.buttons.btnPaste.click();
+                }
+            });
+            $(document).bind('cut', function(){
+                if ($('input:focus').length == 0) {
+                    controls.buttons.btnCut.click();
+                }
+            });
 
         },
 
@@ -180,6 +192,10 @@
                     icon: $icon,
                     singleCrossroad: false
                 });
+            });
+
+            controls.buttons.btnSaturationDraw.click(function () {
+               cy.aveGreenSaturationRender();
             });
 
             controls.buttons.btnPhasesOptimize.click(function () {
