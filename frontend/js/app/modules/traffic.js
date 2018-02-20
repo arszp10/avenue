@@ -285,8 +285,6 @@
             });
             return result;
         },
-
-
         tracesExtremePoints: function(flow){
             var result = [];
             var sum = 0;
@@ -302,7 +300,6 @@
             });
             return result;
         },
-
         traces: function(cycleTime, slot, distance, speed0, slOutFlow, slInFlow, capacityPerSecond){
             var alfa = capacityPerSecond < 0.5 ? 0.5 : capacityPerSecond;
             var beta = capacityPerSecond < 1 ? capacityPerSecond * 1.14 : capacityPerSecond* 0.86;
@@ -385,7 +382,43 @@
                 return trace;
             });
             return traces
+        },
+
+        heatMapBounds: function (value){
+            var v = value;
+            if (value > 1.37) {v = 1.37}
+            if (value < 0.5) {v = 0.5}
+            return v;
+        },
+        heatMapColorForValue : function (value){
+            var v = this.heatMapBounds(value);
+            var vnorm  = (v - 0.5)/(1.37 - 0.5);
+            var h = (1.0 - vnorm) * 220;
+            if (value < 0.78) {
+                var l  = 75 - Math.round((v - 1.37)*(0 - 75)/(0.5 - 1.37) + 75);
+                var s = 80 - Math.round(l/2);
+            } else {
+                l = 50;
+                s = 100;
+            }
+            return "hsl(" + h + ", " + s + "%, " + l + "%)";
+        },
+
+        heatMapColorForValue1: function (value){
+            var v = this.heatMapBounds(value);
+            var vnorm  = (v - 0.5)/(1.37 - 0.5);
+            var h = (1.0 - vnorm) * 230;
+            return "hsl(" + h + ", 100%, 50%)";
+        },
+
+        heatMapColorForValue2: function (value){
+            var v = this.heatMapBounds(value);
+            var l  = 75 - Math.round((v - 1.37)*(0 - 75)/(0.5 - 1.37) + 75);
+            var s = 80 - Math.round(l/2);
+            return "hsl(110, " + s + "%, " + l + "%)";
         }
+
+
 
 
 };

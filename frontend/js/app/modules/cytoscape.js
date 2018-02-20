@@ -679,15 +679,6 @@
 
         aveGreenSaturationRender:function(){
 
-            function heatMapColorforValue2(value){
-                var v = value;
-                if (value > 1.37) {v = 1.37}
-                if (value < 0.5) {v = 0.5}
-                var l  = 75 - Math.round((v - 1.37)*(0 - 75)/(0.5 - 1.37) + 75);
-                var s = 80 - Math.round(l/2);
-                return "hsl(110, " + s + "%, " + l + "%)";
-            }
-
             var width = 8;
             var saturationNode = 0.88;
             var allNodes = cy.$('node');
@@ -717,7 +708,7 @@
 
                 var edges = node.incomers('edge');
 
-                node.data('hmcv', heatMapColorforValue2(saturationNode));
+                node.data('hmcv', traffic.heatMapColorForValue2(saturationNode));
                 node.addClass('green');
 
                 edges.forEach(function(edge, inx){
@@ -733,7 +724,7 @@
                     width = width < 3 ? 3 : width;
 
                     edge.data('flowWidth', width);
-                    edge.data('hmcv', heatMapColorforValue2(saturationNode));
+                    edge.data('hmcv', traffic.heatMapColorForValue2(saturationNode));
                     edge.addClass('green');
                 });
             })

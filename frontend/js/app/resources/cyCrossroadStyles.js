@@ -63,12 +63,9 @@
         {
             selector: 'edge',
             css: {
-                //'arrow-scale': 1.3,
                 'curve-style': 'bezier',
-                //'width': 1,
                 'target-arrow-shape': 'triangle-backcurve',
                 'line-style': 'dotted',
-                //'target-arrow-shape': 'triangle',
                 'text-outline-color': '#fff',
                 'line-color': '#ccc',
                 'target-arrow-color': '#ccc',
@@ -80,10 +77,6 @@
                 'min-zoomed-font-size':'28px',
                 'width': 2,
                 'opacity':0.5
-                //'curve-style': 'unbundled-bezier',
-                //'control-point-distances': '20',
-                //'control-point-weights': '0.5'
-
             }
         },
 
@@ -94,11 +87,11 @@
                 'arrow-scale': 0.8,
                 'line-style': 'solid',
                 'width': 'data(flowWidth)',
-                'line-color': 'data(hmcv)',//,'#4caf50', //'#2e6da4',
-                'target-arrow-color': 'data(hmcv)',//'#4caf50', //'#2e6da4',
+                'line-color': 'data(hmcv)',
+                'target-arrow-color': 'data(hmcv)',
                 'target-arrow-shape': 'triangle',
                 'color': '#fff',
-                'text-outline-color': 'data(hmcv)',//'#4caf50', //'#2e6da4'
+                'text-outline-color': 'data(hmcv)',
                 'min-zoomed-font-size':'8px',
                 'text-outline-width': 2,
                 'opacity':1
@@ -118,10 +111,10 @@
                 'target-arrow-shape': 'triangle',
                 'source-arrow-shape': 'none',
                 'target-arrow-color': '#888888',
+                'text-outline-color': '#ffffff',
                 'arrow-scale': 0.2,
                 'width': 20,
                 'line-style': 'dashed',
-                'text-outline-color': '#ffffff',
                 'line-color': '#888888'
             }
         },
@@ -130,8 +123,8 @@
             selector: 'edge[pedestrian].green',
             css: {
                 'target-arrow-color': '#4caf50',
+                'text-outline-color': '#4caf50',
                 'color': '#fff',
-                'text-outline-color': '#4caf50', //'#2e6da4'
                 'line-color': '#4caf50'
             }
         }

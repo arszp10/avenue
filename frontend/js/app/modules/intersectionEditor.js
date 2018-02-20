@@ -9,44 +9,6 @@
     var maxCountPhases = 12;
     var $addGreenEditableElement;
 
-    function heatMapColorforValue(value){
-        var v = value;
-        if (value > 1.37) {v = 1.37}
-        if (value < 0.5) {v = 0.5}
-        //if (value > 0.83) {
-            var vnorm  = (v - 0.5)/(1.37 - 0.5);
-            var h = (1.0 - vnorm) * 220;
-            //return "hsl(" + h + ", 100%, 50%)";
-        //} else {
-        if (value < 0.78) {
-            var l  = 75 - Math.round((v - 1.37)*(0 - 75)/(0.5 - 1.37) + 75);
-            var s = 80 - Math.round(l/2);
-        } else {
-            l = 50;
-            s = 100;
-        }
-            return "hsl(" + h + ", " + s + "%, " + l + "%)";
-        //}
-    }
-
-    function heatMapColorforValue1(value){
-        var v = value;
-        if (value > 1.37) {v = 1.37}
-        if (value < 0.5) {v = 0.5}
-        var vnorm  = (v - 0.5)/(1.37 - 0.5);
-        var h = (1.0 - vnorm) * 230;
-        return "hsl(" + h + ", 100%, 50%)";
-    }
-
-    function heatMapColorforValue2(value){
-        var v = value;
-        if (value > 1.37) {v = 1.37}
-        if (value < 0.5) {v = 0.5}
-        var l  = 75 - Math.round((v - 1.37)*(0 - 75)/(0.5 - 1.37) + 75);
-        var s = 80 - Math.round(l/2);
-        return "hsl(110, " + s + "%, " + l + "%)";
-    }
-
 
     App.Modules.intersectionEditor = {
 
@@ -638,7 +600,7 @@
                 .style("stroke", "#ffffff")
                 //.attr('fill-opacity', 0.1)
                 .attr("fill", function(d) {
-                    return heatMapColorforValue(d.saturation);
+                    return traffic.heatMapColorForValue(d.saturation);
                 })
                 .attr('fill-opacity', 1)
                 .style("stroke-width", 1)
@@ -890,7 +852,7 @@
                             width = flowValue * (40 - 0)/(maxFlow - minFlow);
                             width = width < 3 ? 3 : width;
                             edge.data('flowWidth', width);
-                            edge.data('hmcv', heatMapColorforValue2(paseSaturationNode));
+                            edge.data('hmcv', traffic.heatMapColorForValue2(paseSaturationNode));
                         }
 
                         if (!(target.data('type') == 'stopline' || target.data('type') == 'pedestrian')) {
