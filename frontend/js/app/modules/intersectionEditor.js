@@ -34,6 +34,8 @@
             cyCrossroad = cytoscape(options);
             cyCrossroad.edgeBendEditing({undoable: false});
 
+            cyCrossroad.aveGetEdgeFlowByPortion = cy.aveGetEdgeFlowByPortion;
+
             cyCrossroad.on('select', 'node', function (e) {
                 var s = cyCrossroad.$('node:selected');
                 s = s[0];

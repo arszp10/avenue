@@ -85,7 +85,7 @@
             'samples'           : 'Samples',
             'launch'            : 'Launch',
             'phases'            : 'Phases',
-            'offsets'           : 'Offsets',
+            'offsets'           : 'Offsets optimization',
             'choose-route'      : 'Choose a route',
             'add-route'         : 'Route',
             'create'            : 'Create',
@@ -176,7 +176,7 @@
             'оptimal-cycle-length'  : 'Cycle length & splits',
             'refresh'               : 'Refresh',
             'show-vehicle-traces'   : "Show vehicles traces",
-            'situation'             : 'Situation',
+            'situation'             : 'Situation overview',
 
         },
 
@@ -246,7 +246,7 @@
             'ilinskoe-highway-212': 'Ильинское шоссе утро (212)',
             'launch'            : 'Запуск',
             'phases'            : 'Фазы',
-            'offsets'           : 'Сдвиги',
+            'offsets'           : 'Оптимизация сдвигов',
             'choose-route'      : 'Выбрать маршрут',
             'add-route'         : 'Маршрут',
             'create'            : 'Создать',
@@ -352,7 +352,7 @@
             'оptimal-cycle-length'  : 'Длительность цикла и фаз',
             'refresh'               : 'Обновить',
             'show-vehicle-traces'   : 'Показывать треки автомобилей',
-            'situation'             : 'Ситуация'
+            'situation'             : 'Обзор ситуации'
 
         }
 
