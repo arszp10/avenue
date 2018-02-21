@@ -35,27 +35,8 @@
         if (edge.data('portion')!== undefined && edge.data('portion')) {
             return;
         }
-        var sourceEdges = cy.aveGetSourceEdges(edge.data('source'));
-        var sum = 0, p = '';
         var avgIntensity = source.data('avgIntensity');
-
-        sourceEdges.map(function(e){
-            if (e.hasClass('edgehandles-ghost-edge')) {return;}
-            p = e.data('portion') + '';
-
-            var lastChar = p.slice(-1);
-            if (lastChar === '%') {
-                p = parseInt(p.substring(0, p.length - 1));
-                p = isNaN(p) ? 0 : p;
-                p = parseInt(avgIntensity * p / 100)
-            } else {
-                p = parseInt(p);
-                p = isNaN(p) ? 0 : p;
-            }
-            sum += p;
-
-        });
-
+        var sum = cy.aveNodeSumOutgoingFlow(source.data('id'));
         sum = sum >= avgIntensity ? 0 : avgIntensity - sum;
         edge.data('portion', sum);
     };
@@ -63,13 +44,12 @@
     var initCytoscapeEvents = function() {
 
         cy.on('free', 'node', function (e) {
-            if (!e.target.data('parent')) return;
+            if (!e.target.hasParent()) return;
             cy.aveRecalcEdgesLengths(e.target.data('parent'));
         });
 
         cy.on('cxttap', 'node', function (e) {
-            var type = e.target.data('type');
-            if (type == 'crossRoad') {
+            if (e.target.isCrossRoad()) {
                 return;
             }
             e.target.select();
@@ -120,9 +100,7 @@
         });
 
         cy.on('click', 'node:selected', function (e) {
-            var type = e.target.data('type');
-
-            if (type == 'crossRoad') {
+            if (e.target.isCrossRoad()) {
                 intersectionEditor.showCrossroadModal(e.target.data());
                 return;
             }
@@ -144,26 +122,26 @@
             var target = cy.getElementById(edge.target);
             var source = cy.getElementById(edge.source);
 
-            if ( target.data('parent')  == source.data('parent') && target.data('parent')) {
+            if ( target.data('parent')  == source.data('parent') && target.hasParent()) {
                 cyEdge.data('parent', target.data('parent')) ;
             }
 
-            if ( target.data('type') == 'carriageway' || source.data('type') == 'carriageway') {
+            if ( target.isCarriageway() || source.isCarriageway()) {
                 cyEdge.addClass('carriageway-edge');
             }
 
-            if (target.data('type') == 'crossRoad' || source.data('type') == 'crossRoad') {
+            if (target.isCrossRoad() || source.isCrossRoad()) {
                 cy.getElementById(edge.id).remove();
                 return;
             }
 
             var targetEdges = cy.$('edge[target="' + edge.target + '"]');
-            var isTargetConcurrent = (target.data('type') == 'concurrent' || target.data('type') == 'concurrentMerge');
-            var isSourceConcurrent = (source.data('type') == 'concurrent' || source.data('type') == 'concurrentMerge');
-            var isTargetPedestrian = (target.data('type') == 'pedestrian');
-            var isSourcePedestrian = (source.data('type') == 'pedestrian');
-            var isTargetConflict = (target.data('type') == 'concurrent');
-            var isSourceConflict = (source.data('type') == 'concurrent');
+            var isTargetConcurrent = target.isConcurrentCommon();
+            var isSourceConcurrent = source.isConcurrentCommon();
+            var isTargetPedestrian = target.isPedestrian();
+            var isSourcePedestrian = source.isPedestrian();
+            var isTargetConflict = target.isConcurrent();
+            var isSourceConflict = source.isConcurrent();
             var isTargetUndefined = (target.data('type') === undefined);
 
             if (isTargetConcurrent && targetEdges.length > 2) {
@@ -174,7 +152,7 @@
             var sourceEdges = cy.$('edge[source="' + edge.source + '"]');
             var targetEdges = cy.$('edge[target="' + edge.target + '"]');
 
-            if (source.data('type') == 'concurrentMerge' && sourceEdges.length > 2) {
+            if (source.isConcurrentMerge() && sourceEdges.length > 2) {
                 cy.getElementById(edge.id).remove();
                 return;
             }
@@ -230,7 +208,7 @@
             var defults;
             if (edge.pedestrian) {
                 defults = JSON.parse(JSON.stringify(settings.pedEdge));
-            } else if(target.data('parent')){
+            } else if(target.hasParent()){
                 defults = JSON.parse(JSON.stringify(settings.crossEdge));
                 cy.aveRecalcEdgesLengths(target.data('parent'));
             } else {
@@ -238,7 +216,7 @@
             }
 
             edge = $.extend({}, defults, edge);
-            if ( target.data('type') == 'carriageway' || source.data('type') == 'carriageway') {
+            if ( target.isCarriageway() || source.isCarriageway()) {
                 edge.speed = 0;
                 edge.distance = 0;
             }
@@ -257,12 +235,6 @@
         });
     };
 
-    function deleteEles(eles){
-        return eles.remove();
-    }
-    function restoreEles(eles){
-        return eles.restore();
-    }
 
     var initParent = function (ready){
         var options   = settings.cytoscape;
@@ -275,7 +247,48 @@
             cy.panzoom({});
             cy.edgeBendEditing({undoable: true});
             cy.ur = cy.undoRedo({});
-            cy.ur.action("deleteEles", deleteEles, restoreEles); // regi
+            cy.ur.action("deleteEles",
+                function deleteEles(eles){return eles.remove();},
+                function restoreEles(eles){return eles.restore();}
+            );
+
+            cy.collection().__proto__.hasParent = function(){
+                return this.data('parent') ? true : false;
+            };
+
+            cy.collection().__proto__.isCrossRoad = function(){
+                return this.data('type') == 'crossRoad';
+            };
+            cy.collection().__proto__.isStopline = function(){
+                return this.data('type') == 'stopline';
+            };
+            cy.collection().__proto__.isPedestrian = function(){
+                return this.data('type') == 'pedestrian';
+            };
+            cy.collection().__proto__.isStoppable = function(){
+                return this.data('type') == 'stopline' || this.data('type') == 'pedestrian';
+            };
+            cy.collection().__proto__.isConcurrentCommon = function(){
+                return this.data('type') == 'concurrentMerge' || this.data('type') == 'concurrent';
+            };
+            cy.collection().__proto__.isConcurrent = function(){
+                return this.data('type') == 'concurrent';
+            };
+            cy.collection().__proto__.isConcurrentMerge = function(){
+                return this.data('type') == 'concurrentMerge';
+            };
+
+            cy.collection().__proto__.isCarriageway = function(){
+                return this.data('type') == 'carriageway';
+            };
+
+            cy.collection().__proto__.isPoint = function(){
+                return this.data('type') == 'point';
+            };
+
+            cy.collection().__proto__.isBottleneck = function(){
+                return this.data('type') == 'bottleneck';
+            };
 
             ready();
         };
@@ -284,14 +297,6 @@
 
 
     };
-
-    //<!--22, 141-->
-    //<!--21, 282-->
-    //<!--20, 564-->
-    //<!--19, 1128-->
-    //<!--18, 2256-->
-    //<!--17, 4513-->
-    //<!--16, 9027-->
 
     App.Modules.cytoscape =  {
         injectDependencies: function(modules) {
@@ -414,10 +419,10 @@
         },
 
         aveGetCurrentProgramPhases: function(node){
-            var crossRoad = node.data();
-            if (crossRoad.type != 'crossRoad') {
+            if (!node.isCrossRoad()) {
                 return false;
             }
+            var crossRoad = node.data();
             var program = crossRoad.programs[crossRoad.currentProgram];
             var phases = program.phases;
             var currentOrder = program.currentOrder;
@@ -496,9 +501,9 @@
                 delete item.icon;
                 delete item.greenOffset1;
                 delete item.greenOffset2;
-                if (item.type != 'crossRoad') {
+                if (!v.isCrossRoad()) {
                     item.edges = groupedEdges[v.data('id')];
-                    if ((item.type == 'stopline'||item.type == 'pedestrian') && item.parent) {
+                    if (v.isStoppable() && item.parent) {
                         var programInx = cy.getElementById(item.parent).data('currentProgram');
                         item.greenPhases = cy.aveGetCurrentProgramGreens(item.greenPhases[programInx], item.parent);
                         item.additionalGreens = cy.aveGetCurrentProgramGreens(item.additionalGreens[programInx], item.parent);
@@ -521,11 +526,9 @@
             if (nodes.length == 0) {
                 return;
             }
-            this.$('node:selected').position(direction, nodes[0].position(direction));
+            nodes.position(direction, nodes[0].position(direction));
         },
-        aveGetSourceEdges : function(id){
-            return this.$('edge[source="' + id + '"]');
-        },
+
         aveGetCrossroadStoplines: function(id, disableFilter) {
             return this.getElementById(id)
                .children('[type="stopline"], [type="pedestrian"]')
@@ -534,35 +537,41 @@
                })
                .jsons();
         },
-        aveConstantIntensity: function(node){
 
+        aveNodeSumOutgoingFlow:function(nodeId){
+            return this.aveNodeSumEdgesFlow(nodeId, 'outgoers');
+        },
+
+        aveNodeSumIncomingFlow:function(nodeId){
+            return this.aveNodeSumEdgesFlow(nodeId, 'incomers');
+        },
+
+        aveNodeSumEdgesFlow:function(nodeId, direction){
             var sum = 0;
-            var that = this;
-            $.each(this.$('edge[target="' + node.id + '"]'), function(inx, n){
-                var avgIntensity = that.$('#' + n.data('source')).data('avgIntensity');
-                var p = n.data('portion') + '';
-                var lastChar = p.slice(-1);
-                if (lastChar === '%') {
-                    p = parseInt(p.substring(0, p.length - 1));
-                    p = isNaN(p) ? 0 : p;
-                    p = parseInt(avgIntensity * p / 100)
-                } else {
-                    p = parseInt(p);
-                    p = isNaN(p) ? 0 : p;
-                }
-                sum += p;
-            });
+            cy.getElementById(nodeId)[direction]('edge')
+                .forEach(function(edge){
+                    if (edge.hasClass('edgehandles-ghost-edge')) {return;}
+                    sum += cy.aveGetEdgeFlowByPortion(edge);
+                });
+            return sum;
+        },
+
+
+        aveConstantIntensity: function(nodeId){
+            var node = cy.getElementById(nodeId).data();
+            var sum = cy.aveNodeSumIncomingFlow(nodeId);
             return node.avgIntensity - sum;
         },
+
         aveBuildRoutes: function(selectedNodes){
             var cyRoutes = [];
             selectedNodes.forEach(function(node1){
-               var data1 = node1.data();
-               if (data1.type != 'stopline') return;
+                if (!node1.isStopline()) return;
+                var data1 = node1.data();
 
                 selectedNodes.forEach(function(node2){
+                    if (!node2.isStopline()) return;
                     var data2 = node2.data();
-                    if (data2.type != 'stopline') return;
                     if (data1.id == data2.id) return;
                     if (data1.parent == data2.parent) return;
 
@@ -700,7 +709,7 @@
                 var nodeSimulationData = App.State.getSimulationData(node.data('id'));
 
                 if (nodeSimulationData) {
-                    if (!(node.data('type') == 'stopline' || node.data('type') == 'pedestrian') && nodeSimulationData.maxQueue > 1)
+                    if (!node.isStoppable() && nodeSimulationData.maxQueue > 1)
                         saturationNode = 2;
                     else {
                         if (nodeSimulationData.maxQueue > nodeSimulationData.queueLimit && nodeSimulationData.queueLimit > 0) {

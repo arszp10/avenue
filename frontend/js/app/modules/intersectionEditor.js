@@ -947,7 +947,7 @@
         showCrossRoadNodeInfo: function(node, step) {
             controls.panels.crossroadNodeInfoPanel.empty();
 
-            node.constantIntensity =  cy.aveConstantIntensity(node);
+            node.constantIntensity =  cy.aveConstantIntensity(node.id);
 
             controls.panels.crossroadNodeInfoPanel.append(
                 templates.nodeCommonProps(node)

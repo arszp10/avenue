@@ -545,15 +545,9 @@
             controls.buttons.btnSumIncomingFlow.click(function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                var id = controls.panels.pointProperty.data('node');
-                var sum = 0;
-                var incomers = cy.getElementById(id).incomers('edge');
-                incomers.forEach(function(edge){
-                    sum += cy.aveGetEdgeFlowByPortion(edge);
-                });
-                if (incomers.length > 0) {
-                    controls.inputs.inputNodeIntensity.val(sum).trigger('change');
-                }
+                var nodeId = controls.panels.pointProperty.data('node');
+                var sum = cy.aveNodeSumIncomingFlow(nodeId);
+                controls.inputs.inputNodeIntensity.val(sum).trigger('change');
             });
 
 
@@ -727,10 +721,7 @@
             if (node.hasOwnProperty('parent') && node.type !== 'crossRoad') {
                 node.name =  cy.getElementById(node.parent).data('name');
             }
-            node.constantIntensity =  cy.aveConstantIntensity(node);
-            //controls.panels.nodeSearchResultlist.append(
-            //    templates.nodeSearchListItem(node, 'single')
-            //);
+            node.constantIntensity =  cy.aveConstantIntensity(node.id);
 
             if (node.type == 'crossRoad') {
                 controls.panels.nodeSearchInfo.append(
@@ -740,9 +731,6 @@
                 controls.panels.nodeSearchInfo.append(
                     templates.nodeCommonProps(node)
                 );
-                //controls.panels.nodeSearchInfo.append(
-                //    templates.locateEditButtons(node)
-                //);
             }
 
             var errors = App.State.lastErrors.filter(function(val){
