@@ -3,7 +3,7 @@ var _      = require('lodash');
 
 var dynamicCapacityDelay = function dynamicCapacityDelay(cycleTime, dynCapacity, i, queue, value){
     var j = 0;
-    while (queue > 0) {
+    while (queue > 0 && j < cycleTime * 2) {
         queue -= dynCapacity[(i + j) % cycleTime];
         j++;
     }
@@ -131,6 +131,7 @@ module.exports = {
         var inFlow              = flow.inFlow;
         var outFlow             = flow.outFlow;
         var queueFunc           = flow.queueFunc;
+        var dynCapacity         = flow.dynamicCapacity;
         var queue               = queueTail == undefined ? 0 : queueTail;
         var delay       = 0;
         var lt          = 0;
@@ -138,15 +139,20 @@ module.exports = {
         var sumOutFlow  = 0;
         var maxQueueLength = 0;
 
+        //if (queue > dynCapacity[i]) {
+        //    outFlow2[i] = dynCapacity[i];
+        //    delay += dynamicCapacityDelay(cycleTime, dynCapacity, i, queue, value);
+
         for (var i = 0; i < inFlow.length; i++){
             queueFunc[i] = queue;
             var value = inFlow[i];
             sumInFlow += value;
-            lt = queue + value - capacityPerSecond;
+            lt = queue + value - dynCapacity[i];
             if (lt > 0) {
-                outFlow[i] =  capacityPerSecond;
+                outFlow[i] =  dynCapacity[i];
                 queue = lt;
-                delay += Math.floor(queue/capacityPerSecond)*value;
+                delay += dynamicCapacityDelay(cycleTime, dynCapacity, i, queue, value);
+                //delay += Math.floor(queue/capacityPerSecond)*value;
             } else {
                 outFlow[i] =  value;
                 queue = 0;

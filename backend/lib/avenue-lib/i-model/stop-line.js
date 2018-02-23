@@ -51,18 +51,25 @@ function StopLine(options, network){
         });
     };
 
-    this.calc = function (){
+    this.calc = function (aaa){
+        if (this.queueLimit <= this.maxQueueLength && this.queueLimit > 0) return;
         var hasOverflow = this.initInFlow();
-        var delay = 0;
-        if (hasOverflow) {
+        var delayBefore = 0;
+        var delayStopline = 0;
+        var delayAfter = 0;
+        var hasQueueSpillBackOnAheadNodes = this._dynamicCapacity();
+        if (hasOverflow || hasQueueSpillBackOnAheadNodes) {
             model.bottleNeck(this);
-            delay = this.delay;
+            delayBefore = this.delay;
             this.flipBack();
         }
         var offset  = this.parent ? this.network.getNode(this.parent).offset : 0;
         model.stopLine(this, offset);
-        this.delay += delay;
+
+        delayStopline = this.delay;
         this.phaseSaturation();
+        this.delay = delayStopline + delayBefore + delayAfter;
+
     };
 
 }

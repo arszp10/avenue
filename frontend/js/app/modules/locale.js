@@ -235,7 +235,7 @@
             'route-time'        : 'Время проезд',
             'dispersion'        : 'Дисперсия',
             'weight'            : 'Вес',
-            'queue-limit'       : 'Макс очередь',
+            'queue-limit'       : 'Предел. очередь',
             'red-intervals'     : 'Красн. интер.',
             'direction-icon'    : 'Иконка маневра',
             'choose-icon'       : 'выбрать',

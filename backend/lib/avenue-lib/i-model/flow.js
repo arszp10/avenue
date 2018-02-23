@@ -16,13 +16,15 @@ function Flow(options, network)
         intervals: [],
         edges: [],
         weight: 1,
-        queueLimit: 0
+        queueLimit: 0,
+        nodesAhead: []
     };
     var flow = Object.assign({}, defaults, options);
 
     this.id = flow.id;
     this.type = flow.type;
     this.edges = flow.edges;
+    this.nodesAhead = flow.nodesAhead;
     this.tag = flow.tag;
     this.parent = flow.parent;
     this.pedestrian = false;
@@ -36,6 +38,8 @@ function Flow(options, network)
     this.inFlow         = [].fillArray(this.cycleTime, 0);
     this.outFlow        = [].fillArray(this.cycleTime, 0);
     this.queueFunc      = [].fillArray(this.cycleTime, 0);
+    this.dynamicCapacity= [].fillArray(this.cycleTime, this.capacityPerSecond);
+
     this.length         = parseInt(flow.length);
     this.routeTime      = parseInt(flow.routeTime);
     this.dispersion     = parseFloat(flow.dispersion);
@@ -70,6 +74,7 @@ function Flow(options, network)
             this.inFlow[i] = this.outFlow[i];
         }
     };
+
 
     this.merge = function merge(outFlow) {
         for (var i = 0; i < this.outFlow.length; i++){
@@ -161,6 +166,28 @@ function Flow(options, network)
 
     this._calcEdgePortionI = function (i, edge, sourceNode, constFlowPerSecond){
         return sourceNode.outFlow[i] * parseInt(edge.portion) / sourceNode.getAvgIntensity();
+    };
+
+    this._dynamicCapacity = function () {
+        var hasQueueSpillBack = false;
+        this.nodesAhead.map(function(nodeId){
+            var nodeAhead = this.network.getNode(nodeId);
+            var queueFunc = nodeAhead.queueFunc;
+            for (var j = 0; j < queueFunc.length; j++){
+                //console.log(queueFunc[j], nodeAhead.queueLimit, this.dynamicCapacity[j]);
+                if (this.dynamicCapacity[j] == 0) {
+                    hasQueueSpillBack = true;
+                    continue;
+                }
+                if (queueFunc[j] >= nodeAhead.queueLimit) {
+                    this.dynamicCapacity[j] = 0;
+                    hasQueueSpillBack = true;
+                } else {
+                    this.dynamicCapacity[j] = this.capacityPerSecond;
+                }
+            }
+        }, this);
+        return hasQueueSpillBack;
     };
 
     this._flowSourceNodes = function () {

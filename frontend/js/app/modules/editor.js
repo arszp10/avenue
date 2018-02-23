@@ -784,9 +784,9 @@
             var ctx = document.getElementById("chart-panel").getContext("2d");
             var datasets = [];
 
-            if (node.type == 'stopline') {
+            //if (node.type == 'stopline') {
                 datasets.push(settings.chart.queueFunc(nodeSimulationData.queueFunc));
-            }
+            //}
             datasets.push(settings.chart.flowIn(nodeSimulationData.inFlow));
             datasets.push(settings.chart.flowOut(nodeSimulationData.outFlow));
 

@@ -6,7 +6,10 @@ function BottleNeck(options, network){
 
     this.calc = function (){
         var hasOverflow = this.initInFlow();
+        var hasQueueSpillBackOnAheadNodes = this._dynamicCapacity();
         model.bottleNeck(this);
+
+
         this.phaseSaturation();
     };
 

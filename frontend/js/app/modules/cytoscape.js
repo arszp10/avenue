@@ -480,36 +480,37 @@
             this.aveSetCycleTimeToAllNodes();
             var map = [];
             var groupedEdges = {};
-            edges.forEach(function(v, i, a){
-                if(! v.isEdge()){
-                    return
-                };
-                var target = v.data('target');
+            edges.forEach(function(edge, i, a){
+                if(! edge.isEdge()){ return };
+                var target = edge.data('target');
                 if (! groupedEdges.hasOwnProperty(target)) {
                     groupedEdges[target] = [];
                 };
-                groupedEdges[target].push(v.data());
+                groupedEdges[target].push(edge.data());
             });
-            nodes.forEach(function(v, i, a){
-                if(! v.isNode()){
+            nodes.forEach(function(node, i, a){
+                if(! node.isNode()){
                     return
                 }
-                var item = JSON.parse(JSON.stringify(v.data()));
+                var item = JSON.parse(JSON.stringify(node.data()));
                 delete item.tag;
                 delete item.color;
                 delete item.constantIntensity;
                 delete item.icon;
                 delete item.greenOffset1;
                 delete item.greenOffset2;
-                if (!v.isCrossRoad()) {
-                    item.edges = groupedEdges[v.data('id')];
-                    if (v.isStoppable() && item.parent) {
+                if (!node.isCrossRoad()) {
+                    item.edges = groupedEdges[node.data('id')];
+                    item.queueLimit = cy.aveQueueLimitCalc(node);
+                    item.nodesAhead = node.isCarriageway() ? [] : cy.aveOutgoersAreNotCarriagewayIds(node);
+
+                    if (node.isStoppable() && item.parent) {
                         var programInx = cy.getElementById(item.parent).data('currentProgram');
                         item.greenPhases = cy.aveGetCurrentProgramGreens(item.greenPhases[programInx], item.parent);
                         item.additionalGreens = cy.aveGetCurrentProgramGreens(item.additionalGreens[programInx], item.parent);
                     }
                 } else {
-                    var program = JSON.parse(JSON.stringify(cy.aveGetCurrentProgramPhases(v)));
+                    var program = JSON.parse(JSON.stringify(cy.aveGetCurrentProgramPhases(node)));
                     item.itertactOrder = App.State.currentModel.intertactOrder;
                     item.offset = program.offset;
                     item.cycleTime = program.cycleTime;
@@ -521,6 +522,53 @@
             });
             return map;
         },
+
+        aveOutgoersAreNotCarriagewayIds: function(node){
+            var notCwString = 'node[type!="carriageway"]';
+            var isCwString = 'node[type="carriageway"]';
+            var outNotCarriageway = node
+                .outgoers(notCwString)
+                .map(function(node){return node.data('id')});
+            var outCarriageway = node
+                .outgoers(isCwString)
+                .outgoers(notCwString)
+                .map(function(node){return node.data('id')});
+            return outNotCarriageway.concat(outCarriageway);
+        },
+
+        aveQueueLimitCalc: function(node){
+            var definedQueueLimit = node.data('queueLimit');
+            var queueLimit = 0;
+            if (definedQueueLimit && definedQueueLimit > 0) {
+                return parseInt(definedQueueLimit)|0;
+            }
+
+            if (node.hasParent() && (node.isCarriageway() || node.isPoint() || node.isBottleneck())){
+                return 1;
+            }
+
+            var gap = 6;
+            var alfa = node.data('capacity') < 1800 ? 0.5 : node.data('capacity') / 3600;
+            var slot = Math.round(gap/(alfa*2));
+
+            var edgeModificator = '';
+            if (node.isConcurrentCommon()) {
+                edgeModificator = '[secondary]';
+            }
+
+            var incomerNodes = node.incomers('node[type="carriageway"]');
+            var incomerEdges = node.incomers('edge' + edgeModificator);
+            if (incomerNodes.length == 0 && incomerEdges.length == 0){
+                return 0;
+            }
+            var maxCrr  = incomerNodes.max(function(el){return el.data('length');});
+            var maxEdge = incomerEdges.max(function(el){return el.data('distance');});
+            var maxLength = maxCrr.value > maxEdge.value
+                ? maxCrr.value : maxEdge.value;
+            queueLimit = Math.round(maxLength/slot);
+            return queueLimit < 1 ? 1 : queueLimit;
+        },
+
         aveAlignSelected: function (direction) {
             var nodes = this.$('node:selected');
             if (nodes.length == 0) {
