@@ -848,6 +848,7 @@
                         }
 
                         if (!(target.data('type') == 'stopline' || target.data('type') == 'pedestrian')) {
+                            target.data('hmcv',      traffic.heatMapColorForValue2(phaseSaturationNode));
                             target.addClass('green');
                             var eType = target.data('type') == 'concurrentMerge'
                                 ? false
