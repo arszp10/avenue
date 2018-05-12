@@ -1,6 +1,7 @@
 # Avenue 2.0
 
-Система моделирования транспортных потоков и оптимизации координированных режимов управления. 
+Application for modeling traffic flows 
+optimization of signaling at single intersection and a networks with coordinated control mode. 
 
 
 ## Demo
@@ -8,40 +9,40 @@
 * Application homepage [avenue-app.com](http://avenue-app.com/)
 * [API docs](http://avenue-app.com/api/doc)
 
-вход: [http://avenue-app.com/sign-in](http://avenue-app.com/sign-in)
+Sign in: [http://avenue-app.com/sign-in](http://avenue-app.com/sign-in)
 ```
-логин: test@user.com
-пароль: 123
+login: test@user.com
+password: 123
 ```
 
 ## Installation
 
-Для того чтобы развернуть проект, предвариельно необходимо установить: 
+In order to deploy the project, it is first necessary to install:
 [MongoDB](https://docs.mongodb.com/manual/installation/), [NodeJS 6.1+](https://nodejs.org/en/download/current/)
 
 
-Клонируйте репозиторий  в нужную вам директорию
+Clone the repository to your projects directory
 ```bash
 $ git clone https://github.com/kuzinmv/avenue.git
 $ cd avenue
 ```
 
-Установите зависимости
+Install dependencies
 ```bash
 $ npm install
 ```
-Возможно вам понадобится установить [gulp](http://gulpjs.com/)
+May be you need to install [gulp](http://gulpjs.com/)
 
 ```bash
 $ sudo npm install gulp -g
 ```
 
-Минифицируем и склеим ресурсы (html, css, js, fonts). Все собранные файлы будут помещены в папку `avenue/backend/public`
+Minify and glue resource files(html, css, js, fonts). All assembled files will be placed in a folder `avenue/backend/public`
 ```bash
 $ gulp build
 ```
 
-Создайте в корне проекта .env файл, примерно следующего содержания
+Create an .env file in the root of the project, with following content
 
 ```
 APP_PATH=/home/username/avenue               # Absolute path to your project folder
@@ -50,12 +51,12 @@ MONGODB_PATH=mongodb://localhost/avenue-dev  # dbname
 MAILGUN_API_KEY=key-....                     # your mailgun credentials,
 ```
 
-Убедитесь что сервер MongoDB запущен и запустите сервер
+Ensure that the MongoDB server is running and start the application server
 ```bash
 $ node backend/app 9000
 ```
 
-Отройте в браузере
+Open in browser
 ```
 http://localhost:9000
 ```
