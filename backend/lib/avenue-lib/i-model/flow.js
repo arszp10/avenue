@@ -87,9 +87,13 @@ function Flow(options, network)
         var x = this.sumInFlow/this.sumOutFlow;
         var overSatDelay = 0;
         if ( this.isCongestion ) {
-            var ct = this.cycleTime;
-            var T = 1;//ct/3600;
-            overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 4*x/(T*ct))|0;
+            //var ct = this.cycleTime;
+            //var T = 1;//ct/3600;
+            //overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 4*x/(T*ct))|0;
+
+            var T = this.cycleTime/3600;
+            overSatDelay = 900*T*((x-1) + Math.sqrt((x-1)*(x-1) + 4*0.9*x/(T*this.capacity)))|0;
+
         }
         var that = this;
         return {

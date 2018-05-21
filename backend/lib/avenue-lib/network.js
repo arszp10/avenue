@@ -300,6 +300,40 @@ Network.prototype.refreshPhasesLengthAndCycle = function(crossRoad, newCycle){
 
 };
 
+Network.prototype.singleCrossroadTotalDelay = function(crossRoadId){
+    var that = this;
+    var sumcongestion = 0;
+    var sumdelay = 0;
+
+    _.forEach(that.crStopLines[crossRoadId], function(id){
+        var node = that.getNode(id);
+        var x = node.sumInFlow/node.sumOutFlow;
+        var ct = node.cycleTime;
+        var overSatDelay = 0;
+        if ( node.isCongestion ) {
+            //var T = 10/ct;
+            //overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 8*0.5*0.9*x/(T*ct))|0;
+            //var T = 1;//ct/3600;
+            //overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 4*x/(T*ct))|0;
+
+            var T = node.cycleTime/3600;
+            overSatDelay = 900*T*((x-1) + Math.sqrt((x-1)*(x-1) + 4*0.9*x/(T*node.capacity)))|0;
+
+
+        }
+        var delay = (node.delay|0)/ct + overSatDelay;
+        sumcongestion += (node.isCongestion?1:0);
+        sumdelay += delay ;
+    });
+
+    return {
+        sumcongestion: sumcongestion,
+        sumdelay: sumdelay
+    }
+};
+
+
+
 Network.prototype.optimizeCycleSingleCrossroad = function(){
         //return this;
         var that = this;
@@ -317,6 +351,7 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
 
         var leftCycleBound = minLengthSum + crossRoad.phases.length;
         var rightCycleBound = 300;
+            //rightCycleBound = 100;
 
         crossRoad.phases.map(function(phase){
             phase.length = phase.minLength;
@@ -328,11 +363,12 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
             });
             that.refreshPhasesLengthAndCycle(crossRoad, ct);
             that.simulate(1);
-            var avgSaturationPrev = 0;
 
+            var avgSaturationPrev = 0;
             for (var t = 0; t <= 25; t++) {
                 var deltaR = 1;
                 var s = that.phasesSaturationStat(crossRoad);
+
 
                 crossRoad.phases[s.maxPhase].length+= deltaR;
                 crossRoad.phases[s.minPhase].length-= deltaR;
@@ -344,32 +380,20 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
                 }
                 avgSaturationPrev = s.avg;
             }
-            var sumcongestion = 0;
-            var sumdelay = 0;
 
-            _.forEach(that.crStopLines[crossRoad.id], function(id){
-                var node = that.getNode(id);
-                var x = node.sumInFlow/node.sumOutFlow;
-                var overSatDelay = 0;
-                if ( node.isCongestion ) {
-                    //var T = 10/ct;
-                    //overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 8*0.5*0.9*x/(T*ct))|0;
-                    var T = 1;//ct/3600;
-                    overSatDelay = 900*T*(x-1) + Math.sqrt((x-1)*(x-1) + 4*x/(T*ct))|0;
+            var delay = that.singleCrossroadTotalDelay(crossRoad.id);
 
-                }
-                var delay = (node.delay|0)/ct + overSatDelay;
-                sumcongestion += (node.isCongestion?1:0);
-                sumdelay += delay ;
-            });
+
 
             result.push({
                 cycleTime: ct,
-                avgCycleSaturation: avgSaturationPrev,
-                sumDelay: sumdelay,
-                sumCongestion: sumcongestion,
+                avgCycleSaturation: s.avg,
+                sumDelay: delay.sumdelay,
+                sumCongestion: delay.sumcongestion,
                 phases: JSON.parse(JSON.stringify(crossRoad.phases))
             });
+
+
 
         }
 
@@ -378,37 +402,5 @@ Network.prototype.optimizeCycleSingleCrossroad = function(){
 
 
 
-//Network.prototype.optimizeSplits = function(){
-//    var that = this;
-//
-//    _.forEach(this.crIndexMap, function(inx){
-//        var crossRoad = that.network[inx];
-//
-//        var maxSatEl = _.maxBy(crossRoad.phases, 'saturation');
-//        var minSatEl = _.minBy(crossRoad.phases, 'saturation');
-//        if (maxSatEl.saturation - minSatEl.saturation < 0.11) {
-//            return that;
-//        }
-//        var maxInx = crossRoad.phases.indexOf(maxSatEl);
-//        var minInx = crossRoad.phases.indexOf(minSatEl);
-//        var sumSat = maxSatEl.saturation + minSatEl.saturation;
-//        var sumLen = parseInt(maxSatEl.length) + parseInt(minSatEl.length);
-//        var dMax = Math.round(sumLen * maxSatEl.saturation/sumSat);
-//        var dMin = Math.round(sumLen * minSatEl.saturation/sumSat);
-//        if (dMin < parseInt(minSatEl.minLength)) {
-//            dMin = parseInt(minSatEl.minLength);
-//            dMax = sumLen - dMin;
-//        }
-//        maxSatEl.length = dMax;
-//        minSatEl.length = dMin;
-//        _.forEach(that.crStopLines[crossRoad.id], function(id){
-//            var sl = that.getNode(id);
-//            sl.resetIntervals(traffic.redIntervals(sl, crossRoad));
-//        });
-//
-//    });
-//
-//    return this;
-//};
 
 module.exports = Network;
