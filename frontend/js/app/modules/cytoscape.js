@@ -240,6 +240,13 @@
         var options   = settings.cytoscape;
         options.container = controls.panels.cytoscape;
         options.style = App.Resources.CyStyles;
+
+        controls.panels.cytoscape.contextmenu(function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            return false;
+        });
+
         options.ready = function() {
 
             cy = $.extend(this, that);
