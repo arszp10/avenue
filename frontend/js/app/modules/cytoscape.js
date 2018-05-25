@@ -241,7 +241,7 @@
         options.container = controls.panels.cytoscape;
         options.style = App.Resources.CyStyles;
 
-        controls.panels.cytoscape.contextmenu(function(e) {
+        $('body').contextmenu(function(e) {
             e.stopPropagation();
             e.preventDefault();
             return false;
