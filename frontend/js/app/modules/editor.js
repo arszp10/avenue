@@ -620,14 +620,34 @@
             var flattern = [].concat.apply([], err);
             return flattern;
         },
+
         showNodePopup: function(target, x, y){
+            var that = this;
             var node = target.data();
-            this.toggleNodePopupPanel();
-            controls.panels.pointProperty.css(
-                {
-                    top: y + 10,
-                    left: x - 145
-                }).data("node", node.id);
+            var upDirectionClass = 'showup';
+            var position =  {};
+
+            setTimeout(function(){
+                if (window.innerHeight - controls.panels.pointProperty.height() - y < 0) {
+                    controls.panels.pointProperty.addClass(upDirectionClass);
+                    position = {
+                        top: y - controls.panels.pointProperty.height() - 15,
+                        left: x - 145
+                    };
+                } else {
+                    controls.panels.pointProperty.removeClass(upDirectionClass);
+                    position = {
+                        top: y + 10,
+                        left: x - 145
+                    };
+                }
+                controls.panels.pointProperty.css(position);
+                that.toggleNodePopupPanel();
+            }, 10);
+
+
+            controls.panels.pointProperty.data("node", node.id);
+
             controls.inputs.inputNodeType.text(node.type);
             controls.inputs.inputsNodeProperty.each(function(i, v){
                 var $v = $(v);

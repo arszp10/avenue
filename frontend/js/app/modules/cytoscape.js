@@ -52,6 +52,7 @@
             if (e.target.isCrossRoad()) {
                 return;
             }
+            cy.$('*').unselect();
             e.target.select();
             editor.showNodePopup(e.target, e.originalEvent.clientX, e.originalEvent.clientY );
         });
@@ -241,11 +242,11 @@
         options.container = controls.panels.cytoscape;
         options.style = App.Resources.CyStyles;
 
-        $('body').contextmenu(function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            return false;
-        });
+        //$('body').contextmenu(function(e) {
+        //    e.stopPropagation();
+        //    e.preventDefault();
+        //    return false;
+        //});
 
         options.ready = function() {
 
