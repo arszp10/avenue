@@ -234,17 +234,21 @@
                 ? data.queueLimit.toFixed(2) + ' / '
                 : '- / ';
 
-            var unit_sec, unit_h_h, unit;
+            var unit_sec, unit_h_h, unit, u_h;
+            var delayPerOneVihicleRow = '';
+
             if (data.type == 'pedestrian'){
                 unit_sec = 'ped_sec';
                 unit_h_h = 'ped_h_h';
                 unit = 'p';
+                u_h = 'p_h';
             } else {
                 unit_sec = 'veh_sec';
                 unit_h_h = 'veh_h_h';
                 unit = 'vehicle';
+                u_h = 'v_h';
+                delayPerOneVihicleRow = '<tr><td>' + __('delay-one-vehicle') + '</td><td class="text-right">'+(data.delay/data.sumOutFlow).toFixed(2)+'</td><td class="measure-unit">' + __('s') + '</td></tr>';
             };
-            var u_h = data.type=='pedestrian' ? 'p_h' : 'v_h';
 
             var no = data.isCongestion ? '<span class="text-danger">' + __('congestion') : '<span class="text-success">' + __('no-congestion');
             return '<h4>' + __('modeling-results') + '</h4>' +
@@ -253,6 +257,7 @@
                 '    <tr><td>' + __('delay-model') + '</td><td class="text-right">'+data.delay.toFixed(2)+'</td><td class="measure-unit">' + __(unit_sec) + '</td></tr>' +
                 '    <tr><td>' + __('delay') + '</td><td class="text-right">'+data.delayPerHour.toFixed(2)+'</td><td class="measure-unit">' + __(unit_h_h) + '</td></tr>' +
                 '    <tr><td>' + __('delay-oversaturation') + '</td><td class="text-right">'+data.overSaturationDelay.toFixed(2)+'</td><td class="measure-unit">' + __(unit_h_h) + '</td></tr>' +
+                delayPerOneVihicleRow +
                 '    <tr><td>' + __('green-saturation') + '</td><td class="text-right">'+data.greenSaturation.toFixed(2)+'</td><td class="measure-unit">%</td></tr>' +
                 '    <tr><td>' + __('limit-max-queue') + '</td><td class="text-right">'+ queueLimit + data.maxQueue.toFixed(2) +'</td><td class="measure-unit">' + __(unit) + '</td></tr>' +
                 '    <tr><td>' + __('sum-io-flow') + '</td><td class="text-right">'+data.sumInFlow.toFixed(2)+' / '+data.sumOutFlow.toFixed(2)+'</td><td class="measure-unit">' + __(unit) + '</td></tr>' +
