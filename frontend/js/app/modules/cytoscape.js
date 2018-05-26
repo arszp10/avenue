@@ -242,11 +242,11 @@
         options.container = controls.panels.cytoscape;
         options.style = App.Resources.CyStyles;
 
-        //$('body').contextmenu(function(e) {
-        //    e.stopPropagation();
-        //    e.preventDefault();
-        //    return false;
-        //});
+        $('body').contextmenu(function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            return false;
+        });
 
         options.ready = function() {
 
