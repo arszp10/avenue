@@ -595,6 +595,13 @@
                });
             });
 
+            cyRoutes.sort(function (a, b){
+                if (a.length < b.length) {return -1;}
+                if (a.length > b.length) {return 1;}
+                return 0;
+            });
+
+            console.log(cyRoutes);
             var result = cyRoutes.length > 2 ? cyRoutes.slice(0,2) : cyRoutes;
             this.$(":selected").unselect();
             result.forEach(function(r){  r.select(); });
