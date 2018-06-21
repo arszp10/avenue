@@ -33,6 +33,22 @@
                 'shape': 'roundrectangle'
             }
         },
+
+        {
+            selector: 'node[tram]',
+            css: {
+                'content': 'data(icon)',
+                'text-valign': 'center',
+                'text-halign': 'center',
+                'background-color': '#777777',//'#eee',
+                'border-color': '#333',
+                'color': '#333',// '#2e6da4',
+                'border-width': 1.5,
+                'font-family': 'Avenue',
+                'font-size': '22px'
+            }
+        },
+
         {
             selector: '$node > node',
             css: {
@@ -168,6 +184,21 @@
                 'line-style': 'dashed',
                 'text-outline-color': '#999999',
                 'line-color': '#999999'
+            }
+        },
+
+        {
+            selector: 'edge[tram]',
+            css: {
+                'target-arrow-shape': 'circle',
+                'source-arrow-shape': 'none',
+                'target-arrow-color': '#333333',
+                //'target-arrow-color': '#999999',
+                'arrow-scale': 0.2,
+                'width': 10,
+                'line-style': 'dotted',
+                'text-outline-color': '#333333',
+                'line-color': '#333333'
             }
         },
 

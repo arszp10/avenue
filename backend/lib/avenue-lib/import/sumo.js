@@ -7,8 +7,8 @@ var parser      = new xml2js.Parser({
     explicitArray:false
 });
 
-var allowedEdgeType = [undefined, 'highway.primary', 'highway.primary_link', 'highway.residential', 'highway.secondary'];//, 'highway.tertiary', 'highway.tertiary_link'];
-var allowedJunctionType = ['priority', 'traffic_light', 'dead_end'];
+var allowedEdgeType = [undefined, 'highway.primary', 'highway.primary_link', 'highway.secondary_link', 'highway.secondary'];//, 'highway.tertiary', 'highway.tertiary_link'];
+var allowedJunctionType = ['traffic_light'];
 
 var nextId = function(){
     return Math.random().toString(36).substr(2, 16);
@@ -23,8 +23,11 @@ var transformPosition = function (shape, inx, junction, ym, zm, zi){
     var index = inx === 'last' ? shapeArr.length - 1 : inx;
     var shapeItem = shapeArr[index];
     var coord = shapeItem.split(',');
-    var jx =  parseInt(junction.x) * zm;
-    var jy = ym - parseInt(junction.y) * zm;
+    var jx = 0, jy = 0;
+    if (junction) {
+        jx =  parseInt(junction.x) * zm;
+        jy = ym - parseInt(junction.y) * zm;
+    }
     var x = parseInt(coord[0]) * zm;
     var y = ym - parseInt(coord[1]) * zm;
     return {
@@ -62,78 +65,69 @@ module.exports = {
             var nodesIndexStartOutEdges = {};
             var data = [];
 
+            var adCyEdge = function(source, target, portion){
+                var cyEdge = deepClone(defaults.cyEdgeProps);
+                cyEdge.data = deepClone(defaults.edge);
+                cyEdge.data.id = nextId();
+                cyEdge.data.source = source;
+                cyEdge.data.target = target;
+                cyEdge.data.portion = portion;
+                data.push(cyEdge);
+            };
 
-            var addCrossRoad = function(junction){
-                //if (allowedJunctionType.indexOf(junction.type) < 0) {
-                //    return;
-                //}
-                var paretnId =  nextId();
-                junction.parentId = paretnId;
-
+            var addStopLine = function(edge, lane){
+                var junction = junctionsIndex[edge.to];
                 var node  = deepClone(defaults.cyNodeProps);
-                var crossRoadData = defaults.crossRoad;
-                crossRoadData.programs = [];//.push(defaults.programDefaults);
-                crossRoadData.currentProgram = 0;
-                node.data = deepClone(crossRoadData);
-                node.position.x = parseInt(junction.x) * zoomMap;
-                node.position.y = yMax - parseInt(junction.y) * zoomMap;
-                node.data.id = paretnId;
-                node.data.name = junction.id;
 
-                data.push(node);
-                junctionsIndex[junction.id] = junction;
-            };
-
-            var addStopLines = function(edge){
-                return edge.lane.map(function(lane){
-                    var junction = junctionsIndex[edge.to];
-                    var node  = deepClone(defaults.cyNodeProps);
+                if (junction && junction.type == 'traffic_light') {
                     node.data = deepClone(defaults.stopline);
-                    node.position = transformPosition(lane.shape, 'last', junction, yMax, zoomMap, zoomIntersection);
-                    node.data.id = nextId();
-                    if (junction.hasOwnProperty('parentId')) {
-                        node.data.parent = junction.parentId;
-                        usedParentsIndex[junction.parentId] = true;
-                    }
+                } else {
+                    node.data = deepClone(defaults.point);
+                }
 
-                    if (junction.type !== 'traffic_light') {
-                        node.data.greenPhases = [true, true];
-                    }
+                node.position = transformPosition(lane.shape, 'last', junction, yMax, zoomMap, zoomIntersection);
+                node.data.id = nextId();
+                if (junction && junction.hasOwnProperty('parentId')) {
+                    node.data.parent = junction.parentId;
+                    usedParentsIndex[junction.parentId] = true;
+                }
 
-                    node.data.tag = lane.id;
-                    node.data.capacity = 1800;
-                    node.data.avgIntensity = Math.floor(900/edge.lane.length);
-                    node.data.intervals = [[0,1]];
-                    data.push(node);
+                if (junction && junction.type !== 'traffic_light') {
+                    node.data.greenPhases = [true, true];
+                }
 
-                    nodesIndexStart[lane.id] = node.data.id;
-                    return node.data.id;
-                })
+                node.data.tag = lane.id;
+                node.data.capacity = 1800;
+                node.data.avgIntensity = Math.floor(300);
 
+                if (junction && junction.type == 'traffic_light') {
+                    node.data.intervals = [[0, 1]];
+                }
+                data.push(node);
+
+                nodesIndexStart[lane.id] = node.data.id;
+                return node.data.id;
             };
 
-            var addBottleneck = function(edge){
-                var lane = edge.lane[edge.lane.length - 1 ];
+            var addBottleneck = function(edge, lane){
                 var junction = junctionsIndex[edge.from];
-
-                var node = deepClone(defaults.cyNodeProps);
-                node.data = deepClone(defaults.bottleneck);
+                var node    = deepClone(defaults.cyNodeProps);
+                node.data     = deepClone(defaults.bottleneck);
                 node.position = transformPosition(lane.shape, 0, junction, yMax, zoomMap, zoomIntersection);
-                node.data.id = nextId();
-                if (junction.hasOwnProperty('parentId')) {
+                node.data.id  = nextId();
+                if (junction && junction.hasOwnProperty('parentId')) {
                     node.data.parent = junction.parentId;
                     usedParentsIndex[junction.parentId] = true;
                 }
                 node.data.tag = lane.id;
-                node.data.capacity = 1800 * edge.lane.length;
+                node.data.capacity = 1800 * lane.length;
                 data.push(node);
                 nodesIndexEnd[lane.id] = node.data.id;
                 return node.data.id;
 
             };
 
-            var addCrriageway = function(edge){
-                var lane = edge.lane[edge.lane.length - 1];
+            var addCrriageway = function(edge, lane){
                 var junctionFrom = junctionsIndex[edge.from];
                 var junctionTo = junctionsIndex[edge.to];
 
@@ -149,7 +143,7 @@ module.exports = {
 
                 node.data.id = nextId();
                 node.data.tag = edge.id;
-                node.data.capacity = 1800 * edge.lane.length;
+                node.data.capacity = 1800 * lane.length;
                 node.data.routeTime = Math.floor(parseFloat(lane.length)/parseFloat(lane.speed));
                 node.data.length = parseInt(lane.length);
                 data.push(node);
@@ -157,37 +151,44 @@ module.exports = {
                 return node.data.id;
             };
 
+            var addCrossRoad = function(junction){
+                if (allowedJunctionType.indexOf(junction.type) < 0) {
+                    return;
+                }
+                var paretnId =  nextId();
+                junction.parentId = paretnId;
+
+                var node  = deepClone(defaults.cyNodeProps);
+                var crossRoadData = defaults.crossRoad;
+                crossRoadData.programs = new Array(defaults.programDefaults);
+                crossRoadData.currentProgram = 0;
+                node.data = deepClone(crossRoadData);
+                node.position.x = parseInt(junction.x) * zoomMap;
+                node.position.y = yMax - parseInt(junction.y) * zoomMap;
+                node.data.id = paretnId;
+                node.data.name = junction.id;
+
+                data.push(node);
+                junctionsIndex[junction.id] = junction;
+            };
+
             var convertSumoEdge = function (edge){
                 if(!Array.isArray(edge.lane)) {
                     edge.lane = [edge.lane];
                 }
 
-                //if (allowedEdgeType.indexOf(edge.type) < 0) {
-                //    return;
-                //}
+                if (allowedEdgeType.indexOf(edge.type) < 0) {
+                    return;
+                }
 
-                var sl = addStopLines(edge);
-                var bn = addBottleneck(edge);
-                var cw = addCrriageway(edge);
-
-                adCyEdge(bn, cw, '100%');
-                _.forEach(sl, function(sline, index){
-                    adCyEdge(cw, sline, parseInt(100/sl.length)+'%');
+                _.forEach(edge.lane, function(lane, index){
+                    var sl = addStopLine(edge, lane);
+                    var bn = addBottleneck(edge, lane);
+                    adCyEdge(bn, sl, '100%');
                 });
 
+
             };
-
-            var adCyEdge = function(source, target, portion){
-                var cyEdge = deepClone(defaults.cyEdgeProps);
-                cyEdge.data = deepClone(defaults.edge);
-                cyEdge.data.id = nextId();
-                cyEdge.data.source = source;
-                cyEdge.data.target = target;
-                cyEdge.data.portion = portion;
-                data.push(cyEdge);
-            };
-
-
 
             _.forEach(junctions, function(junction){
                 addCrossRoad(junction);
@@ -202,24 +203,12 @@ module.exports = {
             _.forEach(connections, function(conn){
                 var from = conn.from + '_' + conn.fromLane;
                 var to = conn.to + '_' + conn.toLane;
-                if (nodesIndexStart.hasOwnProperty(from) && nodesIndexEnd.hasOwnProperty(to)){
-                    if (!nodesIndexStartOutEdges.hasOwnProperty(from)){
-                        nodesIndexStartOutEdges[from] = 1;
-                    }  else {
-                        nodesIndexStartOutEdges[from] = nodesIndexStartOutEdges[from] + 1;
-                    }
-                }
-            });
-
-            _.forEach(connections, function(conn){
-                var from = conn.from + '_' + conn.fromLane;
-                var to = conn.to + '_' + conn.toLane;
 
                 if (nodesIndexStart.hasOwnProperty(from) && nodesIndexEnd.hasOwnProperty(to)){
                     adCyEdge(
                         nodesIndexStart[from],
                         nodesIndexEnd[to],
-                        parseInt(100 / nodesIndexStartOutEdges[from]) + '%'
+                        '100%'
                     );
                 }
 
@@ -232,10 +221,14 @@ module.exports = {
                 return usedParentsIndex.hasOwnProperty(node.data.id);
             });
 
+            //console.log(data);
+
             ready(err, data);
 
         });
 
     }
-};
+
+
+}
 

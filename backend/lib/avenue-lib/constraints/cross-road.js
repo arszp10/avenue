@@ -22,7 +22,7 @@ module.exports = {
         presence: true,
         arraySize: {
             min: 2,
-            max: 8
+            max: 12
         },
         sumPhases: true
     }

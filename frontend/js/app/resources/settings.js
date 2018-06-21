@@ -11,7 +11,7 @@
             desktopTapThreshold:4,
             elements: [],
             showOverlay: false,
-            minZoom: 0.1,
+            minZoom: 0.01,
             maxZoom: 2.0,
             //wheelSensitivity:20,
             layout: {

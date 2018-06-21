@@ -59,7 +59,7 @@
                     //extent: new Extent(extent),
                     //scale: scale,
                     constraints: {
-                        minScale: 140,
+                        minScale: 1,
                         maxScale: 9028
                     },
                     resizeAlign: 'top-left'

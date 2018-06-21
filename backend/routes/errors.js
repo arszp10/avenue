@@ -20,15 +20,16 @@ module.exports = function(app){
         }
     });
 
-    //app.use(function(err, req, res, next){
-    //    res.status(err.status || 500);
-    //    if(isJson.test(req.get('accept'))) {
-    //        res.json( { success: false,  message: 'Internal server error',  data: {code: 500} });
-    //        return;
-    //    }
-    //
-    //    res.sendFile('errors/500.html', {root: __dirname + '/../public'});
-    //});
+    app.use(function(err, req, res, next){
+        res.status(err.status || 500);
+        console.log(err);
+        if(isJson.test(req.get('accept'))) {
+            res.json( { success: false,  message: 'Internal server error',  data: {code: 500} });
+            return;
+        }
+
+        res.sendFile('errors/500.html', {root: __dirname + '/../public'});
+    });
 
 };
 

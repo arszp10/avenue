@@ -175,7 +175,9 @@
                         return element;
                     });
 
+                    cy.startBatch();
                     cy.add(content);
+                    cy.endBatch();
                     //var cySize = r.data.position.cySize;
                     //var cwe = (cy.width()-cySize.width)/2;
                     //var che = (cy.height()-cySize.height)/2;
@@ -265,3 +267,6 @@
     };
 
 })(AvenueApp);
+/*
+./netconvert --osm-files ~/Projects/avenue/backend/resources/import/osm/petrogradka.osm.xml --output-file ~/Projects/avenue/backend/resources/import/osm/petrogradka.osm.net.xml  --keep-edges.min-speed 5 --junctions.join  --crossings.guess  --sidewalks.guess
+*/

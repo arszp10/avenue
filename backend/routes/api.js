@@ -18,6 +18,7 @@ var upload = multer({
 });
 
 var sumoImport = require('../lib/avenue-lib/import/sumo');
+var net329Import = require('../lib/avenue-lib/import/net329');
 
 var isint = /^[0-9]+$/;
 var isfloat = /^([0-9]+)?\.[0-9]+$/;
@@ -408,12 +409,12 @@ module.exports = function(app, config) {
 
     app.post('/api/model/import', authenticateApi, upload.single('inputImportFile'), function (req, res, next) {
         var allowedMimeTypes = ['text/xml', 'application/json'];
-        var allowedModelTypes = ['avenue', 'sumo'];
-        var maxFileSize      = 20000000;
+        var allowedModelTypes = ['avenue', 'sumo', 'net329editor'];
+        var maxFileSize      = 200000000;
         var zoomMap          = parseInt(req.body.inputZoomMap) | 1;
         var zoomIntersection = parseInt(req.body.inputZoomIntersection) | 1;
         var inputImportModelType = req.body.inputImportModelType;
-        console.log(req.body);
+
         if (allowedMimeTypes.indexOf(req.file.mimetype) < 0) {
             fs.unlinkSync(req.file.path);
             res.json(responses.importWrongMime());
@@ -430,12 +431,8 @@ module.exports = function(app, config) {
         }
 
 
-        if (inputImportModelType == 'avenue') {
-            var userId = req.session.user.id;
-            var data = JSON.parse(fs.readFileSync(req.file.path, "utf8"));
-                data['_creator'] = userId;
-                data['createdAt'] = new Date();
 
+        var createModel = function (res, data){
             var newAveModel = Model(data);
             newAveModel.save(function (err) {
                 if (err) {
@@ -445,10 +442,9 @@ module.exports = function(app, config) {
                 res.json(responses.entityCreatedSuccessfully('Model', {id: newAveModel._id}));
             });
             return;
-        }
+        };
 
-        sumoImport.convert(req.file.path, zoomMap, zoomIntersection, function(err, result){
-
+        var importCallBack = function(err, result){
             fs.unlinkSync(req.file.path);
             if (err) {
                 res.json(responses.importConvertError(err));
@@ -460,15 +456,23 @@ module.exports = function(app, config) {
                 content: result,
                 _creator: userId
             };
-            var newAveModel = Model(data);
-            newAveModel.save(function (err) {
-                if (err) {
-                    res.json(responses.fieldsErrorsList(err));
-                    return;
-                }
-                res.json(responses.entityCreatedSuccessfully('Model', {id: newAveModel._id}));
-            });
-        });
+            createModel(res, data);
+        };
+
+        if (inputImportModelType == 'avenue') {
+            var userId = req.session.user.id;
+            var data = JSON.parse(fs.readFileSync(req.file.path, "utf8"));
+            data['_creator'] = userId;
+            data['createdAt'] = new Date();
+            createModel(res, data);
+        } else if (inputImportModelType == 'net329editor') {
+            net329Import.convert(req.file.path, importCallBack);
+
+        } else {
+            sumoImport.convert(req.file.path, 8, 1, importCallBack);
+        }
+
+
     });
 
 
