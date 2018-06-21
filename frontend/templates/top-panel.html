@@ -5,7 +5,7 @@
                 <a class="navbar-brand" href="/"><img src="/img/logo0.png" height="30"></a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <form id="api-credentials" class=" hidden-api-doc hidden-network hidden-routes hidden-map hidden-crossroad navbar-form navbar-left" role="search">
+                <form id="api-credentials" class="api-credentials hidden-api-doc hidden-network hidden-routes hidden-map hidden-crossroad navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">Key</span>
@@ -84,6 +84,15 @@
                                 <button type="submit" class="btn btn-sm btn-info" id="btn-create-route" locale="create">Create</button>
                             </li>
                         </ul>
+                    </div>
+                </form>
+
+                <form class="visible-routes navbar-form navbar-left" role="search">
+                    <div class="form-group api-credentials ">
+                        <div class="input-group">
+                            <span class="input-group-addon">Циклов</span>
+                            <input type="text" id="input-cycle-number-draw" class="form-control input-api-key" placeholder="" value="3">
+                        </div>
                     </div>
                 </form>
 

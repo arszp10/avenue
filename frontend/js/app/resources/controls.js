@@ -83,7 +83,8 @@
             inputProgramName:       '#inputProgramName',
             inputUpdateProgramName: '#inputUpdateProgramName',
             inputCrossroadOptiOff:  '#inputCrossroadOptiOff',
-            inputNodeIntensity: '#input-node-intensity'
+            inputNodeIntensity: '#input-node-intensity',
+            inputCycleNumberDraw: '#input-cycle-number-draw'
 
         },
         buttons: {

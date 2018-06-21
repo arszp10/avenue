@@ -9,6 +9,7 @@
     var routeDirections = ['forward', 'back'];
     var minScale = 0.2;
     var maxScale = 2;
+    var numberCycleDraw = 3;
 
     function Route(name, forwardOnly){
         this.scale = 1;
@@ -123,7 +124,7 @@
             line.append("rect")
             .attr('class',direction)
             .attr("height", 11)
-            .attr("x",      function(d) { return x(d.offset - 3*cycleTime); })
+            .attr("x",      function(d) { return x(d.offset - numberCycleDraw*cycleTime); })
             .attr("y",     direction == 'forward'? 1 : -13)
             .attr("width",  function(d) { return x(d.length)  >= 0 ? x(d.length) : 0; })
             .style("fill",  function(d) {
@@ -137,7 +138,7 @@
             line.append("rect")
             .attr('class',direction)
             .attr("height", 11)
-            .attr("x",      function(d) { return x(d.offset - 3*cycleTime); })
+            .attr("x",      function(d) { return x(d.offset - numberCycleDraw*cycleTime); })
             .attr("y",     direction == 'forward'? 1 : -13)
             .attr("width",  function(d) { return 1 })
             .style("fill",  "#cccccc");
@@ -150,7 +151,7 @@
                     if (d.color == 'yellow') return '#333333';
                     return '#ffffff';
                 })
-            .attr("x",   function(d) { return x(d.offset - 3*cycleTime) + x(d.length/2); })
+            .attr("x",   function(d) { return x(d.offset - numberCycleDraw*cycleTime) + x(d.length/2); })
             .attr("y",   direction == 'forward'? 10 : -4)
             .text(function(d) { return d.length +''; })
         ;
@@ -232,6 +233,27 @@
                 btnShowVehicleTraces($(this),'back');
             });
 
+
+            controls.inputs.inputCycleNumberDraw.change(function(e){
+                var value = parseInt($(this).val())|0;
+
+                e.stopPropagation();
+                e.preventDefault();
+
+                if (value > 12 || value < 3) {
+                    value = 3;
+                    $(this).val(value);
+                }
+
+                var route = that.getRoute();
+                that.setNumberCycleDraw(value);
+                that.drawRoute(route);
+
+            });
+        },
+
+        setNumberCycleDraw: function(num){
+            numberCycleDraw = num;
         },
 
         refreshSelectedRoute: function(){
@@ -356,17 +378,11 @@
                     point[direction].signals = traffic.signalDiagramData1(intertactOrder, crossroad, program, stopline, undefined);
 
                     var signalsString = JSON.stringify(point[direction].signals);
-                    var a1 = JSON.parse(signalsString);
-                    var a2 = JSON.parse(signalsString);
-                    var a3 = JSON.parse(signalsString);
-                    var a4 = JSON.parse(signalsString);
-                    var a5 = JSON.parse(signalsString);
-                    var a6 = JSON.parse(signalsString);
-                    var a7 = JSON.parse(signalsString);
-                    var a8 = JSON.parse(signalsString);
 
-                    var result = point[direction].signals.concat(a1,a2,a3,a4,a5,a6,a7,a8);
-
+                    var result = point[direction].signals;
+                    for (var i=1; i <= numberCycleDraw * 3; i++) {
+                        result = result.concat(JSON.parse(signalsString));
+                    }
                     result.reduce(function (sum, current) {
                         current.offset = sum;
                         return current.offset + current.length;
@@ -380,7 +396,7 @@
 
                     if (showVehicleTraces[direction] && nodeSimulationData) {
 
-                        var cycleTime = program.cycleTime * 5;
+                        var cycleTime = program.cycleTime * (numberCycleDraw + 2);
                         var slot = 6;
                         var distance = point[direction].distance;
                         var speed0 = distance / 6;
@@ -401,25 +417,13 @@
                         var slInFlow = [];
 
 
-                        var s1 = JSON.parse(slOutFlowStr);
-                        var s2 = JSON.parse(slOutFlowStr);
-                        var s3 = JSON.parse(slOutFlowStr);
-                        var s4 = JSON.parse(slOutFlowStr);
-                        var s5 = JSON.parse(slOutFlowStr);
-                        slOutFlow = slOutFlow.concat(s1,s2,s3,s4,s5);
-
-                        var si1 = JSON.parse(slInFlowStr);
-                        var si2 = JSON.parse(slInFlowStr);
-                        var si3 = JSON.parse(slInFlowStr);
-                        var si4 = JSON.parse(slInFlowStr);
-                        var si5 = JSON.parse(slInFlowStr);
-                        var si6 = JSON.parse(slInFlowStr);
-                        slInFlow = slInFlow.concat(si1,si2,si3,si4,si5,si6);
+                        for (var i =1; i <= numberCycleDraw + 3; i++) {
+                            slOutFlow = slOutFlow.concat(JSON.parse(slOutFlowStr));
+                            slInFlow = slInFlow.concat(JSON.parse(slInFlowStr));
+                        }
 
                         point[direction].traces = traffic.traces(cycleTime, slot, distance, speed0, slOutFlow, slInFlow, capacityPerSecond);
                     }
-
-
 
                 });
 
@@ -455,7 +459,7 @@
                 var y2 = sl2.geoOffset ;
 
                 var points = [{x:0,y:y1},{x:0,y:y2},{x:0,y:y2},{x:0,y:y1}];
-                for(var j=0; j< cycleTime * 5; j++){
+                for(var j=0; j< cycleTime * (numberCycleDraw + 2); j++){
                     var bothPointIsGreen = sl1[direction].isGreenMoment[j % cycleTime] && sl2[direction].isGreenMoment[(j + tpr)% cycleTime];
                     if (state == 'end-block') {
                         if (bothPointIsGreen) {
@@ -528,7 +532,7 @@
 
             y.domain([0, totalRouteLenght + 100]);
             y1.domain([0, 0]);
-            x.domain([0, cycleTime * 3 ]);
+            x.domain([0, cycleTime * numberCycleDraw ]);
 
 
             var rrange = route.points.map(function(v){return y(v.geoOffset)});
@@ -586,11 +590,10 @@
                 .attr("transform", "translate(" + (width) + ",0)")
                 .call(yAxis0);
 
-            svg.append("g").attr("class", "y1 axis")
-                .attr("transform", "translate(" + x(cycleTime) + ",0)").call(yAxis1);
-
-            svg.append("g").attr("class", "y1 axis")
-                .attr("transform", "translate(" + x(2 * cycleTime) + ",0)").call(yAxis1);
+            for (var i = 1; i < numberCycleDraw; i++) {
+                svg.append("g").attr("class", "y1 axis")
+                    .attr("transform", "translate(" + x(i * cycleTime) + ",0)").call(yAxis1);
+            }
 
 
             // add defs for amber & flashed green
