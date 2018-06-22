@@ -250,6 +250,15 @@
                 that.drawRoute(route);
 
             });
+
+            controls.inputs.inputCycleNumberDraw.keydown(function(event){
+                if(event.keyCode == 13) {
+                    event.preventDefault();
+                    controls.inputs.inputCycleNumberDraw.change();
+                    return false;
+                }
+            });
+
         },
 
         setNumberCycleDraw: function(num){
